@@ -1,0 +1,395 @@
+# Copyright (C) 2010 Just Custom Fields for Wordpress
+# This file is distributed under the same license as the Just Custom Fields for Wordpress package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Just Custom Fields for Wordpress 0.9b\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/just-custom-fields\n"
+"POT-Creation-Date: 2011-12-22 15:13:50+00:00\n"
+"PO-Revision-Date: 2011-12-22 17:21+0200\n"
+"Last-Translator: Alexander Prokopenko <contact@justcoded.com>\n"
+"Language-Team: JustCoded <contact@justcoded.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Russian\n"
+
+#: inc/functions.ajax.php:7
+#: inc/functions.ajax.php:85
+#: inc/class.field.php:181
+msgid "Title field is required."
+msgstr "Поле \"Название\" обязательно"
+
+#: inc/functions.ajax.php:15
+msgid "Such fieldset already exists."
+msgstr "Такой Набор полей уже есть"
+
+#: inc/functions.ajax.php:47
+msgid "Edit Fieldset:"
+msgstr "Редактирование Набора полей"
+
+#: inc/functions.ajax.php:53
+#: components/input-text.php:60
+#: components/checkbox.php:96
+#: components/textarea.php:73
+#: components/select-multiple.php:85
+#: components/relatedcontent/related-content.php:180
+#: components/datepicker/datepicker.php:62
+#: components/fieldsgroup/fields-group.php:134
+#: components/uploadmedia/uploadmedia.php:96
+#: components/uploadmedia/uploadmedia.php:214
+#: components/select.php:81
+#: templates/fields_ui.tpl.php:95
+msgid "Title:"
+msgstr "Название:"
+
+#: inc/functions.ajax.php:57
+#: inc/class.field.php:147
+#: just-custom-fields.php:145
+#: components/relatedcontent/related-content.php:88
+#: components/fieldsgroup/fields-group.php:63
+#: components/uploadmedia/uploadmedia.php:110
+#: templates/fields_ui.tpl.php:51
+msgid "Delete"
+msgstr "Удалить"
+
+#: inc/functions.ajax.php:58
+#: inc/class.field.php:149
+msgid "Close"
+msgstr "Закрыть"
+
+#: inc/functions.ajax.php:62
+#: inc/class.field.php:153
+msgid "Save"
+msgstr "Сохранить"
+
+#: inc/functions.ajax.php:80
+msgid "Wrong data passed."
+msgstr "Переданные данные не верны."
+
+#: inc/class.field.php:106
+#: inc/class.field.php:146
+#: templates/fields_ui.tpl.php:76
+#: templates/fields_ui.tpl.php:97
+msgid "Add"
+msgstr "Добавить"
+
+#: inc/class.field.php:106
+#: just-custom-fields.php:144
+#: templates/fields_ui.tpl.php:50
+msgid "Edit"
+msgstr "Редактировать"
+
+#: inc/class.field.php:125
+msgid "Slug:"
+msgstr "Машинное имя"
+
+#: inc/class.field.php:127
+msgid "Machine name, will be used for postmeta field name."
+msgstr "Машинное имя, которое будет использоваться как ключ в postmeta"
+
+#: inc/class.field.php:141
+#: templates/fields_ui.tpl.php:34
+#: templates/fields_ui.tpl.php:41
+msgid "Enabled"
+msgstr "Включено"
+
+#: inc/class.field.php:345
+msgid "There are no options for this field."
+msgstr "Настройки этого поля пусты."
+
+#: just-custom-fields.php:105
+#: templates/fields_ui.tpl.php:3
+#: templates/settings_page.tpl.php:3
+msgid "Just Custom Fields"
+msgstr "Просто Поля"
+
+#: just-custom-fields.php:143
+msgid "Hello there"
+msgstr "Эй там!"
+
+#: just-custom-fields.php:146
+msgid "Are you sure you want to delete selected field?"
+msgstr "Вы уверены, что хотите удалить это поле?"
+
+#: just-custom-fields.php:147
+msgid ""
+"Are you sure you want to delete the fieldset?\n"
+"All fields will be also deleted!"
+msgstr ""
+"Вы уверены, что хотите удалить Набор полей?\n"
+"Все поля в нем будут удалены!"
+
+#: just-custom-fields.php:148
+msgid "Update Image"
+msgstr "Обновить Картинку"
+
+#: just-custom-fields.php:149
+msgid "Update File"
+msgstr "Обновить Файл"
+
+#: just-custom-fields.php:150
+#: templates/fields_ui.tpl.php:56
+msgid "Yes"
+msgstr "Да"
+
+#: just-custom-fields.php:151
+#: templates/fields_ui.tpl.php:56
+msgid "No"
+msgstr "Нет"
+
+#: components/input-text.php:12
+msgid "Input Text"
+msgstr "Текстовое поле"
+
+#: components/input-text.php:61
+#: components/checkbox.php:105
+#: components/textarea.php:75
+#: components/select-multiple.php:90
+#: components/relatedcontent/related-content.php:199
+#: components/fieldsgroup/fields-group.php:139
+#: components/uploadmedia/uploadmedia.php:102
+#: components/uploadmedia/uploadmedia.php:231
+#: components/select.php:85
+msgid "Description:"
+msgstr "Описание:"
+
+#: components/checkbox.php:12
+msgid "Checkbox"
+msgstr "Галочка"
+
+#: components/checkbox.php:36
+msgid "Please check settings. Values are empty"
+msgstr "Проверьте настройки. Значения вроде как пусты"
+
+#: components/checkbox.php:100
+#: components/select-multiple.php:87
+#: components/select.php:82
+msgid "Settings:"
+msgstr "Настройки:"
+
+#: components/checkbox.php:102
+#: components/select-multiple.php:89
+#: components/select.php:84
+msgid "Parameters like (you can use just \"label\" if \"id\" is the same):<br>label1|id1<br>label2|id2<br>label3"
+msgstr "Параметры списка (вы можете использовать только \"название\", если \"id\" такой же):<br>Название 1|id1<br>Название 2|id2<br>Название 3"
+
+#: components/textarea.php:12
+msgid "Textarea"
+msgstr "Текстовое поле (мульти)"
+
+#: components/textarea.php:74
+msgid "Use Editor for this textarea:"
+msgstr "Использовать Визуальный редактор:"
+
+#: components/select-multiple.php:12
+msgid "Select Multiple"
+msgstr "Список (мульти)"
+
+#: components/select.php:41
+msgid "Select One"
+msgstr "Выбрать"
+
+#: components/relatedcontent/related-content.php:11
+msgid "Related Content"
+msgstr "Существующий контент"
+
+#: components/relatedcontent/related-content.php:111
+#: components/fieldsgroup/fields-group.php:68
+#: components/uploadmedia/uploadmedia.php:116
+msgid "Cancel"
+msgstr "Отмена"
+
+#: components/relatedcontent/related-content.php:115
+#: components/fieldsgroup/fields-group.php:72
+msgid "+ Add another"
+msgstr "+ Добавить еще"
+
+#: components/relatedcontent/related-content.php:172
+msgid "Start typing entry Title to see the list."
+msgstr "Начните вводить Название записи, которую хотите добавить, чтобы увидеть доступные варианты"
+
+#: components/relatedcontent/related-content.php:183
+msgid "Post type:"
+msgstr "Тип контента:"
+
+#: components/relatedcontent/related-content.php:185
+#: components/uploadmedia/uploadmedia.php:218
+msgid "All"
+msgstr "Все"
+
+#: components/relatedcontent/related-content.php:192
+msgid "Input type:"
+msgstr "Метод ввода:"
+
+#: components/relatedcontent/related-content.php:194
+msgid "Autocomplete"
+msgstr "Автоподсказки (Автозаполнение)"
+
+#: components/relatedcontent/related-content.php:195
+msgid "Dropdown list"
+msgstr "В виде списка"
+
+#: components/datepicker/datepicker.php:6
+msgid "Date Picker"
+msgstr "Выбор даты"
+
+#: components/datepicker/datepicker.php:63
+msgid "Show month/year select boxes"
+msgstr "Показывать выбор месяца/года"
+
+#: components/fieldsgroup/fields-group.php:11
+msgid "Fields Group"
+msgstr "Группа полей"
+
+#: components/fieldsgroup/fields-group.php:43
+msgid "Wrong fields configuration. Please check widget settings."
+msgstr "Неправильная настройка поля. Проверьте настройки"
+
+#: components/fieldsgroup/fields-group.php:136
+msgid "Fields:"
+msgstr "Поля:"
+
+#: components/fieldsgroup/fields-group.php:138
+msgid "Format: %fieldname|%fieldtitle<br/><i>Example: price|Product Price"
+msgstr "Формат: %fieldname|%fieldtitle<br/><i>Пример: price|Цена продукта"
+
+#: components/uploadmedia/uploadmedia.php:38
+msgid "Upload Media"
+msgstr "Мультимедиа"
+
+#: components/uploadmedia/uploadmedia.php:56
+msgid "Upload"
+msgstr "Загрузить"
+
+#: components/uploadmedia/uploadmedia.php:75
+msgid "Update image"
+msgstr "Обновить картинку"
+
+#: components/uploadmedia/uploadmedia.php:75
+msgid "Update file"
+msgstr "Обновить файл"
+
+#: components/uploadmedia/uploadmedia.php:120
+msgid "+ Add another image"
+msgstr "+ Добавить еще картинку"
+
+#: components/uploadmedia/uploadmedia.php:120
+msgid "+ Add another file"
+msgstr "+ Добавить еще файл"
+
+#: components/uploadmedia/uploadmedia.php:207
+msgid "Press \"Upload\" button, upload file or select in the library. Then choose Link \"None\" and \"Full size\" and press \"Select File\"."
+msgstr "Нажмите \"Загрузить\", загрузите файл или выберите его из библиотеки. После этого уберите ссылку с этого файла (Link \"None\"), установите полный размер, если это картинка (\"Full size\") и нажмите \"Выбрать файл\"."
+
+#: components/uploadmedia/uploadmedia.php:216
+msgid "Type of files:"
+msgstr "Тип файлов:"
+
+#: components/uploadmedia/uploadmedia.php:219
+msgid "Only Images"
+msgstr "Только картинки"
+
+#: components/uploadmedia/uploadmedia.php:223
+msgid "Auto resize"
+msgstr "Автоматически менять размер"
+
+#: components/uploadmedia/uploadmedia.php:225
+msgid "Set dimensions to autoresize (in px).<br/><i>Example: 200x160"
+msgstr "Размеры, для автоматической подгонки (в пкс).<br/><i>Пример: 200x160 (x - английское)"
+
+#: components/uploadmedia/uploadmedia.php:228
+msgid "Enable alternative text"
+msgstr "Включить поле \"Название\""
+
+#: components/uploadmedia/uploadmedia.php:229
+msgid "Enable alternative description"
+msgstr "Включить поле \"Описание\""
+
+#: components/uploadmedia/uploadmedia.php:279
+msgid "Select Picture"
+msgstr "Выбрать картинку"
+
+#: components/uploadmedia/uploadmedia.php:280
+msgid "Select File"
+msgstr "Выбрать файл"
+
+#: components/uploadmedia/uploadmedia.php:281
+msgid "Insert into Post"
+msgstr "Вставить в пост"
+
+#: components/select.php:12
+msgid "Select"
+msgstr "Список"
+
+#: templates/fields_ui.tpl.php:4
+msgid "Custom Post Type:"
+msgstr "Тип контента:"
+
+#: templates/fields_ui.tpl.php:5
+#: templates/fields_ui.tpl.php:22
+msgid "change"
+msgstr "изменить"
+
+#: templates/fields_ui.tpl.php:20
+msgid "Fieldset:"
+msgstr "Набор полей:"
+
+#: templates/fields_ui.tpl.php:23
+msgid "delete"
+msgstr "удалить"
+
+#: templates/fields_ui.tpl.php:31
+#: templates/fields_ui.tpl.php:38
+msgid "Field"
+msgstr "Поле"
+
+#: templates/fields_ui.tpl.php:32
+#: templates/fields_ui.tpl.php:39
+msgid "Slug"
+msgstr "Машинное имя"
+
+#: templates/fields_ui.tpl.php:33
+#: templates/fields_ui.tpl.php:40
+msgid "Type"
+msgstr "Тип"
+
+#: templates/fields_ui.tpl.php:60
+msgid "Please create fields for this fieldset"
+msgstr "Добавьте поля для этого Набора полей."
+
+#: templates/fields_ui.tpl.php:70
+msgid "Add new Field:"
+msgstr "Добавить новое Поле:"
+
+#: templates/fields_ui.tpl.php:91
+msgid "Add Fieldset"
+msgstr "Добавить Набор полей"
+
+#: templates/settings_page.tpl.php:4
+msgid "You should choose Custom Post Type first to configure fields:"
+msgstr "Вы должны выбрать Тип Контента, по которому хотите отредактировать поля:"
+
+#. Plugin Name of the plugin/theme
+msgid "Just Custom Fields for Wordpress"
+msgstr "Просто Дополнительные Поля для ВордПресс"
+
+#. Plugin URI of the plugin/theme
+msgid "http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/"
+msgstr "http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/"
+
+#. Description of the plugin/theme
+msgid "This plugin add custom fields for standard and custom post types in WordPress."
+msgstr "Этот плагин добавляет новые поля для стандартных и новых типов контента в WordPress"
+
+#. Author of the plugin/theme
+msgid "Alexander Prokopenko"
+msgstr "Александр Прокопенко"
+
+#. Author URI of the plugin/theme
+msgid "http://justcoded.com/"
+msgstr "http://justcoded.com/"
+
+#. Tags of the plugin/theme
+msgid "custom, fields, custom fields, meta, post meta, object meta, editor"
+msgstr ""
+

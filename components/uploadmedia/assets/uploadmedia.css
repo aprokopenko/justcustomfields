@@ -1,0 +1,45 @@
+.jcf-upload-field .jcf-upload-row{
+	width:100%;
+	overflow:hidden;
+	position:relative;
+	padding:7px 0;
+	border-bottom:1px dotted #999;
+}
+.jcf-upload-field .jcf-delete-layer{
+	position:absolute;
+	top:0;
+	left:0;
+	display:none;
+	width:100%;
+	height:80px;
+}
+
+.jcf-upload-field .jcf-delete-layer img{
+	position:absolute;
+	top:38px;
+	left:46px;
+}
+.jcf-upload-field .jcf-delete-layer a{
+	position:absolute;
+	top:67px;
+	left:255px;
+}
+.jcf-upload-type-file .jcf-delete-layer img{ top:3px; left:19px; }
+.jcf-upload-type-file .jcf-delete-layer a{ top:37px; left:93px; }
+
+#poststuff .inside .jcf-upload-type-file p a{
+	color: #21252B;
+}
+
+.jcf-upload-field .jcf-upload-image{
+	float:left;
+	margin:0 10px 0 0;
+	text-align:center;
+}
+.jcf-upload-field .jcf-upload-file-info{
+	float:left;
+	width:75%;
+}
+.jcf-upload-field a.jcf_add_more{
+	margin:10px 10px 0 0 !important;
+}

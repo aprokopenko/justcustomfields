@@ -1,0 +1,103 @@
+ul.dotted-list{
+	list-style:circle;
+	padding:0 0 0 30px;
+}
+ul.dotted-list li{
+	list-style:circle;
+	padding:0 0 0 5px;
+}
+.jcf-bold{
+	font-weight:bold;
+}
+a.jcf_change_pt{
+	font-weight:normal;
+	margin:0 0 0 20px;
+	text-shadow:none;
+}
+div.jcf_columns{
+	float:left;
+}
+.jcf_width33p{
+	width:30%;
+}
+.jcf_width50p{
+	width:49%;
+}
+.jcf_width66p{
+	width:63%;
+}
+.jcf_clear{
+	width:100%;
+	overflow:hidden;
+	height:0;
+	clear:both;
+}
+.jcf_inner_box{
+	margin:10px;
+	background:#fff;
+	border:1px solid #C6C6C6;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+.admin-color-classic .jcf_inner_box{
+	border-color:#D1E5EE;
+}
+.jcf_inner_box .header{
+	background:#f1f1f1 url(../../../../wp-admin/images/gray-grad.png) repeat-x 0 0;
+	color:#333;
+	text-shadow:0 1px 0 rgba(255, 255, 255, 0.8);
+	line-height:30px;
+	padding:0 10px;
+	font-size:12px;
+	border-bottom:1px solid #C6C6C6;
+	margin:0;
+}
+.admin-color-classic .jcf_inner_box .header{
+	background:#F5FAFD;
+	background-image:-moz-linear-gradient(center top , #F7FCFE, #EFF8FF);
+}
+.jcf_inner_content{
+	padding:10px;
+}
+.jcf_inner_content .offset20{
+	padding:0 0 0 20px;
+}
+.jcf_inner_content .nowrap{
+	white-space:nowrap;
+}
+.jcf_form_horiz input.text{
+	width:70%;
+}
+.jcf_form_horiz select{
+	width:60%;
+}
+select.jcf_add_field{
+	width:200px;
+}
+.jcf_inner_content .drag-handle{
+	cursor: move;
+	margin-right:5px;
+	background:url(icon-move.png) no-repeat 0 0;
+	display:block;
+	width:16px;
+	height:16px;
+	overflow:hidden;
+	text-indent:-9999px;
+	margin:6px 0 0 7px;
+}
+
+#jcf_ajax_container{
+	display:none;
+}
+.jcf_inner_box .header .ajax-feedback{
+	margin:0 0 7px;
+}
+#jcform_add_fieldset .ajax-feedback,
+form.jcform_add_field .ajax-feedback{
+	margin:0 0 5px;
+}
+#jcf_fieldsets .sortable_placeholder,
+#jcf_fieldsets .sortable_placeholder td{
+	background:#FFFFF0;
+}

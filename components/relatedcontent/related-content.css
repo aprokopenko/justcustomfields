@@ -1,0 +1,55 @@
+.jcf-relatedcontent-field .jcf-relatedcontent-row{
+	width:100%;
+	overflow:hidden;
+	position:relative;
+	padding:7px 0;
+	border-bottom:1px dotted #999;
+}
+.jcf-relatedcontent-field .jcf-delete-layer{
+	position:absolute;
+	top:0;
+	left:0;
+	display:none;
+	width:100%;
+	height:80px;
+}
+.jcf-relatedcontent-field .jcf_delete{
+	float:left;
+}
+#poststuff .inside .jcf-relatedcontent-field p{
+	margin:0;
+	position:relative;
+}
+.jcf-relatedcontent-field p input{
+	width:80%;
+	float:left;
+	margin-left:10px;
+}
+.jcf-relatedcontent-field p select{
+	width:80%;
+	float:left;
+	margin-left:10px;
+}
+.jcf-relatedcontent-field p span.loading{
+	position:absolute;
+	top:4px;
+	left:84%;
+	background:url(assets/ajax-loader.gif) no-repeat 0 0;
+	height:16px;
+	width:16px;
+	display:block;
+	text-indent:-9999px;
+}
+.jcf-relatedcontent-field .jcf-delete-layer img{
+	position:absolute;
+	top:5px;
+	left:15px;
+}
+.jcf-relatedcontent-field .jcf-delete-layer a{
+	position:absolute;
+	top:10px;
+	left:105px;
+}
+.jcf-relatedcontent-field a.jcf_add_more{
+	margin:10px 10px 0 0 !important;
+}

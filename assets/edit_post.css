@@ -1,0 +1,91 @@
+div.jcf_edit_field{
+	padding:0 0 10px;
+}
+div.jcf_edit_field label{
+	background-color: #E9E9E9;
+	border: 1px solid #DFDFDF;
+    border-radius: 3px 3px 0 0;
+	background:none;
+	border:none;
+    color: #333333;
+    display: inline-block;
+    margin: 5px 5px 0 10px;
+    padding: 4px 20px 5px;
+	font-size:12px;
+	font-weight:bold;
+	text-shadow:0 1px 0 #FFFFFF;
+}
+
+div.jcf_edit_field input,
+div.jcf_edit_field select,
+div.jcf_edit_field textarea{
+	margin-top:0;
+}
+#poststuff .inside div.jcf_edit_field p.description{
+	margin:0;
+	padding:0 0 0 60px;
+	font-style:italic;
+	font-size:11px;
+}
+.jcf-hide{
+	display:none !important;
+}
+div.jcf_edit_field div.checkboxes-set{
+	-moz-border-radius:4px 4px 4px 4px;
+	border-radius:4px 4px 4px 4px;
+	border:1px solid #DFDFDF;
+	padding:5px 0 5px;
+	overflow:hidden;
+	width:100%;
+	background:#fff;
+}
+div.jcf_edit_field div.checkboxes-set label{
+	width:20%;
+	margin:0 0 0 10px;
+	float:left;
+	font-weight:normal;
+}
+div.jcf_edit_field div.checkboxes-set input{
+	width:auto !important;
+	margin-right:10px;
+}
+div.jcf_edit_field table.mceLayout{
+	background:#fff;
+	border:1px solid #ccc;
+}
+
+div.jcf_edit_field a.jcf-btn{
+	background:#EEEEEE url("../../../../wp-admin/images/white-grad-active.png") repeat-x scroll left top;
+	line-height:15px;
+	padding:3px 10px;
+	white-space:nowrap;
+	text-shadow:0 1px 0 #FFFFFF;
+	border-color:#BBBBBB;
+	-moz-border-radius:11px 11px 11px 11px;
+	-moz-box-sizing:content-box;
+	border-radius:11px 11px 11px 11px;
+	border-style:solid;
+	border-width:1px;
+	cursor:pointer;
+	font-size:11px !important;
+	display:block;
+	float:left;
+	margin:0 10px 0 0;
+	text-decoration:none;
+}
+div.jcf_edit_field a:hover{
+	color:#D54E21;
+}
+.postbox div.form-field .jcf-field-container {
+	-moz-border-radius:4px 4px 4px 4px;
+	border-radius:11px 11px 11px 11px;
+	border:1px solid #DFDFDF;
+	padding:5px 5px 40px;
+	background:#fff;
+}
+div.jcf_edit_field .wp-editor-wrap{
+	margin:-28px 0 0;
+}
+div.jcf_edit_field .quicktags-toolbar input{
+	width:auto;
+}

@@ -1,0 +1,313 @@
+# Copyright (C) 2010 Just Custom Fields for Wordpress
+# This file is distributed under the same license as the Just Custom Fields for Wordpress package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Just Custom Fields for Wordpress 0.9b\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/just-custom-fields\n"
+"POT-Creation-Date: 2011-07-04 14:01:18+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2011-07-05 15:46+0200\n"
+"Last-Translator: Alexander Prokopenko <contact@justcoded.com>\n"
+"Language-Team: JustCoded <contact@justcoded.com>\n"
+"X-Poedit-Language: Russian\n"
+
+#: inc/functions.ajax.php:7
+#: inc/functions.ajax.php:85
+#: inc/class.field.php:167
+msgid "Title field is required."
+msgstr "Nome campo richiesto"
+
+#: inc/functions.ajax.php:15
+msgid "Such fieldset already exists."
+msgstr "Un fieldset analogo esiste già"
+
+#: inc/functions.ajax.php:47
+msgid "Edit Fieldset:"
+msgstr "Modifica Fieldset:"
+
+#: inc/functions.ajax.php:53
+#: components/input-text.php:60
+#: components/checkbox.php:96
+#: components/textarea.php:73
+#: components/select-multiple.php:85
+#: components/datepicker/datepicker.php:62
+#: components/fieldsgroup/fields-group.php:134
+#: components/uploadmedia/uploadmedia.php:96
+#: components/uploadmedia/uploadmedia.php:214
+#: components/select.php:81
+#: inc/functions.ajax.php:57
+#: inc/class.field.php:133
+#: just-custom-fields.php:136
+#: components/fieldsgroup/fields-group.php:63
+#: components/uploadmedia/uploadmedia.php:110
+msgid "Delete"
+msgstr "Cancella"
+
+#: inc/functions.ajax.php:58
+#: inc/class.field.php:135
+msgid "Close"
+msgstr "Close"
+
+#: inc/functions.ajax.php:80
+msgid "Wrong data passed."
+msgstr "I dati inseriti sono errati"
+
+#: inc/class.field.php:106
+#: inc/class.field.php:132
+msgid "Add"
+msgstr "Aggiungi"
+
+#: inc/class.field.php:106
+#: just-custom-fields.php:135
+msgid "Edit"
+msgstr "Modifica"
+
+#: inc/class.field.php:125
+msgid "Slug:"
+msgstr "Slug:"
+
+#: inc/class.field.php:125
+msgid "Enabled"
+msgstr "Abilitato"
+
+#: inc/class.field.php:127
+msgid "Machine name, will be used for postmeta field name."
+msgstr "Nome automatico, usato per il nome del campo postmeta"
+
+#: inc/class.field.php:327
+msgid "There are no options for this field."
+msgstr "Nessuna opzioneper questo tipo di campo"
+
+#: just-custom-fields.php:96
+msgid "Just Custom Fields"
+msgstr "Just Custom Fields"
+
+#: just-custom-fields.php:134
+msgid "Hello there"
+msgstr "Hello"
+
+#: just-custom-fields.php:137
+msgid "Are you sure you want to delete selected field?"
+msgstr "Confermi la cancellazione del campo?"
+
+#: just-custom-fields.php:138
+msgid ""
+"Are you sure you want to delete the fieldset?\n"
+"All fields will be also deleted!"
+msgstr ""
+"Confermi la cancellazione del fieldset?\n"
+"Tutti i campi inseriti all'interno saranno eliminati!"
+
+#: just-custom-fields.php:139
+msgid "Update Image"
+msgstr "Modifica Immagine"
+
+#: just-custom-fields.php:140
+msgid "Update File"
+msgstr "Modifica file"
+
+#: components/input-text.php:12
+msgid "Input Text"
+msgstr "Casella testo"
+
+#: components/input-text.php:61
+#: components/checkbox.php:105
+#: components/textarea.php:75
+#: components/select-multiple.php:90
+#: components/fieldsgroup/fields-group.php:139
+#: components/uploadmedia/uploadmedia.php:102
+#: components/uploadmedia/uploadmedia.php:231
+#: components/select.php:85
+msgid "Description:"
+msgstr "Descrizione:"
+
+#: components/checkbox.php:12
+msgid "Checkbox"
+msgstr "Checkbox"
+
+#: components/checkbox.php:36
+msgid "Please check settings. Values are empty"
+msgstr "Attenzione: i valori sono non validi"
+
+#: components/checkbox.php:100
+#: components/select-multiple.php:87
+#: components/select.php:82
+msgid "Settings:"
+msgstr "Impostazioni:"
+
+#: components/checkbox.php:102
+#: components/select-multiple.php:89
+#: components/select.php:84
+msgid "Parameters like (you can use just \"label\" if \"id\" is the same):<br>label1|id1<br>label2|id2<br>label3"
+msgstr "Parametri come (usa questo \"label\" if \"id\" che è analogo a):<br>label1|id1<br>label2|id2<br>label3"
+
+#: components/textarea.php:12
+msgid "Textarea"
+msgstr "Area di testo"
+
+#: components/textarea.php:74
+msgid "Use Editor for this textarea:"
+msgstr "Usa editor per questa textarea:"
+
+#: components/select-multiple.php:12
+msgid "Select Multiple"
+msgstr "Select multiplo"
+
+#: components/datepicker/datepicker.php:6
+msgid "Date Picker"
+msgstr "Campo data"
+
+#: components/datepicker/datepicker.php:63
+msgid "Show month/year select boxes"
+msgstr "Visualizza scelta di mese/anno "
+
+#: components/fieldsgroup/fields-group.php:11
+msgid "Fields Group"
+msgstr "Gruppo campi"
+
+#: components/fieldsgroup/fields-group.php:43
+msgid "Wrong fields configuration. Please check widget settings."
+msgstr "Configurazioni dei campi errata. Verifica impostazione widget"
+
+#: components/fieldsgroup/fields-group.php:68
+#: components/uploadmedia/uploadmedia.php:116
+msgid "Cancel"
+msgstr "Annulla"
+
+#: components/fieldsgroup/fields-group.php:72
+msgid "+ Add another"
+msgstr "+ aggiungi altro"
+
+#: components/fieldsgroup/fields-group.php:136
+msgid "Fields:"
+msgstr "Campi:"
+
+#: components/fieldsgroup/fields-group.php:138
+msgid "Format: %fieldname|%fieldtitle<br/><i>Example: price|Product Price"
+msgstr "Formato: %nome_campo|%titolo_campo<br/><i>Esempio: prezzo|Prezzo prodotto"
+
+#: components/uploadmedia/uploadmedia.php:38
+msgid "Upload Media"
+msgstr "Campo file"
+
+#: components/uploadmedia/uploadmedia.php:56
+msgid "Upload"
+msgstr "Carica"
+
+#: components/uploadmedia/uploadmedia.php:75
+msgid "Update image"
+msgstr "Modifica immagine"
+
+#: components/uploadmedia/uploadmedia.php:75
+msgid "Update file"
+msgstr "Modifica file"
+
+#: components/uploadmedia/uploadmedia.php:120
+msgid "+ Add another image"
+msgstr "+ aggiungi altra immagine"
+
+#: components/uploadmedia/uploadmedia.php:120
+msgid "+ Add another file"
+msgstr "+ aggiungi altro file"
+
+#: components/uploadmedia/uploadmedia.php:207
+msgid "Press \"Upload\" button, upload file or select in the library. Then choose Link \"None\" and \"Full size\" and press \"Select File\"."
+msgstr "Premi bottone \"Carica\", carica un file o scegli dalla libreria. quindi scegli i Link \"Nessuno\" e \"Full size\" e premi  \"Scegli File\"."
+
+#: components/uploadmedia/uploadmedia.php:216
+msgid "Type of files:"
+msgstr "Tipo files:"
+
+#: components/uploadmedia/uploadmedia.php:218
+msgid "All"
+msgstr "Tutto"
+
+#: components/uploadmedia/uploadmedia.php:219
+msgid "Only Images"
+msgstr "Solo immagini"
+
+#: components/uploadmedia/uploadmedia.php:223
+msgid "Auto resize"
+msgstr "Ridimensionamento automatico"
+
+#: components/uploadmedia/uploadmedia.php:225
+msgid "Set dimensions to autoresize (in px).<br/><i>Example: 200x160"
+msgstr "Imposta dimensioni per ridimensionamento (in px).<br/><i>Esempio: 200x160"
+
+#: components/uploadmedia/uploadmedia.php:228
+msgid "Enable alternative text"
+msgstr "Attiva testo alternativo"
+
+#: components/uploadmedia/uploadmedia.php:229
+msgid "Enable alternative description"
+msgstr "Attiva descrizione alternativa"
+
+#: components/uploadmedia/uploadmedia.php:274
+msgid "Select Picture"
+msgstr "Seleziona immagine"
+
+#: components/uploadmedia/uploadmedia.php:275
+msgid "Select File"
+msgstr "Seleziona file"
+
+#: components/uploadmedia/uploadmedia.php:276
+msgid "Insert into Post"
+msgstr "Inserisci nell'articolo"
+
+#: components/select.php:12
+msgid "Select"
+msgstr "Scegli"
+
+#: templates/fields_ui.tpl.php:60
+msgid "Please create fields for this fieldset"
+msgstr "Crea i campi per questo fieldset"
+
+#. Description of the plugin/theme
+msgid "This plugin add custom fields for standard and custom post types in WordPress."
+msgstr "Questo plugin aggiunge campi personalizzati per articoli e pagine e custo posts"
+
+#. templates
+msgid "You should choose Custom Post Type first to configure fields:"
+msgstr "Scegli su quali tipo di contenuto vuoi intervenire:"
+
+msgid "Custom Post Type:"
+msgstr "Custom Post Type:"
+
+msgid "change"
+msgstr "cambia"
+
+msgid "delete"
+msgstr "elimina"
+
+msgid "Fieldset:"
+msgstr "Fieldset:"
+
+msgid "Field"
+msgstr "Campo"
+
+msgid "Slug"
+msgstr "Slug"
+
+msgid "Type"
+msgstr "tipo"
+
+msgid "Add new Field:"
+msgstr "Aggiungi nuovo campo:"
+
+msgid "Add Fieldset"
+msgstr "Aggiungi Fieldset"
+
+msgid "Save"
+msgstr "Salva"
+
+msgid "Title:"
+msgstr "Titolo:"
+
+msgid "Yes"
+msgstr "Sì"
+
+msgid "No"
+msgstr "No"
+
