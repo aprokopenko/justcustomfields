@@ -6,7 +6,7 @@ Description: This plugin add custom fields for standard and custom post types in
 Tags: custom, fields, custom fields, meta, post meta, object meta, editor
 Author: Alexander Prokopenko
 Author URI: http://justcoded.com/
-Version: 1.3
+Version: 1.3.1
 Donate link: http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/
 */
 
@@ -103,7 +103,7 @@ function jcf_init(){
 
 // hook to add new admin setting page
 function jcf_admin_menu(){
-	add_options_page(__('Just Custom Fields', JCF_TEXTDOMAIN), __('Just Custom Fields', JCF_TEXTDOMAIN), 5, 'just_custom_fields', 'jcf_admin_settings_page');
+	add_options_page(__('Just Custom Fields', JCF_TEXTDOMAIN), __('Just Custom Fields', JCF_TEXTDOMAIN), 'manage_options', 'just_custom_fields', 'jcf_admin_settings_page');
 }
 
 /**

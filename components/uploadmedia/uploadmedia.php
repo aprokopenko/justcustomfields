@@ -20,10 +20,10 @@ function jcf_get_thumb_path( $image, $size = '100x77' ){
 	$hash = md5($image.$new_size[0].'x'.$new_size[1]);
 	$thumbfile = $cachedir . '/' . $hash . '.' . $ext;
 	if( is_file($thumbfile) ){
-		return get_bloginfo('home') . '/wp-content/uploads/jcfupload/' . basename($thumbfile);
+		return get_bloginfo('wpurl') . '/wp-content/uploads/jcfupload/' . basename($thumbfile);
 	}
 	else{
-		return get_bloginfo('home') . '/wp-content/plugins/just-custom-fields/components/uploadmedia/thump.php?image='.rawurlencode($image).'&amp;size='.$size;
+		return get_bloginfo('wpurl') . '/wp-content/plugins/just-custom-fields/components/uploadmedia/thump.php?image='.rawurlencode($image).'&amp;size='.$size;
 	}
 }
 
