@@ -35,6 +35,10 @@ http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/
 
 FILL FREE TO CONTACT ME IF YOU FIND ANY BUGS/ISSUES!
 
+**ISSUES TRACKER**
+I've setup github repo for this plugin. Git is great repo with many features i can use as branches and also it has nice issue tracker. So i listed known bugs and future features there. You can post new bugs or feature requests for me there.
+https://github.com/aprokopenko/justcustomfields/issues
+
 == Installation ==
 
 1. Download, unzip and upload to your WordPress plugins directory
