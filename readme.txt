@@ -7,7 +7,7 @@ Author URI: http://justcoded.com/
 Tags: custom, fields, custom fields, meta, post meta, object meta, editor
 Requires at least: 3.0.0
 Tested up to: 3.3
-Donate link: http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/
+Donate link: http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/#donate
 Stable tag: trunk
 
 This plugin add custom fields for standard and custom post types in WordPress.
