@@ -1,11 +1,16 @@
 var jcf_upload_related_field = null;
 var jcf_upload_max_index = 0;
 var jcf_upload_type = null;
+var jcf_post_body_content_container = '#post-body-content';
 jQuery(document).ready(function() {
+	// 2012-06-15: check WP version. 3.4+ has new class in body
+	if( parseFloat(jcf_textdomain.wp_version) >= 3.4 ){
+		jcf_post_body_content_container = '#post-body';
+	}
 
-	jcf_upload_max_index = jQuery('#post-body-content a.jcf_upload').size();
+	jcf_upload_max_index = jQuery( jcf_post_body_content_container ).find('a.jcf_upload').size();
 	if( jcf_upload_max_index == 0 ) return;
-	
+
 	// remember default_send to editor function
 	window.default_send_to_editor = window.send_to_editor; 
 
@@ -60,7 +65,7 @@ function jcf_uploadmedia_send_to_editor( html ){
 }
 
 function jcf_init_image_upload_controls( node ){
-	if( node == null ) node = jQuery('#post-body-content');
+	if( node == null ) node = jQuery( jcf_post_body_content_container );
 	
 	if( node.find('a.jcf_upload').size() == 0 ) return;
 	
