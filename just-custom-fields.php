@@ -40,7 +40,7 @@ function pa($mixed, $stop = false) {
 }
 }
 
-add_action('plugins_loaded', 'jcf_init');
+add_action('after_setup_theme', 'jcf_init');
 function jcf_init(){
 	if( !is_admin() ) return;
 	
