@@ -73,6 +73,8 @@ get_post_custom()
 	* datepicker date formats
 	* make fieldsets related to categories (show/hide based on category select)
 	* restrict Custom field to Page/Post ID
+* Version 1.3.3
+	* Allow JCF extensions inside WP themes.
 * Version 1.3.2
 	* Bug fix: emergency fixes for WordPress 3.4
 * Version 1.3.1
