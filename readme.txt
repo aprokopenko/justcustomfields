@@ -73,6 +73,8 @@ get_post_custom()
 	* datepicker date formats
 	* make fieldsets related to categories (show/hide based on category select)
 	* restrict Custom field to Page/Post ID
+* Version 1.3.4
+	* Bug fix: JS error in related content field (https://github.com/aprokopenko/justcustomfields/issues/11)
 * Version 1.3.3
 	* Allow JCF extensions inside WP themes.
 * Version 1.3.2

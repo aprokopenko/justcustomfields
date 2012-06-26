@@ -277,6 +277,12 @@ class Just_Field_RelatedContent extends Just_Field{
 				array('jquery')
 			);
 		wp_enqueue_script('jcf_related_content');
+
+		// add text domain if not registered with another component
+		global $wp_scripts;
+		if( empty($wp_scripts->registered['jcf_fields_group']) && empty($wp_scripts->registered['jcf_uploadmedia']) ){
+			wp_localize_script( 'jcf_related_content', 'jcf_textdomain', jcf_get_language_strings() );
+		}
 	}
 
 	function add_css(){
