@@ -65,12 +65,10 @@ class Just_Field_DatePicker extends Just_Field{
 	}
 	
 	function add_js(){
-		wp_register_script(
-				'jcf_ui_datepicker',
-				WP_PLUGIN_URL.'/just-custom-fields/components/datepicker/ui-datepicker.min.js',
-				array('jquery', 'jquery-ui-core')
-			);
-		wp_enqueue_script('jcf_ui_datepicker');
+		/**
+		 * WP version 3.0 and above have datepicker ui-core;
+		 */
+		wp_enqueue_script('jquery-ui-datepicker');
 	}
 	
 	function add_css(){

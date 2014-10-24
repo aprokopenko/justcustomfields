@@ -179,20 +179,19 @@ function jcf_get_post_type(){
 
 // get registered post types
 function jcf_get_post_types( $format = 'single' ){
-	$params_post = array( 'capability_type' => 'post', 'show_ui' => true ); // To get all post_type depends post
-	$params_page = array( 'capability_type' => 'page', 'show_ui' => true ); // To get all post_type depends page
 	
-	if( $format != 'object' ){
-		$post_types = get_post_types( $params_post );
-		$page_types = get_post_types( $params_page );
-		$post_types = array_merge($post_types, $page_types);
+	$all_post_types = get_post_types(array('show_ui' => true ), 'object');
+	
+	$post_types = array();
+	
+	foreach($all_post_types as $key=>$val){
+		
+		//we should exclude 'revision' and 'nav menu items'
+		if($val == 'revision' || $val == 'nav_menu_item') continue;
+		
+		$post_types[$key] = $val;
 	}
-	else{
-		$post_types = get_post_types( $params_post, 'object' );
-		$page_types = get_post_types( $params_page, 'object' );
-		$post_types = array_merge($post_types, $page_types);
-	}
-	//pa($post_types,1);
+	
 	return $post_types;
 }
 

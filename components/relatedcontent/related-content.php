@@ -262,21 +262,42 @@ class Just_Field_RelatedContent extends Just_Field{
 	 *	add custom scripts
 	 */
 	function add_js(){
-		// ui autocomplete
-		// TODO: check that autocomplete is realy required
-		wp_register_script(
-				'ui-autocomplete',
-				WP_PLUGIN_URL.'/just-custom-fields/components/relatedcontent/assets/jquery-ui-1.8.14.autocomplete.min.js',
-				array('jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position')
-			);
-		wp_enqueue_script('ui-autocomplete');
-		// multi script
-		wp_register_script(
-				'jcf_related_content',
-				WP_PLUGIN_URL.'/just-custom-fields/components/relatedcontent/related-content.js',
+		/**
+		 * WP version 3.2 and below does not have autocomplete in ui-core
+		 */
+		global $wp_version;
+		if($wp_version <= 3.2){
+			// ui core
+			wp_register_script(
+				'jcf-jquery-ui-core',
+				WP_PLUGIN_URL.'/just-custom-fields/assets/jquery-ui.min.js',
 				array('jquery')
 			);
-		wp_enqueue_script('jcf_related_content');
+			wp_enqueue_script('jcf-jquery-ui-core');
+			// ui autocomplete
+			wp_register_script(
+					'ui-autocomplete',
+					WP_PLUGIN_URL.'/just-custom-fields/components/relatedcontent/assets/jquery-ui-1.8.14.autocomplete.min.js',
+					array('jcf-jquery-ui-core')
+				);
+			wp_enqueue_script('ui-autocomplete');
+
+			// multi script
+			wp_register_script(
+					'jcf_related_content',
+					WP_PLUGIN_URL.'/just-custom-fields/components/relatedcontent/related-content.js',
+					array('ui-autocomplete')
+				);
+			wp_enqueue_script('jcf_related_content');
+		}
+		else{
+			wp_register_script(
+					'jcf_related_content',
+					WP_PLUGIN_URL.'/just-custom-fields/components/relatedcontent/related-content.js',
+					array('jquery','jquery-ui-autocomplete')
+				);
+			wp_enqueue_script('jcf_related_content');
+		}
 
 		// add text domain if not registered with another component
 		global $wp_scripts;

@@ -42,12 +42,11 @@
 	// check directory exists
 	if( !is_dir($cachedir) ){
 		if( !mkdir( $cachedir, 0777 ) ){
-			pa('ay',1);
+			//pa('ay',1);
 			e404("can't create cache dir");
 		}
 		@chmod($cachedir, 0777);
 	}
-	
 	$imgcontent = file_get_contents($imgfile);
 	if(!$imgcontent){
 		e404("can't read file");
