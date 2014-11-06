@@ -30,7 +30,6 @@ class Just_Field_RelatedContent extends Just_Field{
 		if(empty($this->entry)) $this->entry = array('0' => 0);
 		// add null element for etalon copy
 		$entries = array( '00' => '' ) + (array)$this->entry;
-		//pa($entries,1);
 		
 		// get posts data
 		$type = $this->instance['input_type'];
@@ -145,7 +144,6 @@ class Just_Field_RelatedContent extends Just_Field{
 			$values[$key] = $params['related_id'];
 		}
 		$values = array_values($values);
-		//pa($values,1);
 		return $values;
 	}
 	

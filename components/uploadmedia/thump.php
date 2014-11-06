@@ -42,7 +42,6 @@
 	// check directory exists
 	if( !is_dir($cachedir) ){
 		if( !mkdir( $cachedir, 0777 ) ){
-			//pa('ay',1);
 			e404("can't create cache dir");
 		}
 		@chmod($cachedir, 0777);
@@ -71,7 +70,6 @@
 		header('Content-Type: '.$filetype['type']);
 		echo $imgcontent;
 		exit;
-		//pa($thumb,1);
 		e404("error resize");
 	}
 	

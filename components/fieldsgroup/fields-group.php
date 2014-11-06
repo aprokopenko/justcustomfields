@@ -103,7 +103,7 @@ class Just_Field_FieldsGroup extends Just_Field{
 			$values[$key] = $params;
 		}
 		$values = array_values($values);
-		//pa($values,1);
+		
 		return $values;
 	}
 	

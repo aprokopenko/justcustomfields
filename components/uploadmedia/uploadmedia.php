@@ -176,7 +176,6 @@ class Just_Field_Upload extends Just_Field{
 			}
 		}
 		$values = array_values($values);
-		//pa($values,1);
 		return $values;
 	}
 	
