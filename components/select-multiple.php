@@ -35,7 +35,6 @@ class Just_Field_SelectMultiple extends Just_Field{
 				$values[$val] = $val;
 			}
 		}
-		//pa($values,1);
 			
 		echo $before_widget;
 		echo $before_title . $this->instance['title'] . $after_title;
