@@ -84,7 +84,7 @@ class Just_Field_RelatedContent extends Just_Field{
 			<div class="jcf-relatedcontent-row<?php if('00' === $key) echo ' jcf-hide'; ?>">
 				<div class="jcf-relatedcontent-container">
 					<p>
-						<a href="#" class="jcf-btn jcf_delete"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a>
+						<span class="drag-handle" >move</span>
 						<?php if( $type == 'select' ) : ?>
 							<select id="<?php echo $this->get_field_id_l2('related_id', $key); ?>" 
 								name="<?php echo $this->get_field_name_l2('related_id', $key); ?>">
@@ -102,6 +102,7 @@ class Just_Field_RelatedContent extends Just_Field{
 								id="<?php echo $this->get_field_id_l2('related_id', $key); ?>" 
 								name="<?php echo $this->get_field_name_l2('related_id', $key); ?>" />
 						<?php endif; ?>
+						<a href="#" class="jcf-btn jcf_delete"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a>
 					</p>
 				</div>
 				<div class="jcf-delete-layer">
