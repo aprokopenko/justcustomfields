@@ -31,6 +31,15 @@ require_once( JCF_ROOT.'/components/uploadmedia/uploadmedia.php' );
 require_once( JCF_ROOT.'/components/fieldsgroup/fields-group.php' );
 require_once( JCF_ROOT.'/components/relatedcontent/related-content.php' );
 
+
+if(!function_exists('pa')){
+function pa($mixed, $stop = false) {
+	$ar = debug_backtrace(); $key = pathinfo($ar[0]['file']); $key = $key['basename'].':'.$ar[0]['line'];
+	$print = array($key => $mixed); echo( '<pre>'.htmlentities(print_r($print,1)).'</pre>' );
+	if($stop == 1) exit();
+}
+}
+
 add_action('after_setup_theme', 'jcf_init');
 function jcf_init(){
 	if( !is_admin() ) return;
