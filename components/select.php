@@ -84,9 +84,9 @@ class Just_Field_Select extends Just_Field{
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', JCF_TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 		<p><label for="<?php echo $this->get_field_id('options'); ?>"><?php _e('Options:', JCF_TEXTDOMAIN); ?></label> 
 		<textarea class="widefat" id="<?php echo $this->get_field_id('options'); ?>" name="<?php echo $this->get_field_name('options'); ?>" ><?php echo $options; ?></textarea>
-		<br/><small><?php _e('Leave blank to disable empty option', JCF_TEXTDOMAIN); ?></small></p>
 		<br/><small><?php _e('Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', JCF_TEXTDOMAIN); ?></small></p>
 		<p><label for="<?php echo $this->get_field_id('empty_option'); ?>"><?php _e('Empty option:', JCF_TEXTDOMAIN); ?></label><input class="widefat" id="<?php echo $this->get_field_id('empty_option'); ?>" name="<?php echo $this->get_field_name('empty_option'); ?>" placeholder="ex. Choose item from the list"" type="text" value="<?php echo $empty_option; ?>" />
+		<br/><small><?php _e('Leave blank to disable empty option', JCF_TEXTDOMAIN); ?></small></p>
 		<p><label for="<?php echo $this->get_field_id('description'); ?>"><?php _e('Description:', JCF_TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->get_field_name('description'); ?>" id="<?php echo $this->get_field_id('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
 		<?php
 	}
