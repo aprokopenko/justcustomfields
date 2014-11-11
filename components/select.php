@@ -20,9 +20,9 @@ class Just_Field_Select extends Just_Field{
 		extract( $args );
 		
 		$values = array();
-
+		
 		// prepare options array
-		$v = explode("\n", $this->instance['settings']);
+		$v = explode("\n", $this->instance['options']);
 		foreach($v as $val){
 			$val = trim($val);
 			if(strpos($val, '|') !== FALSE ){
@@ -38,7 +38,7 @@ class Just_Field_Select extends Just_Field{
 		echo $before_title . $this->instance['title'] . $after_title;
 		echo '<div class="select-field">';
 		echo '<select name="'.$this->get_field_name('val').'" id="'.$this->get_field_id('val').'" style="width: 47%;">';
-			echo '<option value="">'.__('Select One', JCF_TEXTDOMAIN).'</option>';
+			echo '<option value="'.esc_attr($this->instance['empty_option']).'" '.selected($this->instance['empty_option'], $this->entry, false).'>'.esc_attr($this->instance['empty_option']).'</option>';
 			foreach( (array) $values as $key => $val ) {
 				echo '<option value="'.esc_attr($val).'" '.selected($val, $this->entry, false).'>'.esc_html(ucfirst($key)).'</option>' . "\n";
 			}
@@ -54,6 +54,7 @@ class Just_Field_Select extends Just_Field{
 	 */
 	function save( $values ){
 		$values = $values['val'];
+		
 		return $values;
 	}
 	
@@ -62,27 +63,30 @@ class Just_Field_Select extends Just_Field{
 	 */
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-
 		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['settings'] = strip_tags($new_instance['settings']);
+		$instance['options'] = strip_tags($new_instance['options']);
 		$instance['description'] = strip_tags($new_instance['description']);
+		$instance['empty_option'] = strip_tags($new_instance['empty_option']);
 		return $instance;
 	}
-
 	/**
 	 *	print settings form for field
 	 */	
 	function form( $instance ) {
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'settings' => '' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'options' => '', 'empty_option' => '' ) );
 		$title = esc_attr( $instance['title'] );
-		$settings = esc_attr( $instance['settings'] );
+		$options = esc_attr( $instance['options'] );
 		$description = esc_html($instance['description']);
+		$empty_option = esc_attr( $instance['empty_option']);
+		
 		?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', JCF_TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
-		<p><label for="<?php echo $this->get_field_id('settings'); ?>"><?php _e('Settings:', JCF_TEXTDOMAIN); ?></label> 
-		<textarea class="widefat" id="<?php echo $this->get_field_id('settings'); ?>" name="<?php echo $this->get_field_name('settings'); ?>" ><?php echo $settings; ?></textarea>
+		<p><label for="<?php echo $this->get_field_id('options'); ?>"><?php _e('Options:', JCF_TEXTDOMAIN); ?></label> 
+		<textarea class="widefat" id="<?php echo $this->get_field_id('options'); ?>" name="<?php echo $this->get_field_name('options'); ?>" ><?php echo $options; ?></textarea>
+		<br/><small><?php _e('Leave blank to disable empty option', JCF_TEXTDOMAIN); ?></small></p>
 		<br/><small><?php _e('Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', JCF_TEXTDOMAIN); ?></small></p>
+		<p><label for="<?php echo $this->get_field_id('empty_option'); ?>"><?php _e('Empty option:', JCF_TEXTDOMAIN); ?></label><input class="widefat" id="<?php echo $this->get_field_id('empty_option'); ?>" name="<?php echo $this->get_field_name('empty_option'); ?>" placeholder="ex. Choose item from the list"" type="text" value="<?php echo $empty_option; ?>" />
 		<p><label for="<?php echo $this->get_field_id('description'); ?>"><?php _e('Description:', JCF_TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->get_field_name('description'); ?>" id="<?php echo $this->get_field_id('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
 		<?php
 	}
