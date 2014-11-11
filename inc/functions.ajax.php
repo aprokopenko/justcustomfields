@@ -15,7 +15,6 @@
 		else{
 			$slug = sanitize_title( $title );
 		}
-		//pa($slug,1);
 		$fieldsets = jcf_fieldsets_get();
 		
 		// check exists

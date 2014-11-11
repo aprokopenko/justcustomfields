@@ -54,7 +54,6 @@
 			
 			$field_obj = jcf_init_field_object($field_id, $fieldset['id']);
 			$field_obj->set_post_ID( $post->ID );
-			//pa($field_obj,1);
 			
 			echo '<div id="jcf_field-'.$field_id.'" class="jcf_edit_field ' . $field_obj->field_options['classname'] . '">'."\r\n";
 
@@ -108,7 +107,6 @@
 				$field_obj->do_save();
 			}
 		}
-		//pa('stop',1);
 		
 		return false;
 	}
