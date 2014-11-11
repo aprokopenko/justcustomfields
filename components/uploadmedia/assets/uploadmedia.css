@@ -43,3 +43,17 @@
 .jcf-upload-field a.jcf_add_more{
 	margin:10px 10px 0 0 !important;
 }
+.jcf-upload-container .drag-handle{
+	cursor: move;
+	margin-right:5px;
+	background:url(icon-move.png) no-repeat 0 0;
+	float:left;
+	width:16px;
+	height:16px;
+	overflow:hidden;
+	text-indent:-9999px;
+	margin:16px 15px 0 7px;
+}
+.jcf-upload-field-sort-placheholder{
+	height: 153px;
+}

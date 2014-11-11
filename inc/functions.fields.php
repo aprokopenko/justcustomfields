@@ -10,7 +10,6 @@
 		if( !class_exists($class_name) ) return false;
 		
 		$field_obj = new $class_name();
-		//pa($field_obj,1);
 
 		$field = array(
 			'id_base' => $field_obj->id_base,

@@ -30,6 +30,7 @@ class Just_Field_Textarea extends Just_Field{
 					'textarea_name' => $this->get_field_name('val'),
 					'textarea_rows' => 5,
 					'media_buttons' => false,
+					'wpautop' => true,
 					'tinymce' => array(
 						'theme_advanced_buttons1' => 'bold,italic,strikethrough,|,bullist,numlist,blockquote,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,spellchecker,fullscreen,wp_adv',
 					),
@@ -63,7 +64,15 @@ class Just_Field_Textarea extends Just_Field{
 	 *	save field on post edit form
 	 */
 	function save( $values ) {
+		global $wp_version;
 		$values = isset($values['val']) ? $values['val'] : '' ;
+		
+		if($wp_version <= 3.2){
+			$values = nl2br(wpautop($values));
+		}
+		else{
+			$values = wpautop($values);
+		}
 		return $values;
 	}
 	

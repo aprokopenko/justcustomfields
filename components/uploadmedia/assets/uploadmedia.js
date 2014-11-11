@@ -16,8 +16,17 @@ jQuery(document).ready(function() {
 
 	// init controls
 	jcf_init_image_upload_controls();
+	
+	// init sortable
+	jQuery('.jcf-upload-field').sortable({
+		handle: 'span.drag-handle',
+		opacity:0.7,
+		placeholder: 'sortable-placeholder',
+		start: function (event, ui) { 
+			ui.placeholder.html('<div class="sort-placheholder"></div>');
+		},
+	});
 });
-
 function jcf_uploadmedia_send_to_editor( html ){
 	if( jcf_upload_related_field === null ){
 		window.default_send_to_editor(html);
