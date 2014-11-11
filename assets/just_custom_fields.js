@@ -248,7 +248,7 @@ function initFieldsetFields(){
 				'fields_order': order
 			};
 
-			//console_log(data);
+			//pa(data);
 			jcf_ajax(data, 'json');
 		}
 	});
@@ -279,7 +279,7 @@ function jcf_ajax( data, respType, loader, callback ){
 	var _loader = loader;
 	var _respType = respType;
 	
-	console_log('wp-ajax call: ' + data.action);
+	//pa('wp-ajax call: ' + data.action);
 	
 	// add post_type to data
 	var post_type = jQuery('#jcf_post_type_hidden').val();
@@ -295,7 +295,7 @@ function jcf_ajax( data, respType, loader, callback ){
 	
 	// send ajax
 	jQuery.post(ajaxurl, data, function(response){
-		console_log(response);
+		//pa(response);
 		
 		// if we have loader - hide loader
 		if(_loader && _loader.size) _loader.css('visibility', 'hidden');
@@ -311,7 +311,7 @@ function jcf_ajax( data, respType, loader, callback ){
 	})	
 }
 
-function console_log( mixed ){
+function pa( mixed ){
 	if( window.console ){
 		window.console.info(mixed);
 	}
