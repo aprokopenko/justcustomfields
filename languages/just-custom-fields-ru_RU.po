@@ -84,8 +84,8 @@ msgid "Slug:"
 msgstr "Машинное имя"
 
 #: inc/class.field.php:127
-msgid "Machine name, will be used for postmeta field name."
-msgstr "Машинное имя, которое будет использоваться как ключ в postmeta"
+msgid "Machine name, will be used for postmeta field name. (should start from underscore)"
+msgstr "Машинное имя, которое будет использоваться как ключ в postmeta. (должно начинаться с подчеркивания)"
 
 #: inc/class.field.php:141
 #: templates/fields_ui.tpl.php:34

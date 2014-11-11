@@ -97,6 +97,28 @@ class Just_Field{
 	}
 	
 	/**
+	 * validates instance. normalize different field values
+	 * @param array $instance
+	 */
+	function validate_instance( & $instance ){
+		if( $instance['_version'] >= 1.4 ){
+			$instance['slug'] = $this->validate_instance_slug($instance['slug']);
+		}
+	}
+	
+	/**
+	 * validate that slug has first underscore
+	 * @param string $slug
+	 */
+	function validate_instance_slug( $slug ){
+		$slug = trim($slug);
+		if( !empty($slug) && $slug{0} != '_' ){
+			$slug = '_' . $slug;
+		}
+		return $slug;
+	}
+	
+	/**
 	 *	function to show add/edit form to edit field settings
 	 *	call $this->form inside
 	 */
@@ -124,7 +146,7 @@ class Just_Field{
 						<p>
 							<label for="<?php echo $this->get_field_id('slug'); ?>"><?php _e('Slug:', JCF_TEXTDOMAIN); ?></label>
 							<input class="widefat" id="<?php echo $this->get_field_id('slug'); ?>" name="<?php echo $this->get_field_name('slug'); ?>" type="text" value="<?php echo $slug; ?>" />
-							<br/><small><?php _e('Machine name, will be used for postmeta field name.', JCF_TEXTDOMAIN); ?></small>
+							<br/><small><?php _e('Machine name, will be used for postmeta field name. (should start from underscore)', JCF_TEXTDOMAIN); ?></small>
 						</p>
 						<?php
 							// enabled field
@@ -187,6 +209,18 @@ class Just_Field{
 		$instance['slug'] = strip_tags($input['slug']);
 		$instance['enabled'] = (int)@$input['enabled'];
 		
+		// starting from vers. 1.4 all new fields should be marked with version of the plugin
+		if( $this->is_new ){
+			$instance['_version'] = JCF_VERSION;
+		}
+		// for old records: set 1.34 - last version without versioning the fields
+		if( empty($instance['_version']) ){
+			$instance['_version'] = 1.34;
+		}
+		
+		// new from version 1.4: validation/normalization
+		$this->validate_instance( $instance );
+		
 		// check for errors
 		// IMPORTANT: experimental function
 		if( !empty($this->field_errors) ){
@@ -206,7 +240,7 @@ class Just_Field{
 		
 		// check slug field
 		if( empty($instance['slug']) ){
-			$instance['slug'] = 'field_' . $this->id_base . '__' . $this->number;
+			$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
 		}
 		
 		// save

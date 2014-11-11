@@ -12,6 +12,7 @@ Donate link: http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plu
 
 define('JCF_ROOT', dirname(__FILE__));
 define('JCF_TEXTDOMAIN', 'just-custom-fields');
+define('JCF_VERSION', 1.4);
 
 require_once( JCF_ROOT.'/inc/class.field.php' );
 require_once( JCF_ROOT.'/inc/functions.fieldset.php' );

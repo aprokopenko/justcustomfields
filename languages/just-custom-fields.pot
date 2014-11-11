@@ -70,7 +70,7 @@ msgid "Slug:"
 msgstr ""
 
 #: inc/class.field.php:127
-msgid "Machine name, will be used for postmeta field name."
+msgid "Machine name, will be used for postmeta field name. (should start from underscore)"
 msgstr ""
 
 #: inc/class.field.php:141 templates/fields_ui.tpl.php:34
