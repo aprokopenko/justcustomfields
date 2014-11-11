@@ -6,7 +6,7 @@ Author: Alexander Prokopenko
 Author URI: http://justcoded.com/
 Tags: custom, fields, custom fields, meta, post meta, object meta, editor
 Requires at least: 3.0.0
-Tested up to: 3.4
+Tested up to: 4.0
 Donate link: http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/#donate
 Stable tag: trunk
 
@@ -73,6 +73,12 @@ get_post_custom()
 	* datepicker date formats
 	* make fieldsets related to categories (show/hide based on category select)
 	* restrict Custom field to Page/Post ID
+* Version 1.4
+	* New: blank option for dropdown field (https://github.com/aprokopenko/justcustomfields/issues/2)
+	* New: sortable multiple fields (https://github.com/aprokopenko/justcustomfields/issues/19)
+	* Bug fix: tinyMCE <p>/<br> tags (https://github.com/aprokopenko/justcustomfields/issues/13)
+	* Bug fix: thumbs not working on edit screens (https://github.com/aprokopenko/justcustomfields/issues/12)
+	* Bug fix: support of all capability types (https://github.com/aprokopenko/justcustomfields/issues/6)
 * Version 1.3.4
 	* Bug fix: JS error in related content field (https://github.com/aprokopenko/justcustomfields/issues/11)
 * Version 1.3.3
