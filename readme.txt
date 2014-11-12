@@ -9,6 +9,7 @@ Requires at least: 3.0.0
 Tested up to: 4.0
 Donate link: http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/#donate
 Stable tag: trunk
+License: GNU General Public License v2
 
 This plugin add custom fields for standard and custom post types in WordPress.
 
@@ -79,7 +80,7 @@ get_post_custom()
 	* New: blank option for dropdown field (https://github.com/aprokopenko/justcustomfields/issues/2)
 	* New: sortable multiple fields (https://github.com/aprokopenko/justcustomfields/issues/19)
 	* New: Slug for all new fields will be started from underscore (https://github.com/aprokopenko/justcustomfields/issues/26)
-	* Bug fix: tinyMCE <p>/<br> tags (https://github.com/aprokopenko/justcustomfields/issues/13)
+	* Bug fix: tinyMCE &lt;p&gt;/&lt;br&gt; tags (https://github.com/aprokopenko/justcustomfields/issues/13)
 	* Bug fix: thumbs not working on edit screens (https://github.com/aprokopenko/justcustomfields/issues/12)
 	* Bug fix: support of all capability types (https://github.com/aprokopenko/justcustomfields/issues/6)
 * Version 1.3.4
