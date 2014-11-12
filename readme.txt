@@ -68,14 +68,11 @@ get_post_custom()
 == Changelog ==
 * Next release plans
 	* fix thumbs on http auth restricted sites
-	* Select box "blank" value extended options
 	* export/import plugin settings
 	* PHP-Code generators to use in templates when editing custom fields
 	* Shortcodes for WP editor
-	* extend support for new capability types (now it's only "post")
 	* datepicker date formats
 	* make fieldsets related to categories (show/hide based on category select)
-	* restrict Custom field to Page/Post ID
 * Version 1.4
 	* New: blank option for dropdown field (https://github.com/aprokopenko/justcustomfields/issues/2)
 	* New: sortable multiple fields (https://github.com/aprokopenko/justcustomfields/issues/19)
