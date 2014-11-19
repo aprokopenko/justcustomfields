@@ -45,6 +45,16 @@ jQuery(document).ready(function() {
 		container.find('div.jcf-fieldsgroup-row:last').after( new_html );
 		
 		return false;
-	})
+	});
+	
+	// init sortable
+	node.find('.jcf-fieldsgroup-field').sortable({
+		handle: 'span.drag-handle',
+		opacity:0.7,
+		placeholder: 'sortable-placeholder',
+		start: function (event, ui) { 
+			ui.placeholder.html('<div class="sort-placheholder"></div>');
+		},
+	});
 
 });
