@@ -16,7 +16,7 @@ class Just_Field_DatePicker extends Just_Field{
 		echo $before_widget;
 		echo $before_title . $this->instance['title'] . $after_title;
 		echo '<div>';
-		echo '<input id="'.$this->get_field_id('val').'" name="'.$this->get_field_name('val').'" type="text" value="'.esc_attr($this->entry).'" size="40" style="width:47%;" />' . "\n";
+		echo '<input id="'.$this->get_field_id('val').'" name="'.$this->get_field_name('val').'" type="text" value="'.esc_attr($this->entry).'" size="20" style="width:25%;" />' . "\n";
 		echo '</div>';
 		?>
 		<script type="text/javascript"><!--

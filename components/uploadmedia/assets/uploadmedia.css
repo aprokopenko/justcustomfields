@@ -54,6 +54,6 @@
 	text-indent:-9999px;
 	margin:16px 15px 0 7px;
 }
-.jcf-upload-field-sort-placheholder{
-	height: 153px;
+.jcf-upload-field .sortable-placeholder{
+	height: 133px;
 }
