@@ -27,3 +27,20 @@
 .jcf-fieldsgroup-field a.jcf_add_more{
 	margin:10px 10px 0 0 !important;
 }
+.jcf-fieldsgroup-container{
+	clear:both;
+}
+.jcf-fieldsgroup-field .drag-handle{
+	cursor: move;
+	background:url(icon-move.png) no-repeat 0 0;
+	float:left;
+	width:16px;
+	height:16px;
+	overflow:hidden;
+	text-indent:-9999px;
+	margin:0 15px 10px 7px;
+	clear:both;
+}
+.jcf-fieldsgroup-field .sortable-placeholder{
+	height: 133px;
+}

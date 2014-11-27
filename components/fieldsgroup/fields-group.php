@@ -50,6 +50,7 @@ class Just_Field_FieldsGroup extends Just_Field{
 			foreach($entries as $key => $entry) : 
 			?>
 			<div class="jcf-fieldsgroup-row<?php if('00' === $key) echo ' jcf-hide'; ?>">
+				<span class="drag-handle" >move</span>
 				<div class="jcf-fieldsgroup-container">
 					<?php foreach($fields as $field_name => $field_title) : 
 						$field_value = esc_attr(@$entry[$field_name]);
