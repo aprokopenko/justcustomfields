@@ -119,6 +119,16 @@ class Just_Field{
 	}
 	
 	/**
+	 * get valid value for instance version
+	 * @param array $instance
+	 * @return float
+	 */
+	function get_instance_version( $instance ){
+		if( empty($instance['_version']) ) return 1.34;
+		else return $instance['_version'];
+	}
+	
+	/**
 	 *	function to show add/edit form to edit field settings
 	 *	call $this->form inside
 	 */

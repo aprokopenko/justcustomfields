@@ -22,7 +22,8 @@ class Just_Field_Select extends Just_Field{
 		$values = array();
 		
 		// prepare options array
-		$v = explode("\n", $this->instance['options']);
+		$select_options = $this->get_instance_select_options($this->instance);
+		$v = explode("\n", $select_options);
 		foreach($v as $val){
 			$val = trim($val);
 			if(strpos($val, '|') !== FALSE ){
@@ -76,7 +77,7 @@ class Just_Field_Select extends Just_Field{
 		//Defaults
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'options' => '', 'empty_option' => '' ) );
 		$title = esc_attr( $instance['title'] );
-		$options = esc_attr( $instance['options'] );
+		$options = esc_attr( $this->get_instance_select_options($instance) );
 		$description = esc_html($instance['description']);
 		$empty_option = esc_attr( $instance['empty_option']);
 		
@@ -89,6 +90,19 @@ class Just_Field_Select extends Just_Field{
 		<br/><small><?php _e('Leave blank to disable empty option', JCF_TEXTDOMAIN); ?></small></p>
 		<p><label for="<?php echo $this->get_field_id('description'); ?>"><?php _e('Description:', JCF_TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->get_field_name('description'); ?>" id="<?php echo $this->get_field_id('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
 		<?php
+	}
+	
+	/**
+	 * get current options settings
+	 */
+	function get_instance_select_options( $instance ){
+		// from version 1.4 key for storing select options changed to match it's meaning
+		if( $this->get_instance_version($instance) < 1.4 && empty($instance['options']) && !empty($instance['settings']) ){
+			return $instance['settings'];
+		}
+		else{
+			return $instance['options'];
+		}
 	}
 }
 ?>
