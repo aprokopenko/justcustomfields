@@ -73,6 +73,8 @@ get_post_custom()
 	* Shortcodes for WP editor
 	* datepicker date formats
 	* make fieldsets related to categories (show/hide based on category select)
+* Version 1.4.1
+	* Bug fix: select box created with old versions lost it's options (https://github.com/aprokopenko/justcustomfields/issues/31)
 * Version 1.4
 	* New: blank option for dropdown field (https://github.com/aprokopenko/justcustomfields/issues/2)
 	* New: sortable multiple fields (https://github.com/aprokopenko/justcustomfields/issues/19)
