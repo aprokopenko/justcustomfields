@@ -11,13 +11,13 @@ Donate link: http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plu
 Stable tag: trunk
 License: GNU General Public License v2
 
-This plugin add custom fields for standard and custom post types in WordPress.
+This plugin adds custom fields for standard and custom post types in WordPress.
 
 == Description ==
 
-This plugin add custom fields for standard and custom post types in WordPress. After installation you will see simple settings page which is self-explanatory to use.
+This plugin adds custom fields for standard and custom post types in WordPress. After the installation you will see simple settings page which is self-explanatory to use.
 
-For now plugin support such field types:
+For now the plugin supports the following field types:
 
 * Input text
 * Select Box
@@ -25,31 +25,31 @@ For now plugin support such field types:
 * Checkbox (single and multiple)
 * Textarea (you can use editor light for it)
 * Date Picker\*
-* Upload Media (for upload files and images)
-* Fields Group (for some table data)
-* Related Content (to set relation to another Post/Page or Custom Post Type)\*
+* Upload Media (for uploading files and images)
+* Fields Group (for table data)
+* Related Content (to connect with another Post/Page or Custom Post Type)\*
 
 _\*NOTE: Available **only** for WordPress 3.1+ (Related Content field works in Select mode). WordPress 3.0.\* has old  jQuery/jQuery UI versions and they are not compatible with DatePicker and Autocomplete fields._
 
-**IMPORTANT** In version 1.3 added new functions to use in theme templates to print Upload Media fields content. Read more about it on plugins home page:
+**IMPORTANT** In version 1.3 we added new functions which can be used in theme templates to print Upload Media fields content. Read more about it at plugins home page:
 http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/
 
-**IMPORTANT** Starting from version 1.4 all fields machine names (slug) will be started from underscore ('_'). This prevent appearing them in standard WordPress Custom fields meta box.
+**IMPORTANT** Starting from version 1.4 all fields machine names (slug) will be started from underscore ('_'). This prevents appearing them in standard WordPress Custom fields meta box.
 
-FILL FREE TO CONTACT ME IF YOU FIND ANY BUGS/ISSUES!
+PLEASE FEEL FREE TO CONTACT ME IF YOU FIND ANY BUGS/ISSUES!
 
-**ISSUES TRACKER**
-I've setup github repo for this plugin. Git is great repo with many features i can use as branches and also it has nice issue tracker. So i listed known bugs and future features there. You can post new bugs or feature requests for me there.
+**ISSUE TRACKER**
+I've installed GitHub repo for this plugin. Git is a great repo with many features I can use as branches and also it has nice issue tracker. So I've listed known bugs and future features there. You can post new bugs or feature requests for me there.
 https://github.com/aprokopenko/justcustomfields/issues
 
 == Installation ==
 
 1. Download, unzip and upload to your WordPress plugins directory
-2. Activate the plugin within you WordPress Administration Backend
+2. Activate the plugin from WordPress Administration Panel
 3. Go to Settings > Just Custom Fields
-4. Choose Standard/Custom Post Type you want to edit custom fields
+4. Choose Standard/Custom Post Type you want to edit custom fields for
 5. Create Fieldset
-6. Add fields to the fieldset.
+6. Add fields to the fieldset
 
 To use values from these fields in your theme, you can use usual post meta functions such as:
 
