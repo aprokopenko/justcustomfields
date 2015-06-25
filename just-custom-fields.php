@@ -31,6 +31,7 @@ require_once( JCF_ROOT.'/components/datepicker/datepicker.php' );
 require_once( JCF_ROOT.'/components/uploadmedia/uploadmedia.php' );
 require_once( JCF_ROOT.'/components/fieldsgroup/fields-group.php' );
 require_once( JCF_ROOT.'/components/relatedcontent/related-content.php' );
+require_once( JCF_ROOT.'/components/table/table.php' );
 
 
 if(!function_exists('pa')){
@@ -81,6 +82,7 @@ function jcf_init(){
 	jcf_field_register( 'Just_Field_Upload' );
 	jcf_field_register( 'Just_Field_FieldsGroup' );
 	jcf_field_register( 'Just_Field_RelatedContent' );
+	jcf_field_register( 'Just_Field_Table' );
 	/**
 	 *	to add more fields with your custom plugin:
 	 *	- add_action  'jcf_register_fields'

@@ -1,0 +1,14 @@
+.sortable .drag-handle{
+	cursor: move;
+	background:url(icon-move.png) no-repeat 0 0;
+	float:left;
+	width:16px;
+	height:16px;
+	overflow:hidden;
+	text-indent:-9999px;
+	margin:0 15px 10px 7px;
+	clear:both;
+}
+th{
+	text-align:left;
+}
