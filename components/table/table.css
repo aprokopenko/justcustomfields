@@ -1,4 +1,4 @@
-.sortable .drag-handle{
+table.sortable .drag-handle{
 	cursor: move;
 	background:url(icon-move.png) no-repeat 0 0;
 	float:left;
@@ -6,9 +6,36 @@
 	height:16px;
 	overflow:hidden;
 	text-indent:-9999px;
-	margin:0 15px 10px 7px;
-	clear:both;
+	margin:5px 3px;
 }
-th{
+
+table.sortable{
+	border:1px solid #000;
+	border-collapse: collapse
+}
+
+table.sortable td{
+	border:1px solid #000;
+	padding:5px;
+}
+
+table.sortable th{
+	border:1px solid #000;
 	text-align:left;
+	padding:5px;
+}
+
+table.sortable  .jcf_delete_row{
+	cursor: pointer;
+	background:url(icon-delete.png) no-repeat 0 0;
+	float:left;
+	width:16px;
+	height:16px;
+	overflow:hidden;
+	text-indent:-9999px;
+	margin:5px 3px;
+}
+
+table.sortable .hide{
+	display:none;
 }
