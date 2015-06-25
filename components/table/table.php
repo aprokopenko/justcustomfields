@@ -47,8 +47,11 @@ class Just_Field_Table extends Just_Field{
 		if( !empty($col_names) ) :
 		?>
 		<div class="jcf-table jcf-field-container">
-			<table class="sortable">
+			<table class="sortable wp-list-table widefat fixed">
 				<?php foreach($entries as $key => $entry) : ?>
+					<?php if( $key == 0 ): ?>
+						<thead>
+					<?php endif; ?>		
 					<tr <?php echo $key == 0 ? 'class="table-header"' : ''; ?>>
 						<?php if( $key == 0 ): ?>
 							<th>Options</th>
@@ -59,13 +62,14 @@ class Just_Field_Table extends Just_Field{
 							</td>
 						<?php endif; ?>
 						<?php foreach($col_names as $col_name => $col_title) : 
-							if( !empty($entry[$col_name]) ) $col_title = esc_attr(@$entry[$col_name]);
+							//if( !empty($entry[$col_name]) ) $col_title = esc_attr(@$entry[$col_name]);
 						?>
 							<?php if( $key == 0 ): ?>
-								<th><input type="text" value="<?php echo $col_title; ?>" 
-									id="<?php echo $this->get_field_id_l2($col_name, $key); ?>" 
-									name="<?php echo $this->get_field_name_l2($col_name, $key); ?> ">
-								</th>
+								<th><?php echo $col_name; ?>
+<!--									<input type="text" value="<?php //echo $col_title; ?>" 
+									id="<?php //echo $this->get_field_id_l2($col_name, $key); ?>" 
+									name="<?php //echo $this->get_field_name_l2($col_name, $key); ?> ">
+								</th>-->
 								<?php $first_td[] = '<td><input type="text" value="" 
 										id="' . $this->get_field_id_l2($col_name, '00') . '" 
 										name="' . $this->get_field_name_l2($col_name, '00') . '"></td>';
@@ -78,6 +82,9 @@ class Just_Field_Table extends Just_Field{
 							<?php endif; ?>
 						<?php endforeach; ?>
 					</tr>
+					<?php if( $key == 0 ): ?>
+						</thead>
+					<?php endif; ?>	
 				<?php endforeach; ?>
 				<tr class="hide">
 					<td>

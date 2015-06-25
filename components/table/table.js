@@ -6,11 +6,11 @@ jQuery(document).ready(function() {
 		var container = jQuery( this ).parent().parent().find('table');
 		var jcf_table_row_max_index = container .find('tr').size();
 		jcf_table_row_max_index--;
-		var new_row = container.find('tr:last-child').html();
+		var new_row = container.find('tr.hide').html();
 		new_row = new_row.replace(/\[00\]/g, '[' + jcf_table_row_max_index + ']')
 			.replace(/\-00\-/g, '-' + jcf_table_row_max_index + '-');
 		new_row = '<tr>' + new_row + '</tr>';
-		container.find('tr:last-child').before(new_row);
+		container.find('tr.hide').before(new_row);
 		return false;
 	});
 	

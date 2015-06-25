@@ -9,7 +9,7 @@ table.sortable .drag-handle{
 	margin:5px 3px;
 }
 
-table.sortable{
+/*table.sortable{
 	border:1px solid #000;
 	border-collapse: collapse
 }
@@ -23,7 +23,7 @@ table.sortable th{
 	border:1px solid #000;
 	text-align:left;
 	padding:5px;
-}
+}*/
 
 table.sortable  .jcf_delete_row{
 	cursor: pointer;
