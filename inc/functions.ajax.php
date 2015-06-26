@@ -172,5 +172,18 @@
 		exit();
 	}
 	
+	// save miltisite settings from the form
+	function jcf_ajax_save_multisite_settings(){
+		$multisite_setting =  trim($_POST['jcf_multisite_setting']);
+		$old_multisite_setting = get_option('jcf_multisite_setting');
+		
+		if( $old_multisite_setting ){
+			update_option( 'jcf_multisite_setting', $multisite_setting );
+		}else{
+			add_option( 'jcf_multisite_setting', $multisite_setting );
+		}
+		$resp = array('status' => '1');
+		jcf_ajax_reposnse($resp, 'json');
+	}
 	
 ?>

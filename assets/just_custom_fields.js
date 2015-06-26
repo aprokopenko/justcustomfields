@@ -5,6 +5,7 @@ jQuery(document).ready(function(){
 	initFieldsetsEdit();
 	initAjaxBoxClose();
 	initFieldsetFields();
+	initMultisiteSettings();
 })
 
 /**
@@ -251,6 +252,26 @@ function initFieldsetFields(){
 			//pa(data);
 			jcf_ajax(data, 'json');
 		}
+	});
+}
+
+/**
+ *	init multisite settings form
+ */
+function initMultisiteSettings(){
+	//init update button
+	jQuery('#jcform_multisite_settings').submit(function(e){
+		e.preventDefault();
+
+		// get query string from the form
+		var query = jQuery('#jcform_multisite_settings').formSerialize();
+		var data = 'action=jcf_save_multisite_settings' + '&' + query;
+		
+		var loader = jQuery(this).find('img.ajax-feedback');
+		// send request
+		jcf_ajax(data, 'json', loader);
+		
+		return false;
 	});
 }
 

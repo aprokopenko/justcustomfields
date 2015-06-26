@@ -67,6 +67,7 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_delete_field', 'jcf_ajax_delete_field');
 	add_action('wp_ajax_jcf_edit_field', 'jcf_ajax_edit_field');
 	add_action('wp_ajax_jcf_fields_order', 'jcf_ajax_fields_order');
+	add_action('wp_ajax_jcf_save_multisite_settings', 'jcf_ajax_save_multisite_settings');
 	
 	// add $post_type for ajax
 	if(!empty($_POST['post_type'])) jcf_set_post_type( $_POST['post_type'] );
@@ -117,6 +118,11 @@ function jcf_admin_settings_page(){
 	if( !empty($_GET['pt']) && isset($post_types[ $_GET['pt'] ]) ){
 		jcf_admin_fields_page( $post_types[ $_GET['pt'] ] );
 		return;
+	}
+	
+	$multisite_settings = get_option('jcf_multisite_setting');
+	if(!$multisite_settings){
+		$multisite_settings = 'global';
 	}
 	
 	// load template
