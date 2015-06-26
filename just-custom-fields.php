@@ -108,6 +108,14 @@ function jcf_admin_menu(){
 	add_options_page(__('Just Custom Fields', JCF_TEXTDOMAIN), __('Just Custom Fields', JCF_TEXTDOMAIN), 'manage_options', 'just_custom_fields', 'jcf_admin_settings_page');
 }
 
+if( MULTISITE ) {
+	$jcf_multisite_settings = get_site_option('jcf_multisite_setting');
+	if(!$jcf_multisite_settings){
+		$jcf_multisite_settings = 'global';
+	}
+}else{
+	$jcf_multisite_settings = false;
+}
 /**
  *	Admin main page
  */
@@ -119,12 +127,7 @@ function jcf_admin_settings_page(){
 		jcf_admin_fields_page( $post_types[ $_GET['pt'] ] );
 		return;
 	}
-	
-	$multisite_settings = get_option('jcf_multisite_setting');
-	if(!$multisite_settings){
-		$multisite_settings = 'global';
-	}
-	
+	global $jcf_multisite_settings;
 	// load template
 	include( JCF_ROOT . '/templates/settings_page.tpl.php' );
 }

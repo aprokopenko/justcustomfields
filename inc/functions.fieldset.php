@@ -5,8 +5,9 @@
 	 */
 	
 	function jcf_fieldsets_get( $id = '' ){
+		global $jcf_multisite_settings;
 		$option_name = jcf_fieldsets_get_option_name();
-		$fieldsets = get_option($option_name, array());
+		$fieldsets = $jcf_multisite_settings == 'global' ? get_site_option($option_name, array()) : get_option($option_name, array());
 		
 		if(!empty($id)){
 			return @$fieldsets[$id];
@@ -16,9 +17,10 @@
 	}
 	
 	function jcf_fieldsets_update( $key, $values = array() ){
+		global $jcf_multisite_settings;
 		$option_name = jcf_fieldsets_get_option_name();
 		
-		$fieldsets = get_option($option_name, array());
+		$fieldsets = $jcf_multisite_settings == 'global' ? get_site_option($option_name, array()) : get_option($option_name, array());
 		if( $values === NULL && isset($fieldsets[$key]) ){
 			unset($fieldsets[$key]);
 		}
@@ -27,7 +29,7 @@
 			$fieldsets[$key] = $values;
 		}
 		
-		update_option($option_name, $fieldsets);
+		$jcf_multisite_settings == 'global' ? update_site_option($option_name, $fieldsets) : update_option($option_name, $fieldsets);
 	}
 	
 	function jcf_fieldsets_get_option_name(){

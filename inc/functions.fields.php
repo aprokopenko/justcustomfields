@@ -37,9 +37,10 @@
 	 *	set fields in wp-options
 	 */
 	function jcf_field_settings_update( $key, $values = array() ){
+		global $jcf_multisite_settings;
 		$option_name = jcf_fields_get_option_name();
 
-		$field_settings = get_option($option_name, array());
+		$field_settings = $jcf_multisite_settings == 'global' ? get_site_option($option_name, array()) : get_option($option_name, array());
 		if( $values === NULL && isset($field_settings[$key]) ){
 			unset($field_settings[$key]);
 		}
@@ -48,16 +49,17 @@
 			$field_settings[$key] = $values;
 		}
 		
-		update_option($option_name, $field_settings);
+		$jcf_multisite_settings == 'global' ? update_site_option($option_name, $field_settings) : update_option($option_name, $field_settings) ;
 	}
 	
 	/**
 	 *	get fields from wp-options
 	 */
 	function jcf_field_settings_get( $id = '' ){
+		global $jcf_multisite_settings;
 		$option_name = jcf_fields_get_option_name();
 		
-		$field_settings = get_option($option_name, array());
+		$field_settings = $jcf_multisite_settings == 'global' ? get_site_option($option_name, array()) : get_option($option_name, array());
 		
 		if(!empty($id)){
 			return @$field_settings[$id];
@@ -86,8 +88,9 @@
 	 * get next index for save new instance
 	 */
 	function jcf_get_fields_index( $id_base ){
+		global $jcf_multisite_settings;
 		$option_name = 'jcf_fields_index';
-		$indexes = get_option($option_name, array());
+		$indexes = $jcf_multisite_settings == 'global' ? get_site_option($option_name, array()) : get_option($option_name, array());
 		
 		// get index, increase on 1
 		$index = (int)@$indexes[$id_base];
@@ -95,7 +98,7 @@
 		
 		// update indexes
 		$indexes[$id_base] = $index;
-		update_option($option_name, $indexes);
+		$jcf_multisite_settings == 'global' ? update_site_option($option_name, $indexes) : update_option($option_name, $indexes);
 		
 		return $index;
 	}
