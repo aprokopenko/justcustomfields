@@ -101,3 +101,10 @@ form.jcform_add_field .ajax-feedback{
 #jcf_fieldsets .sortable_placeholder td{
 	background:#FFFFF0;
 }
+
+.jcf-export-list li{
+	padding-left: 20px;
+}
+.jcf_hide_field_settings{
+	display:none;
+}

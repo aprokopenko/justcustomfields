@@ -7,4 +7,8 @@
 		<li><a href="?page=just_custom_fields&amp;pt=<?php echo $key; ?>"><?php echo $obj->label; ?></a></li>
 	<?php endforeach; ?>
 	</ul>
+	<div class="alignleft">
+		<a class="button-primary" href="?page=just_custom_fields&amp;export"><?php _e('Export Fields', JCF_TEXTDOMAIN); ?></a>
+		<a class="button-primary" href="?page=just_custom_fields&amp;import" ><?php _e('Import Fields', JCF_TEXTDOMAIN); ?></a>
+	</div>
 </div>

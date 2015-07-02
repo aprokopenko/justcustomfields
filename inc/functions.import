@@ -1,0 +1,34 @@
+<?php
+
+	// add fieldset form import
+	function jcf_import_add_fieldset($title_fieldset='', $option_name = ''){
+		$title = !empty($title_fieldset) ? $title_fieldset : strip_tags(trim($_POST['title']));
+		if( empty($title) ){
+			return;
+		}
+		
+		$slug = preg_replace('/[^a-z0-9\-\_\s]/i', '', $title);
+		$trimed_slug = trim($slug);
+		if( $trimed_slug == '' ){
+			$slug = 'jcf-fieldset-'.rand(0,10000);
+		}
+		else{
+			$slug = sanitize_title( $title );
+		}
+		$fieldsets = jcf_fieldsets_get('',$option_name);
+		
+		// check exists
+		if( isset($fieldsets[$slug]) ){
+			return;
+		}
+		
+		// create fiedlset
+		$fieldset = array(
+			'id' => $slug,
+			'title' => $title,
+			'fields' => array(),
+		);
+		jcf_fieldsets_update($slug, $fieldset);
+		return;
+	}
+

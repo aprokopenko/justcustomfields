@@ -54,8 +54,10 @@
 	/**
 	 *	get fields from wp-options
 	 */
-	function jcf_field_settings_get( $id = '' ){
-		$option_name = jcf_fields_get_option_name();
+	function jcf_field_settings_get( $id = '', $option_name = '' ){
+		if(empty( $option_name )){
+			$option_name = jcf_fields_get_option_name();
+		}
 		
 		$field_settings = get_option($option_name, array());
 		

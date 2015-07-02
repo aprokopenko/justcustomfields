@@ -20,6 +20,7 @@ require_once( JCF_ROOT.'/inc/functions.fields.php' );
 require_once( JCF_ROOT.'/inc/functions.ajax.php' );
 require_once( JCF_ROOT.'/inc/functions.post.php' );
 require_once( JCF_ROOT.'/inc/functions.themes.php' );
+require_once( JCF_ROOT.'/inc/functions.import.php' );
 
 // composants
 require_once( JCF_ROOT.'/components/input-text.php' );
@@ -67,6 +68,8 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_delete_field', 'jcf_ajax_delete_field');
 	add_action('wp_ajax_jcf_edit_field', 'jcf_ajax_edit_field');
 	add_action('wp_ajax_jcf_fields_order', 'jcf_ajax_fields_order');
+	add_action('wp_ajax_jcf_export_fields', 'jcf_ajax_export_fields');
+	add_action('wp_ajax_jcf_import_fields', 'jcf_ajax_import_fields');
 	
 	// add $post_type for ajax
 	if(!empty($_POST['post_type'])) jcf_set_post_type( $_POST['post_type'] );
@@ -119,6 +122,16 @@ function jcf_admin_settings_page(){
 		return;
 	}
 	
+	if( isset($_GET['export']) ) {
+		jcf_admin_export_page();
+		return;
+	}
+
+	if( isset($_GET['import']) ) {
+		jcf_admin_import_page();
+		return;
+	}
+
 	// load template
 	include( JCF_ROOT . '/templates/settings_page.tpl.php' );
 }
@@ -128,12 +141,69 @@ function jcf_admin_settings_page(){
  */
 function jcf_admin_fields_page( $post_type ){
 	jcf_set_post_type( $post_type->name );
-	
+
 	$fieldsets = jcf_fieldsets_get();
 	$field_settings = jcf_field_settings_get();
 	
 	// load template
 	include( JCF_ROOT . '/templates/fields_ui.tpl.php' );
+}
+
+/**
+ *	Export page
+ */
+function jcf_admin_export_page(){
+
+	$post_types = jcf_get_post_types();
+	$fieldsets = array();
+	$field_settings = array();
+	foreach($post_types as $key => $value){
+		$fieldsets[$key] = jcf_fieldsets_get('', 'jcf_fieldsets-'.$key);
+		$field_settings[$key] = jcf_field_settings_get('', 'jcf_fields-'.$key);
+	}
+
+	// load template
+	include( JCF_ROOT . '/templates/export.tpl.php' );
+}
+
+/**
+ *	Import page
+ */
+function jcf_admin_import_page(){
+	if($_FILES['import_data']){
+		$path_info = pathinfo($_FILES['import_data']['name']);
+
+		if( $path_info['extension'] == 'json'){
+			$site_urls = get_current_site();
+			$uploaddir = $_SERVER['DOCUMENT_ROOT'] . $site_urls->path . "wp-content/files/import/";
+			$uploadfile = $uploaddir . basename($_FILES['import_data']['name']);
+
+			if ( copy($_FILES['import_data']['tmp_name'], $uploadfile) ){
+				$file = fopen($uploadfile, "r");
+				$contents = fread($file, filesize($uploadfile));
+				fclose($file);
+				$post_types = json_decode($contents);
+			}else{
+				echo "<h3>Error! The file wasn't loaded!</h3>";
+			}
+
+		}else{
+			echo "<h3>Error! Check extension of the file!</h3>";
+		}
+	}else{
+
+		if( $_POST['save_import'] ){
+			$import_data = $_POST['import_data'];
+
+			foreach($import_data as $key => $post_type ){
+				print_r($post_type);
+				//jcf_ajax_add_fieldset($key);
+			}
+		}
+	}
+
+	// load template
+	include( JCF_ROOT . '/templates/import.tpl.php' );
 }
 
 /**

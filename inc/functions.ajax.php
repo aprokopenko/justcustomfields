@@ -111,7 +111,7 @@
 
 	// save field from the form
 	function jcf_ajax_save_field(){
-		
+
 		$field_type =  $_POST['field_id'];
 		$fieldset_id = $_POST['fieldset_id'];
 		
@@ -171,6 +171,42 @@
 		echo $resp;
 		exit();
 	}
-	
-	
+
+	// export fieldset
+	function jcf_ajax_export_fields(){
+		$export_data = $_POST['export_data'];
+		$export_data = json_encode($export_data);
+		$site_urls = get_current_site();
+		$fp = fopen($_SERVER['DOCUMENT_ROOT'] . $site_urls->path . "wp-content/files/export/jcf_export.json", "w");
+		$mytext = $export_data . "\r\n";
+		$test = fwrite($fp, $mytext);
+		fclose($fp);
+		?>
+		<div class="jcf_edit_fieldset">
+			<h3 class="header"><?php echo __('Export Fields:', JCF_TEXTDOMAIN); ?></h3>
+			<div class="jcf_inner_content">
+				<form action="#" method="post" id="jcform_export_fieldset">
+					<fieldset>
+						<p><label for="jcf_ieldset_json"><?php _e('Data(json):', JCF_TEXTDOMAIN); ?></label> <textarea name="fieldset_json" class="widefat" id="jcf_fieldset_json"><?php echo esc_attr($export_data); ?></textarea></p>
+
+						<div class="field-control-actions">
+							<div class="alignleft">
+								<a href="#close" class="field-control-close"><?php _e('Close', JCF_TEXTDOMAIN); ?></a>
+								<!--<a href="?page=just_custom_fields&amp;export&file=wp-content/files/jcf_export.json" class="field-control-close"><?php _e('Download file', JCF_TEXTDOMAIN); ?></a>-->
+							</div>
+							<div class="alignright">
+								<?php echo print_loader_img(); ?>
+								<!--<input type="submit" value="<?php _e('Copy', JCF_TEXTDOMAIN); ?>" class="button-primary" name="copyfieldset">-->
+							</div>
+							<br class="clear"/>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+		<?php
+		$html = ob_get_clean();
+		jcf_ajax_reposnse($html, 'html');
+	}
+
 ?>
