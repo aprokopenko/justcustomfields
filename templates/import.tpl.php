@@ -19,7 +19,7 @@
 			<form action="<?php get_permalink(); ?>" method="post" id="jcf_save_import_fields">
 				<ul class="dotted-list jcf-bold">
 				<?php foreach( $post_types as $key => $post_type ): ?>
-					<li><?php echo 'Content type: ' . trim($key); ?>
+					<li><?php echo 'Content type: ' . $key; ?>
 						<input type="hidden" name="import_data[<?php echo $key; ?>]" value="<?php echo $key; ?>" />
 						<?php if(!empty($post_type->fieldsets)) :?>
 							<?php foreach( $post_type->fieldsets as $fieldset_id =>$fieldset ) : ?>

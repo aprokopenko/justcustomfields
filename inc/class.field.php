@@ -199,8 +199,8 @@ class Just_Field{
 	 *	function to save field instance to the database
 	 *	call $this->update inside
 	 */
-	function do_update(){
-		$input = $_POST['field-'.$this->id_base][$this->number];
+	function do_update($params = array(), $option_name = ''){
+		$input = !empty($params) ? $params : $_POST['field-'.$this->id_base][$this->number];
 		// remove all slashed from values
 		foreach($input as $var => $value){
 			if( is_string($value) ){
@@ -218,7 +218,7 @@ class Just_Field{
 		$instance['title'] = strip_tags($instance['title']);
 		$instance['slug'] = strip_tags($input['slug']);
 		$instance['enabled'] = (int)@$input['enabled'];
-		
+
 		// starting from vers. 1.4 all new fields should be marked with version of the plugin
 		if( $this->is_new ){
 			$instance['_version'] = JCF_VERSION;
@@ -244,17 +244,20 @@ class Just_Field{
 		}
 		
 		// update fieldset
-		$fieldset = jcf_fieldsets_get( $this->fieldset_id );
+		$fieldset = jcf_fieldsets_get( $this->fieldset_id, $option_name  );
 		$fieldset['fields'][$this->id] = $instance['enabled'];
-		jcf_fieldsets_update( $this->fieldset_id, $fieldset );
-		
+		$option_name = !empty($option_name) ? 'jcf_fieldsets-'.$option_name : '';
+		jcf_fieldsets_update( $this->fieldset_id, $fieldset, $option_name );
+
+
 		// check slug field
 		if( empty($instance['slug']) ){
 			$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
 		}
-		
+
 		// save
-		jcf_field_settings_update($this->id, $instance);
+		$option_name = !empty($option_name) ? 'jcf_fields-'.$option_name : '';
+		jcf_field_settings_update($this->id, $instance, $option_name);
 		
 		// return status
 		$res = array(

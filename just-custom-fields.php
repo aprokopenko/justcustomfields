@@ -115,13 +115,13 @@ function jcf_admin_menu(){
  */
 function jcf_admin_settings_page(){
 	$post_types = jcf_get_post_types( 'object' );
-	
+
 	// edit page
 	if( !empty($_GET['pt']) && isset($post_types[ $_GET['pt'] ]) ){
 		jcf_admin_fields_page( $post_types[ $_GET['pt'] ] );
 		return;
 	}
-	
+
 	if( isset($_GET['export']) ) {
 		jcf_admin_export_page();
 		return;
@@ -141,7 +141,7 @@ function jcf_admin_settings_page(){
  */
 function jcf_admin_fields_page( $post_type ){
 	jcf_set_post_type( $post_type->name );
-
+	
 	$fieldsets = jcf_fieldsets_get();
 	$field_settings = jcf_field_settings_get();
 	
@@ -175,7 +175,7 @@ function jcf_admin_import_page(){
 
 		if( $path_info['extension'] == 'json'){
 			$site_urls = get_current_site();
-			$uploaddir = $_SERVER['DOCUMENT_ROOT'] . $site_urls->path . "wp-content/files/import/";
+			$uploaddir = $_SERVER['DOCUMENT_ROOT'] . $site_urls->path . "wp-content/uploads/";
 			$uploadfile = $uploaddir . basename($_FILES['import_data']['name']);
 
 			if ( copy($_FILES['import_data']['tmp_name'], $uploadfile) ){
@@ -191,13 +191,29 @@ function jcf_admin_import_page(){
 			echo "<h3>Error! Check extension of the file!</h3>";
 		}
 	}else{
-
 		if( $_POST['save_import'] ){
 			$import_data = $_POST['import_data'];
 
 			foreach($import_data as $key => $post_type ){
-				print_r($post_type);
-				//jcf_ajax_add_fieldset($key);
+				if(is_array($post_type) && !empty($post_type['fieldsets'])){
+					foreach($post_type['fieldsets'] as $fieldset_id => $fieldset){
+						$status_fieldset = jcf_import_add_fieldset($fieldset['title'], $key);
+						if( empty($status_fieldset) ){
+							echo 'Import Error, please check import file'; exit();
+						}else{
+							$fieldset_id = $status_fieldset;
+						}
+
+						if(!empty($fieldset['fields'])){
+							foreach($fieldset['fields'] as $field_id => $field){
+								$status_field = jcf_import_add_field($field['type'], $fieldset_id, $field, $key );
+							}
+						}
+					}
+					if( !empty($status_fieldset) ){
+						echo 'Import was success, all fields was imported';
+					}
+				}
 			}
 		}
 	}

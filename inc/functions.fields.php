@@ -36,8 +36,10 @@
 	/**
 	 *	set fields in wp-options
 	 */
-	function jcf_field_settings_update( $key, $values = array() ){
-		$option_name = jcf_fields_get_option_name();
+	function jcf_field_settings_update( $key, $values = array(), $option_name = '' ){
+		if(empty( $option_name )){
+			$option_name = jcf_fields_get_option_name();
+		}
 
 		$field_settings = get_option($option_name, array());
 		if( $values === NULL && isset($field_settings[$key]) ){

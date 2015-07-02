@@ -9,17 +9,19 @@
 			$option_name = jcf_fieldsets_get_option_name();
 		}
 		$fieldsets = get_option($option_name, array());
-		
+
 		if(!empty($id)){
 			return @$fieldsets[$id];
 		}
-		
+
 		return $fieldsets;
 	}
 	
-	function jcf_fieldsets_update( $key, $values = array() ){
-		$option_name = jcf_fieldsets_get_option_name();
-		
+	function jcf_fieldsets_update( $key, $values = array(), $option_name = '' ){
+		if(empty($option_name)){
+			$option_name = jcf_fieldsets_get_option_name();
+		}
+
 		$fieldsets = get_option($option_name, array());
 		if( $values === NULL && isset($fieldsets[$key]) ){
 			unset($fieldsets[$key]);
