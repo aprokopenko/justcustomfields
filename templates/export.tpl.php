@@ -4,7 +4,7 @@
 		<h2><?php _e('Just Custom Fields Export', JCF_TEXTDOMAIN); ?>
 			<small><a href="?page=just_custom_fields" class="jcf_change_pt"><?php _e('back', JCF_TEXTDOMAIN); ?></a></small></h2>
 		<p><?php _e('You should choose Fields to export:', JCF_TEXTDOMAIN); ?></p>
-		<form method="post" id="jcf_export_fields" >
+		<form method="post" id="jcf_export_fields" action="<?php get_permalink();?>" >
 		<ul class="jcf-export-list">
 		<?php foreach($post_types as $key => $obj) : ?>
 			<li><input type="checkbox" name="export_data[<?php echo $key; ?>]" value="<?php echo $key; ?>" class="jcf_post_type" id="jcf_post_type_<?php echo $key; ?>" /><label for="jcf_post_type_<?php echo $key; ?>"><?php echo $obj->label; ?></label>
@@ -32,7 +32,7 @@
 		<?php endforeach; ?>
 		</ul>
 		<div class="alignleft">
-			<input type="submit" class="button-primary" name="export" value="<?php _e('Export', JCF_TEXTDOMAIN); ?>" />
+			<input type="submit" class="button-primary" name="export_fields" value="<?php _e('Export', JCF_TEXTDOMAIN); ?>" />
 		</div>
 		</form>
 	</div>

@@ -70,6 +70,7 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_fields_order', 'jcf_ajax_fields_order');
 	add_action('wp_ajax_jcf_export_fields', 'jcf_ajax_export_fields');
 	add_action('wp_ajax_jcf_import_fields', 'jcf_ajax_import_fields');
+	add_action('wp_ajax_jcf_update_read_settings', 'jcf_ajax_update_read_settings');
 	
 	// add $post_type for ajax
 	if(!empty($_POST['post_type'])) jcf_set_post_type( $_POST['post_type'] );
@@ -96,7 +97,7 @@ function jcf_init(){
 	// add post edit/save hooks
 	add_action( 'add_meta_boxes', 'jcf_post_load_custom_fields', 10, 1 ); 
 	add_action( 'save_post', 'jcf_post_save_custom_fields', 10, 2 );
-
+	add_action('send_headers', 'jcf_export_headers', 10, 1 );
 	
 	// add custom styles and scripts
 	if( !empty($_GET['page']) && $_GET['page'] == 'just_custom_fields' ){
@@ -115,7 +116,7 @@ function jcf_admin_menu(){
  */
 function jcf_admin_settings_page(){
 	$post_types = jcf_get_post_types( 'object' );
-
+	$jcf_read_settings = get_read_settings();
 	// edit page
 	if( !empty($_GET['pt']) && isset($post_types[ $_GET['pt'] ]) ){
 		jcf_admin_fields_page( $post_types[ $_GET['pt'] ] );
@@ -131,6 +132,11 @@ function jcf_admin_settings_page(){
 		jcf_admin_import_page();
 		return;
 	}
+	
+	if( isset($_GET['keep_settings']) ) {
+		jcf_admin_keep_settings();
+	}
+
 
 	// load template
 	include( JCF_ROOT . '/templates/settings_page.tpl.php' );
@@ -141,25 +147,62 @@ function jcf_admin_settings_page(){
  */
 function jcf_admin_fields_page( $post_type ){
 	jcf_set_post_type( $post_type->name );
-	
-	$fieldsets = jcf_fieldsets_get();
-	$field_settings = jcf_field_settings_get();
-	
+	$key = $post_type->name;
+	if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
+		$filename = get_template_directory() . '/jcf-settings/jcf_export.json';
+		if (file_exists($filename)) {
+			$jcf_settings = jcf_get_settings_from_file($filename);
+			$fieldsets = $jcf_settings->fieldsets->$key;
+			$field_settings = (array)$jcf_settings->field_settings->$key;
+		}else{
+			echo _e('The file of settings is not found');
+		}	
+	}else{
+		$fieldsets = jcf_fieldsets_get();
+		$field_settings = jcf_field_settings_get();		
+	}
+
 	// load template
 	include( JCF_ROOT . '/templates/fields_ui.tpl.php' );
+}
+
+/**
+ *	Keep settings in the file of theme
+ */
+function jcf_admin_keep_settings(){
+	$jcf_settings = jcf_get_all_settings_from_db();
+	$post_types = $jcf_settings['post_types'];
+	$fieldsets =$jcf_settings['fieldsets'];
+	$field_settings = $jcf_settings['field_settings'];
+
+	$settings_data = json_encode($jcf_settings);
+
+	if( !is_dir(get_template_directory() . '/jcf-settings/') ){
+		if( mkdir(get_template_directory() . '/jcf-settings/') ){
+			jcf_admin_save_all_settings_in_file($settings_data);
+		}
+	}else {
+		jcf_admin_save_all_settings_in_file($settings_data);
+	}
 }
 
 /**
  *	Export page
  */
 function jcf_admin_export_page(){
+	$jcf_settings = jcf_get_all_settings_from_db();
+	$post_types = $jcf_settings['post_types'];
+	$fieldsets =$jcf_settings['fieldsets'];
+	$field_settings = $jcf_settings['field_settings'];
 
-	$post_types = jcf_get_post_types();
-	$fieldsets = array();
-	$field_settings = array();
-	foreach($post_types as $key => $value){
-		$fieldsets[$key] = jcf_fieldsets_get('', 'jcf_fieldsets-'.$key);
-		$field_settings[$key] = jcf_field_settings_get('', 'jcf_fields-'.$key);
+	if( $_POST['export_fields'] && !empty($_POST['export_data'])){
+		$export_data = $_POST['export_data'];
+		$export_data = json_encode($export_data);
+		$filename = 'export.json';
+		header('Content-Type: text/json; charset=utf-8');
+		header("Content-Disposition: attachment;filename=" . $filename);
+		header("Content-Transfer-Encoding: binary ");
+		echo $export_data;
 	}
 
 	// load template
@@ -174,47 +217,21 @@ function jcf_admin_import_page(){
 		$path_info = pathinfo($_FILES['import_data']['name']);
 
 		if( $path_info['extension'] == 'json'){
-			$site_urls = get_current_site();
-			$uploaddir = $_SERVER['DOCUMENT_ROOT'] . $site_urls->path . "wp-content/uploads/";
+			$uploaddir = get_home_path() . "wp-content/uploads/";
 			$uploadfile = $uploaddir . basename($_FILES['import_data']['name']);
 
 			if ( copy($_FILES['import_data']['tmp_name'], $uploadfile) ){
-				$file = fopen($uploadfile, "r");
-				$contents = fread($file, filesize($uploadfile));
-				fclose($file);
-				$post_types = json_decode($contents);
+				$post_types = jcf_get_settings_from_file($uploadfile);
 			}else{
 				echo "<h3>Error! The file wasn't loaded!</h3>";
 			}
-
 		}else{
 			echo "<h3>Error! Check extension of the file!</h3>";
 		}
 	}else{
 		if( $_POST['save_import'] ){
 			$import_data = $_POST['import_data'];
-
-			foreach($import_data as $key => $post_type ){
-				if(is_array($post_type) && !empty($post_type['fieldsets'])){
-					foreach($post_type['fieldsets'] as $fieldset_id => $fieldset){
-						$status_fieldset = jcf_import_add_fieldset($fieldset['title'], $key);
-						if( empty($status_fieldset) ){
-							echo 'Import Error, please check import file'; exit();
-						}else{
-							$fieldset_id = $status_fieldset;
-						}
-
-						if(!empty($fieldset['fields'])){
-							foreach($fieldset['fields'] as $field_id => $field){
-								$status_field = jcf_import_add_field($field['type'], $fieldset_id, $field, $key );
-							}
-						}
-					}
-					if( !empty($status_fieldset) ){
-						echo 'Import was success, all fields was imported';
-					}
-				}
-			}
+			jcf_admin_save_settings_in_db($import_data);
 		}
 	}
 
@@ -299,7 +316,77 @@ function jcf_admin_add_styles() {
 	wp_enqueue_style('jcf-styles'); 
 }
 
+// get all settings from db
+function jcf_get_all_settings_from_db(){
+	$jcf_settings = array();
+	$post_types = jcf_get_post_types();
+	$fieldsets = array();
+	$field_settings = array();
+	foreach($post_types as $key => $value){
+		$fieldsets[$key] = jcf_fieldsets_get('', 'jcf_fieldsets-'.$key);
+		$field_settings[$key] = jcf_field_settings_get('', 'jcf_fields-'.$key);
+	}
+	$jcf_settings = array(
+		'post_types' => $post_types,
+		'fieldsets' => $fieldsets,
+		'field_settings' => $field_settings
+	);
+	return $jcf_settings;
+}
 
+// get settings from file
+function jcf_get_settings_from_file($uploadfile){
+	$file = fopen($uploadfile, "r");
+	$contents = fread($file, filesize($uploadfile));
+	fclose($file);
+	$data = json_decode($contents);
 
+	return $data;
+}
+
+// save settings to file
+function jcf_admin_save_all_settings_in_file($data){
+	$fp = fopen(get_template_directory() . '/jcf-settings/jcf_settings.json', 'w');
+	$text = $data . "\r\n";
+	$fw = fwrite($fp, $text);
+	fclose($fp);
+	return true;
+}
+
+// save settings in db
+function jcf_admin_save_settings_in_db($data){
+	foreach($data as $key => $post_type ){
+		if(is_array($post_type) && !empty($post_type['fieldsets'])){
+			foreach($post_type['fieldsets'] as $fieldset_id => $fieldset){
+				$status_fieldset = jcf_import_add_fieldset($fieldset['title'], $key);
+				if( empty($status_fieldset) ){
+					echo 'Import Error, please check import file'; exit();
+				}else{
+					$fieldset_id = $status_fieldset;
+				}
+
+				if(!empty($fieldset['fields'])){
+					foreach($fieldset['fields'] as $field_id => $field){
+						$status_field = jcf_import_add_field($field['type'], $fieldset_id, $field, $key );
+					}
+				}
+			}
+			if( !empty($status_fieldset) ){
+				echo 'Import was success, all fields was imported';
+				if( $_POST['file_name'] ){
+					unlink($_POST['file_name']);
+				}
+				
+			}
+		}
+	}
+	return true;
+}
+
+function get_read_settings(){
+	$jcf_read_settings = get_option('jcf_read_settings');
+	return $jcf_read_settings;
+}
+	
 
 ?>

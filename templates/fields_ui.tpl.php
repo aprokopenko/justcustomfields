@@ -15,7 +15,7 @@
 		
 			$registered_fields = jcf_get_registered_fields();
 			?>
-			<?php foreach($fieldsets as $fieldset) : ?>
+			<?php foreach($fieldsets as $fieldset) :  $fieldset = (array)$fieldset; $fieldset['fields'] = (array)$fieldset['fields'];  ?>
 			<div class="jcf_inner_box" id="jcf_fieldset_<?php echo $fieldset['id']; ?>">
 				<h3 class="header"><?php _e('Fieldset:', JCF_TEXTDOMAIN); ?> <span><?php echo $fieldset['title']; ?></span>
 					<small>
@@ -41,17 +41,17 @@
 							<th><?php _e('Enabled', JCF_TEXTDOMAIN); ?></th>
 						</tr></tfoot>
 						<tbody id="the-list-<?php echo $fieldset['id']; ?>">
-							<?php if( !empty($fieldset['fields']) && is_array($fieldset['fields']) ) : ?>
-								<?php foreach($fieldset['fields'] as $field_id => $enabled) : ?>
+							<?php if( !empty($fieldset['fields']) && is_array($fieldset['fields']) ) :  ?>
+								<?php foreach($fieldset['fields'] as $field_id => $enabled) :  $field_settings[$field_id] = (array)$field_settings[$field_id]; ?>
 								<tr id="field_row_<?php echo $field_id; ?>">
 									<td class="check-column"><span class="drag-handle">move</span></td>
-									<td><strong><a href="#" rel="<?php echo $field_id; ?>"><?php echo @$field_settings[$field_id]['title']; ?></a></strong>
+									<td><strong><a href="#" rel="<?php echo $field_id; ?>"><?php echo $field_settings[$field_id]['title']; ?></a></strong>
 										<div class="row-actions">
 											<span class="edit"><a href="#" rel="<?php echo $field_id; ?>"><?php _e('Edit', JCF_TEXTDOMAIN); ?></a></span> |
 											<span class="delete"><a href="#" rel="<?php echo $field_id; ?>"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a></span>
 										</div>
 									</td>
-									<td><?php echo @$field_settings[$field_id]['slug']; ?></td>
+									<td><?php echo $field_settings[$field_id]['slug']; ?></td>
 									<td><?php echo preg_replace('/\-[0-9]+$/', '', $field_id); ?></td>
 									<td><?php if($enabled) _e('Yes', JCF_TEXTDOMAIN); else  _e('No', JCF_TEXTDOMAIN);?></td>
 								</tr>

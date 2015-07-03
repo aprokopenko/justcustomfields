@@ -103,24 +103,6 @@ function initFieldsetsEdit(){
 		return false;
 	})
 
-	// export fields
-	jQuery('#jcf_export_fields').live('submit', function(e){
-		e.preventDefault();
-		var loader = jQuery(this).parents('h3').find('img.ajax-feedback');
-		var query = jQuery('#jcf_export_fields').serialize();
-
-		var data = 'action=jcf_export_fields&' + query;
-		if(query !== ''){
-			jcf_ajax(data, 'html', loader, function(response){
-				jcf_show_ajax_container( response );
-			});
-		} else {
-			var html = '<div class="jcf_edit_fieldset"><h3 class="header">Export Fields:</h3><div class="jcf_inner_content">Choose fields to export</div></div>';
-			jcf_show_ajax_container( html );
-		}
-
-	});
-
 	// checked fields
 	jQuery('#jcf_export_fields input[type="checkbox"]').change(function(){
 		var parent_block = jQuery(this).parent();
@@ -164,6 +146,19 @@ function initFieldsetsEdit(){
 			}
 		}
 
+	});
+	
+	jQuery('.jcf_choose_settings').change(function(){
+		var loader = jQuery(this).find('img.ajax-feedback');
+		console.log(jQuery(this).val());
+		var data = {
+			'action': 'jcf_update_read_settings',
+			'read_settings': jQuery(this).val()
+		};
+		jcf_ajax(data, 'html', loader, function(response){
+			window.location.reload();
+		});
+		
 	});
 
 }

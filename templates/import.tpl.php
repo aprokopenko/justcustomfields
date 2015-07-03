@@ -17,6 +17,7 @@
 	<div class="jcf-import-fields">
 		<?php if( $post_types ): ?>
 			<form action="<?php get_permalink(); ?>" method="post" id="jcf_save_import_fields">
+				<input type="hidden" name="file_name" value="<?php echo $uploadfile; ?>" />
 				<ul class="dotted-list jcf-bold">
 				<?php foreach( $post_types as $key => $post_type ): ?>
 					<li><?php echo 'Content type: ' . $key; ?>
@@ -66,6 +67,7 @@
 				<?php endforeach; ?>
 				</ul>
 				<input type="submit" class="button-primary" name="save_import" value="Save Fields" />
+				<input type="button" onclick="window.location.reload();" class="button-primary" name="close_import" value="Close" />
 			</form>
 		<?php endif; ?>
 	</div>

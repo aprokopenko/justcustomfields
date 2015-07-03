@@ -243,11 +243,11 @@ class Just_Field{
 			$this->id = $this->id_base . '-' . $this->number;
 		}
 		
-		// update fieldset
-		$fieldset = jcf_fieldsets_get( $this->fieldset_id, $option_name  );
+		/// update fieldset
+		$option_name_fieldsets = !empty($option_name) ? 'jcf_fieldsets-'.$option_name : '';
+		$fieldset = jcf_fieldsets_get( $this->fieldset_id, $option_name_fieldsets  );
 		$fieldset['fields'][$this->id] = $instance['enabled'];
-		$option_name = !empty($option_name) ? 'jcf_fieldsets-'.$option_name : '';
-		jcf_fieldsets_update( $this->fieldset_id, $fieldset, $option_name );
+		jcf_fieldsets_update( $this->fieldset_id, $fieldset, $option_name_fieldsets );
 
 
 		// check slug field
@@ -256,8 +256,8 @@ class Just_Field{
 		}
 
 		// save
-		$option_name = !empty($option_name) ? 'jcf_fields-'.$option_name : '';
-		jcf_field_settings_update($this->id, $instance, $option_name);
+		$option_name_fields = !empty($option_name) ? 'jcf_fields-'.$option_name : '';
+		jcf_field_settings_update($this->id, $instance, $option_name_fields);
 		
 		// return status
 		$res = array(
