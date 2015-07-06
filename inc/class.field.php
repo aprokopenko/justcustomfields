@@ -61,7 +61,7 @@ class Just_Field{
 			$this->number = str_replace($this->id_base.'-', '', $this->id);
 
 			// load instance data
-			$this->instance = jcf_field_settings_get( $this->id );
+			$this->instance =(array)jcf_field_settings_get( $this->id );
 			if( !empty($this->instance) ){
 				$this->slug = $this->instance['slug'];
 			}
@@ -75,9 +75,19 @@ class Just_Field{
 	function set_post_ID( $post_ID ){
 		$this->post_ID = $post_ID;
 		// load entry
-		if( !empty($this->slug) ){
-			$this->entry = get_post_meta($this->post_ID, $this->slug, true);
+		// get read settings
+		$jcf_read_settings = get_read_settings();
+		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
+			$jcf_settings = jcf_get_all_settings_from_file();
+			$post_type = jcf_get_post_type();
+			$slug = $this->slug;
+			$this->entry = $jcf_settings->field_options->$post_type->$post_ID->$slug;
+		}else{
+			if( !empty($this->slug) ){
+				$this->entry = get_post_meta($this->post_ID, $this->slug, true);
+			}
 		}
+
 	}
 	
 	/**
@@ -280,11 +290,11 @@ class Just_Field{
 		if( isset($fieldset['fields'][$this->id]) )
 			unset($fieldset['fields'][$this->id]);
 		jcf_fieldsets_update( $this->fieldset_id, $fieldset );
-		
+
 		// remove from fields array
 		jcf_field_settings_update($this->id, NULL);
 	}
-	
+
 	/**
 	 *	function to save data from edit post page to postmeta
 	 *	call $this->save()
@@ -308,6 +318,17 @@ class Just_Field{
 		$values = $this->save( $input );
 		// save to post meta
 		update_post_meta($this->post_ID, $this->slug, $values);
+		$jcf_read_settings = get_read_settings();
+		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
+			$jcf_settings = jcf_get_all_settings_from_file();
+			$post_type = jcf_get_post_type();
+			$post_id = $this->post_ID;
+			$slug = $this->slug;
+			$jcf_settings->field_options->$post_type->$post_id->$slug = get_post_meta($this->post_ID, $this->slug, true);
+			$settings_data = json_encode($jcf_settings);
+			jcf_admin_save_all_settings_in_file($settings_data);
+			delete_post_meta($this->post_ID, $this->slug);
+		}
 		return true;
 	}
 	

@@ -249,6 +249,7 @@ function initFieldsetFields(){
 			};
 			
 			jcf_ajax(data, 'json', null, function(response){
+				console.log(response);
 				row.remove();
 				// close edit box if exists
 				jcf_hide_ajax_container();

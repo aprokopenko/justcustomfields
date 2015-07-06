@@ -60,13 +60,19 @@
 		if(empty( $option_name )){
 			$option_name = jcf_fields_get_option_name();
 		}
-		
-		$field_settings = get_option($option_name, array());
+		$jcf_read_settings = get_read_settings();
+		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
+			$jcf_settings = jcf_get_all_settings_from_file();
+			$post_type =  str_replace('jcf_fields-', '', $option_name);
+			$field_settings = (array)$jcf_settings->field_settings->$post_type;
+		}else{
+			$field_settings = get_option($option_name, array());
+		}
 		
 		if(!empty($id)){
 			return @$field_settings[$id];
 		}
-		
+
 		return $field_settings;
 	}
 	

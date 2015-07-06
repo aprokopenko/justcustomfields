@@ -68,8 +68,10 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_delete_field', 'jcf_ajax_delete_field');
 	add_action('wp_ajax_jcf_edit_field', 'jcf_ajax_edit_field');
 	add_action('wp_ajax_jcf_fields_order', 'jcf_ajax_fields_order');
+
 	add_action('wp_ajax_jcf_export_fields', 'jcf_ajax_export_fields');
 	add_action('wp_ajax_jcf_import_fields', 'jcf_ajax_import_fields');
+
 	add_action('wp_ajax_jcf_update_read_settings', 'jcf_ajax_update_read_settings');
 	
 	// add $post_type for ajax
@@ -97,7 +99,6 @@ function jcf_init(){
 	// add post edit/save hooks
 	add_action( 'add_meta_boxes', 'jcf_post_load_custom_fields', 10, 1 ); 
 	add_action( 'save_post', 'jcf_post_save_custom_fields', 10, 2 );
-	add_action('send_headers', 'jcf_export_headers', 10, 1 );
 	
 	// add custom styles and scripts
 	if( !empty($_GET['page']) && $_GET['page'] == 'just_custom_fields' ){
@@ -147,16 +148,12 @@ function jcf_admin_settings_page(){
  */
 function jcf_admin_fields_page( $post_type ){
 	jcf_set_post_type( $post_type->name );
-	$key = $post_type->name;
+	$jcf_read_settings = get_read_settings();
 	if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
-		$filename = get_template_directory() . '/jcf-settings/jcf_export.json';
-		if (file_exists($filename)) {
-			$jcf_settings = jcf_get_settings_from_file($filename);
-			$fieldsets = $jcf_settings->fieldsets->$key;
-			$field_settings = (array)$jcf_settings->field_settings->$key;
-		}else{
-			echo _e('The file of settings is not found');
-		}	
+		$jcf_settings = jcf_get_all_settings_from_file();
+		$key = $post_type->name;
+		$fieldsets = $jcf_settings->fieldsets->$key;
+		$field_settings = (array)$jcf_settings->field_settings->$key;
 	}else{
 		$fieldsets = jcf_fieldsets_get();
 		$field_settings = jcf_field_settings_get();		
@@ -179,10 +176,13 @@ function jcf_admin_keep_settings(){
 
 	if( !is_dir(get_template_directory() . '/jcf-settings/') ){
 		if( mkdir(get_template_directory() . '/jcf-settings/') ){
-			jcf_admin_save_all_settings_in_file($settings_data);
+			$save = jcf_admin_save_all_settings_in_file($settings_data);
 		}
 	}else {
-		jcf_admin_save_all_settings_in_file($settings_data);
+		$save = jcf_admin_save_all_settings_in_file($settings_data);
+	}
+	if($save){
+		echo _e('The file is saved');
 	}
 }
 
@@ -190,12 +190,20 @@ function jcf_admin_keep_settings(){
  *	Export page
  */
 function jcf_admin_export_page(){
-	$jcf_settings = jcf_get_all_settings_from_db();
-	$post_types = $jcf_settings['post_types'];
-	$fieldsets =$jcf_settings['fieldsets'];
-	$field_settings = $jcf_settings['field_settings'];
+	$jcf_read_settings = get_read_settings();
+	if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
+		$jcf_settings = jcf_get_all_settings_from_file();
+		$post_types = (array)$jcf_settings->post_types;
+		$fieldsets = (array)$jcf_settings->fieldsets;
+		$field_settings = (array)$jcf_settings->field_settings;
+	}else{
+		$jcf_settings = jcf_get_all_settings_from_db();
+		$post_types = $jcf_settings['post_types'];
+		$fieldsets =$jcf_settings['fieldsets'];
+		$field_settings = $jcf_settings['field_settings'];
+	}
 
-	if( $_POST['export_fields'] && !empty($_POST['export_data'])){
+	if( $_POST['export_fields'] && !empty($_POST['export_data']) ) {
 		$export_data = $_POST['export_data'];
 		$export_data = json_encode($export_data);
 		$filename = 'export.json';
@@ -318,20 +326,50 @@ function jcf_admin_add_styles() {
 
 // get all settings from db
 function jcf_get_all_settings_from_db(){
+	global $wpdb;
+	$sql_posts_id="SELECT id, post_type FROM " . $wpdb->base_prefix . "posts WHERE post_type = 'post' OR post_type = 'page' OR post_type = 'attachment'";
+	$posts = $wpdb->get_results($sql_posts_id);
 	$jcf_settings = array();
 	$post_types = jcf_get_post_types();
 	$fieldsets = array();
 	$field_settings = array();
+	$field_options = array();
 	foreach($post_types as $key => $value){
 		$fieldsets[$key] = jcf_fieldsets_get('', 'jcf_fieldsets-'.$key);
 		$field_settings[$key] = jcf_field_settings_get('', 'jcf_fields-'.$key);
+		foreach($posts as $post){
+			foreach($field_settings[$key] as $fskey => $field_setting){
+				$field_setting = (array)$field_setting;
+				$field_options[$post->post_type][$post->id][$field_setting['slug']] = get_post_meta($post->id, $field_setting['slug'], true);
+				if(empty($field_options[$post->post_type][$post->id][$field_setting['slug']])){
+					unset($field_options[$post->post_type][$post->id][$field_setting['slug']]);
+				}
+			}
+			if(empty($field_options[$post->post_type][$post->id])){
+				unset($field_options[$post->post_type][$post->id]);
+			}
+		}
 	}
+
 	$jcf_settings = array(
 		'post_types' => $post_types,
 		'fieldsets' => $fieldsets,
-		'field_settings' => $field_settings
+		'field_settings' => $field_settings,
+		'field_options' => $field_options,
 	);
 	return $jcf_settings;
+}
+
+// get all settings from file
+function jcf_get_all_settings_from_file(){
+	$filename = get_file_settings_name();
+	if (file_exists($filename)) {
+		$jcf_settings = jcf_get_settings_from_file($filename);
+		return $jcf_settings;
+	}else{
+		echo _e('The file of settings is not found');
+		return false;
+	}
 }
 
 // get settings from file
@@ -346,7 +384,7 @@ function jcf_get_settings_from_file($uploadfile){
 
 // save settings to file
 function jcf_admin_save_all_settings_in_file($data){
-	$fp = fopen(get_template_directory() . '/jcf-settings/jcf_settings.json', 'w');
+	$fp = fopen(get_template_directory() . '/jcf-settings/jcf_settings.json', 'w+');
 	$text = $data . "\r\n";
 	$fw = fwrite($fp, $text);
 	fclose($fp);
@@ -383,10 +421,14 @@ function jcf_admin_save_settings_in_db($data){
 	return true;
 }
 
+// get read sttings
 function get_read_settings(){
 	$jcf_read_settings = get_option('jcf_read_settings');
 	return $jcf_read_settings;
 }
 	
-
+// get file name for all settings
+function get_file_settings_name(){
+	return get_template_directory() . '/jcf-settings/jcf_settings.json';
+}
 ?>
