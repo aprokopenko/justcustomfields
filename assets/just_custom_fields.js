@@ -108,7 +108,6 @@ function initFieldsetsEdit(){
 		var parent_block = jQuery(this).parent();
 		var field_box = 'input[type="checkbox"]';
 		var box_value = jQuery(this).attr('data-id');
-		console.log(box_value);
 		if( jQuery(this).is(":checked")){
 			parent_block.find('input[type="checkbox"]').attr({'checked':'checked'});
 			if(  jQuery(this).hasClass('jcf_field') ){
@@ -150,7 +149,6 @@ function initFieldsetsEdit(){
 	
 	jQuery('.jcf_choose_settings').change(function(){
 		var loader = jQuery(this).find('img.ajax-feedback');
-		console.log(jQuery(this).val());
 		var data = {
 			'action': 'jcf_update_read_settings',
 			'read_settings': jQuery(this).val()
@@ -249,7 +247,6 @@ function initFieldsetFields(){
 			};
 			
 			jcf_ajax(data, 'json', null, function(response){
-				console.log(response);
 				row.remove();
 				// close edit box if exists
 				jcf_hide_ajax_container();

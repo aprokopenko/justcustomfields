@@ -19,8 +19,8 @@
 		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$post_type = jcf_get_post_type();
-			$fieldsets = $jcf_settings->fieldsets->$post_type;
-			if( isset($fieldsets->$slug) ){
+			$fieldsets = $jcf_settings['fieldsets'][$post_type];
+			if( isset($fieldsets[$slug]) ){
 				jcf_ajax_reposnse( array('status' => "0", 'error'=>__('Such fieldset already exists.', JCF_TEXTDOMAIN)) );
 			}
 		}else{
@@ -38,13 +38,13 @@
 			'fields' => array(),
 		);
 		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
-			$jcf_settings->fieldsets->$post_type->$slug = $fieldset;
+			$jcf_settings['fieldsets'][$post_type][$slug] = $fieldset;
 			$settings_data = json_encode($jcf_settings);
 			 jcf_admin_save_all_settings_in_file($settings_data);
 		}else{
 			jcf_fieldsets_update($slug, $fieldset);
 		}
-		jcf_ajax_reposnse( array('status' => "1", $jcf_settings->fieldsets->$post_type) );
+		jcf_ajax_reposnse( array('status' => "1", $jcf_settings['fieldsets'][$post_type]) );
 	}
 	
 	// delete fieldset link process
@@ -57,7 +57,7 @@
 		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$key = jcf_get_post_type();
-			unset($jcf_settings->fieldsets->$key->$f_id);
+			unset($jcf_settings['fieldsets'][$key][$f_id]);
 			$settings_data = json_encode($jcf_settings);
 			jcf_admin_save_all_settings_in_file($settings_data);
 		}else{
@@ -74,8 +74,8 @@
 		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$key = jcf_get_post_type();
-			$fieldsets = $jcf_settings->fieldsets->$key;
-			$fieldset = (array)$fieldsets->$f_id;
+			$fieldsets = $jcf_settings['fieldsets'][$key];
+			$fieldset = $fieldsets[$f_id];
 		}else{
 			$fieldset = jcf_fieldsets_get($f_id);
 		}
@@ -118,8 +118,8 @@
 		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$key = jcf_get_post_type();
-			$fieldsets = $jcf_settings->fieldsets->$key;
-			$fieldset = (array)$fieldsets->$f_id;
+			$fieldsets = $jcf_settings['fieldsets'][$key];
+			$fieldset = $fieldsets[$f_id];
 		}else{
 			$fieldset = jcf_fieldsets_get($f_id);
 		}
@@ -134,7 +134,7 @@
 		}
 
 		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
-			$jcf_settings->fieldsets->$key->$f_id->title = $title;
+			$jcf_settings['fieldsets'][$key][$f_id]['title'] = $title;
 			$settings_data = json_encode($jcf_settings);
 			jcf_admin_save_all_settings_in_file($settings_data);
 		}else{
@@ -230,6 +230,20 @@
 		}
 		$resp = array('status' => '1');
 		jcf_ajax_reposnse($resp, 'json');
+	}
+
+	// export fields
+	function jcf_ajax_export_fields(){
+		if( $_POST['export_fields'] && !empty($_POST['export_data']) ) {
+			$export_data = $_POST['export_data'];
+			$export_data = json_encode($export_data);
+			$filename = 'jcf_export.json';
+			header('Content-Type: text/json; charset=utf-8');
+			header("Content-Disposition: attachment;filename=" . $filename);
+			header("Content-Transfer-Encoding: binary ");
+			echo $export_data;
+			exit();
+		}
 	}
 
 ?>

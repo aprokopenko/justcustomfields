@@ -15,7 +15,7 @@
 		
 			$registered_fields = jcf_get_registered_fields();
 			?>
-			<?php foreach($fieldsets as $fieldset) :  $fieldset = (array)$fieldset; $fieldset['fields'] = (array)$fieldset['fields'];  ?>
+			<?php foreach($fieldsets as $fieldset) : ?>
 			<div class="jcf_inner_box" id="jcf_fieldset_<?php echo $fieldset['id']; ?>">
 				<h3 class="header"><?php _e('Fieldset:', JCF_TEXTDOMAIN); ?> <span><?php echo $fieldset['title']; ?></span>
 					<small>
@@ -41,8 +41,8 @@
 							<th><?php _e('Enabled', JCF_TEXTDOMAIN); ?></th>
 						</tr></tfoot>
 						<tbody id="the-list-<?php echo $fieldset['id']; ?>">
-							<?php if( !empty($fieldset['fields']) && is_array($fieldset['fields']) ) :  ?>
-								<?php foreach($fieldset['fields'] as $field_id => $enabled) :  $field_settings[$field_id] = (array)$field_settings[$field_id]; ?>
+							<?php if( !empty($fieldset['fields']) && is_array($fieldset['fields']) ) : ?>
+								<?php foreach($fieldset['fields'] as $field_id => $enabled) : ?>
 								<tr id="field_row_<?php echo $field_id; ?>">
 									<td class="check-column"><span class="drag-handle">move</span></td>
 									<td><strong><a href="#" rel="<?php echo $field_id; ?>"><?php echo $field_settings[$field_id]['title']; ?></a></strong>

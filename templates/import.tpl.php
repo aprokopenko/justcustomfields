@@ -22,9 +22,9 @@
 				<?php foreach( $post_types as $key => $post_type ): ?>
 					<li><?php echo 'Content type: ' . $key; ?>
 						<input type="hidden" name="import_data[<?php echo $key; ?>]" value="<?php echo $key; ?>" />
-						<?php if(!empty($post_type->fieldsets)) :?>
-							<?php foreach( $post_type->fieldsets as $fieldset_id =>$fieldset ) : ?>
-								<input type="hidden" name="import_data[<?php echo $key; ?>][fieldsets][<?php echo $fieldset_id; ?>][title]" value="<?php echo $fieldset->title; ?>" />
+						<?php if(!empty($post_type['fieldsets'])) :?>
+							<?php foreach( $post_type['fieldsets'] as $fieldset_id =>$fieldset ) : ?>
+								<input type="hidden" name="import_data[<?php echo $key; ?>][fieldsets][<?php echo $fieldset_id; ?>][title]" value="<?php echo $fieldset['title']; ?>" />
 								<div class="jcf_inner_box" id="jcf_fieldset_<?php echo $fieldset_id; ?>">
 									<h3 class="header"><?php _e('Fieldset:', JCF_TEXTDOMAIN); ?> <span><?php echo $fieldset->title; ?></span></h3>
 									<div class="jcf_inner_content">
@@ -42,16 +42,16 @@
 												<th><?php _e('Enabled', JCF_TEXTDOMAIN); ?></th>
 											</tr></tfoot>
 											<tbody id="the-list-<?php echo $fieldset_id; ?>">
-												<?php if( !empty($fieldset->fields)) : ?>
-													<?php foreach($fieldset->fields as $field_id => $field) : ?>
+												<?php if( !empty($fieldset['fields'])) : ?>
+													<?php foreach($fieldset['fields'] as $field_id => $field) : ?>
 													<?php foreach($field as $key_setting => $field_setting): ?>
 															<input type="hidden"  name="import_data[<?php echo $key; ?>][fieldsets][<?php echo $fieldset_id; ?>][fields][<?php echo $field_id; ?>][<?php echo $key_setting; ?>]" value="<?php echo $field_setting; ?>" />
 													<?php endforeach; ?>
 													<tr id="field_row_<?php echo $field_id; ?>">
 														<td class="check-column"></td>
-														<td><strong><?php echo $field->title; ?></strong></td>
-														<td><?php echo $field->type; ?></td>
-														<td><?php if($field->enabled) _e('Yes', JCF_TEXTDOMAIN); else  _e('No', JCF_TEXTDOMAIN);?></td>
+														<td><strong><?php echo $field['title']; ?></strong></td>
+														<td><?php echo $field['type']; ?></td>
+														<td><?php if($field['enabled']) _e('Yes', JCF_TEXTDOMAIN); else  _e('No', JCF_TEXTDOMAIN);?></td>
 													</tr>
 													<?php endforeach; ?>
 												<?php else : ?>

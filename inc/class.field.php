@@ -75,19 +75,9 @@ class Just_Field{
 	function set_post_ID( $post_ID ){
 		$this->post_ID = $post_ID;
 		// load entry
-		// get read settings
-		$jcf_read_settings = get_read_settings();
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
-			$jcf_settings = jcf_get_all_settings_from_file();
-			$post_type = jcf_get_post_type();
-			$slug = $this->slug;
-			$this->entry = $jcf_settings->field_options->$post_type->$post_ID->$slug;
-		}else{
-			if( !empty($this->slug) ){
-				$this->entry = get_post_meta($this->post_ID, $this->slug, true);
-			}
+		if( !empty($this->slug) ){
+			$this->entry = get_post_meta($this->post_ID, $this->slug, true);
 		}
-
 	}
 	
 	/**
@@ -255,20 +245,39 @@ class Just_Field{
 		
 		/// update fieldset
 		$option_name_fieldsets = !empty($option_name) ? 'jcf_fieldsets-'.$option_name : '';
-		$fieldset = jcf_fieldsets_get( $this->fieldset_id, $option_name_fieldsets  );
-		$fieldset['fields'][$this->id] = $instance['enabled'];
-		jcf_fieldsets_update( $this->fieldset_id, $fieldset, $option_name_fieldsets );
 
+		$jcf_read_settings = get_read_settings();
+		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
+			$jcf_settings = jcf_get_all_settings_from_file();
+			$post_type = jcf_get_post_type();
+			$fieldset_id = $this->fieldset_id;
+			$field_id = $this->id;
+			$jcf_settings['fieldsets'][$post_type][$fieldset_id]['fields'][$field_id] = $instance['enabled'];
 
-		// check slug field
-		if( empty($instance['slug']) ){
-			$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
+			// check slug field
+			if( empty($instance['slug']) ){
+				$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
+			}
+			foreach($instance as $field_attr => $value){
+				$jcf_settings['field_settings'][$post_type][$field_id][$field_attr] = $value;
+			}
+			$settings_data = json_encode($jcf_settings);
+			jcf_admin_save_all_settings_in_file($settings_data);
+		}else{
+			$fieldset = jcf_fieldsets_get( $this->fieldset_id, $option_name_fieldsets  );
+			$fieldset['fields'][$this->id] = $instance['enabled'];
+			jcf_fieldsets_update( $this->fieldset_id, $fieldset, $option_name_fieldsets );
+
+			// check slug field
+			if( empty($instance['slug']) ){
+				$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
+			}
+
+			// save
+			$option_name_fields = !empty($option_name) ? 'jcf_fields-'.$option_name : '';
+			jcf_field_settings_update($this->id, $instance, $option_name_fields);
 		}
 
-		// save
-		$option_name_fields = !empty($option_name) ? 'jcf_fields-'.$option_name : '';
-		jcf_field_settings_update($this->id, $instance, $option_name_fields);
-		
 		// return status
 		$res = array(
 			'status' => '1',
@@ -280,19 +289,32 @@ class Just_Field{
 		);
 		return $res;
 	}
-	
+
 	/**
 	 *	function to delete field from the database
 	 */
 	function do_delete(){
-		// remove from fieldset:
-		$fieldset = jcf_fieldsets_get( $this->fieldset_id );
-		if( isset($fieldset['fields'][$this->id]) )
-			unset($fieldset['fields'][$this->id]);
-		jcf_fieldsets_update( $this->fieldset_id, $fieldset );
+		$jcf_read_settings = get_read_settings();
+		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
+			$jcf_settings = jcf_get_all_settings_from_file();
+			$post_type = jcf_get_post_type();
+			$fieldset_id = $this->fieldset_id;
+			$field_id = $this->id;
+			unset($jcf_settings['fieldsets'][$post_type][$fieldset_id][fields][$field_id]);
+			unset($jcf_settings['field_settings'][$post_type][$field_id]);
+			$settings_data = json_encode($jcf_settings);
+			jcf_admin_save_all_settings_in_file($settings_data);
+		}else{
+			// remove from fieldset:
+			$fieldset = jcf_fieldsets_get( $this->fieldset_id );
+			if( isset($fieldset['fields'][$this->id]) )
+				unset($fieldset['fields'][$this->id]);
+			jcf_fieldsets_update( $this->fieldset_id, $fieldset );
 
-		// remove from fields array
-		jcf_field_settings_update($this->id, NULL);
+			// remove from fields array
+			jcf_field_settings_update($this->id, NULL);
+		}
+
 	}
 
 	/**
@@ -318,17 +340,6 @@ class Just_Field{
 		$values = $this->save( $input );
 		// save to post meta
 		update_post_meta($this->post_ID, $this->slug, $values);
-		$jcf_read_settings = get_read_settings();
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
-			$jcf_settings = jcf_get_all_settings_from_file();
-			$post_type = jcf_get_post_type();
-			$post_id = $this->post_ID;
-			$slug = $this->slug;
-			$jcf_settings->field_options->$post_type->$post_id->$slug = get_post_meta($this->post_ID, $this->slug, true);
-			$settings_data = json_encode($jcf_settings);
-			jcf_admin_save_all_settings_in_file($settings_data);
-			delete_post_meta($this->post_ID, $this->slug);
-		}
 		return true;
 	}
 	

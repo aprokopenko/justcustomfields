@@ -134,7 +134,7 @@ function jcf_admin_settings_page(){
 		return;
 	}
 	
-	if( isset($_GET['keep_settings']) ) {
+	if( isset($_POST['keep_settings']) ) {
 		jcf_admin_keep_settings();
 	}
 
@@ -152,8 +152,8 @@ function jcf_admin_fields_page( $post_type ){
 	if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
 		$jcf_settings = jcf_get_all_settings_from_file();
 		$key = $post_type->name;
-		$fieldsets = $jcf_settings->fieldsets->$key;
-		$field_settings = (array)$jcf_settings->field_settings->$key;
+		$fieldsets = $jcf_settings['fieldsets'][$key];
+		$field_settings = $jcf_settings['field_settings'][$key];
 	}else{
 		$fieldsets = jcf_fieldsets_get();
 		$field_settings = jcf_field_settings_get();		
@@ -167,22 +167,27 @@ function jcf_admin_fields_page( $post_type ){
  *	Keep settings in the file of theme
  */
 function jcf_admin_keep_settings(){
-	$jcf_settings = jcf_get_all_settings_from_db();
-	$post_types = $jcf_settings['post_types'];
-	$fieldsets =$jcf_settings['fieldsets'];
-	$field_settings = $jcf_settings['field_settings'];
+	$jcf_read_settings = get_read_settings();
+	if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
+		echo _e('Error! Choose the reading option from database');
+	}else{
+		$jcf_settings = jcf_get_all_settings_from_db();
+		$post_types = $jcf_settings['post_types'];
+		$fieldsets =$jcf_settings['fieldsets'];
+		$field_settings = $jcf_settings['field_settings'];
 
-	$settings_data = json_encode($jcf_settings);
+		$settings_data = json_encode($jcf_settings);
 
-	if( !is_dir(get_template_directory() . '/jcf-settings/') ){
-		if( mkdir(get_template_directory() . '/jcf-settings/') ){
+		if( !is_dir(get_template_directory() . '/jcf-settings/') ){
+			if( mkdir(get_template_directory() . '/jcf-settings/') ){
+				$save = jcf_admin_save_all_settings_in_file($settings_data);
+			}
+		}else {
 			$save = jcf_admin_save_all_settings_in_file($settings_data);
 		}
-	}else {
-		$save = jcf_admin_save_all_settings_in_file($settings_data);
-	}
-	if($save){
-		echo _e('The file is saved');
+		if($save){
+			echo _e('The file is saved');
+		}
 	}
 }
 
@@ -193,25 +198,13 @@ function jcf_admin_export_page(){
 	$jcf_read_settings = get_read_settings();
 	if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
 		$jcf_settings = jcf_get_all_settings_from_file();
-		$post_types = (array)$jcf_settings->post_types;
-		$fieldsets = (array)$jcf_settings->fieldsets;
-		$field_settings = (array)$jcf_settings->field_settings;
 	}else{
 		$jcf_settings = jcf_get_all_settings_from_db();
-		$post_types = $jcf_settings['post_types'];
-		$fieldsets =$jcf_settings['fieldsets'];
-		$field_settings = $jcf_settings['field_settings'];
 	}
 
-	if( $_POST['export_fields'] && !empty($_POST['export_data']) ) {
-		$export_data = $_POST['export_data'];
-		$export_data = json_encode($export_data);
-		$filename = 'export.json';
-		header('Content-Type: text/json; charset=utf-8');
-		header("Content-Disposition: attachment;filename=" . $filename);
-		header("Content-Transfer-Encoding: binary ");
-		echo $export_data;
-	}
+	$post_types = $jcf_settings['post_types'];
+	$fieldsets =$jcf_settings['fieldsets'];
+	$field_settings = $jcf_settings['field_settings'];
 
 	// load template
 	include( JCF_ROOT . '/templates/export.tpl.php' );
@@ -336,17 +329,13 @@ function jcf_get_all_settings_from_db(){
 	$field_options = array();
 	foreach($post_types as $key => $value){
 		$fieldsets[$key] = jcf_fieldsets_get('', 'jcf_fieldsets-'.$key);
-		$field_settings[$key] = jcf_field_settings_get('', 'jcf_fields-'.$key);
+		$field_settings[$key] = jcf_field_settings_get('', 'jcf_fields-'.$key, true);
 		foreach($posts as $post){
 			foreach($field_settings[$key] as $fskey => $field_setting){
-				$field_setting = (array)$field_setting;
-				$field_options[$post->post_type][$post->id][$field_setting['slug']] = get_post_meta($post->id, $field_setting['slug'], true);
-				if(empty($field_options[$post->post_type][$post->id][$field_setting['slug']])){
-					unset($field_options[$post->post_type][$post->id][$field_setting['slug']]);
+				$field_setting = $field_setting;
+				if($post->post_type == $key){
+					$field_options[$post->post_type][$post->id][$field_setting['slug']] = get_post_meta($post->id, $field_setting['slug'], true);
 				}
-			}
-			if(empty($field_options[$post->post_type][$post->id])){
-				unset($field_options[$post->post_type][$post->id]);
 			}
 		}
 	}
@@ -375,18 +364,17 @@ function jcf_get_all_settings_from_file(){
 // get settings from file
 function jcf_get_settings_from_file($uploadfile){
 	$file = fopen($uploadfile, "r");
-	$contents = fread($file, filesize($uploadfile));
+	$content = fread($file, filesize($uploadfile));
+	$data = json_decode($content, true);
 	fclose($file);
-	$data = json_decode($contents);
-
 	return $data;
 }
 
 // save settings to file
 function jcf_admin_save_all_settings_in_file($data){
-	$fp = fopen(get_template_directory() . '/jcf-settings/jcf_settings.json', 'w+');
-	$text = $data . "\r\n";
-	$fw = fwrite($fp, $text);
+	$fp = fopen(get_template_directory() . '/jcf-settings/jcf_settings.json', 'w');
+	$content = $data . "\r\n";
+	$fw = fwrite($fp, $content);
 	fclose($fp);
 	return true;
 }
