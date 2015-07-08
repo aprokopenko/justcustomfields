@@ -108,26 +108,19 @@ function jcf_admin_menu(){
 	add_options_page(__('Just Custom Fields', JCF_TEXTDOMAIN), __('Just Custom Fields', JCF_TEXTDOMAIN), 'manage_options', 'just_custom_fields', 'jcf_admin_settings_page');
 }
 
-if( MULTISITE ) {
-	$jcf_multisite_settings = get_site_option('jcf_multisite_setting');
-	if(!$jcf_multisite_settings){
-		$jcf_multisite_settings = 'global';
-	}
-}else{
-	$jcf_multisite_settings = false;
-}
 /**
  *	Admin main page
  */
 function jcf_admin_settings_page(){
 	$post_types = jcf_get_post_types( 'object' );
+	$jcf_multisite_settings = jcf_get_multisite_settings();
 	
 	// edit page
 	if( !empty($_GET['pt']) && isset($post_types[ $_GET['pt'] ]) ){
 		jcf_admin_fields_page( $post_types[ $_GET['pt'] ] );
 		return;
 	}
-	global $jcf_multisite_settings;
+
 	// load template
 	include( JCF_ROOT . '/templates/settings_page.tpl.php' );
 }
@@ -222,7 +215,31 @@ function jcf_admin_add_styles() {
 	wp_enqueue_style('jcf-styles'); 
 }
 
+// get multisite settings
+function jcf_get_multisite_settings(){
+	if( MULTISITE ) {
+		$jcf_multisite_settings = get_site_option('jcf_multisite_setting');
+		if(!$jcf_multisite_settings){
+			$jcf_multisite_settings = 'global';
+		}
+	}else{
+		$jcf_multisite_settings = false;
+	}
+	return $jcf_multisite_settings;
+}
 
+// get options
+function jcf_get_options($key){
+	$jcf_multisite_settings = jcf_get_multisite_settings();
+	return $jcf_multisite_settings == 'global' ? get_site_option($key, array()) : get_option($key, array());
+}
+
+// update options
+function jcf_update_options($key, $value){
+	$jcf_multisite_settings = jcf_get_multisite_settings();
+	$jcf_multisite_settings == 'global' ? update_site_option($key, $value) : update_option($key, $value);
+	return true;
+}
 
 
 ?>
