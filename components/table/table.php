@@ -61,15 +61,9 @@ class Just_Field_Table extends Just_Field{
 								<span class="jcf_delete_row" >delete</span>
 							</td>
 						<?php endif; ?>
-						<?php foreach($col_names as $col_name => $col_title) : 
-							//if( !empty($entry[$col_name]) ) $col_title = esc_attr(@$entry[$col_name]);
-						?>
+						<?php foreach($col_names as $col_name => $col_title) : ?>
 							<?php if( $key == 0 ): ?>
-								<th><?php echo $col_name; ?>
-<!--									<input type="text" value="<?php //echo $col_title; ?>" 
-									id="<?php //echo $this->get_field_id_l2($col_name, $key); ?>" 
-									name="<?php //echo $this->get_field_name_l2($col_name, $key); ?> ">
-								</th>-->
+								<th><?php echo $col_name; ?>	</th>
 								<?php $first_td[] = '<td><input type="text" value="" 
 										id="' . $this->get_field_id_l2($col_name, '00') . '" 
 										name="' . $this->get_field_name_l2($col_name, '00') . '"></td>';
