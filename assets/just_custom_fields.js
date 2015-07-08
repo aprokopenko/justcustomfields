@@ -5,8 +5,8 @@ jQuery(document).ready(function(){
 	initFieldsetsEdit();
 	initAjaxBoxClose();
 	initFieldsetFields();
-	initMultisiteSettings();
-	initTabs();
+	//initMultisiteSettings();
+	//initTabs();
 
 })
 
@@ -15,7 +15,7 @@ jQuery(document).ready(function(){
  */
 function initTabs(){
 	jQuery('dl.jcf_tabs dt').click(function(){
-		jQuery(this).siblings().removeClass('jcf_selected').end().next('dd').andSelf().addClass('jcf_selected');
+		jQuery(this)./*siblings().*/removeClass('jcf_selected').end().next('dd').andSelf().addClass('jcf_selected');
 	});
 }
 

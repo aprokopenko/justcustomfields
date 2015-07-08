@@ -1,7 +1,7 @@
 <div class="wrap">
 	<dl class="jcf_tabs">
-		<dt class="jcf_selected"><?php _e('Fields', JCF_TEXTDOMAIN); ?></dt>
-		<dd class="jcf_selected">
+		<dt <?php echo ($jcf_tabs == 'fields' ? 'class="jcf_selected"' : '');?>><a href="?page=just_custom_fields&amp;tab=fields"><?php _e('Fields', JCF_TEXTDOMAIN); ?></a></dt>
+		<dd <?php echo ($jcf_tabs == 'fields' ? 'class="jcf_selected"' : '');?>>
 			<div class="jcf_tab-content">
 				<div class="jcf_inner-tab-content" >
 					<div class="icon32 icon32-posts-page" id="icon-edit"><br></div>
@@ -17,15 +17,15 @@
 				</div>
 			</div>
 		</dd>
-		<dt><?php _e('Settings', JCF_TEXTDOMAIN); ?></dt>
-		<dd>
+		<dt <?php echo ($jcf_tabs == 'settings' ? 'class="jcf_selected"' : '');?>><a href="?page=just_custom_fields&amp;tab=settings"><?php _e('Settings', JCF_TEXTDOMAIN); ?></a></dt>
+		<dd <?php echo ($jcf_tabs == 'settings' ? 'class="jcf_selected"' : '');?>>
 			<div class="jcf_tab-content">
 				<div class="jcf_inner-tab-content" >
 				<?php if( $jcf_multisite_settings ): ?>
 					<div class="jcf_inner_box">
 						<h3 class="header"><?php _e('MultiSite settings:', JCF_TEXTDOMAIN); ?></h3>
 						<div class="jcf_inner_content">
-							<form action="#" id="jcform_multisite_settings" method="post" class="jcf_form_horiz">
+							<form action="<?php get_permalink(); ?>" id="jcform_multisite_settings" method="post" class="jcf_form_horiz">
 								<fieldset>
 									<input type="radio" name="jcf_multisite_setting" id="jcf_setting_global" value="global" <?php echo $jcf_multisite_settings == 'global' ? 'checked="checked"' : ''; ?> />
 									<label for="jcf_setting_global"><?php _e('Make fields settings global for all network', JCF_TEXTDOMAIN); ?> </label><br />

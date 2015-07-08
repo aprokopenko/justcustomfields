@@ -68,7 +68,7 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_edit_field', 'jcf_ajax_edit_field');
 	add_action('wp_ajax_jcf_fields_order', 'jcf_ajax_fields_order');
 	add_action('wp_ajax_jcf_save_multisite_settings', 'jcf_ajax_save_multisite_settings');
-	
+
 	// add $post_type for ajax
 	if(!empty($_POST['post_type'])) jcf_set_post_type( $_POST['post_type'] );
 	
@@ -114,11 +114,25 @@ function jcf_admin_menu(){
 function jcf_admin_settings_page(){
 	$post_types = jcf_get_post_types( 'object' );
 	$jcf_multisite_settings = jcf_get_multisite_settings();
-	
+	$jcf_tabs = !isset($_GET['tab']) ? 'fields' : $_GET['tab'];
+
 	// edit page
 	if( !empty($_GET['pt']) && isset($post_types[ $_GET['pt'] ]) ){
 		jcf_admin_fields_page( $post_types[ $_GET['pt'] ] );
 		return;
+	}
+
+	if( !empty($_POST['jcf_update_settings']) ){
+		$new_multisite_setting =  trim($_POST['jcf_multisite_setting']);
+
+		if( $jcf_multisite_settings ){
+			$save_settings = update_site_option( 'jcf_multisite_setting', $new_multisite_setting );
+		}else{
+			$save_settings = add_site_option( 'jcf_multisite_setting', $new_multisite_setting );
+		}
+		$jcf_multisite_settings = jcf_get_multisite_settings();
+		add_action('admin_notices', 'jcf_admin_notice');
+		do_action('admin_notices', array('save_multisite_setting' => $save_settings));
 	}
 
 	// load template
@@ -241,5 +255,17 @@ function jcf_update_options($key, $value){
 	return true;
 }
 
+// admin notice
+function jcf_admin_notice($args){
+	if(!empty($args['save_multisite_setting'])){
+			echo '<div class="updated">
+					<p>Multisite settings was save</p>
+				</div>';
+	} else {
+		echo '<div class="updated error">
+				<p>Error! Multisite settings was not save</p>
+			</div>';
+	}
+}
 
 ?>
