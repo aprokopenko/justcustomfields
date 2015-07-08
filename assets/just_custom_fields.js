@@ -6,7 +6,18 @@ jQuery(document).ready(function(){
 	initAjaxBoxClose();
 	initFieldsetFields();
 	initMultisiteSettings();
+	initTabs();
+
 })
+
+/**
+ *	init tabs
+ */
+function initTabs(){
+	jQuery('dl.jcf_tabs dt').click(function(){
+		jQuery(this).siblings().removeClass('jcf_selected').end().next('dd').andSelf().addClass('jcf_selected');
+	});
+}
 
 /**
  *	init fieldset add box
