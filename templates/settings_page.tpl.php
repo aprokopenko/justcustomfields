@@ -21,7 +21,7 @@
 		<dd <?php echo ($jcf_tabs == 'settings' ? 'class="jcf_selected"' : '');?>>
 			<div class="jcf_tab-content">
 				<div class="jcf_inner-tab-content" >
-				<?php if( $jcf_multisite_settings ): ?>
+				<?php if( MULTISITE ): ?>
 					<h3 class="header"><?php _e('MultiSite settings:', JCF_TEXTDOMAIN); ?></h3>
 					<div class="jcf_inner_content">
 						<form action="<?php get_permalink(); ?>" id="jcform_multisite_settings" method="post" class="jcf_form_horiz">
