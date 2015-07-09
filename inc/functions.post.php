@@ -11,6 +11,7 @@
 		// get read settings
 		$jcf_read_settings = get_read_settings();
 		// get fieldsets
+
 		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$fieldsets = $jcf_settings['fieldsets'][$post_type];

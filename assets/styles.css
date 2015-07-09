@@ -102,14 +102,15 @@ form.jcform_add_field .ajax-feedback{
 	background:#FFFFF0;
 }
 
-<<<<<<< HEAD
+
 .jcf-export-list li{
 	padding-left: 20px;
 }
 .jcf_hide_field_settings{
 	display:none;
+
 }
-=======
+
 .jcf_tabs{
 	overflow:hidden;
 	margin:10px auto;
@@ -166,4 +167,3 @@ form.jcform_add_field .ajax-feedback{
 .jcf_inner-tab-content{
 	padding:20px;
 }
->>>>>>> 3439959_multisite_switch

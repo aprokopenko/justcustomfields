@@ -325,6 +325,7 @@ function jcf_admin_add_styles() {
 	wp_enqueue_style('jcf-styles'); 
 }
 
+
 // get all settings from db
 function jcf_get_all_settings_from_db(){
 	global $wpdb;
@@ -451,5 +452,4 @@ function get_read_settings(){
 function get_file_settings_name(){
 	return get_template_directory() . '/jcf-settings/jcf_settings.json';
 }
-
 ?>
