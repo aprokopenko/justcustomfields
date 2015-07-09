@@ -146,19 +146,6 @@ function initFieldsetsEdit(){
 		}
 
 	});
-	
-	jQuery('.jcf_choose_settings').change(function(){
-		var loader = jQuery(this).find('img.ajax-feedback');
-		var data = {
-			'action': 'jcf_update_read_settings',
-			'read_settings': jQuery(this).val()
-		};
-		jcf_ajax(data, 'html', loader, function(response){
-			window.location.reload();
-		});
-		
-	});
-
 }
 
 /**

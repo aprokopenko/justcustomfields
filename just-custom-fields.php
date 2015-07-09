@@ -73,8 +73,6 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_export_fields', 'jcf_ajax_export_fields');
 	add_action('wp_ajax_jcf_import_fields', 'jcf_ajax_import_fields');
 
-	add_action('wp_ajax_jcf_update_read_settings', 'jcf_ajax_update_read_settings');
-
 	add_action('admin_notices', 'jcf_admin_notice');
 	// add $post_type for ajax
 	if(!empty($_POST['post_type'])) jcf_set_post_type( $_POST['post_type'] );
@@ -119,7 +117,7 @@ function jcf_admin_menu(){
  */
 function jcf_admin_settings_page(){
 	$post_types = jcf_get_post_types( 'object' );
-	$jcf_read_settings = get_read_settings();
+	$jcf_read_settings = jcf_get_read_settings();
 	$jcf_multisite_settings = jcf_get_multisite_settings();
 	$jcf_tabs = !isset($_GET['tab']) ? 'fields' : $_GET['tab'];
 
@@ -134,19 +132,21 @@ function jcf_admin_settings_page(){
 		return;
 	}
 
-	if( isset($_GET['import']) ) {
+	if( $jcf_tabs == 'import_export' ) {
 		jcf_admin_import_page();
-		return;
 	}
 	
 	if( isset($_POST['keep_settings']) ) {
 		jcf_admin_keep_settings();
 	}
 
-	if( !empty($_POST['jcf_update_settings']) ){
-		$jcf_multisite_settings = jcf_save_multisite_settings($jcf_multisite_settings);
+	if( !empty($_POST['jcf_update_settings']) ) {
+		if( MULTISITE )
+		{
+			$jcf_multisite_settings = jcf_save_multisite_settings($jcf_multisite_settings);
+		}
+		$jcf_read_settings = jcf_update_read_settings();
 	}
-
 	// load template
 	include( JCF_ROOT . '/templates/settings_page.tpl.php' );
 }
@@ -156,8 +156,8 @@ function jcf_admin_settings_page(){
  */
 function jcf_admin_fields_page( $post_type ){
 	jcf_set_post_type( $post_type->name );
-	$jcf_read_settings = get_read_settings();
-	if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
+	$jcf_read_settings = jcf_get_read_settings();
+	if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
 		$jcf_settings = jcf_get_all_settings_from_file();
 		$key = $post_type->name;
 		$fieldsets = $jcf_settings['fieldsets'][$key];
@@ -175,36 +175,38 @@ function jcf_admin_fields_page( $post_type ){
  *	Keep settings in the file of theme
  */
 function jcf_admin_keep_settings(){
-	$jcf_read_settings = get_read_settings();
-	if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
-		echo _e('Error! Choose the reading option from database');
-	}else{
-		$jcf_settings = jcf_get_all_settings_from_db();
-		$post_types = $jcf_settings['post_types'];
-		$fieldsets =$jcf_settings['fieldsets'];
-		$field_settings = $jcf_settings['field_settings'];
+	$jcf_read_settings = jcf_get_read_settings();
+	$jcf_settings = jcf_get_all_settings_from_db();
+	$post_types = $jcf_settings['post_types'];
+	$fieldsets =$jcf_settings['fieldsets'];
+	$field_settings = $jcf_settings['field_settings'];
+	$settings_data = json_encode($jcf_settings);
+	$settings_dir = get_template_directory() . '/jcf-settings/';
 
-		$settings_data = json_encode($jcf_settings);
-
-		if( !is_dir(get_template_directory() . '/jcf-settings/') ){
-			if( mkdir(get_template_directory() . '/jcf-settings/') ){
+	if( !is_dir($settings_dir) ){
+		if( mkdir($settings_dir, 0777) ){
+			if( is_writable($settings_dir) ){
 				$save = jcf_admin_save_all_settings_in_file($settings_data);
+				$notice = $save ? array('notice' => '<strong>Theme config file</strong> has saved') : array('error' => 'Error! <strong>Theme config file</strong> has not saved. Check the writable rules');
+			}else{
+				$notice = array('error' => 'Error! Check the writable rules for ' . $settings_dir . ' directory ');
 			}
-		}else {
-			$save = jcf_admin_save_all_settings_in_file($settings_data);
+		} else {
+			$notice = array('error' => 'Error! <strong>Theme config file</strong> has not saved. Check the writable rules for ' . get_template_directory() . ' directory ');
 		}
-		if($save){
-			echo _e('The file is saved');
-		}
+	}else{
+		$save = jcf_admin_save_all_settings_in_file($settings_data);
+		$notice = $save ? array('notice' => '<strong>Theme config file</strong> has saved') : array('error' => 'Error! <strong>Theme config file</strong> has not saved. Check the writable rules');
 	}
+	do_action('admin_notices', $notice);
 }
 
 /**
  *	Export page
  */
 function jcf_admin_export_page(){
-	$jcf_read_settings = get_read_settings();
-	if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
+	$jcf_read_settings = jcf_get_read_settings();
+	if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
 		$jcf_settings = jcf_get_all_settings_from_file();
 	}else{
 		$jcf_settings = jcf_get_all_settings_from_db();
@@ -222,30 +224,29 @@ function jcf_admin_export_page(){
  *	Import page
  */
 function jcf_admin_import_page(){
-	if($_FILES['import_data']){
-		$path_info = pathinfo($_FILES['import_data']['name']);
+	if( !empty($_POST['import-btn']) ){
+		if(!empty($_FILES['import_data']['name']) ){
+			$path_info = pathinfo($_FILES['import_data']['name']);
 
-		if( $path_info['extension'] == 'json'){
-			$uploaddir = get_home_path() . "wp-content/uploads/";
-			$uploadfile = $uploaddir . basename($_FILES['import_data']['name']);
+			if( $path_info['extension'] == 'json'){
+				$uploaddir = get_home_path() . "wp-content/uploads/";
+				$uploadfile = $uploaddir . basename($_FILES['import_data']['name']);
 
-			if ( copy($_FILES['import_data']['tmp_name'], $uploadfile) ){
-				$post_types = jcf_get_settings_from_file($uploadfile);
+				if ( copy($_FILES['import_data']['tmp_name'], $uploadfile) ){
+					$import_data = jcf_get_settings_from_file($uploadfile);
+					$save = jcf_admin_save_settings_in_db($import_data);
+					$notice = $save ? array('notice' => 'Import was success, all fields was imported') : array('error' => 'Import was not success' );
+				}else{
+					$notice = array('error' => 'Error! The file has not loaded!');
+				}
 			}else{
-				echo "<h3>Error! The file wasn't loaded!</h3>";
+				$notice = array('error' => 'Error! Check extension of the file!');
 			}
 		}else{
-			echo "<h3>Error! Check extension of the file!</h3>";
-		}
-	}else{
-		if( $_POST['save_import'] ){
-			$import_data = $_POST['import_data'];
-			jcf_admin_save_settings_in_db($import_data);
+			$notice = array('error' => 'Error! The file is empty!');
 		}
 	}
-
-	// load template
-	include( JCF_ROOT . '/templates/import.tpl.php' );
+	do_action('admin_notices', $notice);
 }
 
 /**
@@ -407,7 +408,6 @@ function jcf_admin_save_settings_in_db($data){
 				}
 			}
 			if( !empty($status_fieldset) ){
-				echo 'Import was success, all fields was imported';
 				if( $_POST['file_name'] ){
 					unlink($_POST['file_name']);
 				}
@@ -443,7 +443,7 @@ function jcf_admin_notice($args = array()){
 }
 
 // get read sttings
-function get_read_settings(){
+function jcf_get_read_settings(){
 	$jcf_read_settings = get_option('jcf_read_settings');
 	return $jcf_read_settings;
 }
@@ -451,5 +451,20 @@ function get_read_settings(){
 // get file name for all settings
 function get_file_settings_name(){
 	return get_template_directory() . '/jcf-settings/jcf_settings.json';
+}
+
+// update read settings
+function jcf_update_read_settings(){
+	$read_settings = $_POST['jcf_read_settings'];
+	$jcf_read_settings = jcf_get_read_settings();
+	if( !empty($jcf_read_settings) ){
+		$save = update_option('jcf_read_settings', $read_settings);
+		$notice = $save ? array('notice' => '<strong>Saving method</strong> has changed') : array('notice' => 'Error! <strong>Saving method</strong> has not changed. You chose the same method');
+	}else{
+		$save = add_option('jcf_read_settings', $read_settings);
+		$notice = $save ? array('notice' => '<strong>Saving method</strong> has saved') : array('notice' => 'Error! <strong>Saving method</strong> has not saved.');
+	}
+	do_action('admin_notices', $notice);
+	return $read_settings;
 }
 ?>

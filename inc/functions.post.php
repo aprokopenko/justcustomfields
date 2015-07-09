@@ -9,10 +9,10 @@
 		jcf_set_post_type($post_type);
 		
 		// get read settings
-		$jcf_read_settings = get_read_settings();
+		$jcf_read_settings = jcf_get_read_settings();
 		// get fieldsets
 
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
+		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$fieldsets = $jcf_settings['fieldsets'][$post_type];
 		} else {
@@ -104,8 +104,8 @@
 		jcf_set_post_type( $_POST['post_type'] );
 
 		// get read settings
-		$jcf_read_settings = get_read_settings();
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
+		$jcf_read_settings = jcf_get_read_settings();
+		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$post_type = jcf_get_post_type();
 			$fieldsets = $jcf_settings['fieldsets'][$post_type];

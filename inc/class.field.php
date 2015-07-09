@@ -246,8 +246,8 @@ class Just_Field{
 		/// update fieldset
 		$option_name_fieldsets = !empty($option_name) ? 'jcf_fieldsets-'.$option_name : '';
 
-		$jcf_read_settings = get_read_settings();
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
+		$jcf_read_settings = jcf_get_read_settings();
+		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$post_type = jcf_get_post_type();
 			$fieldset_id = $this->fieldset_id;
@@ -294,8 +294,8 @@ class Just_Field{
 	 *	function to delete field from the database
 	 */
 	function do_delete(){
-		$jcf_read_settings = get_read_settings();
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'file' ){
+		$jcf_read_settings = jcf_get_read_settings();
+		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$post_type = jcf_get_post_type();
 			$fieldset_id = $this->fieldset_id;
