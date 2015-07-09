@@ -14,6 +14,7 @@ define('JCF_ROOT', dirname(__FILE__));
 define('JCF_TEXTDOMAIN', 'just-custom-fields');
 define('JCF_VERSION', 1.41);
 
+require_once( JCF_ROOT.'/inc/functions.multisite.php' );
 require_once( JCF_ROOT.'/inc/class.field.php' );
 require_once( JCF_ROOT.'/inc/functions.fieldset.php' );
 require_once( JCF_ROOT.'/inc/functions.fields.php' );
@@ -73,7 +74,8 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_import_fields', 'jcf_ajax_import_fields');
 
 	add_action('wp_ajax_jcf_update_read_settings', 'jcf_ajax_update_read_settings');
-	
+
+	add_action('admin_notices', 'jcf_admin_notice');
 	// add $post_type for ajax
 	if(!empty($_POST['post_type'])) jcf_set_post_type( $_POST['post_type'] );
 	
@@ -118,6 +120,9 @@ function jcf_admin_menu(){
 function jcf_admin_settings_page(){
 	$post_types = jcf_get_post_types( 'object' );
 	$jcf_read_settings = get_read_settings();
+	$jcf_multisite_settings = jcf_get_multisite_settings();
+	$jcf_tabs = !isset($_GET['tab']) ? 'fields' : $_GET['tab'];
+
 	// edit page
 	if( !empty($_GET['pt']) && isset($post_types[ $_GET['pt'] ]) ){
 		jcf_admin_fields_page( $post_types[ $_GET['pt'] ] );
@@ -138,6 +143,9 @@ function jcf_admin_settings_page(){
 		jcf_admin_keep_settings();
 	}
 
+	if( !empty($_POST['jcf_update_settings']) ){
+		$jcf_multisite_settings = jcf_save_multisite_settings($jcf_multisite_settings);
+	}
 
 	// load template
 	include( JCF_ROOT . '/templates/settings_page.tpl.php' );
@@ -409,6 +417,30 @@ function jcf_admin_save_settings_in_db($data){
 	return true;
 }
 
+// get options
+function jcf_get_options($key){
+	$jcf_multisite_settings = jcf_get_multisite_settings();
+	return $jcf_multisite_settings == 'network' ? get_site_option($key, array()) : get_option($key, array());
+}
+
+// update options
+function jcf_update_options($key, $value){
+	$jcf_multisite_settings = jcf_get_multisite_settings();
+	$jcf_multisite_settings == 'network' ? update_site_option($key, $value) : update_option($key, $value);
+	return true;
+}
+
+// admin notice
+function jcf_admin_notice($args = array()){
+	if(!empty($args))
+	{
+		foreach($args as $key => $value)
+		{
+			echo '<div class="updated ' . $key . '"><p>' . $value . '</p></div>';
+		}
+	}
+}
+
 // get read sttings
 function get_read_settings(){
 	$jcf_read_settings = get_option('jcf_read_settings');
@@ -419,4 +451,5 @@ function get_read_settings(){
 function get_file_settings_name(){
 	return get_template_directory() . '/jcf-settings/jcf_settings.json';
 }
+
 ?>

@@ -41,7 +41,7 @@
 			$option_name = jcf_fields_get_option_name();
 		}
 
-		$field_settings = get_option($option_name, array());
+		$field_settings = jcf_get_options($option_name);
 		if( $values === NULL && isset($field_settings[$key]) ){
 			unset($field_settings[$key]);
 		}
@@ -50,7 +50,7 @@
 			$field_settings[$key] = $values;
 		}
 		
-		update_option($option_name, $field_settings);
+		jcf_update_options($option_name, $field_settings);
 	}
 	
 	/**
@@ -66,7 +66,7 @@
 			$post_type =  str_replace('jcf_fields-', '', $option_name);
 			$field_settings = $jcf_settings['field_settings'][$post_type];
 		}else{
-			$field_settings = get_option($option_name, array());
+			$field_settings = jcf_get_options($option_name);
 		}
 		
 		if(!empty($id)){
@@ -96,8 +96,9 @@
 	 * get next index for save new instance
 	 */
 	function jcf_get_fields_index( $id_base ){
+
 		$option_name = 'jcf_fields_index';
-		$indexes = get_option($option_name, array());
+		$indexes = jcf_get_options($option_name);
 		
 		// get index, increase on 1
 		$index = (int)@$indexes[$id_base];
@@ -105,7 +106,7 @@
 		
 		// update indexes
 		$indexes[$id_base] = $index;
-		update_option($option_name, $indexes);
+		jcf_update_options($option_name, $indexes);
 		
 		return $index;
 	}

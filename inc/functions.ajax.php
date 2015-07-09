@@ -218,7 +218,7 @@
 		echo $resp;
 		exit();
 	}
-	
+
 	// update read settings
 	function jcf_ajax_update_read_settings(){
 		$read_settings = $_POST['read_settings'];
@@ -245,5 +245,4 @@
 			exit();
 		}
 	}
-
 ?>
