@@ -10,7 +10,6 @@
 		
 		// get fieldsets
 		$fieldsets = jcf_fieldsets_get();
-		
 		// remove fieldsets without fields
 		foreach($fieldsets as $f_id => $fieldset){
 			// check $enabled; add custom js/css for components

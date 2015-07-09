@@ -67,8 +67,6 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_delete_field', 'jcf_ajax_delete_field');
 	add_action('wp_ajax_jcf_edit_field', 'jcf_ajax_edit_field');
 	add_action('wp_ajax_jcf_fields_order', 'jcf_ajax_fields_order');
-	add_action('wp_ajax_jcf_save_multisite_settings', 'jcf_ajax_save_multisite_settings');
-
 	// add $post_type for ajax
 	if(!empty($_POST['post_type'])) jcf_set_post_type( $_POST['post_type'] );
 	
@@ -123,16 +121,8 @@ function jcf_admin_settings_page(){
 	}
 
 	if( !empty($_POST['jcf_update_settings']) ){
-		$new_multisite_setting =  trim($_POST['jcf_multisite_setting']);
-
-		if( $jcf_multisite_settings ){
-			$save_settings = update_site_option( 'jcf_multisite_setting', $new_multisite_setting );
-		}else{
-			$save_settings = add_site_option( 'jcf_multisite_setting', $new_multisite_setting );
-		}
+		jcf_save_multisite_settings($jcf_multisite_settings);
 		$jcf_multisite_settings = jcf_get_multisite_settings();
-		add_action('admin_notices', 'jcf_admin_notice');
-		do_action('admin_notices', array('save_multisite_setting' => $save_settings));
 	}
 
 	// load template
@@ -231,41 +221,47 @@ function jcf_admin_add_styles() {
 
 // get multisite settings
 function jcf_get_multisite_settings(){
-	if( MULTISITE ) {
-		$jcf_multisite_settings = get_site_option('jcf_multisite_setting');
-		if(!$jcf_multisite_settings){
-			$jcf_multisite_settings = 'global';
-		}
-	}else{
-		$jcf_multisite_settings = false;
+	if( MULTISITE && $multisite_setting = get_site_option('jcf_multisite_setting'))
+	{
+		return $multisite_setting;
 	}
-	return $jcf_multisite_settings;
+	return 'site';
 }
 
 // get options
 function jcf_get_options($key){
 	$jcf_multisite_settings = jcf_get_multisite_settings();
-	return $jcf_multisite_settings == 'global' ? get_site_option($key, array()) : get_option($key, array());
+	return $jcf_multisite_settings == 'network' ? get_site_option($key, array()) : get_option($key, array());
 }
 
 // update options
 function jcf_update_options($key, $value){
 	$jcf_multisite_settings = jcf_get_multisite_settings();
-	$jcf_multisite_settings == 'global' ? update_site_option($key, $value) : update_option($key, $value);
+	$jcf_multisite_settings == 'network' ? update_site_option($key, $value) : update_option($key, $value);
 	return true;
 }
 
 // admin notice
 function jcf_admin_notice($args){
-	if(!empty($args['save_multisite_setting'])){
-			echo '<div class="updated">
-					<p>Multisite settings was save</p>
-				</div>';
+	if( !empty($args['save_multisite_setting']) ){
+		echo '<div class="updated"><p>Multisite settings has changed</p></div>';
 	} else {
-		echo '<div class="updated error">
-				<p>Error! Multisite settings was not save</p>
-			</div>';
+		echo '<div class="updated error"><p>Settings remained the same</p></div>';
 	}
 }
+
+// save miltisite settings from the form
+function jcf_save_multisite_settings($settings){
+	$new_multisite_setting =  trim($_POST['jcf_multisite_setting']);
+
+	if( $settings ){
+		$save_settings = update_site_option( 'jcf_multisite_setting', $new_multisite_setting );
+	}else{
+		$save_settings = add_site_option( 'jcf_multisite_setting', $new_multisite_setting );
+	}
+	add_action('admin_notices', 'jcf_admin_notice');
+	do_action('admin_notices', array('save_multisite_setting' => $save_settings));
+}
+
 
 ?>
