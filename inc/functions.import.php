@@ -12,7 +12,7 @@
 		}
 
 		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$post_type = !empty($option_name) ? $option_name :  jcf_get_post_type();
 			$fieldsets = $jcf_settings['fieldsets'][$post_type];
@@ -32,7 +32,7 @@
 			'title' => $title,
 			'fields' => array(),
 		);
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
 			$jcf_settings['fieldsets'][$post_type][$slug] = $fieldset;
 			$settings_data = json_encode($jcf_settings);
 			 jcf_admin_save_all_settings_in_file($settings_data);

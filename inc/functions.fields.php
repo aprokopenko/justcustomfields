@@ -62,7 +62,7 @@
 		}
 		if(empty($select_from_db)){
 			$jcf_read_settings = jcf_get_read_settings();
-			if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
+			if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
 				$jcf_settings = jcf_get_all_settings_from_file();
 				$post_type =  str_replace('jcf_fields-', '', $option_name);
 				$field_settings = $jcf_settings['field_settings'][$post_type];

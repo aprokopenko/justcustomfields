@@ -16,7 +16,7 @@
 			$slug = sanitize_title( $title );
 		}
 		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$post_type = jcf_get_post_type();
 			$fieldsets = $jcf_settings['fieldsets'][$post_type];
@@ -37,7 +37,7 @@
 			'title' => $title,
 			'fields' => array(),
 		);
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
 			$jcf_settings['fieldsets'][$post_type][$slug] = $fieldset;
 			$settings_data = json_encode($jcf_settings);
 			 jcf_admin_save_all_settings_in_file($settings_data);
@@ -54,7 +54,7 @@
 			//jcf_ajax_reposnse( array('status' => "0", 'error'=>__('Wrong params passed.', JCF_TEXTDOMAIN)) );
 		}
 		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$key = jcf_get_post_type();
 			unset($jcf_settings['fieldsets'][$key][$f_id]);
@@ -71,7 +71,7 @@
 	function jcf_ajax_change_fieldset(){
 		$f_id = $_POST['fieldset_id'];
 		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$key = jcf_get_post_type();
 			$fieldsets = $jcf_settings['fieldsets'][$key];
@@ -115,7 +115,7 @@
 	function jcf_ajax_update_fieldset(){
 		$f_id = $_POST['fieldset_id'];
 		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$key = jcf_get_post_type();
 			$fieldsets = $jcf_settings['fieldsets'][$key];
@@ -133,7 +133,7 @@
 			jcf_ajax_reposnse( array('status' => "0", 'error'=>__('Title field is required.', JCF_TEXTDOMAIN)) );
 		}
 
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
 			$jcf_settings['fieldsets'][$key][$f_id]['title'] = $title;
 			$settings_data = json_encode($jcf_settings);
 			jcf_admin_save_all_settings_in_file($settings_data);

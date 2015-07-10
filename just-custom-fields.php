@@ -168,7 +168,7 @@ function jcf_admin_settings_page(){
 function jcf_admin_fields_page( $post_type ){
 	jcf_set_post_type( $post_type->name );
 	$jcf_read_settings = jcf_get_read_settings();
-	if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
+	if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
 		$jcf_settings = jcf_get_all_settings_from_file();
 		$key = $post_type->name;
 		$fieldsets = $jcf_settings['fieldsets'][$key];
@@ -386,10 +386,22 @@ function jcf_get_settings_from_file($uploadfile){
 
 // save settings to file
 function jcf_admin_save_all_settings_in_file($data){
-	$fp = fopen(get_template_directory() . '/jcf-settings/jcf_settings.json', 'w');
-	$content = $data . "\r\n";
-	$fw = fwrite($fp, $content);
-	fclose($fp);
+	$jcf_read_settings = jcf_get_read_settings();
+	if( !empty($jcf_read_settings)){
+		if ($jcf_read_settings == 'theme' ){
+			$fp = fopen(get_template_directory() . '/jcf-settings/jcf_settings.json', 'w');
+			$content = $data . "\r\n";
+			$fw = fwrite($fp, $content);
+			fclose($fp);
+		}elseif($jcf_read_settings == 'global'){
+			$fp = fopen(get_home_path() . 'wp-content/jcf-settings/jcf_settings.json', 'w');
+			$content = $data . "\r\n";
+			$fw = fwrite($fp, $content);
+			fclose($fp);
+		}else{
+			$fw = false;
+		}
+	}
 	if($fw){
 		return true;
 	}else{
@@ -420,9 +432,9 @@ function jcf_admin_save_settings($data){
 						foreach($fieldset['fields'] as $field_id => $field){
 							$slug_checking = !empty($old_slugs) ? in_array($field['slug'], $old_slugs) : false;
 							if($slug_checking){
-								//$status_field = jcf_import_add_field($old_field_ids[$field['slug']], $fieldset_id, $field, $key );
+								$status_field = jcf_import_add_field($old_field_ids[$field['slug']], $fieldset_id, $field, $key );
 							}else{
-								//$status_field = jcf_import_add_field($field_id, $fieldset_id, $field, $key );
+								$status_field = jcf_import_add_field($field_id, $fieldset_id, $field, $key );
 							}
 						}
 					}
@@ -436,7 +448,7 @@ function jcf_admin_save_settings($data){
 			}
 		}
 	}
-	return true;
+	return $status_fieldset;
 }
 
 // get options
@@ -465,7 +477,8 @@ function jcf_admin_notice($args = array()){
 
 // get read sttings
 function jcf_get_read_settings(){
-	$jcf_read_settings = get_option('jcf_read_settings');
+	$multisite_setting = jcf_get_multisite_settings();
+	$jcf_read_settings = $multisite_setting == 'network' ? get_site_option('jcf_read_settings') : get_option('jcf_read_settings') ;
 	return $jcf_read_settings;
 }
 	
@@ -481,16 +494,23 @@ function jcf_get_file_settings_name(){
 
 // update read settings
 function jcf_update_read_settings(){
-	$read_settings = $_POST['jcf_read_settings'];
 	$jcf_read_settings = jcf_get_read_settings();
-	if( !empty($jcf_read_settings) ){
-		$save = update_option('jcf_read_settings', $read_settings);
-		$notice = $save ? array('notice' => '<strong>Saving method</strong> has changed') : array('notice' => 'Error! <strong>Saving method</strong> has not changed. You chose the same method');
+	$read_settings = $_POST['jcf_read_settings'];
+	if($_POST['jcf_multisite_setting'] != 'network' && $read_settings == 'global' ){
+		$notice = array('error' => 'Error! <strong>Saving method</strong> has not saved. Please change the <strong>multisite setting</strong> on "Make fields settings global for all network"');
+		do_action('admin_notices', $notice);
+		return $jcf_read_settings;
 	}else{
-		$save = add_option('jcf_read_settings', $read_settings);
-		$notice = $save ? array('notice' => '<strong>Saving method</strong> has saved') : array('notice' => 'Error! <strong>Saving method</strong> has not saved.');
+		$multisite_setting = $_POST['jcf_multisite_setting'];
+		if( !empty($jcf_read_settings) ){
+			$save = $multisite_setting == 'network' ? update_site_option('jcf_read_settings', $read_settings) : update_option('jcf_read_settings', $read_settings);
+			$notice = $save ? array('notice' => '<strong>Saving method</strong> has changed') : array();
+		}else{
+			$save = $multisite_setting == 'network' ? add_site_option('jcf_read_settings', $read_settings) : add_option('jcf_read_settings', $read_settings);
+			$notice = $save ? array('notice' => '<strong>Saving method</strong> has saved') : array();
+		}
+		do_action('admin_notices', $notice);
+		return $read_settings;
 	}
-	do_action('admin_notices', $notice);
-	return $read_settings;
 }
 ?>

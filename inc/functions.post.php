@@ -12,7 +12,7 @@
 		$jcf_read_settings = jcf_get_read_settings();
 		// get fieldsets
 
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$fieldsets = $jcf_settings['fieldsets'][$post_type];
 		} else {
@@ -62,7 +62,7 @@
 			if( !$enabled ) continue;
 
 			$field_obj = jcf_init_field_object($field_id, $fieldset['id']);
-			if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
+			if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
 				$jcf_settings = jcf_get_all_settings_from_file();
 				$post_type = jcf_get_post_type();
 				$field_obj->entry = $jcf_settings['field_options'][$post_type][$post->ID][$field_obj->slug];
@@ -112,7 +112,7 @@
 
 		// get read settings
 		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$post_type = jcf_get_post_type();
 			$fieldsets = $jcf_settings['fieldsets'][$post_type];

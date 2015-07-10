@@ -37,9 +37,9 @@
 
 							<h3 class="header"><?php _e('Saving method:', JCF_TEXTDOMAIN); ?></h3>
 							<input type="radio" class="jcf_choose_settings" name="jcf_read_settings" value="db" id="jcf_read_db" <?php echo (empty($jcf_read_settings) || $jcf_read_settings == 'db' ? 'checked="checked"' : '');  ?>/><label for="jcf_read_db">Database. You can't edit or move settings without export/import features (default)</label><br />
-							<input type="radio" rel="" class="jcf_choose_settings" name="jcf_read_settings" value="theme" id="jcf_read_file" <?php echo (!empty($jcf_read_settings) && $jcf_read_settings == 'theme' ? 'checked="checked"' : ''); ?>/><label for="jcf_read_file">File system: Current theme folder. Field configuration is saved to the current theme folder in json format and can be copied to another site easily.</label><br /><br />
+							<input type="radio" rel="" class="jcf_choose_settings" name="jcf_read_settings" value="theme" id="jcf_read_file" <?php echo (!empty($jcf_read_settings) && $jcf_read_settings == 'theme' ? 'checked="checked"' : ''); ?>/><label for="jcf_read_file">File system: Current theme folder. Field configuration is saved to the current theme folder in json format and can be copied to another site easily.</label><br />
 							<?php if( MULTISITE && $jcf_multisite_settings == 'network' ) :?>
-								<input type="radio" rel="" class="jcf_choose_settings" name="jcf_read_settings" value="global" id="jcf_read_file" <?php echo (!empty($jcf_read_settings) && $jcf_read_settings == 'global' ? 'checked="checked"' : ''); ?>/><label for="jcf_read_file">File system: Global (/wp-content/jcf-settings). Field configuration is saved to the wp-content folder in json format and can be copied to another site easily.</label><br /><br />
+								<input type="radio" rel="" class="jcf_choose_settings" name="jcf_read_settings" value="global" id="jcf_read_file_global" <?php echo (!empty($jcf_read_settings) && $jcf_read_settings == 'global' ? 'checked="checked"' : ''); ?>/><label for="jcf_read_file_global">File system: Global (/wp-content/jcf-settings). Field configuration is saved to the wp-content folder in json format and can be copied to another site easily.</label><br />
 							<?php endif;?>
 							<br /><br />
 							<br /><br />

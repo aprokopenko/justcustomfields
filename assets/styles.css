@@ -170,3 +170,10 @@ form.jcform_add_field .ajax-feedback{
 	padding:20px;
 	overflow: auto;
 }
+.jcf_tab-content input, .jcf_tab-content label{
+	margin-bottom: 10px;
+
+}
+.jcf_tab-content label{
+	display: inline-block;
+}
