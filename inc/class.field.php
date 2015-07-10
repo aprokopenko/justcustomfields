@@ -49,7 +49,7 @@ class Just_Field{
 	 *	load instance and entries for this field
 	 *	@param  string  $id  field id (cosist of id_base + number)
 	 */
-	function set_id( $id ){
+	function set_id( $id, $option_name = '' ){
 		$this->id = $id;
 		// this is add request. so number is 0
 		if( $this->id == $this->id_base ){
@@ -61,7 +61,7 @@ class Just_Field{
 			$this->number = str_replace($this->id_base.'-', '', $this->id);
 
 			// load instance data
-			$this->instance =(array)jcf_field_settings_get( $this->id );
+			$this->instance =(array)jcf_field_settings_get( $this->id, $option_name );
 			if( !empty($this->instance) ){
 				$this->slug = $this->instance['slug'];
 			}
@@ -249,11 +249,10 @@ class Just_Field{
 		$jcf_read_settings = jcf_get_read_settings();
 		if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
 			$jcf_settings = jcf_get_all_settings_from_file();
-			$post_type = jcf_get_post_type();
+			$post_type = !empty($option_name) ? $option_name : jcf_get_post_type();
 			$fieldset_id = $this->fieldset_id;
 			$field_id = $this->id;
 			$jcf_settings['fieldsets'][$post_type][$fieldset_id]['fields'][$field_id] = $instance['enabled'];
-
 			// check slug field
 			if( empty($instance['slug']) ){
 				$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;

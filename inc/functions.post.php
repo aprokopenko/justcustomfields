@@ -56,12 +56,19 @@
 	 */
 	function jcf_post_show_custom_fields( $post = NULL, $box = NULL ){
 		$fieldset = $box['args'][0];
+		$jcf_read_settings = jcf_get_read_settings();
 
 		foreach($fieldset['fields'] as $field_id => $enabled){
 			if( !$enabled ) continue;
-			
+
 			$field_obj = jcf_init_field_object($field_id, $fieldset['id']);
-			$field_obj->set_post_ID( $post->ID );
+			if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
+				$jcf_settings = jcf_get_all_settings_from_file();
+				$post_type = jcf_get_post_type();
+				$field_obj->entry = $jcf_settings['field_options'][$post_type][$post->ID][$field_obj->slug];
+			}else{
+				$field_obj->set_post_ID( $post->ID );
+			}
 
 			echo '<div id="jcf_field-'.$field_id.'" class="jcf_edit_field ' . $field_obj->field_options['classname'] . '">'."\r\n";
 

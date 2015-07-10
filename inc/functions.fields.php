@@ -60,7 +60,7 @@
 		if(empty( $option_name )){
 			$option_name = jcf_fields_get_option_name();
 		}
-		if(!$select_from_db){
+		if(empty($select_from_db)){
 			$jcf_read_settings = jcf_get_read_settings();
 			if( !empty($jcf_read_settings) && $jcf_read_settings == 'theme' ){
 				$jcf_settings = jcf_get_all_settings_from_file();
@@ -83,7 +83,7 @@
 	/**
 	 *	init field object
 	 */
-	function jcf_init_field_object( $field_mixed, $fieldset_id = '' ){
+	function jcf_init_field_object( $field_mixed, $fieldset_id = '', $option_name = '' ){
 		// $field_mixed can be real field id or only id_base
 		$id_base = preg_replace('/\-([0-9]+)/', '', $field_mixed);
 		$field = jcf_get_registered_fields( $id_base );
@@ -91,7 +91,7 @@
 		$field_obj = new $field['class_name']();
 
 		$field_obj->set_fieldset( $fieldset_id );
-		$field_obj->set_id( $field_mixed );
+		$field_obj->set_id( $field_mixed, $option_name );
 
 		return $field_obj;
 	}

@@ -1,6 +1,6 @@
 <div class="wrap">
 	<dl class="jcf_tabs">
-		<a href="?page=just_custom_fields&amp;tab=fields"><dt <?php echo ($jcf_tabs == 'fields' ? 'class="jcf_selected"' : '');?>><?php _e('Fields', JCF_TEXTDOMAIN); ?></dt></a>
+		<a href="?page=just_custom_fields&amp;tab=fields" class="jcf_tabs_link"><dt <?php echo ($jcf_tabs == 'fields' ? 'class="jcf_selected"' : '');?>><?php _e('Fields', JCF_TEXTDOMAIN); ?></dt></a>
 		<dd <?php echo ($jcf_tabs == 'fields' ? 'class="jcf_selected"' : '');?>>
 			<div class="jcf_tab-content">
 				<div class="jcf_inner-tab-content" >
@@ -8,19 +8,17 @@
 						<div class="icon32 icon32-posts-page" id="icon-edit"><br></div>
 						<h3><?php _e('Just Custom Fields', JCF_TEXTDOMAIN); ?></h3>
 						<p><?php _e('You should choose Custom Post Type first to configure fields:', JCF_TEXTDOMAIN); ?></p>
-						<div class="jcf_columns jcf_width66p">
-							<ul class="dotted-list jcf-bold">
-							<?php foreach($post_types as $key => $obj) : ?>
-								<li><a href="?page=just_custom_fields&amp;pt=<?php echo $key; ?>"><?php echo $obj->label; ?></a></li>
-							<?php endforeach; ?>
-							</ul>
-							<input type="submit" name="keep_settings" value="<?php _e('Insert settings to file', JCF_TEXTDOMAIN); ?>" class="button-primary"  />
-						</div>
+						<ul class="dotted-list jcf-bold">
+						<?php foreach($post_types as $key => $obj) : ?>
+							<li><a href="?page=just_custom_fields&amp;pt=<?php echo $key; ?>"><?php echo $obj->label; ?></a></li>
+						<?php endforeach; ?>
+						</ul>
+						<input type="submit" name="keep_settings" value="<?php _e('Insert settings from db to file', JCF_TEXTDOMAIN); ?>" class="button-primary"  />
 					</form>
 				</div>
 			</div>
 		</dd>
-		<a href="?page=just_custom_fields&amp;tab=settings"><dt <?php echo ($jcf_tabs == 'settings' ? 'class="jcf_selected"' : '');?>><?php _e('Settings', JCF_TEXTDOMAIN); ?></dt></a>
+		<a href="?page=just_custom_fields&amp;tab=settings" class="jcf_tabs_link"><dt <?php echo ($jcf_tabs == 'settings' ? 'class="jcf_selected"' : '');?>><?php _e('Settings', JCF_TEXTDOMAIN); ?></dt></a>
 		<dd <?php echo ($jcf_tabs == 'settings' ? 'class="jcf_selected"' : '');?>>
 			<div class="jcf_tab-content">
 				<div class="jcf_inner-tab-content" >
@@ -40,7 +38,7 @@
 							<h3 class="header"><?php _e('Saving method:', JCF_TEXTDOMAIN); ?></h3>
 							<input type="radio" class="jcf_choose_settings" name="jcf_read_settings" value="db" id="jcf_read_db" <?php echo (empty($jcf_read_settings) || $jcf_read_settings == 'db' ? 'checked="checked"' : '');  ?>/><label for="jcf_read_db">Database. You can't edit or move settings without export/import features (default)</label><br />
 							<input type="radio" rel="" class="jcf_choose_settings" name="jcf_read_settings" value="theme" id="jcf_read_file" <?php echo (!empty($jcf_read_settings) && $jcf_read_settings == 'theme' ? 'checked="checked"' : ''); ?>/><label for="jcf_read_file">File system: Current theme folder. Field configuration is saved to the current theme folder in json format and can be copied to another site easily.</label><br /><br />
-							<?php if( MULTISITE ) :?>
+							<?php if( MULTISITE && $jcf_multisite_settings == 'network' ) :?>
 								<input type="radio" rel="" class="jcf_choose_settings" name="jcf_read_settings" value="global" id="jcf_read_file" <?php echo (!empty($jcf_read_settings) && $jcf_read_settings == 'global' ? 'checked="checked"' : ''); ?>/><label for="jcf_read_file">File system: Global (/wp-content/jcf-settings). Field configuration is saved to the wp-content folder in json format and can be copied to another site easily.</label><br /><br />
 							<?php endif;?>
 							<br /><br />
@@ -51,7 +49,7 @@
 				</div>
 			</div>
 		</dd>
-		<a href="?page=just_custom_fields&amp;tab=import_export"><dt <?php echo ($jcf_tabs == 'import_export' ? 'class="jcf_selected"' : '');?>><?php _e('Import/Export', JCF_TEXTDOMAIN); ?></dt></a>
+		<a href="?page=just_custom_fields&amp;tab=import_export" class="jcf_tabs_link"><dt <?php echo ($jcf_tabs == 'import_export' ? 'class="jcf_selected"' : '');?>><?php _e('Import/Export', JCF_TEXTDOMAIN); ?></dt></a>
 		<dd <?php echo ($jcf_tabs == 'import_export' ? 'class="jcf_selected"' : '');?>>
 			<div class="jcf_tab-content">
 				<div class="jcf_inner-tab-content" >

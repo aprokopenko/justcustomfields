@@ -118,6 +118,9 @@ form.jcform_add_field .ajax-feedback{
 	padding:1px;
 	position:relative;
 }
+.jcf_tabs dl a.jcf_tabs_link:hover{
+	text-decoration: none;
+}
 .jcf_tabs dt{
 	border:1px solid #BABABA;
 	border-bottom:none;
@@ -136,7 +139,6 @@ form.jcform_add_field .ajax-feedback{
 }
 .jcf_tabs dt:hover{
 	background-color:#ffffff;
-	text-decoration:underline;
 }
 .jcf_tabs dt.jcf_selected{
 	background:#F1F1F1;
@@ -166,4 +168,5 @@ form.jcform_add_field .ajax-feedback{
 }
 .jcf_inner-tab-content{
 	padding:20px;
+	overflow: auto;
 }

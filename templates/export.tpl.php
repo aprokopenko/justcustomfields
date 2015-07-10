@@ -10,24 +10,30 @@
 		<?php foreach($post_types as $key => $post_type) : ?>
 			<li><input type="checkbox" name="export_data[<?php echo $key; ?>]" value="<?php echo $key; ?>" class="jcf_post_type" id="jcf_post_type_<?php echo $key; ?>" /><label for="jcf_post_type_<?php echo $key; ?>"><?php echo is_array($post_type) ? $post_type['label'] : $post_type->label; ?></label>
 				<ul>
+				<?php if( !empty($fieldsets[$key]) ):?>
 				<?php foreach($fieldsets[$key] as $fieldset): ?>
 					<li><input type="checkbox" name="export_data[<?php echo $key; ?>][fieldsets][<?php echo $fieldset['id']; ?>][title]" value="<?php echo $fieldset['title']; ?>" class="jcf_fieldset" id="jcf_fieldset_<?php echo $fieldset['id']; ?>" /><label for="jcf_fieldset_<?php echo $fieldset['id']; ?>"><?php echo 'fieldset: ' . $fieldset['title']; ?></label>
 						<ul>
+							<?php if( !empty($fieldset['fields']) ):?>
 							<?php foreach ($fieldset['fields'] as $field_id => $enabled): ?>
 							<li>
 								<input type="checkbox" name="export_data[<?php echo $key; ?>][fieldsets][<?php echo $fieldset['id']; ?>][fields][<?php echo $field_id; ?>][title]" value="<?php echo $field_settings[$key][$field_id]['title']; ?>" class="jcf_field" data-id="<?php echo $field_id; ?>" id="jcf_field_<?php echo $field_id; ?>" /><label for="jcf_field_<?php echo $field_id; ?>"><?php echo $field_settings[$key][$field_id]['title'] . ' (' . preg_replace('/\-[0-9]+$/', '', $field_id) .')'; ?></label>
 								<div id="jcf_field_settings_<?php echo $field_id; ?>" class="jcf_hide_field_settings">
 								<input type="hidden" disabled="disabled" name="export_data[<?php echo $key; ?>][fieldsets][<?php echo $fieldset['id']; ?>][fields][<?php echo $field_id; ?>][type]" value="<?php echo preg_replace('/\-[0-9]+$/', '', $field_id); ?>" />
+								<?php if( !empty($field_settings[$key][$field_id]) ):?>
 								<?php foreach($field_settings[$key][$field_id] as $key_setting => $field_setting): ?>
-									<?php if($key_setting != 'title' && $key_setting != 'slug'):?>
+									<?php if($key_setting != 'title'):?>
 										<input type="hidden" disabled="disabled" name="export_data[<?php echo $key; ?>][fieldsets][<?php echo $fieldset['id']; ?>][fields][<?php echo $field_id; ?>][<?php echo $key_setting; ?>]" value="<?php echo $field_setting; ?>" />
 									<?php endif; ?>
 								<?php endforeach; ?>
+								<?php endif; ?>
 								</div>
 							<?php endforeach; ?>
+							<?php endif; ?>
 						</ul>
 					</li>
 				<?php endforeach;?>
+				<?php endif; ?>
 				</ul>
 			</li>
 		<?php endforeach; ?>

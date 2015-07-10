@@ -15,7 +15,6 @@
 
 		return $fieldsets;
 	}
-	
 
 	function jcf_fieldsets_update( $key, $values = array(), $option_name = '' ){
 		if(empty($option_name)){
@@ -26,11 +25,11 @@
 		if( $values === NULL && isset($fieldsets[$key]) ){
 			unset($fieldsets[$key]);
 		}
-		
+
 		if( !empty($values) ){
 			$fieldsets[$key] = $values;
 		}
-		
+
 		jcf_update_options($option_name, $fieldsets);
 	}
 	
@@ -38,5 +37,5 @@
 		$post_type = jcf_get_post_type();
 		return 'jcf_fieldsets-'.$post_type;
 	}
-	
+
 ?>
