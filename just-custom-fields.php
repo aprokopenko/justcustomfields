@@ -14,12 +14,14 @@ define('JCF_ROOT', dirname(__FILE__));
 define('JCF_TEXTDOMAIN', 'just-custom-fields');
 define('JCF_VERSION', 1.41);
 
+require_once( JCF_ROOT.'/inc/functions.multisite.php' );
 require_once( JCF_ROOT.'/inc/class.field.php' );
 require_once( JCF_ROOT.'/inc/functions.fieldset.php' );
 require_once( JCF_ROOT.'/inc/functions.fields.php' );
 require_once( JCF_ROOT.'/inc/functions.ajax.php' );
 require_once( JCF_ROOT.'/inc/functions.post.php' );
 require_once( JCF_ROOT.'/inc/functions.themes.php' );
+
 
 // composants
 require_once( JCF_ROOT.'/components/input-text.php' );
@@ -67,7 +69,9 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_delete_field', 'jcf_ajax_delete_field');
 	add_action('wp_ajax_jcf_edit_field', 'jcf_ajax_edit_field');
 	add_action('wp_ajax_jcf_fields_order', 'jcf_ajax_fields_order');
-	
+
+	add_action('admin_notices', 'jcf_admin_notice');
+
 	// add $post_type for ajax
 	if(!empty($_POST['post_type'])) jcf_set_post_type( $_POST['post_type'] );
 	
@@ -112,13 +116,19 @@ function jcf_admin_menu(){
  */
 function jcf_admin_settings_page(){
 	$post_types = jcf_get_post_types( 'object' );
-	
+	$jcf_multisite_settings = jcf_get_multisite_settings();
+	$jcf_tabs = !isset($_GET['tab']) ? 'fields' : $_GET['tab'];
+
 	// edit page
 	if( !empty($_GET['pt']) && isset($post_types[ $_GET['pt'] ]) ){
 		jcf_admin_fields_page( $post_types[ $_GET['pt'] ] );
 		return;
 	}
-	
+
+	if( !empty($_POST['jcf_update_settings']) ){
+		$jcf_multisite_settings = jcf_save_multisite_settings($jcf_multisite_settings);
+	}
+
 	// load template
 	include( JCF_ROOT . '/templates/settings_page.tpl.php' );
 }
@@ -213,7 +223,28 @@ function jcf_admin_add_styles() {
 	wp_enqueue_style('jcf-styles'); 
 }
 
+// get options
+function jcf_get_options($key){
+	$jcf_multisite_settings = jcf_get_multisite_settings();
+	return $jcf_multisite_settings == 'network' ? get_site_option($key, array()) : get_option($key, array());
+}
 
+// update options
+function jcf_update_options($key, $value){
+	$jcf_multisite_settings = jcf_get_multisite_settings();
+	$jcf_multisite_settings == 'network' ? update_site_option($key, $value) : update_option($key, $value);
+	return true;
+}
 
+// admin notice
+function jcf_admin_notice($args = array()){
+	if(!empty($args))
+	{
+		foreach($args as $key => $value)
+		{
+			echo '<div id="message" class="updated notice ' . ($key == 'error' ? $key . ' is-dismissible' : 'is-dismissible') . ' below-h2 "><p>' . $value . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+		}
+	}
+}
 
 ?>
