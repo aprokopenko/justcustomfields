@@ -242,7 +242,7 @@ function jcf_admin_notice($args = array()){
 	{
 		foreach($args as $key => $value)
 		{
-			echo '<div class="updated ' . $key . '"><p>' . $value . '</p></div>';
+			echo '<div id="message" class="updated notice ' . ($key == 'error' ? $key . ' is-dismissible' : 'is-dismissible') . ' below-h2 "><p>' . $value . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
 		}
 	}
 }

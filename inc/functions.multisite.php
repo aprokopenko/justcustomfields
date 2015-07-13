@@ -12,7 +12,7 @@ function jcf_save_multisite_settings($settings){
 	{
 		$save_settings = add_site_option( 'jcf_multisite_setting', $new_multisite_setting );
 	}
-	$notice = $save_settings ? array('notice' => '<strong>Multisite setting</strong> has changed') : array('error' => 'You chose the same <strong>Multisite setting</strong> has changed');
+	$notice = $save_settings ? array('notice' => '<strong>Multisite setting</strong> has changed') : array('error' => 'You chose the same <strong>Multisite setting</strong>');
 	do_action('admin_notices', $notice);
 	return $new_multisite_setting;
 }
