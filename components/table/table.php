@@ -28,67 +28,65 @@ class Just_Field_Table extends Just_Field{
 		$entries = (array)$this->entry;
 
 		// get fields
-		$_col_names = explode("\n", $this->instance['col_names']);
-		foreach($_col_names as $line){
+		$_columns = explode("\n", $this->instance['columns']);
+		foreach($_columns as $line){
 			$line = trim($line);
-			$col_name = explode('|', $line);
-			if( count($col_name) == 2 ){
-				$col_names[ $col_name[0] ] = $col_name[1];
+			if(strpos($line, '|') !== FALSE ){
+				$col_name = explode('|', $line);
+				$columns[ $col_name[0] ] = $col_name[1];
+			}elseif(!empty($line)){
+				$columns[$line] = $line;
 			}
 		}
-		
-		if( empty($col_names) ){
-			echo '<p>'.__('Wrong col names configuration. Please check widget settings.', JCF_TEXTDOMAIN).'</p>';
+
+		if( empty($columns) ){
+			echo '<p>'.__('Wrong columns configuration. Please check widget settings.', JCF_TEXTDOMAIN).'</p>';
 		}
+
+		$count_cols = count($columns);
+		$table_head = '<thead>';
 		
-		$count_cols = count($col_names);
-		$first_td = array();
-		
-		if( !empty($col_names) ) :
+		foreach($entries as $key => $entry){
+			if( $key == 0 ){
+				$table_head .= '<tr ' . ($key == 0 ? 'class="table-header"' : '') . '><th>Options</th>';
+				$first_row = '<tr class="hide"><td>
+						<span class="drag-handle" >move</span>
+						<span class="jcf_delete_row" >delete</span>
+					</td>';
+			}
+
+			$rows .= '<tr><td>
+						<span class="drag-handle" >move</span>
+						<span class="jcf_delete_row" >delete</span>
+					</td>';
+
+			foreach($columns as $col_name => $col_title){
+				if( $key == 0 ){
+					$table_head .= '<th>' . $col_name . '</th>';
+					$first_row .= '<td><input type="text" value=""
+									id="' . $this->get_field_id_l2($col_name, '00') . '"
+									name="' . $this->get_field_name_l2($col_name, '00') . '"></td>';
+				}
+				$rows .= '<td><input type="text" value="' . esc_attr($entry[$col_name]) . '"
+					id="' . $this->get_field_id_l2($col_name, $key) . '"
+					name="' . $this->get_field_name_l2($col_name, $key) . '">
+				</td>';
+			}
+
+			if( $key == 0 ){
+				$table_head .= '</tr></thead>';
+				$first_row .= '</tr>';
+			}
+			$rows .= '</tr>';
+		}
+
+		if( !empty($columns) ) :
 		?>
 		<div class="jcf-table jcf-field-container">
 			<table class="sortable wp-list-table widefat fixed">
-				<?php foreach($entries as $key => $entry) : ?>
-					<?php if( $key == 0 ): ?>
-						<thead>
-					<?php endif; ?>		
-					<tr <?php echo $key == 0 ? 'class="table-header"' : ''; ?>>
-						<?php if( $key == 0 ): ?>
-							<th>Options</th>
-						<?php else : ?>
-							<td>
-								<span class="drag-handle" >move</span>
-								<span class="jcf_delete_row" >delete</span>
-							</td>
-						<?php endif; ?>
-						<?php foreach($col_names as $col_name => $col_title) : ?>
-							<?php if( $key == 0 ): ?>
-								<th><?php echo $col_name; ?>	</th>
-								<?php $first_td[] = '<td><input type="text" value="" 
-										id="' . $this->get_field_id_l2($col_name, '00') . '" 
-										name="' . $this->get_field_name_l2($col_name, '00') . '"></td>';
-								?>
-							<?php else : ?>
-								<td><input type="text" value="<?php echo $col_title; ?>" 
-									id="<?php echo $this->get_field_id_l2($col_name, $key); ?>" 
-									name="<?php echo $this->get_field_name_l2($col_name, $key); ?> ">
-								</td>
-							<?php endif; ?>
-						<?php endforeach; ?>
-					</tr>
-					<?php if( $key == 0 ): ?>
-						</thead>
-					<?php endif; ?>	
-				<?php endforeach; ?>
-				<tr class="hide">
-					<td>
-						<span class="drag-handle" >move</span>
-						<span class="jcf_delete_row" >delete</span>
-					</td>
-					<?php foreach($first_td as $td): ?>
-						<?php echo $td; ?>
-					<?php endforeach; ?>
-				</tr>
+				<?php echo $table_head; ?>
+				<?php echo $rows; ?>
+				<?php echo $first_row; ?>
 			</table>
 			<p><a href="#" class="jcf-btn jcf_add_row"><?php _e('+ Add row', JCF_TEXTDOMAIN); ?></a></p>
 		</div>
@@ -133,9 +131,9 @@ class Just_Field_Table extends Just_Field{
 	 */
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		
+
 		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['col_names'] = strip_tags($new_instance['col_names']);
+		$instance['columns'] = strip_tags($new_instance['columns']);
 		$instance['description'] = strip_tags($new_instance['description']);
 		
 		return $instance;
@@ -146,16 +144,16 @@ class Just_Field_Table extends Just_Field{
 	 */		
 	function form( $instance ) {
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'col_names' => '', 'description' => '' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'columns' => '', 'description' => '' ) );
 
 		$title = esc_attr( $instance['title'] );
-		$col_names = esc_html( $instance['col_names'] );
+		$columns = esc_html( $instance['columns'] );
 		$description = esc_html($instance['description']);
 		?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', JCF_TEXTDOMAIN); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
-		<p><label for="<?php echo $this->get_field_id('fields'); ?>"><?php _e('Col names:', JCF_TEXTDOMAIN); ?></label> 
-			<textarea name="<?php echo $this->get_field_name('col_names'); ?>" id="<?php echo $this->get_field_id('col_names'); ?>" cols="20" rows="4" class="widefat"><?php echo $col_names; ?></textarea>
+		<p><label for="<?php echo $this->get_field_id('fields'); ?>"><?php _e('Columns:', JCF_TEXTDOMAIN); ?></label>
+			<textarea name="<?php echo $this->get_field_name('columns'); ?>" id="<?php echo $this->get_field_id('columns'); ?>" cols="20" rows="4" class="widefat"><?php echo $columns; ?></textarea>
 			<br/><small><?php _e('Format: %colname|%coltitle<br/><i>Example: username|User name', JCF_TEXTDOMAIN); ?></i></small></p>
 		<p><label for="<?php echo $this->get_field_id('description'); ?>"><?php _e('Description:', JCF_TEXTDOMAIN); ?></label> 
 			<textarea name="<?php echo $this->get_field_name('description'); ?>" id="<?php echo $this->get_field_id('description'); ?>" cols="20" rows="2" class="widefat"><?php echo $description; ?></textarea></p>

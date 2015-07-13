@@ -299,7 +299,7 @@ class Just_Field{
 		{
 			return false;
 		}
-		
+
 		$input = @$_POST['field-'.$this->id_base][$this->number];
 		// get real values
 		$values = $this->save( $input );
