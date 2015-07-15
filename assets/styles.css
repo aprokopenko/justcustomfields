@@ -182,7 +182,6 @@ form.jcform_add_field .ajax-feedback{
 }
 .jcf_tab-content input, .jcf_tab-content label{
 	margin-bottom: 10px;
-
 }
 .jcf_tab-content label{
 	display: inline-block;
@@ -221,6 +220,7 @@ form.jcform_add_field .ajax-feedback{
 	background: #fff;
 	border-top: 1px solid #ccc;
 	border-bottom: 1px solid #ccc;
+	padding: 0 0 0 30px;
 }
 .jcf_modalWindow .jcf-modal-button{
 	position: absolute;
@@ -315,4 +315,9 @@ form.jcform_add_field .ajax-feedback{
 .jcf_tile .jcf_tile_title{
 	display: block;
 	height: 40px;
+}
+#jcform_settings input{
+	display: block;
+	float:left;
+	margin: 0 10px 0 0;
 }

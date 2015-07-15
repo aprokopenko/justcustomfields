@@ -172,25 +172,25 @@ function jcf_admin_fields_page( $post_type ){
 /**
  *	Keep settings in the file of theme
  */
-function jcf_admin_keep_settings($dir){
+function jcf_admin_keep_settings($dir, $read_settings){
 	$jcf_settings = jcf_get_all_settings_from_db();
 	$settings_data = json_encode($jcf_settings);
 	$home_dir = get_home_path();
 	if( is_writable($home_dir)){
-		if( !is_dir($dir) ){
+		if( !file_exists($dir) ){
 			if( mkdir($dir, 0777) ){
 				if( is_writable($dir) ){
-					$save = jcf_admin_save_all_settings_in_file($settings_data);
-					$notice = $save ? array('notice' => '<strong>Theme config file</strong> has saved') : array('error' => 'Error! <strong>Theme config file</strong> has not saved. Check the writable rules');
+					$save = jcf_admin_save_all_settings_in_file($settings_data, $read_settings);
+					$notice = $save ? array('notice' => '<strong>Config file</strong> has saved') : array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . get_template_directory() . ' directory');
 				}else{
 					$notice = array('error' => 'Error! Check the writable rules for ' . $dir . ' directory ');
 				}
 			} else {
-				$notice = array('error' => 'Error! <strong>Theme config file</strong> has not saved. Check the writable rules for ' . get_template_directory() . ' directory ');
+				$notice = array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . get_template_directory() . ' directory');
 			}
 		}else{
-			$save = jcf_admin_save_all_settings_in_file($settings_data);
-			$notice = $save ? array('notice' => '<strong>Theme config file</strong> has saved') : array('error' => 'Error! <strong>Theme config file</strong> has not saved. Check the writable rules');
+			$save = jcf_admin_save_all_settings_in_file($settings_data, $read_settings);
+			$notice = $save ? array('notice' => '<strong>Config file</strong> has saved') : array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . get_template_directory() . ' directory');
 		}
 	}else{
 		$notice = array('error' => 'Error! <strong>Config File</strong> has not created. Check the writable rules for ' . $home_dir . ' directory ');
@@ -358,8 +358,8 @@ function jcf_get_settings_from_file($uploadfile){
 }
 
 // save settings to file
-function jcf_admin_save_all_settings_in_file($data){
-	$jcf_read_settings = jcf_get_read_settings();
+function jcf_admin_save_all_settings_in_file($data, $saving_method = ''){
+	$jcf_read_settings = $saving_method ? $saving_method :  jcf_get_read_settings();
 	if( !empty($jcf_read_settings)){
 		if ($jcf_read_settings == 'theme' ){
 			$fp = fopen(get_template_directory() . '/jcf-settings/jcf_settings.json', 'w');
@@ -478,8 +478,8 @@ function jcf_update_read_settings(){
 		if( !empty($jcf_read_settings) ){
 			if($_POST['jcf_keep_settings']){
 				if( $read_settings == 'theme' OR $read_settings == 'global' ){
-					$settings_dir = $jcf_read_settings == 'theme' ? get_template_directory() . '/jcf-settings/' : get_home_path() . 'wp-content/jcf-settings/';
-					if( jcf_admin_keep_settings($settings_dir) ){
+					$settings_dir = $read_settings == 'theme' ? get_template_directory() . '/jcf-settings/' : get_home_path() . 'wp-content/jcf-settings/';
+					if( jcf_admin_keep_settings($settings_dir, $read_settings) ){
 						$save = $multisite_setting == 'network' ? update_site_option('jcf_read_settings', $read_settings) : update_option('jcf_read_settings', $read_settings);
 						$notice = $save ? array('notice' => '<strong>Saving method</strong> has saved') : array();
 					} else {

@@ -285,7 +285,8 @@
 		if($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global'){
 			$dir = $jcf_read_settings == 'theme' ? get_template_directory() . '/jcf-settings/' : get_home_path() . 'wp-content/jcf-settings/';
 			$file = 'jcf_settings.json';
-			$msg = 'You have the ' . ($jcf_read_settings == 'theme' ? '' : 'global ') . ' file of settings ' . ($jcf_read_settings == 'theme' ? 'in your theme' : '') . ' . If you want to rewrite it, press "Ok"! If you don\'t want to rewrite it, press "Cancel"!' ; 
+			$msg = "The settings will be written to " . ($jcf_read_settings == 'theme' ? 'your theme folder' : 'folder wp-conten/jcf-settings') . ".\n In case you have settings there, they will be overwritten.\n Please confirm that you want to continue.";
+			//$msg = 'You have the ' . ($jcf_read_settings == 'theme' ? '' : 'global ') . ' file of settings ' . ($jcf_read_settings == 'theme' ? 'in your theme' : '') . ' . If you want to rewrite it, press "Ok"! If you don\'t want to rewrite it, press "Cancel"!' ; 
 			if( file_exists($dir . $file) ) {
 				$resp = array('status' => '1', 'msg' => $msg);
 			}else{
