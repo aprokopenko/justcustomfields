@@ -211,7 +211,7 @@ form.jcform_add_field .ajax-feedback{
 .jcf_modalWindow #jcf_save_import_fields_content,
 .jcf_modalWindow #jcf_save_export_fields_content{
 	position: absolute;
-	top: 120px;
+	top: 100px;
 	left: 0;
 	right: 0;
 	bottom: 80px;
@@ -320,4 +320,13 @@ form.jcform_add_field .ajax-feedback{
 	display: block;
 	float:left;
 	margin: 0 10px 0 0;
+}
+.jcf_checkbox_block{
+	display: inline-block;
+	width: 33px;
+	margin-right: 10px;
+	text-align: center;
+}
+.jcf_tab-content input[type="file"]{
+	margin-bottom: 0;
 }

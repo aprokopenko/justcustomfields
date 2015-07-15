@@ -288,19 +288,19 @@ function initImport(){
 			}
 		}else if(jQuery( this ).hasClass('jcf-choose_fieldset')){
 			if(jQuery( this ).is(':checked')){
-				jQuery( this ).parent().parent().find('input[type="checkbox"]').attr({'checked':'checked'});
+				jQuery( this ).parent().parent().parent().find('input[type="checkbox"]').attr({'checked':'checked'});
 				jQuery('input[data-fieldset="'+data_val+'"]').removeAttr('disabled');
 			}else{
 				jQuery('input[data-fieldset="'+data_val+'"]').attr({'disabled':'disabled'});
-				jQuery( this ).parent().parent().find('input[type="checkbox"]').removeAttr('checked');
+				jQuery( this ).parent().parent().parent().find('input[type="checkbox"]').removeAttr('checked');
 			}
 		}else if(jQuery( this ).hasClass('jcf-select_content_type')){
 			if(jQuery( this ).is(':checked')){
-				jQuery( this ).parent().parent().find('input[type="checkbox"]').attr({'checked':'checked'});
-				jQuery( this ).parent().parent().find('input[type="hidden"]').removeAttr('disabled');
+				jQuery( this ).parent().parent().parent().find('input[type="checkbox"]').attr({'checked':'checked'});
+				jQuery( this ).parent().parent().parent().find('input[type="hidden"]').removeAttr('disabled');
 			}else{
-				jQuery( this ).parent().parent().find('input[type="hidden"]').attr({'disabled':'disabled'});
-				jQuery( this ).parent().parent().find('input[type="checkbox"]').removeAttr('checked');
+				jQuery( this ).parent().parent().parent().find('input[type="hidden"]').attr({'disabled':'disabled'});
+				jQuery( this ).parent().parent().parent().find('input[type="checkbox"]').removeAttr('checked');
 			}
 		}
 	})
