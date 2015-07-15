@@ -1,10 +1,10 @@
 ul.dotted-list{
 	list-style:circle;
-	padding:0 0 0 30px;
+	padding:0;
 }
 ul.dotted-list li{
 	list-style:none;
-	padding:0 0 0 5px;
+	padding:0;
 }
 .jcf-bold{
 	font-weight:bold;
