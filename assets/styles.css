@@ -110,7 +110,6 @@ form.jcform_add_field .ajax-feedback{
 #jcf_fieldsets .sortable_placeholder td{
 	background:#FFFFF0;
 }
-
 .jcf-export-list li{
 	padding-left: 20px;
 }
@@ -263,15 +262,17 @@ form.jcform_add_field .ajax-feedback{
 }
 .jcf_tile{
 	display: block;
-	width: 30%;
+	width: 25%;
 	height: auto;
-	padding: 30px;
+	padding: 20px;
+	margin: 3px;
 	text-decoration: none;
 	background: #fff;
 	font-size: 18px;
 	color: #a0a5aa;
 	border: 3px solid #f2f2f2;
 	box-shadow: 0 0 1px  #a0a5aa;
+	float: left;
 }
 .jcf_tile.post .jcf_tile_icon:before{
   content: "\f109";
