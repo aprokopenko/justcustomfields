@@ -50,14 +50,14 @@ class Just_Field_Table extends Just_Field{
 			if( $key == 0 ){
 				$table_head .= '<tr ' . ($key == 0 ? 'class="table-header"' : '') . '><th>Options</th>';
 				$first_row = '<tr class="hide"><td>
-						<span class="drag-handle" >move</span>
-						<span class="jcf_delete_row" >delete</span>
+						<span class="drag-handle" >' . __('move', JCF_TEXTDOMAIN) . '</span>
+						<span class="jcf_delete_row" >' . __('delete', JCF_TEXTDOMAIN) . '</span>
 					</td>';
 			}
 
 			$rows .= '<tr><td>
-						<span class="drag-handle" >move</span>
-						<span class="jcf_delete_row" >delete</span>
+						<span class="drag-handle" >' . __('move', JCF_TEXTDOMAIN) . '</span>
+						<span class="jcf_delete_row" >' . __('delete', JCF_TEXTDOMAIN) . '</span>
 					</td>';
 
 			foreach($columns as $col_name => $col_title){
