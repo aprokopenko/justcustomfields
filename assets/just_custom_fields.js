@@ -439,6 +439,7 @@ function modalWindow(content){
  *	init settings
  */
 function initSettings(){
+	var jcf_read_settings_active = jQuery('#jcform_settings').find('input[name="jcf_read_settings"]:checked').attr('id');
 	jQuery('#jcform_settings input[name="jcf_read_settings"]').change(function(){
 		var data = {
 				'action' : 'jcf_check_file',
@@ -447,17 +448,32 @@ function initSettings(){
 		};
 
 		jcf_ajax(data, 'json', null, function(response){
-			if(response.msg){
-				if(confirm(response.msg)){
+			if( response.msg ){
+				if( confirm(response.msg) ){
 					jQuery('#jcform_settings').find('input[name="jcf_keep_settings"]').removeAttr('disabled');
+				}else{
+					jQuery('#jcform_settings').find('input[name="jcf_read_settings"]#'+jcf_read_settings_active).attr({'checked':'checked'});
+					jQuery('#jcform_settings').find('input[name="jcf_keep_settings"]').attr({'disabled':'disabled'});
 				}
 			}else if(response.file){
 				jQuery('#jcform_settings').find('input[name="jcf_keep_settings"]').removeAttr('disabled');
-
 			}else{
 				jQuery('#jcform_settings').find('input[name="jcf_keep_settings"]').attr({'disabled':'disabled'});
-
 			}
 		});
+	});
+
+	jQuery('#jcform_settings input[name="jcf_multisite_setting"]').change(function(){
+		if( jQuery( this ).val() == 'network' ){
+			jQuery('input[type="radio"]#jcf_read_file_global').css('display','block');
+			jQuery('label[for="jcf_read_file_global"]').css('display','block');
+		}else{
+			jQuery('input[type="radio"]#jcf_read_file_global').css('display','none');
+			if( jQuery('input[type="radio"]#jcf_read_file_global').is(':checked') ){
+				jQuery('input[type="radio"]#jcf_read_file_global').removeAttr('checked');
+				jQuery('input[type="radio"]#jcf_read_file').attr({'checked':'checked'});
+			}
+			jQuery('label[for="jcf_read_file_global"]').css('display','none');
+		}
 	});
 }
