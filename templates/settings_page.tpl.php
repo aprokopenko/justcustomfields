@@ -53,7 +53,7 @@
 		<div class="jcf_inner-tab-content" >
 			<div class="jcf_columns jcf_width40p mrgr20">
 				<div class="card pressthis">
-					<h3 class="header">Import</h3>
+					<h3 class="header"><?php _e('Import', JCF_TEXTDOMAIN); ?></h3>
 					<div class="jcf_inner_content offset0">
 						<p>
 						<?php _e('If you have Just Custom Fields configuration file you can import some specific settings from it to your
@@ -78,7 +78,7 @@
 			</div>
 			<div class="jcf_columns jcf_width40p">
 				<div class="card pressthis">
-					<h3 class="header">Export</h3>
+					<h3 class="header"><?php _e('Export', JCF_TEXTDOMAIN); ?></h3>
 					<div class="jcf_inner_content offset0">
 						<p>
 						<?php _e('You can export specific field settings and move them to another site if needed. Just click "Export Wizard" button to start.' , JCF_TEXTDOMAIN); ?></p>

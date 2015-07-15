@@ -443,7 +443,7 @@ function jcf_admin_notice($args = array()){
 	{
 		foreach($args as $key => $value)
 		{
-			echo '<div id="message" class="updated notice ' . ($key == 'error' ? $key . ' is-dismissible' : 'is-dismissible') . ' below-h2 "><p>' . $value . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+			echo '<div id="message" class="updated notice ' . ($key == 'error' ? $key . ' is-dismissible' : 'is-dismissible') . ' below-h2 "><p>' . __($value, JCF_TEXTDOMAIN) . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' . __('Dismiss this notice.', JCF_TEXTDOMAIN) . '</span></button></div>';
 		}
 	}
 }

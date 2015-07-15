@@ -9,7 +9,7 @@
 					<p><?php _e('You should choose Fields to export:', JCF_TEXTDOMAIN); ?></p>
 					<ul class="dotted-list jcf-bold jcf_width66p">
 					<?php foreach( $post_types as $key => $post_type ): ?>
-						<li class="jcf_export-content-type"><h3><span class="jcf_checkbox_block"><input type="checkbox" name="select_content_type" value="" class="jcf-select_content_type"  /></span><?php echo 'Content type: ' . $key; ?></h3>
+						<li class="jcf_export-content-type"><h3><span class="jcf_checkbox_block"><input type="checkbox" name="select_content_type" value="" class="jcf-select_content_type"  /></span><?php _e('Content type: ', JCF_TEXTDOMAIN); ?><?php echo $key; ?></h3>
 							<input type="hidden" disabled="disabled" name="export_data[<?php echo $key; ?>]" value="<?php echo $key; ?>" />
 							<?php if(!empty($fieldsets[$key])) :?>
 								<?php foreach( $fieldsets[$key] as $fieldset_id =>$fieldset ) : ?>

@@ -8,7 +8,7 @@
 					<p><?php _e('You should choose Fields to import:', JCF_TEXTDOMAIN); ?></p>
 					<ul class="dotted-list jcf-bold jcf_width66p">
 					<?php foreach( $post_types as $key => $post_type ): ?>
-						<li class="jcf_export-content-type"><h3><span class="jcf_checkbox_block"><input type="checkbox" name="select_content_type" value="" class="jcf-select_content_type"  /></span><?php _e('Content type: ', JCF_TEXTDOMAIN); echo $key; ?></h3>
+						<li class="jcf_export-content-type"><h3><span class="jcf_checkbox_block"><input type="checkbox" name="select_content_type" value="" class="jcf-select_content_type"  /></span><?php _e('Content type: ', JCF_TEXTDOMAIN); ?><?php echo $key; ?></h3>
 							<input type="hidden" name="import_data[<?php echo $key; ?>]" value="<?php echo $key; ?>" />
 							<?php if(!empty($post_type['fieldsets'])) :?>
 								<?php foreach( $post_type['fieldsets'] as $fieldset_id =>$fieldset ) : ?>
@@ -52,7 +52,7 @@
 					</ul>
 				</div>
 				<div class="jcf-modal-button">
-					<input type="submit" class="button-primary" name="save_import" value="Save Fields" />
+					<input type="submit" class="button-primary" name="save_import" value="<?php _e('Save Fields ', JCF_TEXTDOMAIN); ?>" />
 				</div>
 			</form>
 		<?php endif; ?>
