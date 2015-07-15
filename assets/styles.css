@@ -111,7 +111,6 @@ form.jcform_add_field .ajax-feedback{
 	background:#FFFFF0;
 }
 
-
 .jcf-export-list li{
 	padding-left: 20px;
 }
@@ -261,4 +260,58 @@ form.jcform_add_field .ajax-feedback{
 }
 .jcf_export-content-type{
 	margin-bottom: 50px;
+}
+.jcf_tile{
+	display: block;
+	width: 30%;
+	height: auto;
+	padding: 30px;
+	text-decoration: none;
+	background: #fff;
+	font-size: 18px;
+	color: #a0a5aa;
+	border: 3px solid #f2f2f2;
+	box-shadow: 0 0 1px  #a0a5aa;
+}
+.jcf_tile.post .jcf_tile_icon:before{
+  content: "\f109";
+}
+.jcf_tile.page .jcf_tile_icon:before{
+  content: "\f105";
+}
+.jcf_tile.attachment .jcf_tile_icon:before{
+  content: "\f104";
+}
+.jcf_tile .jcf_tile_icon:before{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	font-size: 20px;
+	line-height: 1;
+	font-family: dashicons;
+	text-decoration: inherit;
+	font-weight: 400;
+	font-style: normal;
+	vertical-align: top;
+	text-align: center;
+}
+.jcf_tile .jcf_tile_icon{
+	width: 36px;
+	height: 34px;
+	display: block;
+	text-align: center;
+	float: left;
+}
+.jcf_tile:hover{
+	color: #0073aa;
+	border: 3px solid #0073aa;
+}
+.jcf_tile .jcf_tile_info{
+	display: block;
+	font-size: 10px;
+	font-weight: normal;
+}
+.jcf_tile .jcf_tile_title{
+	display: block;
+	height: 40px;
 }
