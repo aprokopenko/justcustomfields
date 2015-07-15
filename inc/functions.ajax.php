@@ -219,6 +219,25 @@
 		exit();
 	}
 
+	// export fields from form
+	function jcf_ajax_export_fields_form(){
+		$jcf_read_settings = jcf_get_read_settings();
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR  $jcf_read_settings == 'global') ){
+			$jcf_settings = jcf_get_all_settings_from_file();
+		}else{
+			$jcf_settings = jcf_get_all_settings_from_db();
+		}
+
+		$post_types = !empty($jcf_settings['post_types']) ? $jcf_settings['post_types'] : jcf_get_post_types();
+		$fieldsets =$jcf_settings['fieldsets'];
+		$field_settings = $jcf_settings['field_settings'];
+		$registered_fields = jcf_get_registered_fields();
+
+		// load template
+		include( JCF_ROOT . '/templates/export.tpl.php' );
+		exit();
+	}
+
 	// export fields
 	function jcf_ajax_export_fields(){
 		if( $_POST['export_fields'] && !empty($_POST['export_data']) ) {
@@ -233,4 +252,48 @@
 		}
 	}
 
+	// import fields
+	function jcf_ajax_import_fields(){
+		if( !empty($_POST['import-btn']) ){
+			if(!empty($_FILES['import_data']['name']) ){
+				$path_info = pathinfo($_FILES['import_data']['name']);
+
+				if( $path_info['extension'] == 'json'){
+					$uploaddir = get_home_path() . "wp-content/uploads/";
+					$uploadfile = $uploaddir . basename($_FILES['import_data']['name']);
+
+					if ( copy($_FILES['import_data']['tmp_name'], $uploadfile) ){
+						$post_types = jcf_get_settings_from_file($uploadfile);
+					}else{
+						$notice = array('error' => 'Error! <strong>The file</strong> has not uploaded!');
+					}
+				}else{
+					$notice = array('error' => 'Error! Check <strong>extension</strong> of the file!');
+				}
+			}else{
+				$notice = array('error' => 'Error! The file is empty!');
+			}
+		}
+		include( JCF_ROOT . '/templates/import.tpl.php' );
+		do_action('admin_notices', $notice);
+		exit();
+	}
+
+	//check file
+	function jcf_ajax_check_file(){
+		$jcf_read_settings = $_POST['jcf_read_settings'];
+		if($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global'){
+			$dir = $jcf_read_settings == 'theme' ? get_template_directory() . '/jcf-settings/' : get_home_path() . 'wp-content/jcf-settings/';
+			$file = 'jcf_settings.json';
+			$msg = 'You have the ' . ($jcf_read_settings == 'theme' ? '' : 'global ') . ' file of settings ' . ($jcf_read_settings == 'theme' ? 'in your theme' : '') . ' . If you want to rewrite it, press "Ok"! If you don\'t want to rewrite it, press "Cancel"!' ; 
+			if( file_exists($dir . $file) ) {
+				$resp = array('status' => '1', 'msg' => $msg);
+			}else{
+				$resp = array('status' => '1', 'file' => '1');
+			}
+		}else{
+			$resp = array('status' => '1');
+		}
+		jcf_ajax_reposnse($resp, 'json');
+	}
 ?>

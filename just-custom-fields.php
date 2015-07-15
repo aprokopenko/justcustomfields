@@ -71,7 +71,9 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_fields_order', 'jcf_ajax_fields_order');
 
 	add_action('wp_ajax_jcf_export_fields', 'jcf_ajax_export_fields');
+	add_action('wp_ajax_jcf_export_fields_form', 'jcf_ajax_export_fields_form');
 	add_action('wp_ajax_jcf_import_fields', 'jcf_ajax_import_fields');
+	add_action('wp_ajax_jcf_check_file', 'jcf_ajax_check_file');
 
 	add_action('admin_notices', 'jcf_admin_notice');
 	// add $post_type for ajax
@@ -127,30 +129,13 @@ function jcf_admin_settings_page(){
 		return;
 	}
 
-	if( isset($_GET['export']) ) {
-		jcf_admin_export_page();
-		return;
-	}
-
-	if( $jcf_tabs == 'import_export' ) {
-		jcf_admin_import_page();
+	if( !empty($_POST['save_import']) ) {
+		$import_data = $_POST['import_data'];
+		$save = jcf_admin_save_settings($import_data);
+		$notice = $save ? array('notice' => '<strong>Import </strong>was success!') : array('error' => 'Error! <strong>Import </strong> was not sucess! Check the file of import');
+		do_action('admin_notices', $notice);
 	}
 	
-	if( isset($_POST['keep_settings']) ) {
-		if( !empty($jcf_read_settings) ){
-			if( $jcf_read_settings == 'theme' OR $jcf_read_settings == 'global' ){
-				$settings_dir = $jcf_read_settings == 'theme' ? get_template_directory() . '/jcf-settings/' : get_home_path() . 'wp-content/jcf-settings/';
-				jcf_admin_keep_settings($settings_dir);
-			} else {
-				$notice = array('error' => 'Error! Change <strong>the saving method</strong>');
-				do_action('admin_notices', $notice);
-			}
-		}else{
-			$notice = array('error' => 'Error! Change <strong>the saving method</strong>');
-			do_action('admin_notices', $notice);
-		}
-	}
-
 	if( !empty($_POST['jcf_update_settings']) ) {
 		if( MULTISITE )
 		{
@@ -188,42 +173,28 @@ function jcf_admin_fields_page( $post_type ){
 function jcf_admin_keep_settings($dir){
 	$jcf_settings = jcf_get_all_settings_from_db();
 	$settings_data = json_encode($jcf_settings);
-
-	if( !is_dir($dir) ){
-		if( mkdir($dir, 0777) ){
-			if( is_writable($dir) ){
-				$save = jcf_admin_save_all_settings_in_file($settings_data);
-				$notice = $save ? array('notice' => '<strong>Theme config file</strong> has saved') : array('error' => 'Error! <strong>Theme config file</strong> has not saved. Check the writable rules');
-			}else{
-				$notice = array('error' => 'Error! Check the writable rules for ' . $dir . ' directory ');
+	$home_dir = get_home_path();
+	if( is_writable($home_dir)){
+		if( !is_dir($dir) ){
+			if( mkdir($dir, 0777) ){
+				if( is_writable($dir) ){
+					$save = jcf_admin_save_all_settings_in_file($settings_data);
+					$notice = $save ? array('notice' => '<strong>Theme config file</strong> has saved') : array('error' => 'Error! <strong>Theme config file</strong> has not saved. Check the writable rules');
+				}else{
+					$notice = array('error' => 'Error! Check the writable rules for ' . $dir . ' directory ');
+				}
+			} else {
+				$notice = array('error' => 'Error! <strong>Theme config file</strong> has not saved. Check the writable rules for ' . get_template_directory() . ' directory ');
 			}
-		} else {
-			$notice = array('error' => 'Error! <strong>Theme config file</strong> has not saved. Check the writable rules for ' . get_template_directory() . ' directory ');
+		}else{
+			$save = jcf_admin_save_all_settings_in_file($settings_data);
+			$notice = $save ? array('notice' => '<strong>Theme config file</strong> has saved') : array('error' => 'Error! <strong>Theme config file</strong> has not saved. Check the writable rules');
 		}
 	}else{
-		$save = jcf_admin_save_all_settings_in_file($settings_data);
-		$notice = $save ? array('notice' => '<strong>Theme config file</strong> has saved') : array('error' => 'Error! <strong>Theme config file</strong> has not saved. Check the writable rules');
+		$notice = array('error' => 'Error! <strong>Config File</strong> has not created. Check the writable rules for ' . $home_dir . ' directory ');
 	}
 	do_action('admin_notices', $notice);
-}
-
-/**
- *	Export page
- */
-function jcf_admin_export_page(){
-	$jcf_read_settings = jcf_get_read_settings();
-	if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR  $jcf_read_settings == 'global') ){
-		$jcf_settings = jcf_get_all_settings_from_file();
-	}else{
-		$jcf_settings = jcf_get_all_settings_from_db();
-	}
-
-	$post_types = !empty($jcf_settings['post_types']) ? $jcf_settings['post_types'] : jcf_get_post_types();
-	$fieldsets =$jcf_settings['fieldsets'];
-	$field_settings = $jcf_settings['field_settings'];
-
-	// load template
-	include( JCF_ROOT . '/templates/export.tpl.php' );
+	return $save;
 }
 
 /**
@@ -470,7 +441,7 @@ function jcf_admin_notice($args = array()){
 	{
 		foreach($args as $key => $value)
 		{
-			echo '<div class="updated ' . $key . '"><p>' . $value . '</p></div>';
+			echo '<div id="message" class="updated notice ' . ($key == 'error' ? $key . ' is-dismissible' : 'is-dismissible') . ' below-h2 "><p>' . $value . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
 		}
 	}
 }
@@ -503,14 +474,26 @@ function jcf_update_read_settings(){
 	}else{
 		$multisite_setting = $_POST['jcf_multisite_setting'];
 		if( !empty($jcf_read_settings) ){
-			$save = $multisite_setting == 'network' ? update_site_option('jcf_read_settings', $read_settings) : update_option('jcf_read_settings', $read_settings);
-			$notice = $save ? array('notice' => '<strong>Saving method</strong> has changed') : array();
+			if($_POST['jcf_keep_settings']){
+				if( $read_settings == 'theme' OR $read_settings == 'global' ){
+					$settings_dir = $jcf_read_settings == 'theme' ? get_template_directory() . '/jcf-settings/' : get_home_path() . 'wp-content/jcf-settings/';
+					if( jcf_admin_keep_settings($settings_dir) ){
+						$save = $multisite_setting == 'network' ? update_site_option('jcf_read_settings', $read_settings) : update_option('jcf_read_settings', $read_settings);
+						$notice = $save ? array('notice' => '<strong>Saving method</strong> has saved') : array();
+					} else {
+						$notice = array('error' => 'Error! <strong>Saving method</strong> has not saved.');
+					}
+				}
+			}else{
+				$save = $multisite_setting == 'network' ? update_site_option('jcf_read_settings', $read_settings) : update_option('jcf_read_settings', $read_settings);
+				$notice = $save ? array('notice' => '<strong>Saving method</strong> has saved') : array();
+			}
 		}else{
 			$save = $multisite_setting == 'network' ? add_site_option('jcf_read_settings', $read_settings) : add_option('jcf_read_settings', $read_settings);
 			$notice = $save ? array('notice' => '<strong>Saving method</strong> has saved') : array();
 		}
 		do_action('admin_notices', $notice);
-		return $read_settings;
+		return $save ? $read_settings : $jcf_read_settings;
 	}
 }
 ?>
