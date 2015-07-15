@@ -5,6 +5,9 @@ jQuery(document).ready(function(){
 	initFieldsetsEdit();
 	initAjaxBoxClose();
 	initFieldsetFields();
+	initImport();
+	initExport();
+	initSettings();
 })
 
 /**
@@ -99,10 +102,10 @@ function initFieldsetsEdit(){
 			
 			jcf_hide_ajax_container();
 		});
-		
+
 		return false;
 	})
-	
+
 }
 
 /**
@@ -255,6 +258,113 @@ function initFieldsetFields(){
 }
 
 /**
+ *	init import
+ */
+function initImport(){
+	jQuery('#jcf_import_fields').submit(function(e){
+		e.preventDefault();
+
+		var query = new FormData(jQuery( this ).get(0));
+		jQuery.ajax({
+			url: 'admin-ajax.php',
+			type: 'post',
+			contentType: false,
+			processData: false,
+			data: query,
+			success: function(responce){
+				modalWindow(responce);
+			}
+		  });
+	});
+
+	// checked fields
+	jQuery('#jcf_save_import_fields input[type="checkbox"], #jcf_export_fields input[type="checkbox"]').live('change', function(){
+		var data_val = jQuery( this ).val();
+		if(jQuery( this ).hasClass('choose_field')){
+			if(jQuery( this ).is(':checked')){
+				jQuery('input[data-field="'+data_val+'"]').removeAttr('disabled');
+			}else{
+				jQuery('input[data-field="'+data_val+'"]').attr({'disabled':'disabled'});
+			}
+		}else if(jQuery( this ).hasClass('jcf-choose_fieldset')){
+			if(jQuery( this ).is(':checked')){
+				jQuery( this ).parent().parent().find('input[type="checkbox"]').attr({'checked':'checked'});
+				jQuery('input[data-fieldset="'+data_val+'"]').removeAttr('disabled');
+			}else{
+				jQuery('input[data-fieldset="'+data_val+'"]').attr({'disabled':'disabled'});
+				jQuery( this ).parent().parent().find('input[type="checkbox"]').removeAttr('checked');
+			}
+		}else if(jQuery( this ).hasClass('jcf-select_content_type')){
+			if(jQuery( this ).is(':checked')){
+				jQuery( this ).parent().parent().find('input[type="checkbox"]').attr({'checked':'checked'});
+				jQuery( this ).parent().parent().find('input[type="hidden"]').removeAttr('disabled');
+			}else{
+				jQuery( this ).parent().parent().find('input[type="hidden"]').attr({'disabled':'disabled'});
+				jQuery( this ).parent().parent().find('input[type="checkbox"]').removeAttr('checked');
+			}
+		}
+	})
+}
+
+/**
+ *	init export
+ */
+function initExport(){
+	jQuery('a#export-button').click(function(){
+		var data = {
+			'action': 'jcf_export_fields_form'
+		}
+		jcf_ajax(data, 'html', null, function(response){
+			modalWindow(response);
+		});
+	});
+
+	// checked fields
+	jQuery('#jcf_export_fields input[type="checkbox"]').live('change', function(){
+		var parent_block = jQuery(this).parent();
+		var field_box = 'input[type="checkbox"]';
+		var box_value = jQuery(this).attr('data-id');
+		if( jQuery(this).is(":checked")){
+			parent_block.find('input[type="checkbox"]').attr({'checked':'checked'});
+			if(  jQuery(this).hasClass('jcf_field') ){
+				parent_block.parent().parent().parent().parent().find('input[type="checkbox"].jcf_post_type').attr({'checked':'checked'});
+				parent_block.parent().parent().find('input[type="checkbox"].jcf_fieldset').attr({'checked':'checked'});
+				jQuery( '#jcf_field_settings_' + box_value + ' input[type="hidden"]' ).removeAttr('disabled');
+			}
+			else if(  jQuery(this).hasClass('jcf_fieldset') ){
+				parent_block.parent().parent().find('input[type="checkbox"].jcf_post_type').attr({'checked':'checked'});
+				parent_block.find('.jcf_hide_field_settings input[type="hidden"]').removeAttr('disabled');
+			}
+			else{
+				parent_block.find('.jcf_hide_field_settings input[type="hidden"]').removeAttr('disabled');
+			}
+		}else{
+			parent_block.find('input[type="checkbox"]').removeAttr('checked');
+			if(  jQuery(this).hasClass('jcf_field') ){
+				var count = parent_block.parent().find( field_box + '.jcf_field:checked' ).length;
+				if( count < 1 ){
+					parent_block.parent().parent().find( field_box ).removeAttr('checked');
+					var count_fieldsets = parent_block.parent().parent().parent().parent().find( field_box + '.jcf_fieldset:checked' ).length;
+							if( count_fieldsets < 1 ){
+								parent_block.parent().parent().parent().parent().find( field_box ).removeAttr('checked');
+							}
+				}
+				jQuery( '#jcf_field_settings_' + box_value + ' input[type="hidden"]' ).attr({'disabled': 'disabled'});
+			}
+			else if( jQuery(this).hasClass('jcf_fieldset') ){
+				var count = parent_block.parent().parent().parent().parent().find( field_box + '.jcf_fieldset:checked' ).length;
+				count < 1 ? parent_block.parent().parent().find( field_box ).removeAttr('checked') : false;
+				parent_block.find('.jcf_hide_field_settings input[type="hidden"]').attr({'disabled': 'disabled'})
+			}
+			else{
+				parent_block.find('.jcf_hide_field_settings input[type="hidden"]').attr({'disabled': 'disabled'})
+			}
+		}
+
+	});
+}
+
+/**
  *	ajax functions below
  */
 function initAjaxBoxClose(){
@@ -315,4 +425,39 @@ function pa( mixed ){
 	if( window.console ){
 		window.console.info(mixed);
 	}
+}
+
+function modalWindow(content){
+	jQuery('body').append('<div class="media-modal wp-core-ui jcf_modalWindow"><div class="media-modal-content">'+content+'</div><a href="#" class="media-modal-close"><span class="media-modal-icon"></span></a></div>');
+
+	jQuery('.media-modal-close').click(function(){
+		jQuery('.jcf_modalWindow').remove();
+	});
+}
+
+/**
+ *	init settings
+ */
+function initSettings(){
+	jQuery('#jcform_settings input[name="jcf_read_settings"]').change(function(){
+		var data = {
+				'action' : 'jcf_check_file',
+				'jcf_multisite_setting' : jQuery('#jcform_settings').find('input[name="jcf_multisite_setting"]:checked').val(),
+				'jcf_read_settings' : jQuery('#jcform_settings').find('input[name="jcf_read_settings"]:checked').val()
+		};
+
+		jcf_ajax(data, 'json', null, function(response){
+			if(response.msg){
+				if(confirm(response.msg)){
+					jQuery('#jcform_settings').find('input[name="jcf_keep_settings"]').removeAttr('disabled');
+				}
+			}else if(response.file){
+				jQuery('#jcform_settings').find('input[name="jcf_keep_settings"]').removeAttr('disabled');
+
+			}else{
+				jQuery('#jcform_settings').find('input[name="jcf_keep_settings"]').attr({'disabled':'disabled'});
+
+			}
+		});
+	});
 }
