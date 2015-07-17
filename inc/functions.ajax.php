@@ -15,20 +15,11 @@
 		else{
 			$slug = sanitize_title( $title );
 		}
-		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-			$jcf_settings = jcf_get_all_settings_from_file();
-			$post_type = jcf_get_post_type();
-			$fieldsets = $jcf_settings['fieldsets'][$post_type];
-			if( isset($fieldsets[$slug]) ){
-				jcf_ajax_reposnse( array('status' => "0", 'error'=>__('Such fieldset already exists.', JCF_TEXTDOMAIN)) );
-			}
-		}else{
-			$fieldsets = jcf_fieldsets_get();
-			// check exists
-			if( isset($fieldsets[$slug]) ){
-				jcf_ajax_reposnse( array('status' => "0", 'error'=>__('Such fieldset already exists.', JCF_TEXTDOMAIN)) );
-			}
+
+		$fieldsets = jcf_fieldsets_get();
+		// check exists
+		if( isset($fieldsets[$slug]) ){
+			jcf_ajax_reposnse( array('status' => "0", 'error'=>__('Such fieldset already exists.', JCF_TEXTDOMAIN)) );
 		}
 
 		// create fiedlset
@@ -37,13 +28,9 @@
 			'title' => $title,
 			'fields' => array(),
 		);
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-			$jcf_settings['fieldsets'][$post_type][$slug] = $fieldset;
-			$settings_data = json_encode($jcf_settings);
-			 jcf_admin_save_all_settings_in_file($settings_data);
-		}else{
-			jcf_fieldsets_update($slug, $fieldset);
-		}
+
+		jcf_fieldsets_update($slug, $fieldset);
+
 		jcf_ajax_reposnse( array('status' => "1", $jcf_settings['fieldsets'][$post_type]) );
 	}
 	
@@ -53,33 +40,17 @@
 		if( empty($f_id) ){
 			//jcf_ajax_reposnse( array('status' => "0", 'error'=>__('Wrong params passed.', JCF_TEXTDOMAIN)) );
 		}
-		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-			$jcf_settings = jcf_get_all_settings_from_file();
-			$key = jcf_get_post_type();
-			unset($jcf_settings['fieldsets'][$key][$f_id]);
-			$settings_data = json_encode($jcf_settings);
-			jcf_admin_save_all_settings_in_file($settings_data);
-		}else{
-			jcf_fieldsets_update($f_id, NULL);
-		}
-		
+
+		jcf_fieldsets_update($f_id, NULL);
+
 		jcf_ajax_reposnse( array('status' => "1") );
 	}
 	
 	// change fieldset link process
 	function jcf_ajax_change_fieldset(){
 		$f_id = $_POST['fieldset_id'];
-		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-			$jcf_settings = jcf_get_all_settings_from_file();
-			$key = jcf_get_post_type();
-			$fieldsets = $jcf_settings['fieldsets'][$key];
-			$fieldset = $fieldsets[$f_id];
-		}else{
-			$fieldset = jcf_fieldsets_get($f_id);
-		}
-		
+		$fieldset = jcf_fieldsets_get($f_id);
+
 		ob_start();
 		?>
 		<div class="jcf_edit_fieldset">
@@ -114,15 +85,7 @@
 	// save fieldset functions
 	function jcf_ajax_update_fieldset(){
 		$f_id = $_POST['fieldset_id'];
-		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-			$jcf_settings = jcf_get_all_settings_from_file();
-			$key = jcf_get_post_type();
-			$fieldsets = $jcf_settings['fieldsets'][$key];
-			$fieldset = $fieldsets[$f_id];
-		}else{
-			$fieldset = jcf_fieldsets_get($f_id);
-		}
+		$fieldset = jcf_fieldsets_get($f_id);
 
 		if(empty($fieldset)){
 			jcf_ajax_reposnse( array('status' => "0", 'error'=>__('Wrong data passed.', JCF_TEXTDOMAIN)) );
@@ -133,14 +96,8 @@
 			jcf_ajax_reposnse( array('status' => "0", 'error'=>__('Title field is required.', JCF_TEXTDOMAIN)) );
 		}
 
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-			$jcf_settings['fieldsets'][$key][$f_id]['title'] = $title;
-			$settings_data = json_encode($jcf_settings);
-			jcf_admin_save_all_settings_in_file($settings_data);
-		}else{
-			$fieldset['title'] = $title;
-			jcf_fieldsets_update($f_id, $fieldset);
-		}
+		$fieldset['title'] = $title;
+		jcf_fieldsets_update($f_id, $fieldset);
 		jcf_ajax_reposnse( array('status' => "1", 'title' => $title) );
 	}
 	
@@ -243,7 +200,7 @@
 		if( $_POST['export_fields'] && !empty($_POST['export_data']) ) {
 			$export_data = $_POST['export_data'];
 			$export_data = json_encode($export_data);
-			$filename = 'jcf_export.json';
+			$filename = 'jcf_export' . date('Ymd-his') . '.json';
 			header('Content-Type: text/json; charset=utf-8');
 			header("Content-Disposition: attachment;filename=" . $filename);
 			header("Content-Transfer-Encoding: binary ");
@@ -285,7 +242,12 @@
 		if($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global'){
 			$dir = $jcf_read_settings == 'theme' ? get_template_directory() . '/jcf-settings/' : get_home_path() . 'wp-content/jcf-settings/';
 			$file = 'jcf_settings.json';
-			$msg = __("The settings will be written to " . ($jcf_read_settings == 'theme' ? 'your theme folder' : 'folder wp-conten/jcf-settings') . ".\n In case you have settings there, they will be overwritten.\n Please confirm that you want to continue.", JCF_TEXTDOMAIN);
+			if($jcf_read_settings == 'theme'){
+				$msg = __("The settings will be written to your theme folder .\n In case you have settings there, they will be overwritten.\n Please confirm that you want to continue.", JCF_TEXTDOMAIN);
+			}
+			else{
+				$msg = __("The settings will be written to folder wp-conten/jcf-settings .\n In case you have settings there, they will be overwritten.\n Please confirm that you want to continue.", JCF_TEXTDOMAIN);
+			}
 			if( file_exists($dir . $file) ) {
 				$resp = array('status' => '1', 'msg' => $msg);
 			}else{

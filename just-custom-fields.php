@@ -198,35 +198,6 @@ function jcf_admin_keep_settings($dir, $read_settings){
 }
 
 /**
- *	Import page
- */
-function jcf_admin_import_page(){
-	if( !empty($_POST['import-btn']) ){
-		if(!empty($_FILES['import_data']['name']) ){
-			$path_info = pathinfo($_FILES['import_data']['name']);
-
-			if( $path_info['extension'] == 'json'){
-				$uploaddir = get_home_path() . "wp-content/uploads/";
-				$uploadfile = $uploaddir . basename($_FILES['import_data']['name']);
-
-				if ( copy($_FILES['import_data']['tmp_name'], $uploadfile) ){
-					$import_data = jcf_get_settings_from_file($uploadfile);
-					$save = jcf_admin_save_settings($import_data);
-					$notice = $save ? array('notice' => '<strong>Import</strong> was success, all fields has imported') : array('error' => 'Error! <strong>Import</strong> was not success' );
-				}else{
-					$notice = array('error' => 'Error! The file has not loaded!');
-				}
-			}else{
-				$notice = array('error' => 'Error! Check <strong>extension</strong> of the file!');
-			}
-		}else{
-			$notice = array('error' => 'Error! The file is empty!');
-		}
-	}
-	do_action('admin_notices', $notice);
-}
-
-/**
  *	javascript localization
  */
 function jcf_get_language_strings(){
@@ -304,38 +275,6 @@ function jcf_admin_add_styles() {
 }
 
 
-// get all settings from db
-function jcf_get_all_settings_from_db(){
-	global $wpdb;
-	$sql_posts_id="SELECT id, post_type FROM " . $wpdb->base_prefix . "posts WHERE post_type = 'post' OR post_type = 'page' OR post_type = 'attachment'";
-	$posts = $wpdb->get_results($sql_posts_id);
-	$jcf_settings = array();
-	$post_types = jcf_get_post_types();
-	$fieldsets = array();
-	$field_settings = array();
-	$field_options = array();
-	foreach($post_types as $key => $value){
-		$fieldsets[$key] = jcf_fieldsets_get('', 'jcf_fieldsets-'.$key);
-		$field_settings[$key] = jcf_field_settings_get('', 'jcf_fields-'.$key, true);
-		foreach($posts as $post){
-			foreach($field_settings[$key] as $fskey => $field_setting){
-				$field_setting = $field_setting;
-				if($post->post_type == $key){
-					$field_options[$post->post_type][$post->id][$field_setting['slug']] = get_post_meta($post->id, $field_setting['slug'], true);
-				}
-			}
-		}
-	}
-
-	$jcf_settings = array(
-		'post_types' => $post_types,
-		'fieldsets' => $fieldsets,
-		'field_settings' => $field_settings,
-		'field_options' => $field_options,
-	);
-	return $jcf_settings;
-}
-
 // get all settings from file
 function jcf_get_all_settings_from_file(){
 	$filename = jcf_get_file_settings_name();
@@ -380,48 +319,6 @@ function jcf_admin_save_all_settings_in_file($data, $saving_method = ''){
 	}
 }
 
-// save settings in db
-function jcf_admin_save_settings($data){
-	foreach($data as $key => $post_type ){
-		if(is_array($post_type) && !empty($post_type['fieldsets'])){
-			foreach($post_type['fieldsets'] as $fieldset_id => $fieldset){
-				$status_fieldset = jcf_import_add_fieldset($fieldset['title'], $key, $fieldset_id);
-				if( empty($status_fieldset) ){
-					$notice = array('error' => 'Error! Please check <strong>import file</strong>');
-					do_action('admin_notices', $notice);
-					return false;
-				}else{
-					$fieldset_id = $status_fieldset;
-					if(!empty($fieldset['fields'])){
-						$old_fields = jcf_field_settings_get('', 'jcf_fields-' . $key);
-						if(!empty($old_fields)){
-							foreach($old_fields as $old_field_id => $old_field){
-								$old_slugs[] = $old_field['slug'];
-								$old_field_ids[$old_field['slug']] = $old_field_id;
-							}
-						}
-						foreach($fieldset['fields'] as $field_id => $field){
-							$slug_checking = !empty($old_slugs) ? in_array($field['slug'], $old_slugs) : false;
-							if($slug_checking){
-								$status_field = jcf_import_add_field($old_field_ids[$field['slug']], $fieldset_id, $field, $key );
-							}else{
-								$status_field = jcf_import_add_field($field_id, $fieldset_id, $field, $key );
-							}
-						}
-					}
-				}
-			}
-			if( !empty($status_fieldset) ){
-				if( $_POST['file_name'] ){
-					unlink($_POST['file_name']);
-				}
-				
-			}
-		}
-	}
-	return $status_fieldset;
-}
-
 // get options
 function jcf_get_options($key){
 	$jcf_multisite_settings = jcf_get_multisite_settings();
@@ -463,7 +360,7 @@ function jcf_get_file_settings_name(){
 	}
 }
 
-// update read settings
+// function for update saving method
 function jcf_update_read_settings(){
 	$jcf_read_settings = jcf_get_read_settings();
 	$read_settings = $_POST['jcf_read_settings'];

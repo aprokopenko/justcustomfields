@@ -1,7 +1,7 @@
 <?php
 
 	// add fieldset form import
-	function jcf_import_add_fieldset($title_fieldset='', $option_name = '', $slug = ''){
+	function jcf_import_add_fieldset($title_fieldset='', $slug = ''){
 		$title = !empty($title_fieldset) ? $title_fieldset : strip_tags(trim($_POST['title']));
 		if( empty($title) ){
 			return false;
@@ -11,19 +11,9 @@
 			$slug = 'jcf-fieldset-'.rand(0,10000);
 		}
 
-		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-			$jcf_settings = jcf_get_all_settings_from_file();
-			$post_type = !empty($option_name) ? $option_name :  jcf_get_post_type();
-			$fieldsets = $jcf_settings['fieldsets'][$post_type];
-			if( isset($fieldsets[$slug]) ){
-				return $slug;
-			}
-		}else{
-			$fieldsets = jcf_fieldsets_get('', 'jcf_fieldsets-' . $option_name);
-			if( isset($fieldsets[$slug]) ){
-				return $slug;
-			}
+		$fieldsets = jcf_fieldsets_get();
+		if( isset($fieldsets[$slug]) ){
+			return $slug;
 		}
 
 		// create fiedlset
@@ -32,25 +22,84 @@
 			'title' => $title,
 			'fields' => array(),
 		);
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-			$jcf_settings['fieldsets'][$post_type][$slug] = $fieldset;
-			$settings_data = json_encode($jcf_settings);
-			 jcf_admin_save_all_settings_in_file($settings_data);
-		}else{
-			jcf_fieldsets_update($slug, $fieldset, 'jcf_fieldsets-' . $option_name);
-		}
+		jcf_fieldsets_update($slug, $fieldset);
 		return $slug;
 	}
 
 	// add field from import
-	function jcf_import_add_field($field_id, $fieldset_id, $params, $option_name){
-		$field_obj = jcf_init_field_object($field_id, $fieldset_id, 'jcf_fields-' . $option_name);
+	function jcf_import_add_field($field_id, $fieldset_id, $params){
+		$field_obj = jcf_init_field_object($field_id, $fieldset_id);
 		if($field_obj->slug == $params['slug']){
-			$resp = $field_obj->do_update($params, $option_name);
+			$resp = $field_obj->do_update($params);
 		}else{
-			$field_obj = jcf_init_field_object($params['type'], $fieldset_id, 'jcf_fields-' . $option_name);
-			$resp = $field_obj->do_update($params, $option_name);
+			$field_id = preg_replace('/\-([0-9]+)/', '', $field_id);
+			$field_obj = jcf_init_field_object($field_id, $fieldset_id);
+			$resp = $field_obj->do_update($params);
 		}
 
 		return $resp;
+	}
+
+	// get all settings from db
+	function jcf_get_all_settings_from_db(){
+		$post_types = jcf_get_post_types();
+		$jcf_settings = array();
+		$fieldsets = array();
+		$field_settings = array();
+		$field_options = array();
+		foreach($post_types as $key => $value){
+			jcf_set_post_type($key);
+			$fieldsets[$key] = jcf_fieldsets_get();
+			$field_settings[$key] = jcf_field_settings_get('', true);
+		}
+
+		$jcf_settings = array(
+			'post_types' => $post_types,
+			'fieldsets' => $fieldsets,
+			'field_settings' => $field_settings,
+		);
+		return $jcf_settings;
+	}
+
+	// save fields from import to file config or db
+	function jcf_admin_save_settings($data){
+		foreach($data as $key => $post_type ){
+			jcf_set_post_type($key);
+			if(is_array($post_type) && !empty($post_type['fieldsets'])){
+				foreach($post_type['fieldsets'] as $fieldset_id => $fieldset){
+					$status_fieldset = jcf_import_add_fieldset($fieldset['title'], $fieldset_id);
+					if( empty($status_fieldset) ){
+						$notice = array('error' => 'Error! Please check <strong>import file</strong>');
+						do_action('admin_notices', $notice);
+						return false;
+					}else{
+						$fieldset_id = $status_fieldset;
+						if(!empty($fieldset['fields'])){
+							$old_fields = jcf_field_settings_get();
+							if(!empty($old_fields)){
+								foreach($old_fields as $old_field_id => $old_field){
+									$old_slugs[] = $old_field['slug'];
+									$old_field_ids[$old_field['slug']] = $old_field_id;
+								}
+							}
+							foreach($fieldset['fields'] as $field_id => $field){
+								$slug_checking = !empty($old_slugs) ? in_array($field['slug'], $old_slugs) : false;
+								if($slug_checking){
+									$status_field = jcf_import_add_field($old_field_ids[$field['slug']], $fieldset_id, $field);
+								}else{
+									$status_field = jcf_import_add_field($field_id, $fieldset_id, $field);
+								}
+							}
+						}
+					}
+				}
+				if( !empty($status_fieldset) ){
+					if( $_POST['file_name'] ){
+						unlink($_POST['file_name']);
+					}
+
+				}
+			}
+		}
+		return $status_fieldset;
 	}

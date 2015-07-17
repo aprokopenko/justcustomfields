@@ -12,7 +12,7 @@
 							<input type="hidden" name="import_data[<?php echo $key; ?>]" value="<?php echo $key; ?>" />
 							<?php if(!empty($post_type['fieldsets'])) :?>
 								<?php foreach( $post_type['fieldsets'] as $fieldset_id =>$fieldset ) : ?>
-									<input type="hidden" name="import_data[<?php echo $key; ?>][fieldsets][<?php echo $fieldset_id; ?>][title]" value="<?php echo $fieldset['title']; ?>" />
+									<input type="hidden" disabled='disabled' data-fieldset ="import_data_<?php echo $key; ?>_fieldsets_<?php echo $fieldset_id; ?>"  name="import_data[<?php echo $key; ?>][fieldsets][<?php echo $fieldset_id; ?>][title]" value="<?php echo $fieldset['title']; ?>" class="jcf_hidden_fieldset" />
 									<div class="jcf_inner_box" id="jcf_fieldset_<?php echo $fieldset_id; ?>">
 										<h3 class="header"><input type="checkbox" name="choose_fieldset" value="import_data_<?php echo $key; ?>_fieldsets_<?php echo $fieldset_id; ?>" class="jcf-choose_fieldset" /><?php _e('Fieldset:', JCF_TEXTDOMAIN); ?> <span><?php echo $fieldset['title'];  ?></span></h3>
 										<div class="jcf_inner_content">
@@ -28,12 +28,12 @@
 													<?php if( !empty($fieldset['fields'])) : ?>
 														<?php foreach($fieldset['fields'] as $field_id => $field) : ?>
 														<?php foreach($field as $key_setting => $field_setting): ?>
-																<input type="hidden" disabled='disabled' data-fieldset ="import_data_<?php echo $key; ?>_fieldsets_<?php echo $fieldset_id; ?>" data-field = 'import_data_<?php echo $key; ?>_fieldsets_<?php echo $fieldset_id; ?>_fields_<?php echo $field_id; ?>'  name="import_data[<?php echo $key; ?>][fieldsets][<?php echo $fieldset_id; ?>][fields][<?php echo $field_id; ?>][<?php echo $key_setting; ?>]" value="<?php echo $field_setting; ?>" />
+																<input type="hidden" disabled=disabled' data-fieldset ="import_data_<?php echo $key; ?>_fieldsets_<?php echo $fieldset_id; ?>" data-field = 'import_data_<?php echo $key; ?>_fieldsets_<?php echo $fieldset_id; ?>_fields_<?php echo $field_id; ?>'  name="import_data[<?php echo $key; ?>][fieldsets][<?php echo $fieldset_id; ?>][fields][<?php echo $field_id; ?>][<?php echo $key_setting; ?>]" value="<?php echo $field_setting; ?>" />
 														<?php endforeach; ?>
 														<tr id="field_row_<?php echo $field_id; ?>">
-															<td class="check-column"><input type="checkbox" class="choose_field" name="choose_field[]" value="import_data_<?php echo $key; ?>_fieldsets_<?php echo $fieldset_id; ?>_fields_<?php echo $field_id; ?>" /></td>
+															<td class="check-column"><input type="checkbox" class="choose_field" name="choose_field[]" value="import_data_<?php echo $key; ?>_fieldsets_<?php echo $fieldset_id; ?>" id="import_data_<?php echo $key; ?>_fieldsets_<?php echo $fieldset_id; ?>_fields_<?php echo $field_id; ?>" /></td>
 															<td><strong><?php echo $field['title']; ?></strong></td>
-															<td><?php echo $field['type']; ?></td>
+															<td><?php echo preg_replace('/\-[0-9]+$/', '', $field_id); ?></td>
 															<td><?php echo $field['slug']; ?></td>
 															<td><?php if($field['enabled']) _e('Yes', JCF_TEXTDOMAIN); else  _e('No', JCF_TEXTDOMAIN);?></td>
 														</tr>
