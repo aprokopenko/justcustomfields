@@ -312,6 +312,25 @@ class Just_Field_RelatedContent extends Just_Field{
 		wp_register_style('jcf_related_content', WP_PLUGIN_URL.'/just-custom-fields/components/relatedcontent/related-content.css');
 		wp_enqueue_style('jcf_related_content');
 	}
-	
+
+	/**
+	 *	print content from shortcode
+	 */
+	function show_shortcode($args){
+		$class_name = 'jcf-' . $args['type'] . ' jcf-' . $args['type'] . '-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
+		$id_name = !empty($args['id']) ? $args['id'] : '';
+		$html = '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>';
+		$html .= '<ul class="jcf-' . $args['type'] . '-list jcf-' . $args['type'] . '-list-' . $args['slug'] . '">';
+		foreach($this->entry as $key => $entry){
+			$post_link = get_permalink($entry);
+			$post_title = get_the_title($entry);
+			$html .= '<li class="jcf-' . $args['type'] . '-row jcf-' . $args['type'] . '-row--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-row--' . $args['slug'] . '-' . $key . '">';
+			$html .= '<a href="' . $post_link . '">'. $post_title . '</a></li>';
+		}
+		$html .= '</ul>';
+		$html .= '</div>';
+		return $html;
+	}
+
 }
 ?>

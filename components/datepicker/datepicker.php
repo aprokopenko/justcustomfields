@@ -76,5 +76,14 @@ class Just_Field_DatePicker extends Just_Field{
 		wp_enqueue_style('jcf_ui_datepicker');
 	}
 	
+	/**
+	 *	print content from shortcode
+	 */
+	function show_shortcode($args){
+		$class_name = 'jcf-' . $args['type'] . ' jcf-' . $args['type'] . '-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
+		$id_name = !empty($args['id']) ? $args['id'] : '';
+		return '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>' . $this->entry . '</div>';
+	}
+
 }
 ?>

@@ -295,5 +295,24 @@ class Just_Field_Upload extends Just_Field{
 		<?php
 	}
 	
+	/**
+	 *	print content from shortcode
+	 */
+	function show_shortcode($args){
+		$class_name = 'jcf-' . $args['type'] . ' jcf-' . $args['type'] . '-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
+		$id_name = !empty($args['id']) ? $args['id'] : '';
+		$html = '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>';
+		foreach($this->entry as $key => $value){
+			$html .= '<div class="jcf-' . $args['type'] . '-row jcf-' . $args['type'] . '-row--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-row--' . $args['slug'] . '_' . $key . '">';
+			$html .= '<div class="jcf-' . $args['type'] . '-row-image jcf-' . $args['type'] . '-row-image--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-row-image--' . $args['slug'] . '_' . $key . '">';
+			$html .= '<img src="' . $value['image'] . '" ' . (!empty($value['title']) ? 'alt="' . $value['title'] . '" ' : '') . '  ' . (!empty($value['title']) ? ' title="' . $value['title'] . '" ' : '') . ' />';
+			$html .= '</div>';
+			$html .= !empty($value['title']) ? '<span class="jcf-' . $args['type'] . '-row-title jcf-' . $args['type'] . '-row--' . $args['slug'] . '-title" id="jcf-' . $args['type'] . '-row--' . $args['slug'] . '-title-' . $key . '">' . $value['title'] . '</span>' : '';
+			$html .= !empty($value['description']) ? '<div class="jcf-' . $args['type'] . '-row-description jcf-' . $args['type'] . '-row--' . $args['slug'] . '-description" id="jcf-' . $args['type'] . '-row--' . $args['slug'] . '-description-' . $key . '">' . $value['description'] . '</div>' : '';
+			$html .= '</div>';
+		}
+		$html .= '</div>';
+		return $html;
+	}
 }
 ?>

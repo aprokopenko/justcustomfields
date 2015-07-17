@@ -73,7 +73,7 @@
 		// $field_mixed can be real field id or only id_base
 		$id_base = preg_replace('/\-([0-9]+)/', '', $field_mixed);
 		$field = jcf_get_registered_fields( $id_base );
-		
+
 		$field_obj = new $field['class_name']();
 		
 		$field_obj->set_fieldset( $fieldset_id );

@@ -69,6 +69,14 @@ class Just_Field{
 	}
 	
 	/**
+	 *	set slug
+	 *	@param  string  $slug  field slug
+	 */
+	function set_slug( $slug ){
+		$this->slug = $this->validate_instance_slug($slug);
+	}
+
+	/**
 	 *	set post ID and load entry from wp-postmeta
 	 *	@param  int  $post_ID  post ID variable
 	 */
