@@ -171,6 +171,4 @@
 		echo $resp;
 		exit();
 	}
-	
-	
 ?>
