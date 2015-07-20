@@ -35,4 +35,15 @@
 		return 'jcf_fieldsets-'.$post_type;
 	}
 	
+	function jcf_fieldsets_count($post_type){
+		$fieldsets = get_option('jcf_fieldsets-'.$post_type, array());
+		$count['fieldsets'] = count($fieldsets);
+		$count['fields'] = 0;
+		foreach($fieldsets as $fieldset){
+			if(!empty($fieldset['fields'])){
+				$count['fields'] += count($fieldset['fields']);
+			}
+		}
+		return $count;
+	}
 ?>
