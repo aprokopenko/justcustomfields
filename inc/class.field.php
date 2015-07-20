@@ -49,7 +49,7 @@ class Just_Field{
 	 *	load instance and entries for this field
 	 *	@param  string  $id  field id (cosist of id_base + number)
 	 */
-	function set_id( $id, $option_name = '' ){
+	function set_id( $id){
 		$this->id = $id;
 		// this is add request. so number is 0
 		if( $this->id == $this->id_base ){
@@ -61,7 +61,7 @@ class Just_Field{
 			$this->number = str_replace($this->id_base.'-', '', $this->id);
 
 			// load instance data
-			$this->instance =(array)jcf_field_settings_get( $this->id, $option_name );
+			$this->instance =(array)jcf_field_settings_get( $this->id);
 			if( !empty($this->instance) ){
 				$this->slug = $this->instance['slug'];
 			}
@@ -198,8 +198,9 @@ class Just_Field{
 	/**
 	 *	function to save field instance to the database
 	 *	call $this->update inside
+	 *	@param array $params for update field
 	 */
-	function do_update($params = array(), $option_name = ''){
+	function do_update($params = array()){
 		$input = !empty($params) ? $params : $_POST['field-'.$this->id_base][$this->number];
 		// remove all slashed from values
 		foreach($input as $var => $value){
@@ -244,38 +245,17 @@ class Just_Field{
 		}
 		
 		/// update fieldset
-		$option_name_fieldsets = !empty($option_name) ? 'jcf_fieldsets-'.$option_name : '';
 
-		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-			$jcf_settings = jcf_get_all_settings_from_file();
-			$post_type = !empty($option_name) ? $option_name : jcf_get_post_type();
-			$fieldset_id = $this->fieldset_id;
-			$field_id = $this->id;
-			$jcf_settings['fieldsets'][$post_type][$fieldset_id]['fields'][$field_id] = $instance['enabled'];
-			// check slug field
-			if( empty($instance['slug']) ){
-				$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
-			}
-			foreach($instance as $field_attr => $value){
-				$jcf_settings['field_settings'][$post_type][$field_id][$field_attr] = $value;
-			}
-			$settings_data = json_encode($jcf_settings);
-			jcf_admin_save_all_settings_in_file($settings_data);
-		}else{
-			$fieldset = jcf_fieldsets_get( $this->fieldset_id, $option_name_fieldsets  );
-			$fieldset['fields'][$this->id] = $instance['enabled'];
-			jcf_fieldsets_update( $this->fieldset_id, $fieldset, $option_name_fieldsets );
+		$fieldset = jcf_fieldsets_get( $this->fieldset_id);
+		$fieldset['fields'][$this->id] = $instance['enabled'];
+		jcf_fieldsets_update( $this->fieldset_id, $fieldset );
 
-			// check slug field
-			if( empty($instance['slug']) ){
-				$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
-			}
-
-			// save
-			$option_name_fields = !empty($option_name) ? 'jcf_fields-'.$option_name : '';
-			jcf_field_settings_update($this->id, $instance, $option_name_fields);
+		// check slug field
+		if( empty($instance['slug']) ){
+			$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
 		}
+		// save
+		jcf_field_settings_update($this->id, $instance, $this->fieldset_id);
 
 		// return status
 		$res = array(
@@ -293,27 +273,14 @@ class Just_Field{
 	 *	function to delete field from the database
 	 */
 	function do_delete(){
-		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-			$jcf_settings = jcf_get_all_settings_from_file();
-			$post_type = jcf_get_post_type();
-			$fieldset_id = $this->fieldset_id;
-			$field_id = $this->id;
-			unset($jcf_settings['fieldsets'][$post_type][$fieldset_id][fields][$field_id]);
-			unset($jcf_settings['field_settings'][$post_type][$field_id]);
-			$settings_data = json_encode($jcf_settings);
-			jcf_admin_save_all_settings_in_file($settings_data);
-		}else{
-			// remove from fieldset:
-			$fieldset = jcf_fieldsets_get( $this->fieldset_id );
-			if( isset($fieldset['fields'][$this->id]) )
-				unset($fieldset['fields'][$this->id]);
-			jcf_fieldsets_update( $this->fieldset_id, $fieldset );
+		// remove from fieldset:
+		$fieldset = jcf_fieldsets_get( $this->fieldset_id );
+		if( isset($fieldset['fields'][$this->id]) )
+			unset($fieldset['fields'][$this->id]);
+		jcf_fieldsets_update( $this->fieldset_id, $fieldset );
 
-			// remove from fields array
-			jcf_field_settings_update($this->id, NULL);
-		}
-
+		// remove from fields array
+		jcf_field_settings_update($this->id, NULL, $this->fieldset_id);
 	}
 
 	/**

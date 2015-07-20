@@ -36,30 +36,48 @@
 	/**
 	 *	set fields in wp-options
 	 */
-	function jcf_field_settings_update( $key, $values = array(), $option_name = '' ){
-		if(empty( $option_name )){
-			$option_name = jcf_fields_get_option_name();
-		}
+	function jcf_field_settings_update( $key, $values = array(), $fieldset_id = ''){
+		$option_name = jcf_fields_get_option_name();
 
-		$field_settings = jcf_get_options($option_name);
-		if( $values === NULL && isset($field_settings[$key]) ){
-			unset($field_settings[$key]);
-		}
+		$jcf_read_settings = jcf_get_read_settings();
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
+			$jcf_settings = jcf_get_all_settings_from_file();
+			$post_type =  jcf_get_post_type();
+			$fieldset_id = $fieldset_id;
+			$field_id = $key;
+			if( $values === NULL && isset($field_settings[$key]) ){
+				unset($jcf_settings['fieldsets'][$post_type][$fieldset_id]['fields'][$field_id]);
+				unset($jcf_settings['field_settings'][$post_type][$field_id]);
+			}
 
-		if( !empty($values) ){
-			$field_settings[$key] = $values;
-		}
+			if( !empty($values) ){
+				$jcf_settings['fieldsets'][$post_type][$fieldset_id]['fields'][$field_id] = $values['enabled'];
+				// check slug field
+				foreach($values as $field_attr => $value){
+					$jcf_settings['field_settings'][$post_type][$field_id][$field_attr] = $value;
+				}
+			}
+			$settings_data = json_encode($jcf_settings);
+			jcf_admin_save_all_settings_in_file($settings_data);
+		}else{
+			$field_settings = jcf_get_options($option_name);
+			if( $values === NULL && isset($field_settings[$key]) ){
+				unset($field_settings[$key]);
+			}
 
-		jcf_update_options($option_name, $field_settings);
+			if( !empty($values) ){
+				$field_settings[$key] = $values;
+			}
+
+			jcf_update_options($option_name, $field_settings);
+		}
 	}
 
 	/**
 	 *	get fields from wp-options
 	 */
-	function jcf_field_settings_get( $id = '', $option_name = '', $select_from_db = false){
-		if(empty( $option_name )){
-			$option_name = jcf_fields_get_option_name();
-		}
+	function jcf_field_settings_get( $id = '', $select_from_db = false){
+		$option_name = jcf_fields_get_option_name();
 		if(empty($select_from_db)){
 			$jcf_read_settings = jcf_get_read_settings();
 			if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
@@ -83,7 +101,7 @@
 	/**
 	 *	init field object
 	 */
-	function jcf_init_field_object( $field_mixed, $fieldset_id = '', $option_name = '' ){
+	function jcf_init_field_object( $field_mixed, $fieldset_id = ''){
 		// $field_mixed can be real field id or only id_base
 		$id_base = preg_replace('/\-([0-9]+)/', '', $field_mixed);
 		$field = jcf_get_registered_fields( $id_base );
