@@ -48,7 +48,7 @@
 	 */
 	function jcf_post_show_custom_fields( $post = NULL, $box = NULL ){
 		$fieldset = $box['args'][0];
-		
+
 		foreach($fieldset['fields'] as $field_id => $enabled){
 			if( !$enabled ) continue;
 			
@@ -107,7 +107,7 @@
 				$field_obj->do_save();
 			}
 		}
-		
+
 		return false;
 	}
 	
