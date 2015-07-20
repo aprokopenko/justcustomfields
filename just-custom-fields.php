@@ -298,6 +298,7 @@ function jcf_get_settings_from_file($uploadfile){
 
 // save settings to file
 function jcf_admin_save_all_settings_in_file($data, $saving_method = ''){
+	$data = jcf_format_json($data);
 	$jcf_read_settings = $saving_method ? $saving_method :  jcf_get_read_settings();
 	if( !empty($jcf_read_settings)){
 		if ($jcf_read_settings == 'theme' ){
@@ -394,5 +395,49 @@ function jcf_update_read_settings(){
 		do_action('admin_notices', $notice);
 		return $save ? $read_settings : $jcf_read_settings;
 	}
+}
+
+// json formater
+function jcf_format_json($json){
+	$tabcount = 0;
+	$result = '';
+	$inquote = false;
+	$ignorenext = false;
+	$tab = "\t";
+	$newline = "\n";
+
+	for( $i = 0; $i < strlen($json); $i++ ){
+		$char = $json[$i];
+		if( $ignorenext ){
+			$result .= $char;
+			$ignorenext = false;
+		}
+		else {
+			switch( $char ) {
+				case '{':
+					$tabcount++;
+					$result .= $char . $newline . str_repeat($tab, $tabcount);
+					break;
+				case '}':
+					$tabcount--;
+					$result = trim($result) . $newline . str_repeat($tab, $tabcount) . $char;
+					break;
+				case ',':
+					$result .= $char . $newline . str_repeat($tab, $tabcount);
+					break;
+				case '"':
+					$inquote = !$inquote;
+					$result .= $char;
+					break;
+				case '\\':
+					if ($inquote) $ignorenext = true;
+					$result .= $char;
+					break;
+				default:
+					$result .= $char;
+			}
+		}
+	}
+	return $result;
 }
 ?>
