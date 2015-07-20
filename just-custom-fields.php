@@ -300,7 +300,7 @@ function jcf_admin_add_scripts() {
 }
 
 // add custom styles for plugin settings page
-function jcf_admin_add_styles() { 
+function jcf_admin_add_styles() {
 	wp_register_style('jcf-styles', WP_PLUGIN_URL.'/just-custom-fields/assets/styles.css');
 	wp_enqueue_style('jcf-styles'); 
 }

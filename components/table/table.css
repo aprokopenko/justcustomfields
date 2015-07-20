@@ -23,3 +23,6 @@
 .jcf_edit_field.field_table table.sortable .hide{
 	display:none;
 }
+.jcf_option_column{
+	width: 60px;
+}
