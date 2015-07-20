@@ -67,7 +67,7 @@ class Just_Field_DatePicker extends Just_Field{
 			<input class="widefat" id="<?php echo $this->get_field_id('date_format'); ?>"
 				   name="<?php echo $this->get_field_name('date_format'); ?>" type="text"
 				   value="<?php echo $date_format; ?>" /><br />
-			<small>Exmple: yy-mm-dd <a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank">look more about date formats</a></small>
+			<small><?php _e('Example:', JCF_TEXTDOMAIN);?> yy-mm-dd <a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank"><?php _e('look more about date formats', JCF_TEXTDOMAIN);?></a></small>
 		</p>
 		<?php
 	}
