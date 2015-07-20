@@ -63,7 +63,12 @@ class Just_Field_DatePicker extends Just_Field{
 		?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', JCF_TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 		<p><label for="<?php echo $this->get_field_id('show_monthes'); ?>"><input class="checkbox" id="<?php echo $this->get_field_id('show_monthes'); ?>" name="<?php echo $this->get_field_name('show_monthes'); ?>" type="checkbox" value="1" <?php echo $show_monthes; ?> /> <?php _e('Show month/year select boxes', JCF_TEXTDOMAIN); ?></label></p>
-		<p><label for="<?php echo $this->get_field_id('date_format'); ?>"><?php _e('Date format:', JCF_TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('date_format'); ?>" name="<?php echo $this->get_field_name('date_format'); ?>" type="text" value="<?php echo $date_format; ?>" /><br /><small>Exmple: yy-mm-dd <a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank">look more about date formats</a></small></p>
+		<p><label for="<?php echo $this->get_field_id('date_format'); ?>"><?php _e('Date format:', JCF_TEXTDOMAIN); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id('date_format'); ?>"
+				   name="<?php echo $this->get_field_name('date_format'); ?>" type="text"
+				   value="<?php echo $date_format; ?>" /><br />
+			<small>Exmple: yy-mm-dd <a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank">look more about date formats</a></small>
+		</p>
 		<?php
 	}
 
