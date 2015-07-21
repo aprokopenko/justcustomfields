@@ -295,6 +295,9 @@ function initExport(){
 	initImportExportCheckboxes();
 }
 
+/**
+ *	init Import/Export checkboxes changing
+ */
 function initImportExportCheckboxes(){
 	// checked fields
 	jQuery('#jcf_save_import_fields input[type="checkbox"], #jcf_export_fields input[type="checkbox"]').live('change', function(){
