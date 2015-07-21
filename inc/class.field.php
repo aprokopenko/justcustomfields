@@ -245,7 +245,7 @@ class Just_Field{
 		}
 		
 		// update fieldset
-		$fieldset = jcf_fieldsets_get( $this->fieldset_id);
+		$fieldset = jcf_fieldsets_get( $this->fieldset_id );
 		$fieldset['fields'][$this->id] = $instance['enabled'];
 		jcf_fieldsets_update( $this->fieldset_id, $fieldset );
 

@@ -145,6 +145,7 @@ function initFieldsetFields(){
 		// send request
 		jcf_ajax(data, 'json', loader, function(response){
 			
+			console.log(response);
 			var fieldset = jQuery('#the-list-' + response.fieldset_id);
 			
 			if( response.is_new ){
