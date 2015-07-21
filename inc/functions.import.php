@@ -1,6 +1,11 @@
 <?php
 
-	// add fieldset form import
+	/**
+	 *	Add fieldset form import
+	 *	@param string $title_fieldset Feildset name
+	 *	@param string $slug Fieldset slug
+	 *	@return string|boolean Return slug if fieldset has saved and false if not
+	 */
 	function jcf_import_add_fieldset($title_fieldset='', $slug = ''){
 		$title = !empty($title_fieldset) ? $title_fieldset : strip_tags(trim($_POST['title']));
 		if( empty($title) ){
@@ -26,7 +31,13 @@
 		return $slug;
 	}
 
-	// add field from import
+	/**
+	 *	Add field from import
+	 *	@param string $field_id Field id
+	 *	@param string $fieldset_id Fieldset id
+	 *	@param array $params Attributes of field
+	 *	@return array Attributes of field
+	 */
 	function jcf_import_add_field($field_id, $fieldset_id, $params){
 		$field_obj = jcf_init_field_object($field_id, $fieldset_id);
 		if($field_obj->slug == $params['slug']){
@@ -40,7 +51,10 @@
 		return $resp;
 	}
 
-	// get all settings from db
+	/**
+	 *	Get all settings from db
+	 *	@return array Return all settings for fieldsets and fields
+	 */
 	function jcf_get_all_settings_from_db(){
 		$post_types = jcf_get_post_types();
 		$jcf_settings = array();
@@ -61,7 +75,11 @@
 		return $jcf_settings;
 	}
 
-	// save fields from import to file config or db
+	/**
+	 *	Save fields from import to file config or db
+	 *	@param array $data Array with fieldsets and fields settings from import file
+	 *	@return boolean|int Return save status
+	 */
 	function jcf_admin_save_settings($data){
 		foreach($data as $key => $post_type ){
 			jcf_set_post_type($key);

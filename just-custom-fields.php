@@ -171,6 +171,9 @@ function jcf_admin_fields_page( $post_type ){
 
 /**
  *	Keep settings in the file of theme
+ *	@param string $dir Path to directory where saved file with fields settings
+ *	@param string $read_settings Saving method
+ *	@return int Status of file saving
  */
 function jcf_admin_keep_settings($dir, $read_settings){
 	$jcf_settings = jcf_get_all_settings_from_db();
@@ -276,7 +279,10 @@ function jcf_admin_add_styles() {
 }
 
 
-// get all settings from file
+/**
+ *	Get all settings from file
+ *	@return array Array with fields settings from config file
+ */
 function jcf_get_all_settings_from_file(){
 	$filename = jcf_get_file_settings_name();
 	if (file_exists($filename)) {
@@ -288,53 +294,87 @@ function jcf_get_all_settings_from_file(){
 	}
 }
 
-// get settings from file
+/**
+ *	Get settings from file
+ *	@param string $uploadfile File name
+ *	@return array Array with fields settings from file
+ */
 function jcf_get_settings_from_file($uploadfile){
 	$content = file_get_contents($uploadfile);
 	$data = json_decode($content, true);
 	return $data;
 }
 
-// save settings to file
+/**
+ *	Save settings to file
+ *	@param array $data Array with fields settings
+ *	@param string $saving_method Saving method
+ *	@return boolean If file has saved return true, if file has not saved return false
+ */
 function jcf_admin_save_all_settings_in_file($data, $saving_method = ''){
 	$data = jcf_format_json(json_encode($data));
 	$jcf_read_settings = $saving_method ? $saving_method :  jcf_get_read_settings();
 	if( !empty($jcf_read_settings)){
 		if ($jcf_read_settings == 'theme' ){
-			$fp = fopen(get_template_directory() . '/jcf-settings/jcf_settings.json', 'w');
-			$content = $data . "\r\n";
-			$fw = fwrite($fp, $content);
-			fclose($fp);
+			$dir = get_template_directory() . '/jcf-settings/';
+			$filename = get_template_directory() . '/jcf-settings/jcf_settings.json';
 		}elseif($jcf_read_settings == 'global'){
-			$fp = fopen(get_home_path() . 'wp-content/jcf-settings/jcf_settings.json', 'w');
-			$content = $data . "\r\n";
-			$fw = fwrite($fp, $content);
-			fclose($fp);
+			$dir = get_home_path() . 'wp-content/jcf-settings/';
+			$filename = get_home_path() . 'wp-content/jcf-settings/jcf_settings.json';
 		}else{
-			$fw = false;
+			return false;
 		}
-	}
-	if($fw){
+		$fp = fopen($filename, 'w');
+		$content = $data . "\r\n";
+		$fw = fwrite($fp, $content);
+		fclose($fp);
+		jcf_set_chmod($filename, $dir);
 		return true;
 	}else{
 		return false;
 	}
 }
 
-// get options
+/**
+ *	Set permisiions for file
+ *	@param string $dir Parent directory path
+ *	@param string $filename File path
+ */
+function jcf_set_chmod($filename, $dir){
+	if ( $stat = @stat( $dir ) ) {
+		$dir_perms = $stat['mode'] & 0007777;
+	} else {
+		$dir_perms = 0777;
+	}
+	@chmod($filename, $dir_perms);
+}
+
+/**
+ *	Get options with wp-options
+ *	@param string $key Option name
+ *	@return array Options with $key
+ */
 function jcf_get_options($key){
 	$jcf_multisite_settings = jcf_get_multisite_settings();
 	return $jcf_multisite_settings == 'network' ? get_site_option($key, array()) : get_option($key, array());
 }
 
-// update options
+/**
+ *	Update options with wp-options
+ *	@param string $key Option name
+ *	@param array $value Values with option name
+ *	@return bollean
+ */
 function jcf_update_options($key, $value){
 	$jcf_multisite_settings = jcf_get_multisite_settings();
 	$jcf_multisite_settings == 'network' ? update_site_option($key, $value) : update_option($key, $value);
 	return true;
 }
 
-// admin notice
+/**
+ *	Admin notice
+ *	@param array $args Array with messages
+ */
 function jcf_admin_notice($args = array()){
 	if(!empty($args))
 	{
@@ -345,14 +385,20 @@ function jcf_admin_notice($args = array()){
 	}
 }
 
-// get read sttings
+/**
+ *	Get read sttings
+ *	@return string Return read method from file or database
+ */
 function jcf_get_read_settings(){
 	$multisite_setting = jcf_get_multisite_settings();
 	$jcf_read_settings = $multisite_setting == 'network' ? get_site_option('jcf_read_settings') : get_option('jcf_read_settings') ;
 	return $jcf_read_settings;
 }
 	
-// get file name for all settings
+/**
+ *	Get file name for all settings
+ *	@return string|boolean Return path to file of settings for all fields and false if read medhod from db
+ */
 function jcf_get_file_settings_name(){
 	$jcf_read_settings = jcf_get_read_settings();
 	if(!empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
@@ -362,7 +408,10 @@ function jcf_get_file_settings_name(){
 	}
 }
 
-// function for update saving method
+/**
+ *	Function for update saving method
+ *	@return string Return read method from file or database
+ */
 function jcf_update_read_settings(){
 	$jcf_read_settings = jcf_get_read_settings();
 	$read_settings = $_POST['jcf_read_settings'];
@@ -396,7 +445,11 @@ function jcf_update_read_settings(){
 	}
 }
 
-// json formater
+/**
+ *	Json formater
+ *	@param string $json Data of settings for fields
+ *	@return string Return formated json string with settings for fields
+ */
 function jcf_format_json($json){
 	$tabcount = 0;
 	$result = '';
