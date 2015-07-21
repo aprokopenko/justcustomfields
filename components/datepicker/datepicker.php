@@ -22,7 +22,7 @@ class Just_Field_DatePicker extends Just_Field{
 		<script type="text/javascript"><!--
 			jQuery(document).ready(function(){
 				jQuery("#<?php echo $this->get_field_id('val'); ?>").datepicker({
-					dateFormat: "yy-mm-dd"
+					dateFormat: "<?php echo !empty($this->instance['date_format']) ? $this->instance['date_format'] : 'yy-mm-dd'; ?>"
 					<?php if(!empty($this->instance['show_monthes'])) echo ', changeMonth: true, changeYear: true'; ?>
 				});
 			});
@@ -38,7 +38,7 @@ class Just_Field_DatePicker extends Just_Field{
 		$values = $values['val'];
 		return $values;
 	}
-	
+
 	/**
 	 *	update instance (settings) for current field
 	 */
@@ -46,6 +46,7 @@ class Just_Field_DatePicker extends Just_Field{
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['show_monthes'] = (int)@$new_instance['show_monthes'];
+		$instance['date_format'] = @$new_instance['date_format'];
 		return $instance;
 	}
 
@@ -58,12 +59,19 @@ class Just_Field_DatePicker extends Just_Field{
 
 		$title = esc_attr( $instance['title'] );
 		$show_monthes = !empty($instance['show_monthes'])? ' checked="checked" ' : '';
+		$date_format =  !empty($instance['date_format']) ? $instance['date_format'] : 'yy-mm-dd' ;
 		?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', JCF_TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 		<p><label for="<?php echo $this->get_field_id('show_monthes'); ?>"><input class="checkbox" id="<?php echo $this->get_field_id('show_monthes'); ?>" name="<?php echo $this->get_field_name('show_monthes'); ?>" type="checkbox" value="1" <?php echo $show_monthes; ?> /> <?php _e('Show month/year select boxes', JCF_TEXTDOMAIN); ?></label></p>
+		<p><label for="<?php echo $this->get_field_id('date_format'); ?>"><?php _e('Date format:', JCF_TEXTDOMAIN); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id('date_format'); ?>"
+				   name="<?php echo $this->get_field_name('date_format'); ?>" type="text"
+				   value="<?php echo $date_format; ?>" /><br />
+			<small><?php _e('Example:', JCF_TEXTDOMAIN);?> yy-mm-dd <a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank"><?php _e('look more about date formats', JCF_TEXTDOMAIN);?></a></small>
+		</p>
 		<?php
 	}
-	
+
 	function add_js(){
 		/**
 		 * WP version 3.0 and above have datepicker ui-core;
