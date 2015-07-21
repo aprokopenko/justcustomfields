@@ -274,6 +274,9 @@ form.jcform_add_field .ajax-feedback{
 	box-shadow: 0 0 1px  #a0a5aa;
 	float: left;
 }
+.jcf_tile .jcf_tile_icon:before{
+  content: "\f109";
+}
 .jcf_tile.post .jcf_tile_icon:before{
   content: "\f109";
 }
