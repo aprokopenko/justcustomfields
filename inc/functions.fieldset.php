@@ -34,8 +34,7 @@
 			if( !empty($values) ){
 				$jcf_settings['fieldsets'][$post_type][$key] = $values;
 			}
-			$settings_data = json_encode($jcf_settings);
-			 jcf_admin_save_all_settings_in_file($settings_data);
+			 jcf_admin_save_all_settings_in_file($jcf_settings);
 		}else{
 			$fieldsets = jcf_get_options($option_name);
 			if( $values === NULL && isset($fieldsets[$key]) ){

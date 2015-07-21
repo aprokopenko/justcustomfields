@@ -43,23 +43,24 @@
 		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$post_type =  jcf_get_post_type();
-			$fieldset_id = $fieldset_id;
-			$field_id = $key;
+			$fieldset = $jcf_settings['fieldsets'][$post_type][$fieldset_id];
+			$field_settings = $jcf_settings['field_settings'][$post_type];
+
 			if( $values === NULL && isset($field_settings[$key]) ){
-				unset($jcf_settings['fieldsets'][$post_type][$fieldset_id]['fields'][$field_id]);
-				unset($jcf_settings['field_settings'][$post_type][$field_id]);
+				unset($fieldset['fields'][$key]);
+				unset($field_settings[$key]);
 			}
 
 			if( !empty($values) ){
-				$jcf_settings['fieldsets'][$post_type][$fieldset_id]['fields'][$field_id] = $values['enabled'];
-				// check slug field
-				foreach($values as $field_attr => $value){
-					$jcf_settings['field_settings'][$post_type][$field_id][$field_attr] = $value;
-				}
+				$fieldset['fields'][$key] = $values['enabled'];
+				$field_settings[$key] = $values;
 			}
-			$settings_data = json_encode($jcf_settings);
-			jcf_admin_save_all_settings_in_file($settings_data);
-		}else{
+
+			$jcf_settings['fieldsets'][$post_type][$fieldset_id] = $fieldset;
+			$jcf_settings['field_settings'][$post_type] = $field_settings;
+			jcf_admin_save_all_settings_in_file($jcf_settings);
+		}
+		else{
 			$field_settings = jcf_get_options($option_name);
 			if( $values === NULL && isset($field_settings[$key]) ){
 				unset($field_settings[$key]);
@@ -109,7 +110,7 @@
 		$field_obj = new $field['class_name']();
 
 		$field_obj->set_fieldset( $fieldset_id );
-		$field_obj->set_id( $field_mixed, $option_name );
+		$field_obj->set_id( $field_mixed );
 
 		return $field_obj;
 	}

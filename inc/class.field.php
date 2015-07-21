@@ -49,7 +49,7 @@ class Just_Field{
 	 *	load instance and entries for this field
 	 *	@param  string  $id  field id (cosist of id_base + number)
 	 */
-	function set_id( $id){
+	function set_id( $id ){
 		$this->id = $id;
 		// this is add request. so number is 0
 		if( $this->id == $this->id_base ){
@@ -61,7 +61,7 @@ class Just_Field{
 			$this->number = str_replace($this->id_base.'-', '', $this->id);
 
 			// load instance data
-			$this->instance =(array)jcf_field_settings_get( $this->id);
+			$this->instance =(array)jcf_field_settings_get( $this->id );
 			if( !empty($this->instance) ){
 				$this->slug = $this->instance['slug'];
 			}
@@ -244,9 +244,8 @@ class Just_Field{
 			$this->id = $this->id_base . '-' . $this->number;
 		}
 		
-		/// update fieldset
-
-		$fieldset = jcf_fieldsets_get( $this->fieldset_id);
+		// update fieldset
+		$fieldset = jcf_fieldsets_get( $this->fieldset_id );
 		$fieldset['fields'][$this->id] = $instance['enabled'];
 		jcf_fieldsets_update( $this->fieldset_id, $fieldset );
 

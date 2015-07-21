@@ -51,6 +51,7 @@
 					<input type="hidden" name="jcf_keep_settings" value="1" disabled="disabled" />
 				</div>
 				<br /><br />
+				<?php wp_nonce_field("just-nonce"); ?>
 				<input type="submit" class="button-primary jcf_update_settings" name="jcf_update_settings" value="<?php _e('Save all settings', JCF_TEXTDOMAIN); ?>" />
 			</form>
 		</div>

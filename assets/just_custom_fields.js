@@ -145,6 +145,7 @@ function initFieldsetFields(){
 		// send request
 		jcf_ajax(data, 'json', loader, function(response){
 			
+			console.log(response);
 			var fieldset = jQuery('#the-list-' + response.fieldset_id);
 			
 			if( response.is_new ){
@@ -276,8 +277,7 @@ function initImport(){
 			}
 		  });
 	});
-
-	checkedFields();
+	initImportExportCheckboxes();
 }
 
 /**
@@ -292,25 +292,26 @@ function initExport(){
 			modalWindow(response);
 		});
 	});
-	checkedFields();
+	initImportExportCheckboxes();
 }
 
-function checkedFields(){
+function initImportExportCheckboxes(){
 	// checked fields
 	jQuery('#jcf_save_import_fields input[type="checkbox"], #jcf_export_fields input[type="checkbox"]').live('change', function(){
 		var data_val = jQuery( this ).val();
 		var data_id =  jQuery( this ).attr('id');
+		var data_checked = jQuery( this ).is(':checked');
 		if( jQuery( this ).hasClass('choose_field') ){
-				jQuery('input[data-fieldset="' + data_val + '"].jcf_hidden_fieldset').attr({'disabled':!jQuery( this ).is(':checked')});
-				jQuery('input[data-field="' + data_id + '"]').attr({'disabled':!jQuery( this ).is(':checked')});
+				jQuery('input[data-fieldset="' + data_val + '"].jcf_hidden_fieldset').attr({'disabled':!data_checked});
+				jQuery('input[data-field="' + data_id + '"]').attr({'disabled':!data_checked});
 		}
 		else if( jQuery( this ).hasClass('jcf-choose_fieldset') ){
-				jQuery( this ).parent().parent().find('input[type="checkbox"]').attr({'checked':!jQuery( this ).is(':checked')});
-				jQuery('input[data-fieldset="' + data_val + '"]').attr({'disabled':!jQuery( this ).is(':checked')});
+				jQuery( this ).parent().parent().find('input[type="checkbox"]').attr({'checked':!data_checked});
+				jQuery('input[data-fieldset="' + data_val + '"]').attr({'disabled':!data_checked});
 		}
 		else if( jQuery( this ).hasClass('jcf-select_content_type') ){
-				jQuery( this ).parent().parent().find('input[type="checkbox"]').attr({'checked':!jQuery( this ).is(':checked')});
-				jQuery( this ).parent().parent().find('input[type="hidden"]').attr({'disabled':!jQuery( this ).is(':checked')});
+				jQuery( this ).parent().parent().find('input[type="checkbox"]').attr({'checked':!data_checked});
+				jQuery( this ).parent().parent().find('input[type="hidden"]').attr({'disabled':!data_checked});
 		}
 	});
 }
