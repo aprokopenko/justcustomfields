@@ -61,7 +61,7 @@ class Just_Field{
 			$this->number = str_replace($this->id_base.'-', '', $this->id);
 
 			// load instance data
-			$this->instance = jcf_field_settings_get( $this->id );
+			$this->instance =(array)jcf_field_settings_get( $this->id );
 			if( !empty($this->instance) ){
 				$this->slug = $this->instance['slug'];
 			}
@@ -198,9 +198,10 @@ class Just_Field{
 	/**
 	 *	function to save field instance to the database
 	 *	call $this->update inside
+	 *	@param array $params for update field
 	 */
-	function do_update(){
-		$input = $_POST['field-'.$this->id_base][$this->number];
+	function do_update($params = array()){
+		$input = !empty($params) ? $params : $_POST['field-'.$this->id_base][$this->number];
 		// remove all slashed from values
 		foreach($input as $var => $value){
 			if( is_string($value) ){
@@ -218,7 +219,7 @@ class Just_Field{
 		$instance['title'] = strip_tags($instance['title']);
 		$instance['slug'] = strip_tags($input['slug']);
 		$instance['enabled'] = (int)@$input['enabled'];
-		
+
 		// starting from vers. 1.4 all new fields should be marked with version of the plugin
 		if( $this->is_new ){
 			$instance['_version'] = JCF_VERSION;
@@ -247,15 +248,14 @@ class Just_Field{
 		$fieldset = jcf_fieldsets_get( $this->fieldset_id );
 		$fieldset['fields'][$this->id] = $instance['enabled'];
 		jcf_fieldsets_update( $this->fieldset_id, $fieldset );
-		
+
 		// check slug field
 		if( empty($instance['slug']) ){
 			$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
 		}
-		
 		// save
-		jcf_field_settings_update($this->id, $instance);
-		
+		jcf_field_settings_update($this->id, $instance, $this->fieldset_id);
+
 		// return status
 		$res = array(
 			'status' => '1',
@@ -267,7 +267,7 @@ class Just_Field{
 		);
 		return $res;
 	}
-	
+
 	/**
 	 *	function to delete field from the database
 	 */
@@ -277,11 +277,11 @@ class Just_Field{
 		if( isset($fieldset['fields'][$this->id]) )
 			unset($fieldset['fields'][$this->id]);
 		jcf_fieldsets_update( $this->fieldset_id, $fieldset );
-		
+
 		// remove from fields array
-		jcf_field_settings_update($this->id, NULL);
+		jcf_field_settings_update($this->id, NULL, $this->fieldset_id);
 	}
-	
+
 	/**
 	 *	function to save data from edit post page to postmeta
 	 *	call $this->save()

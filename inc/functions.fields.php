@@ -5,10 +5,10 @@
 	 */
 	function jcf_field_register( $class_name ){
 		global $jcf_fields;
-		
+
 		// check class exists and try to create class object to get title
 		if( !class_exists($class_name) ) return false;
-		
+
 		$field_obj = new $class_name();
 
 		$field = array(
@@ -16,87 +16,121 @@
 			'class_name' => $class_name,
 			'title' => $field_obj->title,
 		);
-		
+
 		$jcf_fields[$field_obj->id_base] = $field;
 	}
-	
+
 	/**
 	 *	return array of registered fields (or concrete field by id_base)
 	 */
 	function jcf_get_registered_fields( $id_base = '' ){
 		global $jcf_fields;
-		
+
 		if( !empty($id_base) ){
 			return @$jcf_fields[$id_base];
 		}
-		
+
 		return $jcf_fields;
 	}
-	
+
 	/**
 	 *	set fields in wp-options
 	 */
-	function jcf_field_settings_update( $key, $values = array() ){
+	function jcf_field_settings_update( $key, $values = array(), $fieldset_id = ''){
 		$option_name = jcf_fields_get_option_name();
 
-		$field_settings = get_option($option_name, array());
-		if( $values === NULL && isset($field_settings[$key]) ){
-			unset($field_settings[$key]);
+		$jcf_read_settings = jcf_get_read_settings();
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
+			$jcf_settings = jcf_get_all_settings_from_file();
+			$post_type =  jcf_get_post_type();
+			$fieldset = $jcf_settings['fieldsets'][$post_type][$fieldset_id];
+			$field_settings = $jcf_settings['field_settings'][$post_type];
+
+			if( $values === NULL && isset($field_settings[$key]) ){
+				unset($fieldset['fields'][$key]);
+				unset($field_settings[$key]);
+			}
+
+			if( !empty($values) ){
+				$fieldset['fields'][$key] = $values['enabled'];
+				$field_settings[$key] = $values;
+			}
+
+			$jcf_settings['fieldsets'][$post_type][$fieldset_id] = $fieldset;
+			$jcf_settings['field_settings'][$post_type] = $field_settings;
+			jcf_admin_save_all_settings_in_file($jcf_settings);
 		}
-		
-		if( !empty($values) ){
-			$field_settings[$key] = $values;
+		else{
+			$field_settings = jcf_get_options($option_name);
+			if( $values === NULL && isset($field_settings[$key]) ){
+				unset($field_settings[$key]);
+			}
+
+			if( !empty($values) ){
+				$field_settings[$key] = $values;
+			}
+
+			jcf_update_options($option_name, $field_settings);
 		}
-		
-		update_option($option_name, $field_settings);
 	}
-	
+
 	/**
 	 *	get fields from wp-options
 	 */
-	function jcf_field_settings_get( $id = '' ){
+	function jcf_field_settings_get( $id = '', $select_from_db = false){
 		$option_name = jcf_fields_get_option_name();
-		
-		$field_settings = get_option($option_name, array());
-		
+		if(empty($select_from_db)){
+			$jcf_read_settings = jcf_get_read_settings();
+			if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
+				$jcf_settings = jcf_get_all_settings_from_file();
+				$post_type =  str_replace('jcf_fields-', '', $option_name);
+				$field_settings = $jcf_settings['field_settings'][$post_type];
+			}else{
+				$field_settings = jcf_get_options($option_name);
+			}
+		} else {
+			$field_settings = jcf_get_options($option_name);
+		}
+
 		if(!empty($id)){
 			return @$field_settings[$id];
 		}
-		
+
 		return $field_settings;
 	}
-	
+
 	/**
 	 *	init field object
 	 */
-	function jcf_init_field_object( $field_mixed, $fieldset_id = '' ){
+	function jcf_init_field_object( $field_mixed, $fieldset_id = ''){
 		// $field_mixed can be real field id or only id_base
 		$id_base = preg_replace('/\-([0-9]+)/', '', $field_mixed);
 		$field = jcf_get_registered_fields( $id_base );
-		
+
 		$field_obj = new $field['class_name']();
-		
+
 		$field_obj->set_fieldset( $fieldset_id );
 		$field_obj->set_id( $field_mixed );
-		
+
 		return $field_obj;
 	}
-	
+
 	/**
 	 * get next index for save new instance
 	 */
 	function jcf_get_fields_index( $id_base ){
+
 		$option_name = 'jcf_fields_index';
-		$indexes = get_option($option_name, array());
-		
+		$indexes = jcf_get_options($option_name);
+
 		// get index, increase on 1
 		$index = (int)@$indexes[$id_base];
 		$index ++;
-		
+
 		// update indexes
 		$indexes[$id_base] = $index;
-		update_option($option_name, $indexes);
-		
+		jcf_update_options($option_name, $indexes);
+
 		return $index;
 	}
 	
@@ -105,7 +139,7 @@
 		$post_type = jcf_get_post_type();
 		return 'jcf_fields-'.$post_type;
 	}
-	
+
 	/**
 	 *	parse "Settings" param for checkboxes/selects/multiple selects
 	 */
