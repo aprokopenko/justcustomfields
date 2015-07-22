@@ -309,12 +309,12 @@ function initImportExportCheckboxes(){
 				jQuery('input[data-field="' + data_id + '"]').attr({'disabled':!data_checked});
 		}
 		else if( jQuery( this ).hasClass('jcf-choose_fieldset') ){
-				jQuery( this ).parent().parent().find('input[type="checkbox"]').attr({'checked':!data_checked});
-				jQuery('input[data-fieldset="' + data_val + '"]').attr({'disabled':!data_checked});
+				jQuery( this ).parent().parent().parent().find('input[type="checkbox"]').attr({'checked':!data_checked});
+				jQuery('input[data-fieldset="' + data_val + '"]').attr({'disabled':data_checked});
 		}
 		else if( jQuery( this ).hasClass('jcf-select_content_type') ){
-				jQuery( this ).parent().parent().find('input[type="checkbox"]').attr({'checked':!data_checked});
-				jQuery( this ).parent().parent().find('input[type="hidden"]').attr({'disabled':!data_checked});
+				jQuery( this ).parent().parent().parent().find('input[type="checkbox"]').attr({'checked':!data_checked});
+				jQuery( this ).parent().parent().parent().find('input[type="hidden"]').attr({'disabled':data_checked});
 		}
 	});
 }
