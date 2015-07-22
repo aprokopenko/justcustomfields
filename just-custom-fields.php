@@ -178,24 +178,32 @@ function jcf_admin_fields_page( $post_type ){
 function jcf_admin_keep_settings($dir, $read_settings){
 	$jcf_settings = jcf_get_all_settings_from_db();
 	$home_dir = get_home_path();
-	if( is_writable($home_dir) ){
-		if( !file_exists($dir) ){
-			if( wp_mkdir_p($dir) ){
-				if( is_writable($dir) ){
-					$save = jcf_admin_save_all_settings_in_file($jcf_settings, $read_settings);
-					$notice = $save ? array('notice' => '<strong>Config file</strong> has saved') : array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . get_template_directory() . ' directory');
-				}else{
-					$notice = array('error' => 'Error! Check the writable rules for ' . $dir . ' directory ');
+	$theme_dir = get_template_directory();
+	if( !file_exists($dir) ){
+		if( wp_mkdir_p($dir) ){
+			if( is_writable($dir) ){
+				$save = jcf_admin_save_all_settings_in_file($jcf_settings, $read_settings);
+				if($read_settings == 'theme'){
+					$notice = $save ? array('notice' => '<strong>Config file</strong> has saved') : array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . $theme_dir . ' directory');
 				}
-			} else {
-				$notice = array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . get_template_directory() . ' directory');
+				else{
+					$notice = $save ? array('notice' => '<strong>Config file</strong> has saved') : array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . $home_dir . 'wp-content/ directory');
+				}
+
+			}else{
+				$notice = array('error' => 'Error! Check the writable rules for ' . $dir . ' directory ');
 			}
-		}else{
-			$save = jcf_admin_save_all_settings_in_file($jcf_settings, $read_settings);
-			$notice = $save ? array('notice' => '<strong>Config file</strong> has saved') : array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . get_template_directory() . ' directory');
+		} else {
+			if($read_settings == 'theme'){
+				$notice = array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . $theme_dir . ' directory');
+			}
+			else{
+				$notice = array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . $home_dir . 'wp-content/ directory');
+			}
 		}
 	}else{
-		$notice = array('error' => 'Error! <strong>Config File</strong> has not created. Check the writable rules for ' . $home_dir . ' directory ');
+		$save = jcf_admin_save_all_settings_in_file($jcf_settings, $read_settings);
+		$notice = $save ? array('notice' => '<strong>Config file</strong> has saved') : array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . $theme_dir . ' directory');
 	}
 	do_action('admin_notices', $notice);
 	return $save;
@@ -288,8 +296,6 @@ function jcf_get_all_settings_from_file(){
 	if (file_exists($filename)) {
 		return jcf_get_settings_from_file($filename);
 	}else{
-		$notice = array('error' => 'The file of settings is not found');
-		do_action('admin_notices', $notice);
 		return false;
 	}
 }

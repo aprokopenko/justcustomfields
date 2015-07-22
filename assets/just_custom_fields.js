@@ -395,7 +395,7 @@ function modalWindow(content){
  */
 function initSettings(){
 	var jcf_read_settings_active = jQuery('#jcform_settings').find('input[name="jcf_read_settings"]:checked').attr('id');
-	jQuery('#jcform_settings input[name="jcf_read_settings"]').change(function(){
+	jQuery('#jcform_settings input[name="jcf_read_settings"]').live('change', function(){
 		var data = {
 				'action' : 'jcf_check_file',
 				'jcf_multisite_setting' : jQuery('#jcform_settings').find('input[name="jcf_multisite_setting"]:checked').val(),
@@ -427,7 +427,11 @@ function initSettings(){
 		}
 		else{
 			jQuery('input[type="radio"]#jcf_read_file_global, label[for="jcf_read_file_global"]').hide();
-			jQuery('input[type="radio"]#jcf_read_file').attr({'checked':!jQuery('input[type="radio"]#jcf_read_file_global').is(':checked')});
+			if(jcf_read_settings_active == 'jcf_read_file_global'){
+				jQuery('#jcform_settings').find('input[name="jcf_read_settings"]#jcf_read_file').attr({'checked':'checked'});
+			}else{
+				jQuery('#jcform_settings').find('input[name="jcf_read_settings"]#'+jcf_read_settings_active).attr({'checked':'checked'});
+			}
 		}
 	});
 }
