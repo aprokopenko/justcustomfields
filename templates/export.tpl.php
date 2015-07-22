@@ -10,7 +10,7 @@
 					<ul class="dotted-list jcf-bold jcf_width66p">
 					<?php foreach( $post_types as $key => $post_type ): ?>
 						<?php if(!empty($fieldsets[$key])) :?>
-						<li class="jcf_export-content-type"><h3><input type="checkbox" name="select_content_type" value="" class="jcf-select_content_type"  /><?php _e('Content type: ', JCF_TEXTDOMAIN); ?><?php echo $key; ?></h3>
+						<li class="jcf_export-content-type"><h3><span class="jcf_checkbox_block"><input type="checkbox" name="select_content_type" value="" class="jcf-select_content_type"  /></span><?php _e('Content type: ', JCF_TEXTDOMAIN); ?><?php echo $key; ?></h3>
 							<input type="hidden" disabled="disabled" name="export_data[<?php echo $key; ?>]" value="<?php echo $key; ?>" />
 								<?php foreach( $fieldsets[$key] as $fieldset_id =>$fieldset ) : ?>
 									<input type="hidden" disabled='disabled' data-fieldset ="export_data_<?php echo $key; ?>_fieldsets_<?php echo $fieldset_id; ?>"  name="export_data[<?php echo $key; ?>][fieldsets][<?php echo $fieldset_id; ?>][title]" value="<?php echo $fieldset['title']; ?>" class="jcf_hidden_fieldset" />
