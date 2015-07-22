@@ -1,6 +1,9 @@
 <div class="wrap">
 	<div class="icon32 icon32-posts-page" id="icon-edit"><br></div>
 	<h2><?php _e('Just Custom Fields', JCF_TEXTDOMAIN); ?></h2>
+	
+	<?php do_action('jcf_print_admin_notice'); ?>
+	
 	<h2 class="nav-tab-wrapper">
 		<a class="nav-tab <?php echo ($jcf_tabs == 'fields' ? 'nav-tab-active' : '');?>" href="?page=just_custom_fields&amp;tab=fields"><?php _e('Fields', JCF_TEXTDOMAIN); ?></a>
 		<a class="nav-tab <?php echo ($jcf_tabs == 'settings' ? 'nav-tab-active' : '');?>" href="?page=just_custom_fields&amp;tab=settings"><?php _e('Settings', JCF_TEXTDOMAIN); ?></a>

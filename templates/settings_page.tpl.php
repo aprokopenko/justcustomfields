@@ -1,20 +1,25 @@
 <div class="wrap">
 	<div class="icon32 icon32-posts-page" id="icon-edit"><br></div>
 	<h2><?php _e('Just Custom Fields', JCF_TEXTDOMAIN); ?></h2>
+	
+	<?php do_action('jcf_print_admin_notice'); ?>
+	
 	<h2 class="nav-tab-wrapper">
 		<a class="nav-tab <?php echo ($jcf_tabs == 'fields' ? 'nav-tab-active' : '');?>" href="?page=just_custom_fields&amp;tab=fields"><?php _e('Fields', JCF_TEXTDOMAIN); ?></a>
 		<a class="nav-tab <?php echo ($jcf_tabs == 'settings' ? 'nav-tab-active' : '');?>" href="?page=just_custom_fields&amp;tab=settings"><?php _e('Settings', JCF_TEXTDOMAIN); ?></a>
 		<a class="nav-tab <?php echo ($jcf_tabs == 'import_export' ? 'nav-tab-active' : '');?>" href="?page=just_custom_fields&amp;tab=import_export"><?php _e('Import/Export', JCF_TEXTDOMAIN); ?></a>
 	</h2>
+	
+	<?php // Fields list ?>
 	<?php if( $jcf_tabs == 'fields' ): ?>
 	<div class="jcf_tab-content">
 		<div class="jcf_inner-tab-content" >
 			<div class="icon32 icon32-posts-page" id="icon-edit"><br></div>
-			<p><?php _e('You should choose Custom Post Type first to configure fields:', JCF_TEXTDOMAIN); ?></p>
+			<p><?php _e('You should choose Custom Post Type first to configure fields for it:', JCF_TEXTDOMAIN); ?></p>
 			<div>
 				<ul class="dotted-list jcf-bold">
 				<?php foreach($post_types as $key => $obj) : ?>
-					<?php  $fieldsets_count = jcf_fieldsets_count($key); ?>
+					<?php $fieldsets_count = jcf_fieldsets_count($key); ?>
 					<li>
 						<a class="jcf_tile <?php echo $key; ?>" href="?page=just_custom_fields&amp;pt=<?php echo $key; ?>">
 							<span class="jcf_tile_icon"></span>
@@ -31,26 +36,45 @@
 			</div>
 		</div>
 	</div>
+	
+	<?php // Settings boxes ?>
 	<?php elseif( $jcf_tabs == 'settings' ): ?>
 	<div class="jcf_tab-content">
 		<div class="jcf_inner-tab-content" >
 			<form action="<?php get_permalink(); ?>" id="jcform_settings" method="post" class="jcf_form_horiz" onsubmit="return initSettings();">
+				
 				<?php if( MULTISITE ): ?>
 					<div class="card pressthis">
 						<h3 class="header"><?php _e('MultiSite settings:', JCF_TEXTDOMAIN); ?></h3>
 						<fieldset>
-							<input type="radio" name="jcf_multisite_setting" id="jcf_setting_global" value="network" <?php echo $jcf_multisite_settings == 'network' ? 'checked="checked"' : ''; ?> />
+							<input type="radio" name="jcf_multisite_setting" id="jcf_setting_global" 
+								   value="<?php echo JCF_CONF_MS_NETWORK; ?>" <?php checked($jcf_multisite_settings, JCF_CONF_MS_NETWORK); ?> />
 							<label for="jcf_setting_global"><?php _e('Make fields settings global for all network', JCF_TEXTDOMAIN); ?> </label><br />
-							<input type="radio" name="jcf_multisite_setting" id="jcf_setting_each" value="site" <?php echo $jcf_multisite_settings == 'site' ? 'checked="checked"' : ''; ?> />
+							
+							<input type="radio" name="jcf_multisite_setting" id="jcf_setting_each" 
+								   value="<?php echo JCF_CONF_MS_SITE; ?>" <?php checked($jcf_multisite_settings, JCF_CONF_MS_SITE); ?> />
 							<label for="jcf_setting_each"><?php _e('Fields settings are unique for each site', JCF_TEXTDOMAIN); ?> </label><br /><br />
 						</fieldset>
 					</div>
 				<?php endif; ?>
+				
 				<div class="card pressthis">
-					<h3 class="header"><?php _e('Saving method:', JCF_TEXTDOMAIN); ?></h3>
-					<input type="radio" class="jcf_choose_settings" name="jcf_read_settings" value="db" id="jcf_read_db" <?php echo (empty($jcf_read_settings) || $jcf_read_settings == 'db' ? 'checked="checked"' : '');  ?>/><label for="jcf_read_db"><?php _e('Database. You can\'t edit or move settings without export/import features (default)' , JCF_TEXTDOMAIN); ?></label><br />
-					<input type="radio" rel="" class="jcf_choose_settings" name="jcf_read_settings" value="theme" id="jcf_read_file" <?php echo (!empty($jcf_read_settings) && $jcf_read_settings == 'theme' ? 'checked="checked"' : ''); ?>/><label for="jcf_read_file"><?php _e('File system: Current theme folder. Field configuration is saved to the current theme folder in json format and can be copied to another site easily.' , JCF_TEXTDOMAIN); ?></label><br />
-					<input type="radio" rel="" <?php echo (MULTISITE && $jcf_multisite_settings == 'network' ? 'style="display:block;"' : 'style="display:none;"'); ?> class="jcf_choose_settings" name="jcf_read_settings" value="global" id="jcf_read_file_global" <?php echo (!empty($jcf_read_settings) && $jcf_read_settings == 'global' ? 'checked="checked"' : ''); ?>/><label for="jcf_read_file_global" <?php echo (MULTISITE && $jcf_multisite_settings == 'network' ? 'style="display:block;"' : 'style="display:none;"'); ?>><?php _e('File system: Global (/wp-content/jcf-settings). Field configuration is saved to the wp-content folder in json format and can be copied to another site easily.' , JCF_TEXTDOMAIN); ?></label><br />
+					<h3 class="header"><?php _e('Settings storage configuration:', JCF_TEXTDOMAIN); ?></h3>
+					
+					<input type="radio" class="jcf_choose_settings" name="jcf_read_settings" 
+						   value="<?php echo JCF_CONF_SOURCE_DB; ?>" id="jcf_read_db" <?php checked($jcf_read_settings, JCF_CONF_SOURCE_DB); ?>/>
+					<label for="jcf_read_db"><?php _e('<b>Database</b>. You can\'t edit or move settings without export/import features (default)' , JCF_TEXTDOMAIN); ?></label><br />
+					
+					<input type="radio" rel="" class="jcf_choose_settings" name="jcf_read_settings" 
+						   value="<?php echo JCF_CONF_SOURCE_FS_THEME; ?>" id="jcf_read_file"  <?php checked($jcf_read_settings, JCF_CONF_SOURCE_FS_THEME); ?>/>
+					<label for="jcf_read_file"><?php _e('<b>File system: Current theme folder</b>. Fields configuration is saved to the current theme folder in json format and can be copied to another site easily.' , JCF_TEXTDOMAIN); ?></label><br />
+					
+					<?php $show_fs_global = MULTISITE && $jcf_multisite_settings == JCF_CONF_MS_NETWORK; ?>
+					<input type="radio" rel="" <?php if(!$show_fs_global) echo 'style="display:none;"'; ?> 
+						   class="jcf_choose_settings" name="jcf_read_settings" 
+						   value="<?php echo JCF_CONF_SOURCE_FS_GLOBAL; ?>" id="jcf_read_file_global"  <?php checked($jcf_read_settings, JCF_CONF_SOURCE_FS_GLOBAL); ?>/>
+					<label for="jcf_read_file_global" <?php if(!$show_fs_global) echo 'style="display:none;"'; ?>><?php _e('<b>File system: Global</b> (/wp-content/jcf-settings/*). Fields configuration is saved to the wp-content folder in json format and can be copied to another site easily.' , JCF_TEXTDOMAIN); ?></label><br />
+					
 					<input type="hidden" name="jcf_keep_settings" value="1" disabled="disabled" />
 				</div>
 				<br /><br />
@@ -59,6 +83,8 @@
 			</form>
 		</div>
 	</div>
+	
+	<?php // IMPORT / EXPORT TAB ?>
 	<?php elseif( $jcf_tabs == 'import_export' ): ?>
 	<div class="jcf_tab-content">
 		<div class="jcf_inner-tab-content" >
@@ -67,8 +93,8 @@
 					<h3 class="header"><?php _e('Import', JCF_TEXTDOMAIN); ?></h3>
 					<div class="jcf_inner_content offset0">
 						<p>
-						<?php _e('If you have Just Custom Fields configuration file you can import some specific settings from it to your
-						current WordPress installation. Please choose your configuration file and press "Import Wizard" button' , JCF_TEXTDOMAIN); ?></p>
+							<?php _e('If you have Just Custom Fields configuration file you can import some specific settings from it to your current WordPress installation. Please choose your configuration file and press "Import Wizard" button' , JCF_TEXTDOMAIN); ?>
+						</p>
 						<div>
 							<div class="icon32 icon32-posts-page" id="icon-edit"><br></div>
 							<form action="<?php get_permalink(); ?>" method="post" id="jcf_import_fields" enctype="multipart/form-data" >

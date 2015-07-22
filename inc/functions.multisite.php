@@ -5,20 +5,22 @@
 	 *	@param string $settings Multisite settings in present time
 	 *	@return string New multisite settings
 	 */
-	function jcf_save_multisite_settings($settings){
-		$new_multisite_setting =  trim($_POST['jcf_multisite_setting']);
+	function jcf_save_multisite_settings( $new_value ){
+		$current_value = jcf_get_multisite_settings();
+		$new_value = trim($new_value);
 
-		if( $settings )
-		{
-			$save_settings = update_site_option( 'jcf_multisite_setting', $new_multisite_setting );
+		if( $current_value ){
+			$saved = update_site_option( 'jcf_multisite_setting', $new_value );
 		}
-		else
-		{
-			$save_settings = add_site_option( 'jcf_multisite_setting', $new_multisite_setting );
+		else{
+			$saved = add_site_option( 'jcf_multisite_setting', $new_value );
 		}
-		$notice = $save_settings ? array('notice' => '<strong>Multisite setting</strong> has changed') : array();
-		do_action('admin_notices', $notice);
-		return $new_multisite_setting;
+		
+		if( $saved ){
+			jcf_add_admin_notice('notice', __('<strong>MultiSite settings</strong> has been updated.', JCF_TEXTDOMAIN));
+		}
+		
+		return $new_value;
 	}
 
 	/**
@@ -30,6 +32,6 @@
 		{
 			return $multisite_setting;
 		}
-		return 'site';
+		return JCF_CONF_MS_SITE;
 	}
 

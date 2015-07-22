@@ -14,7 +14,15 @@ define('JCF_ROOT', dirname(__FILE__));
 define('JCF_TEXTDOMAIN', 'just-custom-fields');
 define('JCF_VERSION', 1.41);
 
+define('JCF_CONF_MS_NETWORK', 'network');
+define('JCF_CONF_MS_SITE', 'site');
+define('JCF_CONF_SOURCE_DB', 'database');
+define('JCF_CONF_SOURCE_FS_THEME', 'fs_theme');
+define('JCF_CONF_SOURCE_FS_GLOBAL', 'fs_global');
+
 require_once( JCF_ROOT.'/inc/functions.multisite.php' );
+require_once( JCF_ROOT.'/inc/functions.settings.php' );
+
 require_once( JCF_ROOT.'/inc/class.field.php' );
 require_once( JCF_ROOT.'/inc/functions.fieldset.php' );
 require_once( JCF_ROOT.'/inc/functions.fields.php' );
@@ -76,7 +84,8 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_import_fields', 'jcf_ajax_import_fields');
 	add_action('wp_ajax_jcf_check_file', 'jcf_ajax_check_file');
 
-	add_action('admin_notices', 'jcf_admin_notice');
+	add_action('jcf_print_admin_notice', 'jcf_print_admin_notice');
+	
 	// add $post_type for ajax
 	if(!empty($_POST['post_type'])) jcf_set_post_type( $_POST['post_type'] );
 	
@@ -132,16 +141,16 @@ function jcf_admin_settings_page(){
 	}
 
 	if( !empty($_POST['save_import']) ) {
-		$import_data = $_POST['import_data'];
-		$save = jcf_admin_save_settings($import_data);
-		$notice = $save ? array('notice' => '<strong>Import </strong>was success!') : array('error' => 'Error! <strong>Import </strong> was not sucess! Check the file of import');
-		do_action('admin_notices', $notice);
+		$saved = jcf_admin_save_settings( $_POST['import_data'] );
+		$notice = $saved? 
+				array('notice', __('<strong>Import</strong> has been completed successfully!', JCF_TEXTDOMAIN)) : 
+				array('error', __('<strong>Import failed!</strong> Please check that your import file has right format.', JCF_TEXTDOMAIN));
+		jcf_add_admin_notice($notice[0], $notice[1]);
 	}
 	
 	if( !empty($_POST['jcf_update_settings']) ) {
-		if( MULTISITE )
-		{
-			$jcf_multisite_settings = jcf_save_multisite_settings($jcf_multisite_settings);
+		if( MULTISITE ){
+			$jcf_multisite_settings = jcf_save_multisite_settings( $_POST['jcf_multisite_setting'] );
 		}
 		$jcf_read_settings = jcf_update_read_settings();
 	}
@@ -167,46 +176,6 @@ function jcf_admin_fields_page( $post_type ){
 
 	// load template
 	include( JCF_ROOT . '/templates/fields_ui.tpl.php' );
-}
-
-/**
- *	Keep settings in the file of theme
- *	@param string $dir Path to directory where saved file with fields settings
- *	@param string $read_settings Saving method
- *	@return int Status of file saving
- */
-function jcf_admin_keep_settings($dir, $read_settings){
-	$jcf_settings = jcf_get_all_settings_from_db();
-	$home_dir = get_home_path();
-	$theme_dir = get_template_directory();
-	if( !file_exists($dir) ){
-		if( wp_mkdir_p($dir) ){
-			if( is_writable($dir) ){
-				$save = jcf_admin_save_all_settings_in_file($jcf_settings, $read_settings);
-				if($read_settings == 'theme'){
-					$notice = $save ? array('notice' => '<strong>Config file</strong> has saved') : array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . $theme_dir . ' directory');
-				}
-				else{
-					$notice = $save ? array('notice' => '<strong>Config file</strong> has saved') : array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . $home_dir . 'wp-content/ directory');
-				}
-
-			}else{
-				$notice = array('error' => 'Error! Check the writable rules for ' . $dir . ' directory ');
-			}
-		} else {
-			if($read_settings == 'theme'){
-				$notice = array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . $theme_dir . ' directory');
-			}
-			else{
-				$notice = array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . $home_dir . 'wp-content/ directory');
-			}
-		}
-	}else{
-		$save = jcf_admin_save_all_settings_in_file($jcf_settings, $read_settings);
-		$notice = $save ? array('notice' => '<strong>Config file</strong> has saved') : array('error' => 'Error! <strong>Config file</strong> has not saved. Check the writable rules for ' . $theme_dir . ' directory');
-	}
-	do_action('admin_notices', $notice);
-	return $save;
 }
 
 /**
@@ -286,61 +255,6 @@ function jcf_admin_add_styles() {
 	wp_enqueue_style('jcf-styles'); 
 }
 
-
-/**
- *	Get all settings from file
- *	@return array Array with fields settings from config file
- */
-function jcf_get_all_settings_from_file(){
-	$filename = jcf_get_file_settings_name();
-	if (file_exists($filename)) {
-		return jcf_get_settings_from_file($filename);
-	}else{
-		return false;
-	}
-}
-
-/**
- *	Get settings from file
- *	@param string $uploadfile File name
- *	@return array Array with fields settings from file
- */
-function jcf_get_settings_from_file($uploadfile){
-	$content = file_get_contents($uploadfile);
-	$data = json_decode($content, true);
-	return $data;
-}
-
-/**
- *	Save settings to file
- *	@param array $data Array with fields settings
- *	@param string $saving_method Saving method
- *	@return boolean If file has saved return true, if file has not saved return false
- */
-function jcf_admin_save_all_settings_in_file($data, $saving_method = ''){
-	$data = jcf_format_json(json_encode($data));
-	$jcf_read_settings = $saving_method ? $saving_method :  jcf_get_read_settings();
-	if( !empty($jcf_read_settings)){
-		if ($jcf_read_settings == 'theme' ){
-			$dir = get_template_directory() . '/jcf-settings/';
-			$filename = get_template_directory() . '/jcf-settings/jcf_settings.json';
-		}elseif($jcf_read_settings == 'global'){
-			$dir = get_home_path() . 'wp-content/jcf-settings/';
-			$filename = get_home_path() . 'wp-content/jcf-settings/jcf_settings.json';
-		}else{
-			return false;
-		}
-		$fp = fopen($filename, 'w');
-		$content = $data . "\r\n";
-		$fw = fwrite($fp, $content);
-		fclose($fp);
-		jcf_set_chmod($filename, $dir);
-		return true;
-	}else{
-		return false;
-	}
-}
-
 /**
  *	Set permisiions for file
  *	@param string $dir Parent directory path
@@ -378,128 +292,30 @@ function jcf_update_options($key, $value){
 }
 
 /**
+ * add message to be printed with admin notice
+ * @param string $type    notice|error
+ * @param string $message  message to be printed
+ */
+function jcf_add_admin_notice( $type, $message ){
+	global $jcf_notices;
+	if( !$jcf_notices )
+		$jcf_notices = array();
+	
+	$jcf_notices[] = array($type, $message);
+}
+
+/**
  *	Admin notice
  *	@param array $args Array with messages
  */
-function jcf_admin_notice($args = array()){
-	remove_action( 'admin_notices', 'update_nag', 3 );
-	global $wp_version;
-	if(!empty($args))
-	{
-		foreach($args as $key => $value)
-		{
-			echo '<div  class="updated notice ' . ($key == 'error' ? $key . ' is-dismissible' : 'is-dismissible') . ' below-h2 "><p>' . __($value, JCF_TEXTDOMAIN) . '</p>
-					' . ($wp_version < 4.2 ? '' : '<button type="button" class="notice-dismiss"><span class="screen-reader-text">' . __('Dismiss this notice.', JCF_TEXTDOMAIN) . '</span></button>') . '
-				</div>';
-		}
-	}
-}
-
-/**
- *	Get read sttings
- *	@return string Return read method from file or database
- */
-function jcf_get_read_settings(){
-	$multisite_setting = jcf_get_multisite_settings();
-	$jcf_read_settings = $multisite_setting == 'network' ? get_site_option('jcf_read_settings') : get_option('jcf_read_settings') ;
-	return $jcf_read_settings;
-}
+function jcf_print_admin_notice($args = array()){
+	global $wp_version, $jcf_notices;
+	if( empty($jcf_notices) ) return;
 	
-/**
- *	Get file name for all settings
- *	@return string|boolean Return path to file of settings for all fields and false if read medhod from db
- */
-function jcf_get_file_settings_name(){
-	$jcf_read_settings = jcf_get_read_settings();
-	if(!empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-		return $jcf_read_settings == 'theme' ? get_template_directory() . '/jcf-settings/jcf_settings.json' : get_home_path() . 'wp-content/jcf-settings/jcf_settings.json' ;
-	}else{
-		return false;
+	foreach($jcf_notices as $msg)
+	{
+		echo '<div  class="updated notice ' . (($msg[0] == 'error')? $msg[0] . ' is-dismissible' : 'is-dismissible') . ' below-h2 "><p>' . $msg[1] . '</p>
+				' . ($wp_version < 4.2 ? '' : '<button type="button" class="notice-dismiss"><span class="screen-reader-text">' . __('Dismiss this notice.', JCF_TEXTDOMAIN) . '</span></button>') . '
+			</div>';
 	}
 }
-
-/**
- *	Function for update saving method
- *	@return string Return read method from file or database
- */
-function jcf_update_read_settings(){
-	$jcf_read_settings = jcf_get_read_settings();
-	$read_settings = $_POST['jcf_read_settings'];
-	if($_POST['jcf_multisite_setting'] != 'network' && $read_settings == 'global' ){
-		$notice = array('error' => 'Error! <strong>Saving method</strong> has not saved. Please change the <strong>multisite setting</strong> on "Make fields settings global for all network"');
-		do_action('admin_notices', $notice);
-		return $jcf_read_settings;
-	}else{
-		$multisite_setting = $_POST['jcf_multisite_setting'];
-		if( !empty($jcf_read_settings) ){
-			if($_POST['jcf_keep_settings']){
-				if( $read_settings == 'theme' OR $read_settings == 'global' ){
-					$settings_dir = $read_settings == 'theme' ? get_template_directory() . '/jcf-settings/' : get_home_path() . 'wp-content/jcf-settings/';
-					if( jcf_admin_keep_settings($settings_dir, $read_settings) ){
-						$save = $multisite_setting == 'network' ? update_site_option('jcf_read_settings', $read_settings) : update_option('jcf_read_settings', $read_settings);
-						$notice = $save ? array('notice' => '<strong>Saving method</strong> has saved') : array();
-					} else {
-						$notice = array('error' => 'Error! <strong>Saving method</strong> has not saved.');
-					}
-				}
-			}else{
-				$save = $multisite_setting == 'network' ? update_site_option('jcf_read_settings', $read_settings) : update_option('jcf_read_settings', $read_settings);
-				$notice = $save ? array('notice' => '<strong>Saving method</strong> has saved') : array();
-			}
-		}else{
-			$save = $multisite_setting == 'network' ? add_site_option('jcf_read_settings', $read_settings) : add_option('jcf_read_settings', $read_settings);
-			$notice = $save ? array('notice' => '<strong>Saving method</strong> has saved') : array();
-		}
-		do_action('admin_notices', $notice);
-		return $save ? $read_settings : $jcf_read_settings;
-	}
-}
-
-/**
- *	Json formater
- *	@param string $json Data of settings for fields
- *	@return string Return formated json string with settings for fields
- */
-function jcf_format_json($json){
-	$tabcount = 0;
-	$result = '';
-	$inquote = false;
-	$ignorenext = false;
-	$tab = "\t";
-	$newline = "\n";
-
-	for( $i = 0; $i < strlen($json); $i++ ){
-		$char = $json[$i];
-		if( $ignorenext ){
-			$result .= $char;
-			$ignorenext = false;
-		}
-		else {
-			switch( $char ) {
-				case '{':
-					$tabcount++;
-					$result .= $char . $newline . str_repeat($tab, $tabcount);
-					break;
-				case '}':
-					$tabcount--;
-					$result = trim($result) . $newline . str_repeat($tab, $tabcount) . $char;
-					break;
-				case ',':
-					$result .= $char . $newline . str_repeat($tab, $tabcount);
-					break;
-				case '"':
-					$inquote = !$inquote;
-					$result .= $char;
-					break;
-				case '\\':
-					if ($inquote) $ignorenext = true;
-					$result .= $char;
-					break;
-				default:
-					$result .= $char;
-			}
-		}
-	}
-	return $result;
-}
-?>
