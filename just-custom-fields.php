@@ -376,11 +376,15 @@ function jcf_update_options($key, $value){
  *	@param array $args Array with messages
  */
 function jcf_admin_notice($args = array()){
+	remove_action( 'admin_notices', 'update_nag', 3 );
+	global $wp_version;
 	if(!empty($args))
 	{
 		foreach($args as $key => $value)
 		{
-			echo '<div id="message" class="updated notice ' . ($key == 'error' ? $key . ' is-dismissible' : 'is-dismissible') . ' below-h2 "><p>' . __($value, JCF_TEXTDOMAIN) . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' . __('Dismiss this notice.', JCF_TEXTDOMAIN) . '</span></button></div>';
+			echo '<div  class="updated notice ' . ($key == 'error' ? $key . ' is-dismissible' : 'is-dismissible') . ' below-h2 "><p>' . __($value, JCF_TEXTDOMAIN) . '</p>
+					' . ($wp_version < 4.2 ? '' : '<button type="button" class="notice-dismiss"><span class="screen-reader-text">' . __('Dismiss this notice.', JCF_TEXTDOMAIN) . '</span></button>') . '
+				</div>';
 		}
 	}
 }
