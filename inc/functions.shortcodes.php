@@ -21,29 +21,63 @@ function jcf_shortcode_init_fields(){
 	do_action( 'jcf_register_fields' );
 }
 
-// shortcode [jcf_field]
-function jcf_shortcode_field_value($atts){
+/**
+ *	Do shortcode
+ *	@param array $atts Attributes from shortcode
+ *	@return string Field content
+ */
+function jcf_do_shortcode($atts){
 	extract( shortcode_atts( array(
 		'class' => '',
 		'id' => '',
 		'slug' => '',
 		'post_id' => ''
 	), $atts ) );
+	$args['type'] =  preg_replace('/[0-9_]/', '', str_replace('_field_', '', $atts['slug']));
+	jcf_shortcode_init_fields();
+	$post_id = !empty($atts['post_id']) ? $atts['post_id'] : get_the_ID();
+	$args['post_type'] = get_post_type($post_id);
+	jcf_set_post_type($args['post_type']);
+	$field_settings = jcf_field_settings_get();
+	foreach($field_settings as $key_field => $field){
+		if( array_search($atts['slug'], $field) == 'slug' ){
+			$field_id = $key_field;
+			break;
+		}
+	}
+	$field_obj = jcf_init_field_object($field_id);
+	$field_obj->set_post_ID( $post_id );
+	$args = array_merge($args, $atts);
+	return $field_obj->show_shortcode($args);
+}
+
+/**
+ *	Shortcode [jcf-field-value]
+ *	@param array $atts Attributes from shortcode
+ *	@return string Field content
+ */
+function jcf_shortcode_field_value($atts){
 	if( !empty($atts['slug']) ){
-		$type =  preg_replace('/[0-9_]/', '', str_replace('_field_', '',$atts['slug']));
-		jcf_shortcode_init_fields();
-		$field = jcf_get_registered_fields($type);
-		$field_obj = new $field['class_name']();
-		$field_obj->set_slug( $atts['slug'] );
-		$post_id = !empty($atts['post_id']) ? $atts['post_id'] : get_the_ID();
-		$field_obj->set_post_ID( $post_id );
-		$args['type'] = $type;
-		$args['post_type'] = get_post_type();
-		$args = array_merge($args, $atts);
-		return $field_obj->show_shortcode($args);
+		$atts['stype'] = 'value';
+		return jcf_do_shortcode($atts);
+	}else{
+		return _e('Error! Add "slug" to shortcode', JCF_TEXTDOMAIN);
+	}
+}
+
+/**
+ *	Shortcode [jcf-field-label]
+ *	@param array $atts Attributes from shortcode
+ *	@return string Field content
+ */
+function jcf_shortcode_field_label($atts){
+	if( !empty($atts['slug']) ){
+		$atts['stype'] = 'label';
+		return jcf_do_shortcode($atts);
 	}else{
 		return _e('Error! Add "slug" to shortcode', JCF_TEXTDOMAIN);
 	}
 }
 
 add_shortcode( 'just-field-value',  'jcf_shortcode_field_value' );
+add_shortcode( 'just-field-label',  'jcf_shortcode_field_label' );
