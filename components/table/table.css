@@ -1,0 +1,28 @@
+.jcf_edit_field.field_table table.sortable .drag-handle{
+	cursor: move;
+	background:url(icon-move.png) no-repeat 0 0;
+	float:left;
+	width:16px;
+	height:16px;
+	overflow:hidden;
+	text-indent:-9999px;
+	margin:5px 3px;
+}
+
+.jcf_edit_field.field_table table.sortable  .jcf_delete_row{
+	cursor: pointer;
+	background:url(icon-delete.png) no-repeat 0 0;
+	float:left;
+	width:16px;
+	height:16px;
+	overflow:hidden;
+	text-indent:-9999px;
+	margin:5px 3px;
+}
+
+.jcf_edit_field.field_table table.sortable .hide{
+	display:none;
+}
+.jcf_option_column{
+	width: 60px;
+}

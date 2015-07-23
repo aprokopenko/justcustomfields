@@ -1,6 +1,11 @@
 <div class="wrap">
 	<div class="icon32 icon32-posts-page" id="icon-edit"><br></div>
 	<h2><?php _e('Just Custom Fields', JCF_TEXTDOMAIN); ?></h2>
+	<h2 class="nav-tab-wrapper">
+		<a class="nav-tab <?php echo ($jcf_tabs == 'fields' ? 'nav-tab-active' : '');?>" href="?page=just_custom_fields&amp;tab=fields"><?php _e('Fields', JCF_TEXTDOMAIN); ?></a>
+		<a class="nav-tab <?php echo ($jcf_tabs == 'settings' ? 'nav-tab-active' : '');?>" href="?page=just_custom_fields&amp;tab=settings"><?php _e('Settings', JCF_TEXTDOMAIN); ?></a>
+		<a class="nav-tab <?php echo ($jcf_tabs == 'import_export' ? 'nav-tab-active' : '');?>" href="?page=just_custom_fields&amp;tab=import_export"><?php _e('Import/Export', JCF_TEXTDOMAIN); ?></a>
+	</h2>
 	<h3><?php _e('Custom Post Type:', JCF_TEXTDOMAIN); ?> <?php echo $post_type->label; ?>
 		<small><a href="?page=just_custom_fields" class="jcf_change_pt"><?php _e('change', JCF_TEXTDOMAIN); ?></a></small></h3>
 	

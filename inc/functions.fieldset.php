@@ -53,5 +53,26 @@
 		$post_type = jcf_get_post_type();
 		return 'jcf_fieldsets-'.$post_type;
 	}
-
+	
+	function jcf_fieldsets_count($post_type){
+		$jcf_read_settings = jcf_get_read_settings();
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
+			$jcf_settings = jcf_get_all_settings_from_file();
+			$fieldsets = $jcf_settings['fieldsets'][$post_type];
+		} else {
+			$fieldsets = jcf_get_options('jcf_fieldsets-'.$post_type);
+		}
+		if(!empty($fieldsets)){
+			$count['fieldsets'] = count($fieldsets);
+			$count['fields'] = 0;
+			foreach($fieldsets as $fieldset){
+				if(!empty($fieldset['fields'])){
+					$count['fields'] += count($fieldset['fields']);
+				}
+			}
+		}else{
+			$count = array('fieldsets' => 0, 'fields' => 0);
+		}
+		return $count;
+	}
 ?>
