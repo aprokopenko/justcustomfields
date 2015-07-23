@@ -5,6 +5,9 @@ jQuery(document).ready(function(){
 	initFieldsetsEdit();
 	initAjaxBoxClose();
 	initFieldsetFields();
+	initImport();
+	initExport();
+	initSettings();
 })
 
 /**
@@ -99,10 +102,10 @@ function initFieldsetsEdit(){
 			
 			jcf_hide_ajax_container();
 		});
-		
+
 		return false;
 	})
-	
+
 }
 
 /**
@@ -142,6 +145,7 @@ function initFieldsetFields(){
 		// send request
 		jcf_ajax(data, 'json', loader, function(response){
 			
+			console.log(response);
 			var fieldset = jQuery('#the-list-' + response.fieldset_id);
 			
 			if( response.is_new ){
@@ -255,6 +259,67 @@ function initFieldsetFields(){
 }
 
 /**
+ *	init import
+ */
+function initImport(){
+	jQuery('#jcf_import_fields').submit(function(e){
+		e.preventDefault();
+
+		var query = new FormData(jQuery( this ).get(0));
+		jQuery.ajax({
+			url: 'admin-ajax.php',
+			type: 'post',
+			contentType: false,
+			processData: false,
+			data: query,
+			success: function(responce){
+				modalWindow(responce);
+			}
+		  });
+	});
+	initImportExportCheckboxes();
+}
+
+/**
+ *	init export
+ */
+function initExport(){
+	jQuery('a#export-button').click(function(){
+		var data = {
+			'action': 'jcf_export_fields_form'
+		}
+		jcf_ajax(data, 'html', null, function(response){
+			modalWindow(response);
+		});
+	});
+	initImportExportCheckboxes();
+}
+
+/**
+ *	init Import/Export checkboxes changing
+ */
+function initImportExportCheckboxes(){
+	// checked fields
+	jQuery('#jcf_save_import_fields input[type="checkbox"], #jcf_export_fields input[type="checkbox"]').live('change', function(){
+		var data_val = jQuery( this ).val();
+		var data_id =  jQuery( this ).attr('id');
+		var data_checked = jQuery( this ).is(':checked');
+		if( jQuery( this ).hasClass('choose_field') ){
+				jQuery('input[data-fieldset="' + data_val + '"].jcf_hidden_fieldset').attr({'disabled':!data_checked});
+				jQuery('input[data-field="' + data_id + '"]').attr({'disabled':!data_checked});
+		}
+		else if( jQuery( this ).hasClass('jcf-choose_fieldset') ){
+				jQuery( this ).parent().parent().find('input[type="checkbox"]').attr({'checked':!data_checked});
+				jQuery('input[data-fieldset="' + data_val + '"]').attr({'disabled':!data_checked});
+		}
+		else if( jQuery( this ).hasClass('jcf-select_content_type') ){
+				jQuery( this ).parent().parent().find('input[type="checkbox"]').attr({'checked':!data_checked});
+				jQuery( this ).parent().parent().find('input[type="hidden"]').attr({'disabled':!data_checked});
+		}
+	});
+}
+
+/**
  *	ajax functions below
  */
 function initAjaxBoxClose(){
@@ -315,4 +380,54 @@ function pa( mixed ){
 	if( window.console ){
 		window.console.info(mixed);
 	}
+}
+
+function modalWindow(content){
+	jQuery('body').append('<div class="media-modal wp-core-ui jcf_modalWindow"><div class="media-modal-content">'+content+'</div><a href="#" class="media-modal-close"><span class="media-modal-icon"></span></a></div>');
+
+	jQuery('.media-modal-close').click(function(){
+		jQuery('.jcf_modalWindow').remove();
+	});
+}
+
+/**
+ *	init settings
+ */
+function initSettings(){
+	var jcf_read_settings_active = jQuery('#jcform_settings').find('input[name="jcf_read_settings"]:checked').attr('id');
+	jQuery('#jcform_settings input[name="jcf_read_settings"]').change(function(){
+		var data = {
+				'action' : 'jcf_check_file',
+				'jcf_multisite_setting' : jQuery('#jcform_settings').find('input[name="jcf_multisite_setting"]:checked').val(),
+				'jcf_read_settings' : jQuery('#jcform_settings').find('input[name="jcf_read_settings"]:checked').val()
+		};
+
+		jcf_ajax(data, 'json', null, function(response){
+			if( response.msg ){
+				if( confirm(response.msg) ){
+					jQuery('#jcform_settings').find('input[name="jcf_keep_settings"]').removeAttr('disabled');
+				}
+				else{
+					jQuery('#jcform_settings').find('input[name="jcf_read_settings"]#'+jcf_read_settings_active).attr({'checked':'checked'});
+					jQuery('#jcform_settings').find('input[name="jcf_keep_settings"]').attr({'disabled':'disabled'});
+				}
+			}
+			else if( response.file){
+				jQuery('#jcform_settings').find('input[name="jcf_keep_settings"]').removeAttr('disabled');
+			}
+			else{
+				jQuery('#jcform_settings').find('input[name="jcf_keep_settings"]').attr({'disabled':'disabled'});
+			}
+		});
+	});
+
+	jQuery('#jcform_settings input[name="jcf_multisite_setting"]').change(function(){
+		if( jQuery( this ).val() == 'network' ){
+			jQuery('input[type="radio"]#jcf_read_file_global, label[for="jcf_read_file_global"]').show();
+		}
+		else{
+			jQuery('input[type="radio"]#jcf_read_file_global, label[for="jcf_read_file_global"]').hide();
+			jQuery('input[type="radio"]#jcf_read_file').attr({'checked':!jQuery('input[type="radio"]#jcf_read_file_global').is(':checked')});
+		}
+	});
 }
