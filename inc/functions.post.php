@@ -8,35 +8,45 @@
 		// set global post type
 		jcf_set_post_type($post_type);
 		
+		// get read settings
+		$jcf_read_settings = jcf_get_read_settings();
 		// get fieldsets
-		$fieldsets = jcf_fieldsets_get();
-		// remove fieldsets without fields
-		foreach($fieldsets as $f_id => $fieldset){
-			// check $enabled; add custom js/css for components
-			foreach($fieldset['fields'] as $field_id => $enabled){
-				if( !$enabled ){
-					unset($fieldset['fields'][$field_id]);
-					continue;
-				}
-				$field_obj = jcf_init_field_object($field_id, $fieldset['id']);
-				$field_obj->do_add_js();
-				$field_obj->do_add_css();
-			}
-			// if all fields disabled -> remove fieldset
-			if( empty($fieldset['fields']) ){
-				unset($fieldsets[$f_id]);
-			}
-		}
-		if(!empty($field_obj)) unset($field_obj);
-		
-		if( empty($fieldsets) ) return false;
 
-		// add custom styles and scripts
-		add_action('admin_print_styles', 'jcf_edit_post_styles');
-		add_action('admin_print_scripts', 'jcf_edit_post_scripts'); 
-		
-		foreach($fieldsets as $f_id => $fieldset){
-			add_meta_box('jcf_fieldset-'.$f_id, $fieldset['title'], 'jcf_post_show_custom_fields', $post_type, 'advanced', 'default', array($fieldset) );
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
+			$jcf_settings = jcf_get_all_settings_from_file();
+			$fieldsets = $jcf_settings['fieldsets'][$post_type];
+		} else {
+			$fieldsets = jcf_fieldsets_get();
+		}
+		if(!empty($fieldsets)){
+			// remove fieldsets without fields
+			foreach($fieldsets as $f_id => $fieldset){
+				// check $enabled; add custom js/css for components
+				foreach($fieldset['fields'] as $field_id => $enabled){
+					if( !$enabled ){
+						unset($fieldset['fields'][$field_id]);
+						continue;
+					}
+					$field_obj = jcf_init_field_object($field_id, $fieldset['id']);
+					$field_obj->do_add_js();
+					$field_obj->do_add_css();
+				}
+				// if all fields disabled -> remove fieldset
+				if( empty($fieldset['fields']) ){
+					unset($fieldsets[$f_id]);
+				}
+			}
+			if(!empty($field_obj)) unset($field_obj);
+
+			if( empty($fieldsets) ) return false;
+
+			// add custom styles and scripts
+			add_action('admin_print_styles', 'jcf_edit_post_styles');
+			add_action('admin_print_scripts', 'jcf_edit_post_scripts');
+
+			foreach($fieldsets as $f_id => $fieldset){
+				add_meta_box('jcf_fieldset-'.$f_id, $fieldset['title'], 'jcf_post_show_custom_fields', $post_type, 'advanced', 'default', array($fieldset) );
+			}
 		}
 	}
 	
@@ -47,13 +57,15 @@
 	 */
 	function jcf_post_show_custom_fields( $post = NULL, $box = NULL ){
 		$fieldset = $box['args'][0];
+		$jcf_read_settings = jcf_get_read_settings();
+
 
 		foreach($fieldset['fields'] as $field_id => $enabled){
 			if( !$enabled ) continue;
-			
+
 			$field_obj = jcf_init_field_object($field_id, $fieldset['id']);
 			$field_obj->set_post_ID( $post->ID );
-			
+
 			echo '<div id="jcf_field-'.$field_id.'" class="jcf_edit_field ' . $field_obj->field_options['classname'] . '">'."\r\n";
 
 			$args = $field_obj->field_options;
@@ -96,13 +108,13 @@
 
 		// get fieldsets
 		$fieldsets = jcf_fieldsets_get();
-		
+
 		// create field class objects and call save function
 		foreach($fieldsets as $f_id => $fieldset){
 			foreach($fieldset['fields'] as $field_id => $tmp){
 				$field_obj = jcf_init_field_object($field_id, $fieldset['id']);
 				$field_obj->set_post_ID( $post->ID );
-				
+
 				$field_obj->do_save();
 			}
 		}

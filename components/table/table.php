@@ -48,7 +48,7 @@ class Just_Field_Table extends Just_Field{
 		
 		foreach($entries as $key => $entry){
 			if( $key == 0 ){
-				$table_head .= '<tr ' . ($key == 0 ? 'class="table-header"' : '') . '><th>Options</th>';
+				$table_head .= '<tr ' . ($key == 0 ? 'class="table-header"' : '') . '><th class="jcf_option_column">Options</th>';
 				$first_row = '<tr class="hide"><td>
 						<span class="drag-handle" >' . __('move', JCF_TEXTDOMAIN) . '</span>
 						<span class="jcf_delete_row" >' . __('delete', JCF_TEXTDOMAIN) . '</span>
@@ -172,12 +172,31 @@ class Just_Field_Table extends Just_Field{
 	}
 	
 	function add_js(){
-		wp_register_script(
+		global $wp_version;
+		if($wp_version <= 3.2){
+			// ui core
+			wp_register_script(
+				'jcf-jquery-ui-core',
+				WP_PLUGIN_URL.'/just-custom-fields/assets/jquery-ui.min.js',
+				array('jquery')
+			);
+			wp_enqueue_script('jcf-jquery-ui-core');
+			wp_register_script(
+				'jcf_table',
+				WP_PLUGIN_URL.'/just-custom-fields/components/table/table.js',
+				array('jcf-jquery-ui-core')
+			);
+			wp_enqueue_script('jcf_table');
+		}
+		else{
+			wp_register_script(
 				'jcf_table',
 				WP_PLUGIN_URL.'/just-custom-fields/components/table/table.js',
 				array('jquery')
 			);
-		wp_enqueue_script('jcf_table');
+			wp_enqueue_script('jcf_table');
+		}
+		
 
 		// add text domain if not registered with another component
 		global $wp_scripts;

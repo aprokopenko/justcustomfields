@@ -14,7 +14,15 @@ define('JCF_ROOT', dirname(__FILE__));
 define('JCF_TEXTDOMAIN', 'just-custom-fields');
 define('JCF_VERSION', 1.41);
 
+define('JCF_CONF_MS_NETWORK', 'network');
+define('JCF_CONF_MS_SITE', 'site');
+define('JCF_CONF_SOURCE_DB', 'database');
+define('JCF_CONF_SOURCE_FS_THEME', 'fs_theme');
+define('JCF_CONF_SOURCE_FS_GLOBAL', 'fs_global');
+
 require_once( JCF_ROOT.'/inc/functions.multisite.php' );
+require_once( JCF_ROOT.'/inc/functions.settings.php' );
+
 require_once( JCF_ROOT.'/inc/class.field.php' );
 require_once( JCF_ROOT.'/inc/functions.fieldset.php' );
 require_once( JCF_ROOT.'/inc/functions.fields.php' );
@@ -22,6 +30,7 @@ require_once( JCF_ROOT.'/inc/functions.ajax.php' );
 require_once( JCF_ROOT.'/inc/functions.post.php' );
 require_once( JCF_ROOT.'/inc/functions.themes.php' );
 require_once( JCF_ROOT.'/inc/functions.shortcodes.php' );
+require_once( JCF_ROOT.'/inc/functions.import.php' );
 
 
 // composants
@@ -72,8 +81,13 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_edit_field', 'jcf_ajax_edit_field');
 	add_action('wp_ajax_jcf_fields_order', 'jcf_ajax_fields_order');
 
-	add_action('admin_notices', 'jcf_admin_notice');
+	add_action('wp_ajax_jcf_export_fields', 'jcf_ajax_export_fields');
+	add_action('wp_ajax_jcf_export_fields_form', 'jcf_ajax_export_fields_form');
+	add_action('wp_ajax_jcf_import_fields', 'jcf_ajax_import_fields');
+	add_action('wp_ajax_jcf_check_file', 'jcf_ajax_check_file');
 
+	add_action('jcf_print_admin_notice', 'jcf_print_admin_notice');
+	
 	// add $post_type for ajax
 	if(!empty($_POST['post_type'])) jcf_set_post_type( $_POST['post_type'] );
 	
@@ -100,7 +114,6 @@ function jcf_init(){
 	// add post edit/save hooks
 	add_action( 'add_meta_boxes', 'jcf_post_load_custom_fields', 10, 1 ); 
 	add_action( 'save_post', 'jcf_post_save_custom_fields', 10, 2 );
-
 	
 	// add custom styles and scripts
 	if( !empty($_GET['page']) && $_GET['page'] == 'just_custom_fields' ){
@@ -119,6 +132,7 @@ function jcf_admin_menu(){
  */
 function jcf_admin_settings_page(){
 	$post_types = jcf_get_post_types( 'object' );
+	$jcf_read_settings = jcf_get_read_settings();
 	$jcf_multisite_settings = jcf_get_multisite_settings();
 	$jcf_tabs = !isset($_GET['tab']) ? 'fields' : $_GET['tab'];
 
@@ -128,10 +142,20 @@ function jcf_admin_settings_page(){
 		return;
 	}
 
-	if( !empty($_POST['jcf_update_settings']) ){
-		$jcf_multisite_settings = jcf_save_multisite_settings($jcf_multisite_settings);
+	if( !empty($_POST['save_import']) ) {
+		$saved = jcf_admin_save_settings( $_POST['import_data'] );
+		$notice = $saved? 
+				array('notice', __('<strong>Import</strong> has been completed successfully!', JCF_TEXTDOMAIN)) : 
+				array('error', __('<strong>Import failed!</strong> Please check that your import file has right format.', JCF_TEXTDOMAIN));
+		jcf_add_admin_notice($notice[0], $notice[1]);
 	}
-
+	
+	if( !empty($_POST['jcf_update_settings']) ) {
+		if( MULTISITE ){
+			$jcf_multisite_settings = jcf_save_multisite_settings( $_POST['jcf_multisite_setting'] );
+		}
+		$jcf_read_settings = jcf_update_read_settings();
+	}
 	// load template
 	include( JCF_ROOT . '/templates/settings_page.tpl.php' );
 }
@@ -141,10 +165,17 @@ function jcf_admin_settings_page(){
  */
 function jcf_admin_fields_page( $post_type ){
 	jcf_set_post_type( $post_type->name );
-	
-	$fieldsets = jcf_fieldsets_get();
-	$field_settings = jcf_field_settings_get();
-	
+	$jcf_read_settings = jcf_get_read_settings();
+	if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
+		$jcf_settings = jcf_get_all_settings_from_file();
+		$key = $post_type->name;
+		$fieldsets = $jcf_settings['fieldsets'][$key];
+		$field_settings = $jcf_settings['field_settings'][$key];
+	}else{
+		$fieldsets = jcf_fieldsets_get();
+		$field_settings = jcf_field_settings_get();		
+	}
+
 	// load template
 	include( JCF_ROOT . '/templates/fields_ui.tpl.php' );
 }
@@ -221,33 +252,72 @@ function jcf_admin_add_scripts() {
 }
 
 // add custom styles for plugin settings page
-function jcf_admin_add_styles() { 
+function jcf_admin_add_styles() {
 	wp_register_style('jcf-styles', WP_PLUGIN_URL.'/just-custom-fields/assets/styles.css');
 	wp_enqueue_style('jcf-styles'); 
 }
 
-// get options
+/**
+ *	Set permisiions for file
+ *	@param string $dir Parent directory path
+ *	@param string $filename File path
+ */
+function jcf_set_chmod($filename, $dir){
+	if ( $stat = @stat( $dir ) ) {
+		$dir_perms = $stat['mode'] & 0007777;
+	} else {
+		$dir_perms = 0777;
+	}
+	@chmod($filename, $dir_perms);
+}
+
+/**
+ *	Get options with wp-options
+ *	@param string $key Option name
+ *	@return array Options with $key
+ */
 function jcf_get_options($key){
 	$jcf_multisite_settings = jcf_get_multisite_settings();
 	return $jcf_multisite_settings == 'network' ? get_site_option($key, array()) : get_option($key, array());
 }
 
-// update options
+/**
+ *	Update options with wp-options
+ *	@param string $key Option name
+ *	@param array $value Values with option name
+ *	@return bollean
+ */
 function jcf_update_options($key, $value){
 	$jcf_multisite_settings = jcf_get_multisite_settings();
 	$jcf_multisite_settings == 'network' ? update_site_option($key, $value) : update_option($key, $value);
 	return true;
 }
 
-// admin notice
-function jcf_admin_notice($args = array()){
-	if(!empty($args))
-	{
-		foreach($args as $key => $value)
-		{
-			echo '<div id="message" class="updated notice ' . ($key == 'error' ? $key . ' is-dismissible' : 'is-dismissible') . ' below-h2 "><p>' . $value . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
-		}
-	}
+/**
+ * add message to be printed with admin notice
+ * @param string $type    notice|error
+ * @param string $message  message to be printed
+ */
+function jcf_add_admin_notice( $type, $message ){
+	global $jcf_notices;
+	if( !$jcf_notices )
+		$jcf_notices = array();
+	
+	$jcf_notices[] = array($type, $message);
 }
 
-?>
+/**
+ *	Admin notice
+ *	@param array $args Array with messages
+ */
+function jcf_print_admin_notice($args = array()){
+	global $wp_version, $jcf_notices;
+	if( empty($jcf_notices) ) return;
+	
+	foreach($jcf_notices as $msg)
+	{
+		echo '<div  class="updated notice ' . (($msg[0] == 'error')? $msg[0] . ' is-dismissible' : 'is-dismissible') . ' below-h2 "><p>' . $msg[1] . '</p>
+				' . ($wp_version < 4.2 ? '' : '<button type="button" class="notice-dismiss"><span class="screen-reader-text">' . __('Dismiss this notice.', JCF_TEXTDOMAIN) . '</span></button>') . '
+			</div>';
+	}
+}

@@ -15,21 +15,23 @@
 		else{
 			$slug = sanitize_title( $title );
 		}
+
 		$fieldsets = jcf_fieldsets_get();
-		
 		// check exists
 		if( isset($fieldsets[$slug]) ){
 			jcf_ajax_reposnse( array('status' => "0", 'error'=>__('Such fieldset already exists.', JCF_TEXTDOMAIN)) );
 		}
-		
+
 		// create fiedlset
 		$fieldset = array(
 			'id' => $slug,
 			'title' => $title,
 			'fields' => array(),
 		);
+
 		jcf_fieldsets_update($slug, $fieldset);
-		jcf_ajax_reposnse( array('status' => "1") );
+
+		jcf_ajax_reposnse( array('status' => "1", $jcf_settings['fieldsets'][$post_type]) );
 	}
 	
 	// delete fieldset link process
@@ -38,8 +40,9 @@
 		if( empty($f_id) ){
 			//jcf_ajax_reposnse( array('status' => "0", 'error'=>__('Wrong params passed.', JCF_TEXTDOMAIN)) );
 		}
-		
+
 		jcf_fieldsets_update($f_id, NULL);
+
 		jcf_ajax_reposnse( array('status' => "1") );
 	}
 	
@@ -47,7 +50,7 @@
 	function jcf_ajax_change_fieldset(){
 		$f_id = $_POST['fieldset_id'];
 		$fieldset = jcf_fieldsets_get($f_id);
-		
+
 		ob_start();
 		?>
 		<div class="jcf_edit_fieldset">
@@ -83,15 +86,16 @@
 	function jcf_ajax_update_fieldset(){
 		$f_id = $_POST['fieldset_id'];
 		$fieldset = jcf_fieldsets_get($f_id);
+
 		if(empty($fieldset)){
 			jcf_ajax_reposnse( array('status' => "0", 'error'=>__('Wrong data passed.', JCF_TEXTDOMAIN)) );
 		}
-		
+
 		$title = strip_tags(trim($_POST['title']));
 		if( empty($title) ){
 			jcf_ajax_reposnse( array('status' => "0", 'error'=>__('Title field is required.', JCF_TEXTDOMAIN)) );
 		}
-		
+
 		$fieldset['title'] = $title;
 		jcf_fieldsets_update($f_id, $fieldset);
 		jcf_ajax_reposnse( array('status' => "1", 'title' => $title) );
@@ -111,14 +115,14 @@
 
 	// save field from the form
 	function jcf_ajax_save_field(){
-		
+
 		$field_type =  $_POST['field_id'];
 		$fieldset_id = $_POST['fieldset_id'];
 		
 		$field_obj = jcf_init_field_object($field_type, $fieldset_id);
 		$resp = $field_obj->do_update();
 		jcf_ajax_reposnse($resp, 'json');
-		
+
 	}
 	
 	// delete field processor
@@ -170,5 +174,88 @@
 		}
 		echo $resp;
 		exit();
+	}
+
+	// export fields from form
+	function jcf_ajax_export_fields_form(){
+		$jcf_read_settings = jcf_get_read_settings();
+		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR  $jcf_read_settings == 'global') ){
+			$jcf_settings = jcf_get_all_settings_from_file();
+		}else{
+			$jcf_settings = jcf_get_all_settings_from_db();
+		}
+
+		$post_types = !empty($jcf_settings['post_types']) ? $jcf_settings['post_types'] : jcf_get_post_types();
+		$fieldsets =$jcf_settings['fieldsets'];
+		$field_settings = $jcf_settings['field_settings'];
+		$registered_fields = jcf_get_registered_fields();
+
+		// load template
+		include( JCF_ROOT . '/templates/export.tpl.php' );
+		exit();
+	}
+
+	// export fields
+	function jcf_ajax_export_fields(){
+		if( $_POST['export_fields'] && !empty($_POST['export_data']) ) {
+			$export_data = $_POST['export_data'];
+			$export_data = json_encode($export_data);
+			$filename = 'jcf_export' . date('Ymd-his') . '.json';
+			header('Content-Type: text/json; charset=utf-8');
+			header("Content-Disposition: attachment;filename=" . $filename);
+			header("Content-Transfer-Encoding: binary ");
+			echo $export_data;
+			exit();
+		}
+	}
+
+	// import fields
+	function jcf_ajax_import_fields(){
+		if( !empty($_POST['import-btn']) ){
+			if(!empty($_FILES['import_data']['name']) ){
+				$path_info = pathinfo($_FILES['import_data']['name']);
+
+				if( $path_info['extension'] == 'json'){
+					$uploaddir = get_home_path() . "wp-content/uploads/";
+					$uploadfile = $uploaddir . basename($_FILES['import_data']['name']);
+
+					if ( copy($_FILES['import_data']['tmp_name'], $uploadfile) ){
+						$post_types = jcf_get_settings_from_file($uploadfile);
+					}else{
+						$notice = array('error' => 'Error! <strong>The file</strong> has not uploaded!');
+					}
+				}else{
+					$notice = array('error' => 'Error! Check <strong>extension</strong> of the file!');
+				}
+			}else{
+				$notice = array('error' => 'Error! The file is empty!');
+			}
+		}
+		include( JCF_ROOT . '/templates/import.tpl.php' );
+		do_action('admin_notices', $notice);
+		exit();
+	}
+
+	//check file
+	function jcf_ajax_check_file(){
+		$jcf_read_settings = $_POST['jcf_read_settings'];
+		if($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global'){
+			$dir = $jcf_read_settings == 'theme' ? get_template_directory() . '/jcf-settings/' : get_home_path() . 'wp-content/jcf-settings/';
+			$file = 'jcf_settings.json';
+			if($jcf_read_settings == 'theme'){
+				$msg = __("The settings will be written to your theme folder .\n In case you have settings there, they will be overwritten.\n Please confirm that you want to continue.", JCF_TEXTDOMAIN);
+			}
+			else{
+				$msg = __("The settings will be written to folder wp-conten/jcf-settings .\n In case you have settings there, they will be overwritten.\n Please confirm that you want to continue.", JCF_TEXTDOMAIN);
+			}
+			if( file_exists($dir . $file) ) {
+				$resp = array('status' => '1', 'msg' => $msg);
+			}else{
+				$resp = array('status' => '1', 'file' => '1');
+			}
+		}else{
+			$resp = array('status' => '1');
+		}
+		jcf_ajax_reposnse($resp, 'json');
 	}
 ?>
