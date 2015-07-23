@@ -239,8 +239,8 @@
 	//check file
 	function jcf_ajax_check_file(){
 		$jcf_read_settings = $_POST['jcf_read_settings'];
-		if($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global'){
-			$dir = $jcf_read_settings == 'theme' ? get_template_directory() . '/jcf-settings/' : get_home_path() . 'wp-content/jcf-settings/';
+		if($jcf_read_settings == JCF_CONF_SOURCE_FS_THEME OR $jcf_read_settings == JCF_CONF_SOURCE_FS_GLOBAL){
+			$dir = $jcf_read_settings == JCF_CONF_SOURCE_FS_THEME ? get_template_directory() . '/jcf-settings/' : get_home_path() . 'wp-content/jcf-settings/';
 			$file = 'jcf_settings.json';
 			if($jcf_read_settings == 'theme'){
 				$msg = __("The settings will be written to your theme folder .\n In case you have settings there, they will be overwritten.\n Please confirm that you want to continue.", JCF_TEXTDOMAIN);

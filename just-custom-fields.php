@@ -260,13 +260,13 @@ function jcf_admin_add_styles() {
  *	@param string $dir Parent directory path
  *	@param string $filename File path
  */
-function jcf_set_chmod($filename, $dir){
-	if ( $stat = @stat( $dir ) ) {
-		$dir_perms = $stat['mode'] & 0007777;
-	} else {
-		$dir_perms = 0777;
+function jcf_set_chmod($filename){
+	$dir_perms = fileperms(dirname($filename));
+	if(chmod( $filename, $dir_perms )){
+		return true;
+	}else{
+		return false;
 	}
-	@chmod($filename, $dir_perms);
 }
 
 /**
