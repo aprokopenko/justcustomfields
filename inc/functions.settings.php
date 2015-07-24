@@ -34,7 +34,7 @@ function jcf_clone_db_settings_to_fs($dir, $settings_source){
  *	@return array Array with fields settings from config file
  */
 function jcf_get_all_settings_from_file(){
-	$filename = jcf_get_file_settings_name();
+	$filename = jcf_get_settings_file_path();
 	if (file_exists($filename)) {
 		return jcf_get_settings_from_file($filename);
 	}else{
@@ -79,13 +79,14 @@ function jcf_save_all_settings_in_file($data, $settings_source = ''){
 	if( !empty($dir) ){
 		$file = $dir . 'jcf_settings.json';
 		$content = $data . "\r\n";
-		if( $fp = fopen($file, 'w') && fwrite($fp, $content) ){
+		if( $fp = fopen($file, 'w') ){
+			fwrite($fp, $content);
 			fclose($fp);
-			jcf_set_chmod($file, $dir);
+			jcf_set_chmod($file);
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 
@@ -107,7 +108,7 @@ function jcf_get_settings_file_path( $jcf_read_settings = null ){
 		$jcf_read_settings = jcf_get_read_settings();
 	
 	if( !empty($jcf_read_settings) && ($jcf_read_settings == JCF_CONF_SOURCE_FS_THEME || $jcf_read_settings == JCF_CONF_SOURCE_FS_GLOBAL) ){
-		return ($jcf_read_settings == JCF_CONF_SOURCE_FS_THEME)? get_template_directory() . '/jcf-settings/jcf_settings.json' : get_home_path() . 'wp-content/jcf-settings/jcf_settings.json' ;
+		return ($jcf_read_settings == JCF_CONF_SOURCE_FS_THEME)? get_template_directory() . '/jcf-settings/' : get_home_path() . 'wp-content/jcf-settings/' ;
 	}
 	return false;
 }
@@ -119,7 +120,7 @@ function jcf_get_settings_file_path( $jcf_read_settings = null ){
 function jcf_update_read_settings(){
 	$current_value = jcf_get_read_settings();
 	$new_value = $_POST['jcf_read_settings'];
-	
+
 	if( MULTISITE && ($_POST['jcf_multisite_setting'] != JCF_CONF_MS_NETWORK && $new_value == JCF_CONF_SOURCE_FS_GLOBAL) ){
 		jcf_add_admin_notice('error', __('<strong>Settings storage update FAILED!</strong>. Your MultiSite Settings do not allow to set global storage in FileSystem', JCF_TEXTDOMAIN));
 		return $current_value;
@@ -130,7 +131,7 @@ function jcf_update_read_settings(){
 			if( $_POST['jcf_keep_settings'] ){
 				if( in_array($new_value, array(JCF_CONF_SOURCE_FS_GLOBAL, JCF_CONF_SOURCE_FS_THEME)) ){
 					$file = jcf_get_settings_file_path( $new_value );
-					if( jcf_clone_db_settings_to_fs( $file ) ){
+					if( jcf_clone_db_settings_to_fs( $file, $new_value ) ){
 						jcf_add_admin_notice('notice', __('<strong>Database settings has been imported</strong> to file system.', JCF_TEXTDOMAIN));
 
 						$saved = update_site_option('jcf_read_settings', $new_value);
