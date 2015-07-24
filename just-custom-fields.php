@@ -163,15 +163,16 @@ function jcf_admin_settings_page(){
  */
 function jcf_admin_fields_page( $post_type ){
 	jcf_set_post_type( $post_type->name );
+	
 	$jcf_read_settings = jcf_get_read_settings();
-	if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-		$jcf_settings = jcf_get_all_settings_from_file();
-		$key = $post_type->name;
-		$fieldsets = $jcf_settings['fieldsets'][$key];
-		$field_settings = $jcf_settings['field_settings'][$key];
-	}else{
+	if( $jcf_read_settings == JCF_CONF_SOURCE_DB ){
 		$fieldsets = jcf_fieldsets_get();
 		$field_settings = jcf_field_settings_get();		
+	}
+	else{
+		$jcf_settings = jcf_get_all_settings_from_file();
+		$fieldsets = $jcf_settings['fieldsets'][ $post_type->name ];
+		$field_settings = $jcf_settings['field_settings'][ $post_type->name ];
 	}
 
 	// load template
@@ -262,9 +263,10 @@ function jcf_admin_add_styles() {
  */
 function jcf_set_chmod($filename){
 	$dir_perms = fileperms(dirname($filename));
-	if(chmod( $filename, $dir_perms )){
+	if( @chmod( $filename, $dir_perms ) ){
 		return true;
-	}else{
+	}
+	else{
 		return false;
 	}
 }

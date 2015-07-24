@@ -10,14 +10,18 @@
 		
 		// get read settings
 		$jcf_read_settings = jcf_get_read_settings();
-		// get fieldsets
 
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-			$jcf_settings = jcf_get_all_settings_from_file();
-			$fieldsets = $jcf_settings['fieldsets'][$post_type];
-		} else {
+		// get fieldsets
+		if( $jcf_read_settings == JCF_CONF_SOURCE_DB ){
 			$fieldsets = jcf_fieldsets_get();
+			$field_settings = jcf_field_settings_get();		
 		}
+		else{
+			$jcf_settings = jcf_get_all_settings_from_file();
+			$fieldsets = $jcf_settings['fieldsets'][ $post_type ];
+			$field_settings = $jcf_settings['field_settings'][ $post_type ];
+		}		
+
 		if(!empty($fieldsets)){
 			// remove fieldsets without fields
 			foreach($fieldsets as $f_id => $fieldset){
@@ -57,8 +61,6 @@
 	 */
 	function jcf_post_show_custom_fields( $post = NULL, $box = NULL ){
 		$fieldset = $box['args'][0];
-		$jcf_read_settings = jcf_get_read_settings();
-
 
 		foreach($fieldset['fields'] as $field_id => $enabled){
 			if( !$enabled ) continue;
@@ -147,4 +149,3 @@
 		do_action('jcf_admin_edit_post_styles');
 	}
 	
-?>

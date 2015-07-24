@@ -7,11 +7,12 @@
 		$option_name = jcf_fieldsets_get_option_name();
 
 		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
+		if( $jcf_read_settings != JCF_CONF_SOURCE_DB ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$post_type = jcf_get_post_type();
 			$fieldsets = $jcf_settings['fieldsets'][$post_type];
-		}else{
+		}
+		else{
 			$fieldsets = jcf_get_options($option_name);
 		}
 		if(!empty($id)){
@@ -21,21 +22,28 @@
 		return $fieldsets;
 	}
 
+	/**
+	 * update one fieldset settings
+	 * @param string $key	fieldset id
+	 * @param array $values		fieldset settings
+	 */
 	function jcf_fieldsets_update( $key, $values = array()){
 		$option_name = jcf_fieldsets_get_option_name();
 
 		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
+		if( $jcf_read_settings != JCF_CONF_SOURCE_DB ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$post_type = jcf_get_post_type();
-			if( $values === NULL && isset($fieldsets[$key]) ){
+	
+			if( $values === NULL && isset($jcf_settings['fieldsets'][$post_type][$key]) ){
 				unset($jcf_settings['fieldsets'][$post_type][$key]);
 			}
 			if( !empty($values) ){
 				$jcf_settings['fieldsets'][$post_type][$key] = $values;
 			}
-			 jcf_admin_save_all_settings_in_file($jcf_settings);
-		}else{
+			jcf_save_all_settings_in_file($jcf_settings);
+		}
+		else{
 			$fieldsets = jcf_get_options($option_name);
 			if( $values === NULL && isset($fieldsets[$key]) ){
 				unset($fieldsets[$key]);
@@ -49,19 +57,30 @@
 		}
 	}
 	
+	/**
+	 * return db fieldset name
+	 * @return string
+	 */
 	function jcf_fieldsets_get_option_name(){
 		$post_type = jcf_get_post_type();
 		return 'jcf_fieldsets-'.$post_type;
 	}
 	
+	/**
+	 * return number of registered fields and fieldsets for specific post type
+	 * @param string $post_type
+	 * @return int
+	 */
 	function jcf_fieldsets_count($post_type){
 		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
+		if( $jcf_read_settings != JCF_CONF_SOURCE_DB ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$fieldsets = $jcf_settings['fieldsets'][$post_type];
-		} else {
+		} 
+		else {
 			$fieldsets = jcf_get_options('jcf_fieldsets-'.$post_type);
 		}
+		
 		if(!empty($fieldsets)){
 			$count['fieldsets'] = count($fieldsets);
 			$count['fields'] = 0;
@@ -70,9 +89,9 @@
 					$count['fields'] += count($fieldset['fields']);
 				}
 			}
-		}else{
+		}
+		else{
 			$count = array('fieldsets' => 0, 'fields' => 0);
 		}
 		return $count;
 	}
-?>

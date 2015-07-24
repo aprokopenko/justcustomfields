@@ -67,7 +67,8 @@ class Just_Field_Table extends Just_Field{
 									id="' . $this->get_field_id_l2($col_name, '00') . '"
 									name="' . $this->get_field_name_l2($col_name, '00') . '"></td>';
 				}
-				$rows .= '<td><input type="text" value="' . esc_attr($entry[$col_name]) . '"
+				
+				$rows .= '<td><input type="text" value="' . ( !empty($entry)? esc_attr($entry[$col_name]) : '' ) . '"
 					id="' . $this->get_field_id_l2($col_name, $key) . '"
 					name="' . $this->get_field_name_l2($col_name, $key) . '">
 				</td>';

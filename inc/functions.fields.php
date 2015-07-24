@@ -40,7 +40,7 @@
 		$option_name = jcf_fields_get_option_name();
 
 		$jcf_read_settings = jcf_get_read_settings();
-		if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
+		if( $jcf_read_settings != JCF_CONF_SOURCE_DB ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$post_type =  jcf_get_post_type();
 			$fieldset = $jcf_settings['fieldsets'][$post_type][$fieldset_id];
@@ -58,7 +58,7 @@
 
 			$jcf_settings['fieldsets'][$post_type][$fieldset_id] = $fieldset;
 			$jcf_settings['field_settings'][$post_type] = $field_settings;
-			jcf_admin_save_all_settings_in_file($jcf_settings);
+			jcf_save_all_settings_in_file($jcf_settings);
 		}
 		else{
 			$field_settings = jcf_get_options($option_name);
@@ -79,16 +79,14 @@
 	 */
 	function jcf_field_settings_get( $id = '', $select_from_db = false){
 		$option_name = jcf_fields_get_option_name();
-		if(empty($select_from_db)){
-			$jcf_read_settings = jcf_get_read_settings();
-			if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-				$jcf_settings = jcf_get_all_settings_from_file();
-				$post_type =  str_replace('jcf_fields-', '', $option_name);
-				$field_settings = $jcf_settings['field_settings'][$post_type];
-			}else{
-				$field_settings = jcf_get_options($option_name);
-			}
-		} else {
+		$jcf_read_settings = jcf_get_read_settings();
+		
+		if( empty($select_from_db) && $jcf_read_settings != JCF_CONF_SOURCE_DB ){
+			$jcf_settings = jcf_get_all_settings_from_file();
+			$post_type =  str_replace('jcf_fields-', '', $option_name);
+			$field_settings = $jcf_settings['field_settings'][$post_type];
+		} 
+		else {
 			$field_settings = jcf_get_options($option_name);
 		}
 
@@ -117,21 +115,11 @@
 
 	/**
 	 * get next index for save new instance
+	 * because of ability to import fields now, we can't use DB to save AI. 
+	 * we will use timestamp for this
 	 */
 	function jcf_get_fields_index( $id_base ){
-
-		$option_name = 'jcf_fields_index';
-		$indexes = jcf_get_options($option_name);
-
-		// get index, increase on 1
-		$index = (int)@$indexes[$id_base];
-		$index ++;
-
-		// update indexes
-		$indexes[$id_base] = $index;
-		jcf_update_options($option_name, $indexes);
-
-		return $index;
+		return time();
 	}
 	
 	// option name in wp-options table
@@ -160,4 +148,3 @@
 		return $values;
 	}
 
-?>
