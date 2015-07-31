@@ -81,6 +81,8 @@ get_post_custom()
 	* PHP-Code generators to use in templates when editing custom fields
 	* Shortcodes for WP editor
 	* make fieldsets related to categories (show/hide based on category select)
+* Version 2.0.1b
+	* Bug fix CRITICAL: Correct support of old field settings from old versions (read source set default to DB)
 * Version 2.0b
 	* New: Plugin settings pages were extended.
 	* New: Field Settings landing page design improvements
@@ -134,22 +136,28 @@ get_post_custom()
 	* First version beta
 	
 == Frequently Asked Questions ==
-= Q: Where I can edit new fields for Posts or Pages? =
-A: After installing and activating plugin you will see new menu option Settings > Just Custom Fields
+= Q: Where can I edit new fields for Posts or Pages? =
+A: After installation and activation of the plugin you will see new menu item under Settings > Just Custom Fields
 
 = Q: My site works slow, is it something wrong with your plugin? =
-A: Plugin is loaded only in Backend and create all objects only on Post edit pages and on the Settings page. So it can't affect the site.
+A: Plugin files are included and affect only in WordPress dashboard and affect only Post edit pages and Just Custom Fields settings page. So it can't affect the site speed.
 
 = Q: How can i add my own component (new field type)? =
-A: first of all you need to create class for this field. You class should be extended from Just_Field main class!
-You can copy class /[plugins-folder]/just-custom-fields/components/input-text.php to your plugin or theme and correct it:
-- change name
-- changle class methods to use your data.
-Class structure is very similar to WordPress Widget classes.
+A: first of all you need to create new php class for your field. Your class should be extended from Just_Field plugin class!
+You can start from copying the existing class /[plugins-folder]/just-custom-fields/components/input-text.php to your plugin folder or theme and update the code:
 
-Then you need to include your new component file.
+- change class name
+- change class methods to use your specific controls and data.
+
+Class structure is very similar to WordPress Widget API classes.
+
+Then you need to include your new component file into your plugin main file or theme functions.php file.
 
 And the last step:
-- add new hook action "add_action('jcf_register_fields', 'my_register_fields_function')"
-- create hook action function and call there:
-jcf_field_register('YOUR_COMPONENT_CLASS_NAME');
+
+- add new action hook "add_action('jcf_register_fields', 'my_register_fields_function')"
+- add new callback function similar to this one:
+
+function my_register_fields_function(){
+	jcf_field_register('YOUR_COMPONENT_CLASS_NAME');
+}

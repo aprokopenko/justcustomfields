@@ -92,7 +92,7 @@ function jcf_save_all_settings_in_file($data, $settings_source = ''){
  *	@return string Return read method from file or database
  */
 function jcf_get_read_settings(){
-	return get_site_option('jcf_read_settings');
+	return get_site_option('jcf_read_settings', JCF_CONF_SOURCE_DB);
 }
 
 /**
