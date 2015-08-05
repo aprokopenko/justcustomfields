@@ -32,7 +32,6 @@ require_once( JCF_ROOT.'/inc/functions.themes.php' );
 require_once( JCF_ROOT.'/inc/functions.shortcodes.php' );
 require_once( JCF_ROOT.'/inc/functions.import.php' );
 
-
 // composants
 require_once( JCF_ROOT.'/components/input-text.php' );
 require_once( JCF_ROOT.'/components/select.php' );

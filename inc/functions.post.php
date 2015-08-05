@@ -66,9 +66,17 @@
 			$field_obj = jcf_init_field_object($field_id, $fieldset['id']);
 			$field_obj->set_post_ID( $post->ID );
 
-			echo '<div id="jcf_field-'.$field_id.'" class="jcf_edit_field ' . $field_obj->field_options['classname'] . '">'."\r\n";
-
+			echo '<div id="jcf_field-' . $field_id . '" class="jcf_edit_field ' . $field_obj->field_options['classname'] . '">'."\r\n";
+			$sh_value = esc_attr( '[just-field-value slug="' . $field_obj->slug . '" class="" id="" post_id=""]' );
+			$sh_label = esc_attr( '[just-field-label slug="' . $field_obj->slug . '" class="" id="" post_id=""]' );
 			$args = $field_obj->field_options;
+			$args['after_title'] .= '<div class="jcf-get-shortcode" ><img src="' . get_home_url() . '/wp-content/plugins/just-custom-fields/assets/shortcodes-icon.jpg" title="Get shortcode" width="100%" height="100%" /></div>'."\r\n";
+			$args['after_title'] .= '<div class="jcf_shortcodes_tooltip" >'."\r\n";
+			$args['after_title'] .= '<div class="jcf_inner_box"><h3 class="header">' . __('Shortcodes for field ', JCF_TEXTDOMAIN) . $field_obj->instance['title'] . ' <a href="#" class="jcf_shortcodes_tooltip-close"><span class="media-modal-icon"></span></a></h3>'."\r\n";
+			$args['after_title'] .= '<div class="jcf_inner_content">';
+			$args['after_title'] .= '<label> ' . __('Field value', JCF_TEXTDOMAIN) . ':</label><input type="text" class="jcf-shortcode" value="' . $sh_value . '" id="' . $field_obj->slug . '_value" /><a href="#" class="copy-to-clipboard" rel="' . $field_obj->slug . '_value" title="Copy to clipboard"></a><br /><br />'."\r\n";
+			$args['after_title'] .= '<label> ' . __('Field label', JCF_TEXTDOMAIN) . ':</label><input type="text" class="jcf-shortcode" value="' . $sh_label . '" id="' . $field_obj->slug . '_label" /><a href="#" class="copy-to-clipboard" rel="' . $field_obj->slug . '_label" title="Copy to clipboard"></a>'."\r\n";
+			$args['after_title'] .= '</div></div></div>'."\r\n";
 			$field_obj->field( $args );
 
 			echo "\r\n </div> \r\n";
@@ -126,14 +134,14 @@
 	 *	add custom scripts to post edit page
 	 */
 	function jcf_edit_post_scripts(){
-		/*
+
 		wp_register_script(
 				'jcf_edit_post',
 				WP_PLUGIN_URL.'/just-custom-fields/assets/edit_post.js',
 				array('jquery')
 			);
 		wp_enqueue_script('jcf_edit_post');
-		*/
+
 		do_action('jcf_admin_edit_post_scripts');
 	}
 

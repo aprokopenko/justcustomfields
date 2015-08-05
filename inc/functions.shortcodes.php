@@ -45,10 +45,15 @@ function jcf_do_shortcode($atts){
 			break;
 		}
 	}
-	$field_obj = jcf_init_field_object($field_id);
-	$field_obj->set_post_ID( $post_id );
-	$args = array_merge($args, $atts);
-	return $field_obj->show_shortcode($args);
+	if( $field_id ){
+		$field_obj = jcf_init_field_object($field_id);
+		$field_obj->set_post_ID( $post_id );
+		$args = array_merge($args, $atts);
+		return $field_obj->show_shortcode($args);
+	}
+	else{
+		return false;
+	}
 }
 
 /**
