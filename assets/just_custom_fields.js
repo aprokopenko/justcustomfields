@@ -8,7 +8,11 @@ jQuery(document).ready(function(){
 	initImport();
 	initExport();
 	initSettings();
-})
+});
+
+jQuery(document).scroll(function(){
+	initEditFormPosition();
+});
 
 /**
  *	init fieldset add box
@@ -434,4 +438,23 @@ function initSettings(){
 			}
 		}
 	});
+}
+
+/*
+ * Position for edit form
+ */
+function initEditFormPosition(){
+	var scrolling = jQuery(document).scrollTop();
+	var edit_form = jQuery('#jcf_ajax_container');
+	var wrap_position = jQuery('.wrap').offset().left;
+	var wrap_width = jQuery('.wrap').css('width').replace('px', '') * 1;
+	var left_bar_width = jQuery('#jcf_fieldsets').css('width').replace('px', '') * 1;
+	var pos_left = wrap_position + left_bar_width;
+	var edit_form_width = wrap_width / 100 * 30 + 'px';
+	if(scrolling >= 250){
+		edit_form.css({'position':'fixed', 'top':'40px', 'width': edit_form_width, 'left' : pos_left + 'px'});
+	}
+	else{
+		edit_form.css({'position':'relative', 'top':'', 'width':'30%', 'left' : ''});
+	}
 }
