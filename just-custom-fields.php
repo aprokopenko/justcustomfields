@@ -6,13 +6,13 @@ Description: This plugin add custom fields for standard and custom post types in
 Tags: custom, fields, custom fields, meta, post meta, object meta, editor
 Author: Alexander Prokopenko
 Author URI: http://justcoded.com/
-Version: 1.4.1
+Version: 2.0.1b
 Donate link: http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/
 */
 
 define('JCF_ROOT', dirname(__FILE__));
 define('JCF_TEXTDOMAIN', 'just-custom-fields');
-define('JCF_VERSION', 1.41);
+define('JCF_VERSION', 2.0);
 
 define('JCF_CONF_MS_NETWORK', 'network');
 define('JCF_CONF_MS_SITE', 'site');
@@ -164,15 +164,16 @@ function jcf_admin_settings_page(){
  */
 function jcf_admin_fields_page( $post_type ){
 	jcf_set_post_type( $post_type->name );
+	
 	$jcf_read_settings = jcf_get_read_settings();
-	if( !empty($jcf_read_settings) && ($jcf_read_settings == 'theme' OR $jcf_read_settings == 'global') ){
-		$jcf_settings = jcf_get_all_settings_from_file();
-		$key = $post_type->name;
-		$fieldsets = $jcf_settings['fieldsets'][$key];
-		$field_settings = $jcf_settings['field_settings'][$key];
-	}else{
+	if( $jcf_read_settings == JCF_CONF_SOURCE_DB ){
 		$fieldsets = jcf_fieldsets_get();
 		$field_settings = jcf_field_settings_get();		
+	}
+	else{
+		$jcf_settings = jcf_get_all_settings_from_file();
+		$fieldsets = $jcf_settings['fieldsets'][ $post_type->name ];
+		$field_settings = $jcf_settings['field_settings'][ $post_type->name ];
 	}
 
 	// load template
@@ -261,13 +262,14 @@ function jcf_admin_add_styles() {
  *	@param string $dir Parent directory path
  *	@param string $filename File path
  */
-function jcf_set_chmod($filename, $dir){
-	if ( $stat = @stat( $dir ) ) {
-		$dir_perms = $stat['mode'] & 0007777;
-	} else {
-		$dir_perms = 0777;
+function jcf_set_chmod($filename){
+	$dir_perms = fileperms(dirname($filename));
+	if( @chmod( $filename, $dir_perms ) ){
+		return true;
 	}
-	@chmod($filename, $dir_perms);
+	else{
+		return false;
+	}
 }
 
 /**

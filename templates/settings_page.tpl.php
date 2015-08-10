@@ -93,7 +93,7 @@
 					<h3 class="header"><?php _e('Import', JCF_TEXTDOMAIN); ?></h3>
 					<div class="jcf_inner_content offset0">
 						<p>
-							<?php _e('If you have Just Custom Fields configuration file you can import some specific settings from it to your current WordPress installation. Please choose your configuration file and press "Import Wizard" button' , JCF_TEXTDOMAIN); ?>
+							<?php _e('If you have Just Custom Fields configuration file you can import some specific settings from it to your current WordPress installation.<br/><br/>Please choose your configuration file and press "Import Wizard" button' , JCF_TEXTDOMAIN); ?>
 						</p>
 						<div>
 							<div class="icon32 icon32-posts-page" id="icon-edit"><br></div>

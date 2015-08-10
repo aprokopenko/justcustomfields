@@ -2,14 +2,13 @@
 
 /**
  *	Keep settings in the file of theme
- *	@param string $dir		Path to directory where to save the file with fields settings
+ *	@param string $file		Path to file where to save fields settings
  *	@param string $settings_source		Source setting
  *	@return boolean			Operation status
  */
-function jcf_clone_db_settings_to_fs($dir, $settings_source){
+function jcf_clone_db_settings_to_fs($file, $settings_source){
 	$jcf_settings = jcf_get_all_settings_from_db();
-	$home_dir = get_home_path();
-	$theme_dir = get_template_directory();
+	$dir = dirname($file);
 	
 	if( 
 		// check that dir exists (if not try to create) and is writable
@@ -19,13 +18,14 @@ function jcf_clone_db_settings_to_fs($dir, $settings_source){
 	)
 	{
 		// if fail - print error
-		$msg = array('error', sprintf( __('<strong>Settings storage update FAILED!</strong>. Please check that directory exists and writable: %s', JCF_TEXTDOMAIN), $dir ));
+		$msg = array('error', sprintf( __('<strong>Settings storage update FAILED!</strong>. Please check that directory exists and writable: %s', JCF_TEXTDOMAIN), dirname($dir) ));
+		jcf_add_admin_notice($msg[0], $msg[1]);
 	}
 	else{
-		$msg = array('notice', __('<strong>Settings storage</strong> updated successfully!', JCF_TEXTDOMAIN));
+		// we have another notification after this func called
+		//$msg = array('notice', __('<strong>Fields settings</strong> successfully copied!', JCF_TEXTDOMAIN));
 	}
 	
-	jcf_add_admin_notice($msg[0], $msg[1]);
 	return $saved;
 }
 
@@ -34,10 +34,11 @@ function jcf_clone_db_settings_to_fs($dir, $settings_source){
  *	@return array Array with fields settings from config file
  */
 function jcf_get_all_settings_from_file(){
-	$filename = jcf_get_file_settings_name();
+	$filename = jcf_get_settings_file_path();
 	if (file_exists($filename)) {
 		return jcf_get_settings_from_file($filename);
-	}else{
+	}
+	else{
 		return false;
 	}
 }
@@ -65,27 +66,24 @@ function jcf_save_all_settings_in_file($data, $settings_source = ''){
 	if( empty($settings_source) )
 		$settings_source = jcf_get_read_settings();
 	
-	switch( $settings_source )
-	{
-		case JCF_CONF_SOURCE_FS_GLOBAL :
-			$dir = get_home_path() . 'wp-content/jcf-settings/';
-			break;
-		
-		case JCF_CONF_SOURCE_FS_THEME : 
-			$dir = get_template_directory() . '/jcf-settings/';
-			break;
+	$file = jcf_get_settings_file_path( $settings_source );
+	$dir = dirname($file);
+	
+	// trying to create dir
+	if( (!is_dir($dir) && ! wp_mkdir_p($dir)) || !is_writable($dir) ){
+		return false;
 	}
 	
 	if( !empty($dir) ){
-		$file = $dir . 'jcf_settings.json';
 		$content = $data . "\r\n";
-		if( $fp = fopen($file, 'w') && fwrite($fp, $content) ){
+		if( $fp = fopen($file, 'w') ){
+			fwrite($fp, $content);
 			fclose($fp);
-			jcf_set_chmod($file, $dir);
+			jcf_set_chmod($file);
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 
@@ -94,7 +92,7 @@ function jcf_save_all_settings_in_file($data, $settings_source = ''){
  *	@return string Return read method from file or database
  */
 function jcf_get_read_settings(){
-	return get_site_option('jcf_read_settings');
+	return get_site_option('jcf_read_settings', JCF_CONF_SOURCE_DB);
 }
 
 /**
@@ -107,7 +105,7 @@ function jcf_get_settings_file_path( $jcf_read_settings = null ){
 		$jcf_read_settings = jcf_get_read_settings();
 	
 	if( !empty($jcf_read_settings) && ($jcf_read_settings == JCF_CONF_SOURCE_FS_THEME || $jcf_read_settings == JCF_CONF_SOURCE_FS_GLOBAL) ){
-		return ($jcf_read_settings == JCF_CONF_SOURCE_FS_THEME)? get_template_directory() . '/jcf-settings/jcf_settings.json' : get_home_path() . 'wp-content/jcf-settings/jcf_settings.json' ;
+		return ($jcf_read_settings == JCF_CONF_SOURCE_FS_THEME)? get_template_directory() . '/jcf-settings/jcf_settings.json' : get_home_path() . 'wp-content/jcf-settings/jcf_settings.json';
 	}
 	return false;
 }
@@ -119,7 +117,7 @@ function jcf_get_settings_file_path( $jcf_read_settings = null ){
 function jcf_update_read_settings(){
 	$current_value = jcf_get_read_settings();
 	$new_value = $_POST['jcf_read_settings'];
-	
+
 	if( MULTISITE && ($_POST['jcf_multisite_setting'] != JCF_CONF_MS_NETWORK && $new_value == JCF_CONF_SOURCE_FS_GLOBAL) ){
 		jcf_add_admin_notice('error', __('<strong>Settings storage update FAILED!</strong>. Your MultiSite Settings do not allow to set global storage in FileSystem', JCF_TEXTDOMAIN));
 		return $current_value;
@@ -130,7 +128,7 @@ function jcf_update_read_settings(){
 			if( $_POST['jcf_keep_settings'] ){
 				if( in_array($new_value, array(JCF_CONF_SOURCE_FS_GLOBAL, JCF_CONF_SOURCE_FS_THEME)) ){
 					$file = jcf_get_settings_file_path( $new_value );
-					if( jcf_clone_db_settings_to_fs( $file ) ){
+					if( jcf_clone_db_settings_to_fs( $file, $new_value ) ){
 						jcf_add_admin_notice('notice', __('<strong>Database settings has been imported</strong> to file system.', JCF_TEXTDOMAIN));
 
 						$saved = update_site_option('jcf_read_settings', $new_value);
