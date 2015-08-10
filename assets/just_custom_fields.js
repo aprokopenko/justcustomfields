@@ -104,7 +104,25 @@ function initFieldsetsEdit(){
 		});
 
 		return false;
-	})
+	});
+
+	// init sortable
+	jQuery('#jcf_fieldsets').sortable({
+		handle: 'h3.header span.drag-handle',
+		opacity:0.7,
+		stop: function(event, ui){
+			var order = '';
+			jQuery(this).find('.jcf_inner_box').each(function(i, tr){
+				order += jQuery(this).attr('id').replace('jcf_fieldset_', '') + ',';
+			});
+
+			var data = {
+				'action': 'jcf_order_fieldsets',
+				'fieldsets_order': order
+			};
+			jcf_ajax(data, 'json');
+		}
+	});
 
 }
 

@@ -95,3 +95,32 @@
 		}
 		return $count;
 	}
+
+	/**
+	 * update order fieldsets
+	 * @param array $keys Fieldsets keys
+	 */
+	function jcf_fieldsets_order($keys = array()){
+		$option_name = jcf_fieldsets_get_option_name();
+		$new_fieldsets = array();
+		$jcf_read_settings = jcf_get_read_settings();
+		if( $jcf_read_settings != JCF_CONF_SOURCE_DB ){
+			$jcf_settings = jcf_get_all_settings_from_file();
+			$post_type = jcf_get_post_type();
+
+			foreach($keys as $key){
+				$new_fieldsets[$key] = $jcf_settings['fieldsets'][$post_type][$key];
+				unset($jcf_settings['fieldsets'][$post_type][$key]);
+			}
+			$jcf_settings['fieldsets'][$post_type] = $new_fieldsets;
+			jcf_save_all_settings_in_file($jcf_settings);
+		}
+		else{
+			$fieldsets = jcf_get_options($option_name);
+			foreach($keys as $key){
+				$new_fieldsets[$key] = $fieldsets[$key];
+				unset($fieldsets[$key]);
+			}
+			jcf_update_options($option_name, $new_fieldsets);
+		}
+	}

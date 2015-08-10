@@ -24,8 +24,9 @@
 			$registered_fields = jcf_get_registered_fields();
 			?>
 			<?php foreach($fieldsets as $fieldset) : ?>
+			<div>
 			<div class="jcf_inner_box" id="jcf_fieldset_<?php echo $fieldset['id']; ?>">
-				<h3 class="header"><?php _e('Fieldset:', JCF_TEXTDOMAIN); ?> <span><?php echo $fieldset['title']; ?></span>
+				<h3 class="header"><span class="drag-handle">move</span><?php _e('Fieldset:', JCF_TEXTDOMAIN); ?> <span><?php echo $fieldset['title']; ?></span>
 					<small>
 						<a href="#" class="jcf_fieldset_change jcf_change_pt" rel="<?php echo $fieldset['id']; ?>"><?php _e('change', JCF_TEXTDOMAIN); ?></a>
 						<a href="#" class="jcf_fieldset_delete jcf_change_pt" rel="<?php echo $fieldset['id']; ?>"><?php _e('delete', JCF_TEXTDOMAIN); ?></a>
@@ -89,6 +90,7 @@
 				<?php endif; ?>
 			</div>
 			<br class="clear"/>
+			</div>
 			<?php endforeach; ?>
 		<?php endif; ?>
 		</div>
