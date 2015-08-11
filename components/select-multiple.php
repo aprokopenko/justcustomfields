@@ -91,26 +91,20 @@ class Just_Field_SelectMultiple extends Just_Field{
 	}
 	
 	/**
-	 *	print content from shortcode
+	 *	print fields values from shortcode
 	 */
-	function show_shortcode($args){
-		if( $args['stype'] == 'value'){
-			$class_name = 'jcf-' . $args['type'] . ' jcf-' . $args['type'] . '--' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
-			$id_name = !empty($args['id']) ? $args['id'] : '';
+	function show_shortcode_values($args){
+		$class_name = 'jcf-' . $args['type'] . ' jcf-' . $args['type'] . '--' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
+		$id_name = !empty($args['id']) ? $args['id'] : '';
 
-			$html = '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>';
-			$html .= '<ul class="jcf-' . $args['type'] . '-list jcf-' . $args['type'] . '-list--' . $args['slug'] . '">';
-			foreach($this->entry as $key => $value){
-				$html .= '<li class="jcf-' . $args['type'] . '-row jcf-' . $args['type'] . '-row--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-row--' . $args['slug'] . '-' . $key . '">' . $value . '</li>';
-			}
-			$html .= '</ul></div>';
+		$html = '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>';
+		$html .= '<ul class="jcf-' . $args['type'] . '-list jcf-' . $args['type'] . '-list--' . $args['slug'] . '">';
+		foreach($this->entry as $key => $value){
+			$html .= '<li class="jcf-' . $args['type'] . '-row jcf-' . $args['type'] . '-row--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-row--' . $args['slug'] . '-' . $key . '">' . $value . '</li>';
+		}
+		$html .= '</ul></div>';
 
-			return $html;
-		}
-		elseif( $args['stype'] == 'label' ){
-			$class_name = 'jcf-' . $args['type'] . '-label jcf-' . $args['type'] . '-label-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
-			return '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>' . $this->instance['title'] . '</div>';
-		}
+		return $html;
 	}
 
 }

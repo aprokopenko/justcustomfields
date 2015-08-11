@@ -57,7 +57,12 @@ function jcf_do_shortcode($atts){
 		$field_obj = jcf_init_field_object($field_id);
 		$field_obj->set_post_ID( $post_id );
 		$args = array_merge($args, $atts);
-		return $field_obj->show_shortcode($args);
+		if( $args['stype'] == 'value' ){
+			return $field_obj->show_shortcode_values($args);
+		}
+		elseif( $args['stype'] == 'label' ){
+			return $field_obj->show_shortcode_label($args);
+		}
 	}
 	else{
 		return false;

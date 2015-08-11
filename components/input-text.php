@@ -63,18 +63,12 @@ class Just_Field_Input extends Just_Field{
 	}
 	
 	/**
-	 *	print content from shortcode
+	 *	print fields values from shortcode
 	 */
-	function show_shortcode($args){
-		if( $args['stype'] == 'value'){
-			$class_name = 'jcf-' . $args['type'] . ' jcf-' . $args['type'] . '-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
-			$id_name = !empty($args['id']) ? $args['id'] : '';
-			return '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>' . $this->entry . '</div>';
-		}
-		elseif( $args['stype'] == 'label' ){
-			$class_name = 'jcf-' . $args['type'] . '-label jcf-' . $args['type'] . '-label-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
-			return '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>' . $this->instance['title'] . '</div>';
-		}
+	function show_shortcode_values($args){
+		$class_name = 'jcf-' . $args['type'] . ' jcf-' . $args['type'] . '-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
+		$id_name = !empty($args['id']) ? $args['id'] : '';
+		return '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>' . $this->entry . '</div>';
 	}
 }
 ?>

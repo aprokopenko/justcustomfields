@@ -397,8 +397,14 @@ class Just_Field{
 		echo '<p class="no-options-field">' . __('There are no options for this field.', JCF_TEXTDOMAIN) . '</p>';
 		return 'noform';
 	}
-	
-	
+
+	/**
+	 *	print fields label from shortcode
+	 */
+	function show_shortcode_label($args){
+		$class_name = 'jcf-' . $args['type'] . '-label jcf-' . $args['type'] . '-label-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
+		return '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>' . $this->instance['title'] . '</div>';
+	}
 }
 
 

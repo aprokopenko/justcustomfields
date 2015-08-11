@@ -210,54 +210,48 @@ class Just_Field_Table extends Just_Field{
 	}
 	
 	/**
-	 *	print content from shortcode
+	 *	print fields values from shortcode
 	 */
-	function show_shortcode($args){
-		if( $args['stype'] == 'value'){
-			$class_name = 'jcf-' . $args['type'] . ' jcf-' . $args['type'] . '-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
-			$id_name = !empty($args['id']) ? $args['id'] : '';
+	function show_shortcode_values($args){
+		$class_name = 'jcf-' . $args['type'] . ' jcf-' . $args['type'] . '-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
+		$id_name = !empty($args['id']) ? $args['id'] : '';
 
-			$_columns = explode("\n", $this->instance['columns']);
-			foreach($_columns as $line){
-				$line = trim($line);
-				if(strpos($line, '|') !== FALSE ){
-					$col_name = explode('|', $line);
-					$columns[ $col_name[0] ] = $col_name[1];
-				}elseif(!empty($line)){
-					$columns[$line] = $line;
-				}
+		$_columns = explode("\n", $this->instance['columns']);
+		foreach($_columns as $line){
+			$line = trim($line);
+			if(strpos($line, '|') !== FALSE ){
+				$col_name = explode('|', $line);
+				$columns[ $col_name[0] ] = $col_name[1];
+			}elseif(!empty($line)){
+				$columns[$line] = $line;
 			}
+		}
 
-			$count_cols = count($columns);
-			$table_head = '<thead class="jcf-' . $args['type'] . '-thead jcf-' . $args['type'] . '-thead-' . $args['slug'] . '"><tr class="jcf-' . $args['type'] . '-thead-row jcf-' . $args['type'] . '-thead-row--' . $args['slug'] . ' ">';
-			foreach($this->entry as $key => $entry){
-				$rows .= '<tr class="jcf-' . $args['type'] . '-row jcf-' . $args['type'] . '-row--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-row--' . $args['slug'] . '-' . $key . '">';
-				foreach($columns as $col_name => $col_title){
-					if( $key == 0 ){
-						$table_head .= '<th class="jcf-' . $args['type'] . '-thead-cell jcf-' . $args['type'] . '-thead-cell--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-thead-cell--' . $args['slug'] . '-' . $key . '-' . $col_name . '">' . $col_title . '</th>';
-					}
-					$rows .= '<td class="jcf-' . $args['type'] . '-cell jcf-' . $args['type'] . '-cell--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-cell--' . $args['slug'] . '-' . $key . '-' . $col_name . '">' . esc_attr($entry[$col_name]) . '</td>';
-				}
-
+		$count_cols = count($columns);
+		$table_head = '<thead class="jcf-' . $args['type'] . '-thead jcf-' . $args['type'] . '-thead-' . $args['slug'] . '"><tr class="jcf-' . $args['type'] . '-thead-row jcf-' . $args['type'] . '-thead-row--' . $args['slug'] . ' ">';
+		foreach($this->entry as $key => $entry){
+			$rows .= '<tr class="jcf-' . $args['type'] . '-row jcf-' . $args['type'] . '-row--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-row--' . $args['slug'] . '-' . $key . '">';
+			foreach($columns as $col_name => $col_title){
 				if( $key == 0 ){
-					$table_head .= '</tr></thead>';
+					$table_head .= '<th class="jcf-' . $args['type'] . '-thead-cell jcf-' . $args['type'] . '-thead-cell--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-thead-cell--' . $args['slug'] . '-' . $key . '-' . $col_name . '">' . $col_title . '</th>';
 				}
-				$rows .= '</tr>';
+				$rows .= '<td class="jcf-' . $args['type'] . '-cell jcf-' . $args['type'] . '-cell--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-cell--' . $args['slug'] . '-' . $key . '-' . $col_name . '">' . esc_attr($entry[$col_name]) . '</td>';
 			}
 
-			$html = '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>';
-			$html .= '<table class="jcf-' . $args['type'] . '-table jcf-' . $args['type'] . '-table-' . $args['slug'] . '">';
-			$html .= $table_head;
-			$html .= $rows;
-			$html .= $first_row;
-			$html .= '</table></div>';
+			if( $key == 0 ){
+				$table_head .= '</tr></thead>';
+			}
+			$rows .= '</tr>';
+		}
 
-			return $html;
-		}
-		elseif( $args['stype'] == 'label' ){
-			$class_name = 'jcf-' . $args['type'] . '-label jcf-' . $args['type'] . '-label-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
-			return '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>' . $this->instance['title'] . '</div>';
-		}
+		$html = '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>';
+		$html .= '<table class="jcf-' . $args['type'] . '-table jcf-' . $args['type'] . '-table-' . $args['slug'] . '">';
+		$html .= $table_head;
+		$html .= $rows;
+		$html .= $first_row;
+		$html .= '</table></div>';
+
+		return $html;
 	}
 
 }
