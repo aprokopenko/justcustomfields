@@ -33,18 +33,26 @@ function jcf_do_shortcode($atts){
 		'slug' => '',
 		'post_id' => ''
 	), $atts ) );
+	//get type of field
 	$args['type'] =  preg_replace('/[0-9_]/', '', str_replace('_field_', '', $atts['slug']));
+	//init registered fields
 	jcf_shortcode_init_fields();
+	//get post id
 	$post_id = !empty($atts['post_id']) ? $atts['post_id'] : get_the_ID();
+	//get post type
 	$args['post_type'] = get_post_type($post_id);
+	//set post type for fields
 	jcf_set_post_type($args['post_type']);
+	//get field settings
 	$field_settings = jcf_field_settings_get();
+	//get field id
 	foreach($field_settings as $key_field => $field){
 		if( array_search($atts['slug'], $field) == 'slug' ){
 			$field_id = $key_field;
 			break;
 		}
 	}
+	//init field object and do shortcode
 	if( $field_id ){
 		$field_obj = jcf_init_field_object($field_id);
 		$field_obj->set_post_ID( $post_id );
@@ -84,5 +92,5 @@ function jcf_shortcode_field_label($atts){
 	}
 }
 
-add_shortcode( 'just-field-value',  'jcf_shortcode_field_value' );
-add_shortcode( 'just-field-label',  'jcf_shortcode_field_label' );
+add_shortcode( 'jcf-value',  'jcf_shortcode_field_value' );
+add_shortcode( 'jcf-label',  'jcf_shortcode_field_label' );
