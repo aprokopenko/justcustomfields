@@ -62,7 +62,7 @@ function jcf_get_settings_from_file($uploadfile){
  */
 function jcf_save_all_settings_in_file($data, $settings_source = ''){
 	$data = jcf_format_json(json_encode($data));
-	
+
 	if( empty($settings_source) )
 		$settings_source = jcf_get_read_settings();
 	
@@ -183,8 +183,10 @@ function jcf_format_json($json){
 					$result = trim($result) . $newline . str_repeat($tab, $tabcount) . $char;
 					break;
 				case ',':
-					$result .= $char . $newline . str_repeat($tab, $tabcount);
-					break;
+					if( $json[$i + 1] != ' ' ){
+						$result .= $char . $newline . str_repeat($tab, $tabcount);
+						break;
+					}
 				case '"':
 					$inquote = !$inquote;
 					$result .= $char;
