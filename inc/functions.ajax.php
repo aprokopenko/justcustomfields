@@ -108,7 +108,20 @@
 		jcf_fieldsets_update($f_id, $fieldset);
 		jcf_ajax_reposnse( array('status' => "1", 'title' => $title) );
 	}
-	
+
+	/**
+	 * fields order change callback
+	 */
+	function jcf_ajax_order_fieldsets(){
+		$order  = explode(',' ,trim($_POST['fieldsets_order'], ','));
+		if(!empty($_POST['fieldsets_order'])){
+			jcf_fieldsets_order($order);
+		}
+
+		$resp = array('status' => '1');
+		jcf_ajax_reposnse($resp, 'json');
+	}
+
 	/**
 	 *  add field form show callback
 	 */

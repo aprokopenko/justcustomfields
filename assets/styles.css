@@ -84,18 +84,20 @@ div.jcf_columns{
 select.jcf_add_field{
 	width:200px;
 }
-.jcf_inner_content .drag-handle{
+.jcf_inner_content .drag-handle, h3.header .drag-handle{
 	cursor: move;
-	margin-right:5px;
 	background:url(icon-move.png) no-repeat 0 0;
 	display:block;
 	width:16px;
 	height:16px;
 	overflow:hidden;
 	text-indent:-9999px;
-	margin:6px 0 0 7px;
+	margin:6px 5px 0 7px;
 }
-
+h3.header .drag-handle{
+	display: inline-block;
+	margin:6px 20px 0 7px;
+}
 #jcf_ajax_container{
 	display:none;
 }
