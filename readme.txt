@@ -6,7 +6,7 @@ Author: Alexander Prokopenko
 Author URI: http://justcoded.com/
 Tags: custom, fields, custom fields, meta, post meta, object meta, editor
 Requires at least: 3.0.0
-Tested up to: 4.2.3
+Tested up to: 4.3
 Donate link: http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/#donate
 Stable tag: trunk
 License: GNU General Public License v2
@@ -77,10 +77,13 @@ get_post_custom()
 
 == Changelog ==
 * Next release plans
-	* fix thumbs on http auth restricted sites
 	* PHP-Code generators to use in templates when editing custom fields
 	* Shortcodes for WP editor
 	* make fieldsets related to categories (show/hide based on category select)
+* Version 2.1
+	* New: Sticky field settings edit form in plugin settings
+	* New: Ability to sort fieldsets between each other
+	* Bug fixes: Empty result on Export/Import
 * Version 2.0.1b
 	* Bug fix CRITICAL: Correct support of old field settings from old versions (read source set default to DB)
 * Version 2.0b
