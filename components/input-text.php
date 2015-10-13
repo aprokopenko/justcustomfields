@@ -16,7 +16,7 @@ class Just_Field_Input extends Just_Field{
 	 *	draw field on post edit form
 	 *	you can use $this->instance, $this->entry
 	 */
-	function field( $args, $instance = array() ) {
+	function field( $args ) {
 		extract( $args );
 		
 		echo $before_widget;

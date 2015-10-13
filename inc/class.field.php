@@ -344,26 +344,24 @@ class Just_Field{
 		$jcf_included_assets['styles'][get_class($this)] = 1;
 	}
 
-	/** Echo the field content.
+	/** Echo the field post edit form.
 	 *
 	 * Subclasses should over-ride this function to generate their field code.
 	 *
-	 * @param array $args Display arguments including before_title, after_title, before_field, and after_field.
-	 * @param array $instance The settings for the particular instance of the field
+	 * @param array $args  Field options data
 	 */
-	function field($args, $instance) {
+	function field($args) {
 		die('function cf_Field::field() must be over-ridden in a sub-class.');
 	}
 	
 	
-	/** Echo the field content.
+	/** Pre-process submitted form values
 	 *
 	 * Subclasses should over-ride this function to generate their field code.
 	 *
-	 * @param array $args Display arguments including before_title, after_title, before_field, and after_field.
-	 * @param array $instance The settings for the particular instance of the field
+	 * @param array $values Form submitted values
 	 */
-	function save($args, $instance) {
+	function save($values) {
 		die('function cf_Field::save() must be over-ridden in a sub-class.');
 	}
 
