@@ -80,6 +80,9 @@ get_post_custom()
 	* PHP-Code generators to use in templates when editing custom fields
 	* Shortcodes for WP editor
 	* make fieldsets related to categories (show/hide based on category select)
+* Version 2.1.2
+	* Bug fixes: Notice on Fields edit page when E_ALL errors On
+	* Bug fixes: Notice on post/page quick edit update
 * Version 2.1.1
 	* Bug fixes: Removed warnings with WP_DEBUG On and E_STRICT errors On
 	* Bug fixes: Tiles on settings page layout for media for WP 4.3.1
