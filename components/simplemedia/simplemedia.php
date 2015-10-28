@@ -3,14 +3,14 @@
 /**
  *	Upload media field
  */
-class Just_Simple_Upload extends Just_Field{
+class Just_Simple_Media extends Just_Field{
 	
-	function Just_Simple_Upload(){
+	function Just_Simple_Media(){
 
 		$field_ops = array( 'classname' => 'field_simplemedia' );
-		$this->Just_Field( 'simplemedia', __('Simple Upload Media', JCF_TEXTDOMAIN), $field_ops);
+		$this->Just_Field( 'simplemedia', __('Simple Media Upload', JCF_TEXTDOMAIN), $field_ops);
 		
-		add_action('admin_head' , array($this , 'add_SimpleUploader_js'));
+		add_action('admin_head' , array($this , 'add_admin_js'));
 	}
 	
 	/**
@@ -23,20 +23,20 @@ class Just_Simple_Upload extends Just_Field{
 		echo $before_widget;
 		echo $before_title . $this->instance['title'] . $after_title;
 			
-		$del_image = WP_PLUGIN_URL.'/just-custom-fields/components/uploadmedia/assets/jcf-delimage.png';
-		$noimage = $image = WP_PLUGIN_URL.'/just-custom-fields/components/uploadmedia/assets/jcf-noimage100x77.jpg';
+		$del_image = WP_PLUGIN_URL.'/just-custom-fields/components/simplemedia/assets/jcf-delimage.png';
+		$noimage = $image = WP_PLUGIN_URL.'/just-custom-fields/components/simplemedia/assets/jcf-noimage100x77.jpg';
 		
 		$upload_text = __('Upload', JCF_TEXTDOMAIN);
 		$delete_class = ' jcf-hide';
 		
 		$upload_type = $this->instance['type'];
 
-		$value = '#';
+		$value = $link = '#';
 		//var_dump($this->entry);
 		if(empty($this->entry)) $this->entry = 0;
 		
 ?>
-		<div class="jcf-upload-field jcf-upload-type-<?php echo $upload_type; ?> jcf-field-container">
+		<div class="jcf-simple-field jcf-simple-type-<?php echo $upload_type; ?> jcf-field-container">
 <?php
 		if( !empty($this->entry) ){
 			$value = esc_attr( $this->entry );
@@ -46,14 +46,14 @@ class Just_Simple_Upload extends Just_Field{
 			$delete_class = '';	
 		}
 ?>
-			<div class="jcf-upload-row">
-				<div class="jcf-upload-container">
+			<div class="jcf-simple-row">
+				<div class="jcf-simple-container">
 					<?php if( $upload_type == 'image' ) : ?>
-						<div class="jcf-upload-image">
+						<div class="jcf-simple-image">
 							<a href="<?php echo $link; ?>" class="jcf-btn" target="_blank"><img src="<?php echo $link; ?>" height="77" alt="" /></a>
 						</div>
 					<?php endif; ?>
-					<div class="jcf-upload-file-info">
+					<div class="jcf-simple-file-info">
 						<input type="hidden"
 							   id="<?php echo $this->get_field_id('uploaded_file'); ?>"
 								name="<?php echo $this->get_field_name('uploaded_file'); ?>"
@@ -175,7 +175,7 @@ class Just_Simple_Upload extends Just_Field{
 	
 	function add_css(){
 		wp_register_style('jcf_simplemedia',
-				WP_PLUGIN_URL.'/just-custom-fields/components/uploadmedia/assets/uploadmedia.css',
+				WP_PLUGIN_URL.'/just-custom-fields/components/simplemedia/assets/simplemedia.css',
 				array('thickbox'));
 		wp_enqueue_style('jcf_simplemedia');
 	}
@@ -183,7 +183,7 @@ class Just_Simple_Upload extends Just_Field{
 	/**
 	 *	this add js script to the Upload Media wordpress popup
 	 */
-	function add_SimpleUploader_js(){
+	function add_admin_js(){
 		global $pagenow;
 		if ($pagenow != 'media-upload.php' || empty($_GET ['jcf_media']))
 			return;
