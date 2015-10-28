@@ -38,6 +38,7 @@ require_once( JCF_ROOT.'/components/select-multiple.php' );
 require_once( JCF_ROOT.'/components/checkbox.php' );
 require_once( JCF_ROOT.'/components/textarea.php' );
 require_once( JCF_ROOT.'/components/datepicker/datepicker.php' );
+require_once( JCF_ROOT.'/components/simplemedia/simplemedia.php' );
 require_once( JCF_ROOT.'/components/uploadmedia/uploadmedia.php' );
 require_once( JCF_ROOT.'/components/fieldsgroup/fields-group.php' );
 require_once( JCF_ROOT.'/components/relatedcontent/related-content.php' );
@@ -97,6 +98,7 @@ function jcf_init(){
 	jcf_field_register( 'Just_Field_Checkbox' );
 	jcf_field_register( 'Just_Field_Textarea' );
 	jcf_field_register( 'Just_Field_DatePicker' );
+	jcf_field_register( 'Just_Simple_Upload' );
 	jcf_field_register( 'Just_Field_Upload' );
 	jcf_field_register( 'Just_Field_FieldsGroup' );
 	jcf_field_register( 'Just_Field_RelatedContent' );
