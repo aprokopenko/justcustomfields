@@ -63,7 +63,7 @@ class Just_Simple_Media extends Just_Field{
 								name="<?php echo $this->get_field_name('uploaded_file'); ?>"
 								value="<?php echo $value; ?>" />
 						<p class="<?php echo $delete_class; ?>"><a href="<?php echo $link; ?>" target="_blank"><?php echo basename($link); ?></a></p>
-							<a href="#"  id="simpleselect-<?php echo $this->get_field_id('uploaded_file'); ?>" class="jcf-btn jcf_upload"
+							<a href="#"  id="simpleselect-<?php echo $this->get_field_id('uploaded_file'); ?>" class="jcf-btn"
 							   data-selected_id="<?php echo $this->get_field_id('uploaded_file'); ?>" 
 							   data-uploader_title="<?php echo $upload_text; ?>" 
 							   data-media_type="<?php echo ($upload_type == 'image'?$upload_type:''); ?>"
@@ -79,7 +79,7 @@ class Just_Simple_Media extends Just_Field{
 									}
 								});
 							</script>
-						<a href="" class="jcf-btn jcf_upload"
+						<a href="" class="jcf-btn"
 						<a href="#" class="jcf-btn jcf_delete<?php echo $delete_class; ?>"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a>
 					</div>
 				</div>
