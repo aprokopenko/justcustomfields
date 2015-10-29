@@ -10,7 +10,9 @@ class Just_Simple_Media extends Just_Field{
 		$field_ops = array( 'classname' => 'field_simplemedia' );
 		$this->Just_Field( 'simplemedia', __('Simple Media Upload', JCF_TEXTDOMAIN), $field_ops);
 		
-		add_action('admin_head' , array($this , 'add_admin_js'));
+		//add_action('admin_head' , array($this , 'add_admin_js'));
+		//add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
+		
 	}
 	
 	/**
@@ -18,6 +20,8 @@ class Just_Simple_Media extends Just_Field{
 	 *	you can use $this->instance, $this->entry
 	 */
 	function field( $args ) {
+		
+		global $wp_version;
 		extract( $args );
 		//var_dump($args);
 		echo $before_widget;
@@ -38,13 +42,13 @@ class Just_Simple_Media extends Just_Field{
 ?>
 		<div class="jcf-simple-field jcf-simple-type-<?php echo $upload_type; ?> jcf-field-container">
 <?php
-		if( !empty($this->entry) ){
-			$value = esc_attr( $this->entry );
-			
-			$link = wp_get_attachment_url($this->entry);
-			$upload_text = ($upload_type == 'image')? __('Update image', JCF_TEXTDOMAIN) : __('Update file', JCF_TEXTDOMAIN);
-			$delete_class = '';	
-		}
+			if( !empty($this->entry) ){
+				$value = esc_attr( $this->entry );
+
+				$link = wp_get_attachment_url($this->entry);
+				$upload_text = ($upload_type == 'image')? __('Update image', JCF_TEXTDOMAIN) : __('Update file', JCF_TEXTDOMAIN);
+				$delete_class = '';	
+			}
 ?>
 			<div class="jcf-simple-row">
 				<div class="jcf-simple-container">
@@ -59,8 +63,23 @@ class Just_Simple_Media extends Just_Field{
 								name="<?php echo $this->get_field_name('uploaded_file'); ?>"
 								value="<?php echo $value; ?>" />
 						<p class="<?php echo $delete_class; ?>"><a href="<?php echo $link; ?>" target="_blank"><?php echo basename($link); ?></a></p>
-						<a href="media-upload.php?jcf_media=true&amp;type=<?php echo $upload_type; ?>&amp;TB_iframe=true" class="jcf-btn jcf_upload"
-								rel="<?php echo $this->get_field_id('uploaded_file'); ?>"><?php echo $upload_text; ?></a>
+							<a href="#"  id="simpleselect-<?php echo $this->get_field_id('uploaded_file'); ?>" class="jcf-btn jcf_upload"
+							   data-selected_id="<?php echo $this->get_field_id('uploaded_file'); ?>" 
+							   data-uploader_title="<?php echo $upload_text; ?>" 
+							   data-media_type="<?php echo ($upload_type == 'image'?$upload_type:''); ?>"
+							   data-uploader_button_text="<?php echo $upload_text; ?>"><?php echo $upload_text; ?></a>
+							<script>
+								var mm_<?php echo md5($this->get_field_id('uploaded_file')); ?> = new MediaModal({
+									calling_selector : "#simpleselect-<?php echo $this->get_field_id('uploaded_file'); ?>",
+									cb : function(attachment){
+										SimpleMedia.selectMedia(attachment, 
+											"<?php echo $this->get_field_id('uploaded_file'); ?>, \n\
+											<?php echo (( $upload_type == 'image' )?'image':'all');?>"
+										);
+									}
+								});
+							</script>
+						<a href="" class="jcf-btn jcf_upload"
 						<a href="#" class="jcf-btn jcf_delete<?php echo $delete_class; ?>"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a>
 					</div>
 				</div>
@@ -159,12 +178,11 @@ class Just_Simple_Media extends Just_Field{
 	 *	add custom scripts
 	 */
 	function add_js(){
-		wp_register_script(
-				'jcf_simplemedia',
-				WP_PLUGIN_URL.'/just-custom-fields/components/simplemedia/assets/simplemedia.js',
-				array('jquery','media-upload','thickbox')
-			);
-		wp_enqueue_script('jcf_simplemedia');
+		global $pagenow, $wp_version, $post_ID;
+		// only load on select pages
+		if ( ! in_array( $pagenow, array( 'post-new.php', 'post.php', 'media-upload-popup' ) ) ) return;
+		wp_enqueue_media( array( 'post' => ( $post_ID ? $post_ID : null ) ) );
+		wp_enqueue_script( "jcf-simpleupload-modal", WP_PLUGIN_URL.'/just-custom-fields/components/simplemedia/assets/simpleselect-modal.js', array( 'jquery', 'media-models') );				
 
 		// add text domain if not registered with another component
 		global $wp_scripts;
@@ -180,32 +198,6 @@ class Just_Simple_Media extends Just_Field{
 		wp_enqueue_style('jcf_simplemedia');
 	}
 	
-	/**
-	 *	this add js script to the Upload Media wordpress popup
-	 */
-	function add_admin_js(){
-		global $pagenow;
-		if ($pagenow != 'media-upload.php' || empty($_GET ['jcf_media']))
-			return;
-		
-		// Gets the right label depending on the caller widget
-		switch ($_GET ['type'])
-		{
-			case 'image': $button_label = __('Select Picture', JCF_TEXTDOMAIN); break;
-			case 'file': $button_label = __('Select File', JCF_TEXTDOMAIN); break;
-			default: $button_label = __('Insert into Post', JCF_TEXTDOMAIN); break;
-		}
-		// Overrides the label when displaying the media uploader panels
-		?>
-			<script type="text/javascript">
-				jQuery(document).ready(function(){
-					jQuery('#media-items').bind('DOMSubtreeModified' , function(){
-						jQuery('td.savesend input[type="submit"]').val("<?php echo $button_label?>");
-					});
-				});
-			</script>
-		<?php
-	}
 	
 }
 ?>
