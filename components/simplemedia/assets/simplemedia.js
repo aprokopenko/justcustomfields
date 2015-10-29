@@ -37,7 +37,7 @@ function jcf_simplemedia_send_to_editor( html ){
 	link_text = link_text[ link_text.length-1 ];
 	
 	var field = jQuery('#' + jcf_upload_related_field);
-	var row = field.parents('div.jcf-upload-row:first');
+	var row = field.parents('div.jcf-simple-row:first');
 	
 	// set hidden value
 	field.val( fileurl );
@@ -54,7 +54,7 @@ function jcf_simplemedia_send_to_editor( html ){
 	
 	if( jcf_upload_type == 'image' ){
 		var thumburl = userSettings.url + 'wp-content/plugins/just-custom-fields/components/simplemedia/thump.php?image=' + escape(fileurl) + '&size=100x77';
-		row.find('div.jcf-upload-image img').attr( 'src', thumburl );
+		row.find('div.jcf-simple-image img').attr( 'src', thumburl );
 	}
 
 	tb_remove();
@@ -96,38 +96,22 @@ function jcf_init_image_upload_controls( node ){
 		return false;
 	});
 	
-	node.find('div.jcf-upload-field a.jcf_delete').live( 'click', function() {
-		var row = jQuery(this).parents('div.jcf-upload-row:first');
-		row.find('div.jcf-upload-container').css({'opacity': 0.3});
+	node.find('div.jcf-simple-field a.jcf_delete').live( 'click', function() {
+		var row = jQuery(this).parents('div.jcf-simple-row:first');
+		row.find('div.jcf-simple-container').css({'opacity': 0.3});
 		row.find('div.jcf-delete-layer')
 			.show()
 			.find('input:hidden').val('1');
 		return false;
 	});
 
-	node.find('div.jcf-upload-field a.jcf_cancel').live( 'click' ,function() {
-		var row = jQuery(this).parents('div.jcf-upload-row:first');
-		row.find('div.jcf-upload-container').css({'opacity': 1});
+	node.find('div.jcf-simple-field a.jcf_cancel').live( 'click' ,function() {
+		var row = jQuery(this).parents('div.jcf-simple-row:first');
+		row.find('div.jcf-simple-container').css({'opacity': 1});
 		row.find('div.jcf-delete-layer')
 			.hide()
 			.find('input:hidden').val('0');
 		return false;
 	});
 	
-	// add more button
-	node.find('div.jcf-upload-field a.jcf_add_more').click(function(){
-		var container = jQuery(this).parent();
-		
-		jcf_upload_max_index++;
-		var new_html = container.find('div.jcf-upload-row:first').html();
-		new_html = new_html
-			.replace(/\[00\]/g, '[' + jcf_upload_max_index + ']')
-			.replace(/\-00\-/g, '-' + jcf_upload_max_index + '-');
-		new_html = '<div class="jcf-upload-row">' + new_html + '</div>';
-		
-		// add new html row
-		container.find('div.jcf-upload-row:last').after( new_html );
-		
-		return false;
-	})
 }

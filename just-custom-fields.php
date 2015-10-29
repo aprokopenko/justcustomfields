@@ -99,7 +99,7 @@ function jcf_init(){
 	jcf_field_register( 'Just_Field_Checkbox' );
 	jcf_field_register( 'Just_Field_Textarea' );
 	jcf_field_register( 'Just_Field_DatePicker' );
-	jcf_field_register( 'Just_Simple_Upload' );
+	jcf_field_register( 'Just_Simple_Media' );
 	jcf_field_register( 'Just_Field_Upload' );
 	jcf_field_register( 'Just_Field_FieldsGroup' );
 	jcf_field_register( 'Just_Field_RelatedContent' );
