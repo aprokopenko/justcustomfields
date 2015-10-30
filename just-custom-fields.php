@@ -29,6 +29,7 @@ require_once( JCF_ROOT.'/inc/functions.fields.php' );
 require_once( JCF_ROOT.'/inc/functions.ajax.php' );
 require_once( JCF_ROOT.'/inc/functions.post.php' );
 require_once( JCF_ROOT.'/inc/functions.themes.php' );
+require_once( JCF_ROOT.'/inc/functions.shortcodes.php' );
 require_once( JCF_ROOT.'/inc/functions.import.php' );
 
 // composants
