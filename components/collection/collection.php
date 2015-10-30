@@ -11,6 +11,10 @@ class Just_Collection extends Just_Field{
 		$field_ops = array( 'classname' => 'field_collection' );
 		$this->Just_Field('collection', __('Collection', JCF_TEXTDOMAIN), $field_ops);
 		add_action('jcf_custom_settings_row', array($this, 'settings_row'));
+		if( !empty($_GET['page']) && $_GET['page'] == 'just_custom_fields' ){
+			//add_action('admin_print_styles', 'jcf_admin_add_styles');
+			add_action('admin_print_scripts', array($this, 'add_collection_js') );
+		}
 	}
 	
 		/**
@@ -75,33 +79,60 @@ class Just_Collection extends Just_Field{
 	 * create custom table on jcf settings fields
 	 */
 	
-	public function settings_row($field_id){
-		
+	public function settings_row($collection_id)
+	{
 		$jcf_read_settings = jcf_get_read_settings();
 		if( $jcf_read_settings == JCF_CONF_SOURCE_DB ){
-			$fieldsets = jcf_fieldsets_get($field_id);
-			$field_settings = jcf_field_settings_get($field_id);		
+			$collection = jcf_field_settings_get($collection_id);		
 		}
 		else{
 			$post_type = jcf_get_post_type();
 			$jcf_settings = jcf_get_all_settings_from_file();
-			$fieldsets = $jcf_settings['fieldsets'][ $post_type->name ][$field_id];
-			$field_settings = $jcf_settings['field_settings'][ $post_type->name ][$field_id];
+			$collection = $jcf_settings['field_settings'][ $post_type->name ][$collection_id];
 		}
-			// init field classes and fields array
-	jcf_field_register( 'Just_Field_Input' );
-	jcf_field_register( 'Just_Field_Select' );
-	jcf_field_register( 'Just_Field_SelectMultiple' );
-	jcf_field_register( 'Just_Field_Checkbox' );
-	jcf_field_register( 'Just_Field_Textarea' );
-	jcf_field_register( 'Just_Field_DatePicker' );
-	jcf_field_register( 'Just_Simple_Upload' );
-	jcf_field_register( 'Just_Field_Upload' );
-	jcf_field_register( 'Just_Field_FieldsGroup' );
-	jcf_field_register( 'Just_Field_RelatedContent' );
-	jcf_field_register( 'Just_Field_Table' );
-	jcf_field_register( 'Just_Collection' );
+		$registered_fields = $this->register_fields();
 		include( JCF_ROOT . '/components/collection/tpl/fields_ui.tpl.php' );
+	}
+	
+	/**
+	 *	add custom scripts
+	 */
+	function add_collection_js(){
+		wp_register_script(
+				'jcf_collections',
+				WP_PLUGIN_URL.'/just-custom-fields/components/collection/assets/collection.js',
+				array('jquery')
+			);
+		wp_enqueue_script('jcf_collections');
+
+	}
+	
+	public function register_fields()
+	{
+		$registered_fields = array();
+		$fields = array(
+			'Just_Field_Input',
+			'Just_Field_Select',
+			'Just_Field_SelectMultiple',
+			'Just_Field_Checkbox',
+			'Just_Field_Textarea',
+			'Just_Field_DatePicker',
+			'Just_Simple_Media',
+			'Just_Field_Table'
+		);
+		foreach($fields as $class_name){
+			if( !class_exists($class_name) ) continue;
+			$field_obj = new $class_name();
+			$field = array(
+				'id_base' => $field_obj->id_base,
+				'class_name' => $class_name,
+				'title' => $field_obj->title,
+			);
+
+			$registered_fields[$field_obj->id_base] = $field;
+		}
+		
+		return $registered_fields;
 	}
 	
 	
