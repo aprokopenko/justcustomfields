@@ -60,7 +60,7 @@ function jcf_uploadmedia_send_to_editor( html ){
 	row.find('a.jcf_delete').removeClass('jcf-hide').show();
 	
 	if( jcf_upload_type == 'image' ){
-		var thumburl = userSettings.url + 'wp-content/plugins/just-custom-fields/components/uploadmedia/thump.php?image=' + escape(fileurl) + '&size=100x77';
+		var thumburl = userSettings.url.replace('\/cms\/', '\/') + 'wp-content/plugins/just-custom-fields/components/uploadmedia/thump.php?image=' + escape(fileurl) + '&size=100x77';
 		row.find('div.jcf-upload-image img').attr( 'src', thumburl );
 	}
 
