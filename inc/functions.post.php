@@ -62,15 +62,19 @@
 	function jcf_post_show_custom_fields( $post = NULL, $box = NULL ){
 		$fieldset = $box['args'][0];
 
+		jcf_print_shortcodes_modal();
+
 		foreach($fieldset['fields'] as $field_id => $enabled){
 			if( !$enabled ) continue;
 
 			$field_obj = jcf_init_field_object($field_id, $fieldset['id']);
 			$field_obj->set_post_ID( $post->ID );
 
-			echo '<div id="jcf_field-'.$field_id.'" class="jcf_edit_field ' . $field_obj->field_options['classname'] . '">'."\r\n";
-
+			echo '<div id="jcf_field-' . $field_id . '" class="jcf_edit_field ' . $field_obj->field_options['classname'] . '">'."\r\n";
 			$args = $field_obj->field_options;
+			$args['after_title'] .= '<div class="jcf-get-shortcode" rel="' . $field_obj->slug . '">'
+					. '<span class="dashicons dashicons-editor-help wp-ui-text-highlight"></span>'
+					. '</div>'."\r\n";
 			$field_obj->field( $args );
 
 			echo "\r\n </div> \r\n";
@@ -128,14 +132,14 @@
 	 *	add custom scripts to post edit page
 	 */
 	function jcf_edit_post_scripts(){
-		/*
+
 		wp_register_script(
 				'jcf_edit_post',
 				WP_PLUGIN_URL.'/just-custom-fields/assets/edit_post.js',
 				array('jquery')
 			);
 		wp_enqueue_script('jcf_edit_post');
-		*/
+
 		do_action('jcf_admin_edit_post_scripts');
 	}
 
@@ -149,3 +153,34 @@
 		do_action('jcf_admin_edit_post_styles');
 	}
 	
+	/**
+	 * get modal window for getting shortcodes
+	 */
+	function jcf_print_shortcodes_modal(){
+		?>
+		<div class="jcf_shortcodes_tooltip" >
+			<div class="jcf_inner_box">
+				<h3 class="header"><?php _e('Usage guidelines for field ', JCF_TEXTDOMAIN); ?> 
+					<span class="field-name"></span> 
+					<a href="#" class="jcf_shortcodes_tooltip-close"><span class="media-modal-icon"></span></a>
+				</h3>
+				<div class="jcf_inner_content">
+					<fieldset class="shortcode_usage">
+						<legend><?php _e('Inside the Editor', JCF_TEXTDOMAIN); ?></legend>
+						<span class="fieldset-description"><?php _e('To insert the value into your post editor, please copy and paste the code examples below to your editor.', JCF_TEXTDOMAIN); ?></span>
+						
+						<span class="jcf-relative"><input type="text" readonly="readonly" class="jcf-shortcode jcf-shortcode-value" value="" /><a href="#" class="copy-to-clipboard" title="Copy to clipboard"></a></span><br />
+						<small><?php _e('optional parameters: class="myclass" id="myid" post_id="123" label="yes"', JCF_TEXTDOMAIN); ?></small><br /><br />
+					</fieldset>
+					<fieldset class="template_usage">
+						<legend><?php _e('Inside your Templates ', JCF_TEXTDOMAIN); ?></legend>
+						<span class="fieldset-description"><?php _e('To print the value or label inside your template (for example in single.php) please use the examples below:', JCF_TEXTDOMAIN); ?></span>
+						
+						<span class="jcf-relative"><input type="text" readonly="readonly" class="jcf-shortcode jcf-template-value" value=""/><a href="#" class="copy-to-clipboard" title="Copy to clipboard"></a></span><br />
+						<small><?php _e('optional parameters: class="myclass" id="myid" post_id="123" label="yes"', JCF_TEXTDOMAIN); ?></small><br /><br />
+					</fieldset>
+				</div>
+			</div>
+		</div>
+		<?php
+	}

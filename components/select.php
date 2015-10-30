@@ -7,33 +7,19 @@
  */
 class Just_Field_Select extends Just_Field{
 	
-	function Just_Field_Select(){
+	public function __construct(){
 		$field_ops = array( 'classname' => 'field_select' );
-		$this->Just_Field('select', __('Select', JCF_TEXTDOMAIN), $field_ops);
+		parent::__construct('select', __('Select', JCF_TEXTDOMAIN), $field_ops);
 	}
 	
 	/**
 	 *	draw field on post edit form
 	 *	you can use $this->instance, $this->entry
 	 */
-	function field( $args ) {
+	public function field( $args ) {
 		extract( $args );
 		
-		$values = array();
-		
-		// prepare options array
-		$select_options = $this->get_instance_select_options($this->instance);
-		$v = explode("\n", $select_options);
-		foreach($v as $val){
-			$val = trim($val);
-			if(strpos($val, '|') !== FALSE ){
-				$a = explode('|', $val);
-				$values[$a[0]] = $a[1];
-			}
-			elseif(!empty($val)){
-				$values[$val] = $val;
-			}
-		}
+		$values = $this->parsed_select_options($this->instance);
 		
 		echo $before_widget;
 		echo $before_title . $this->instance['title'] . $after_title;
@@ -45,7 +31,7 @@ class Just_Field_Select extends Just_Field{
 			}
 		echo '</select>' . "\n";
 		echo '</div>';
-		if( $this->instance['description'] != '' )
+		if( !empty($this->instance['description']) )
 			echo '<p class="description">' . $this->instance['description'] . '</p>';
 		echo $after_widget;
 	}
@@ -53,7 +39,7 @@ class Just_Field_Select extends Just_Field{
 	/**
 	 *	save field on post edit form
 	 */
-	function save( $values ){
+	public function save( $values ){
 		$values = $values['val'];
 		
 		return $values;
@@ -62,7 +48,7 @@ class Just_Field_Select extends Just_Field{
 	/**
 	 *	update instance (settings) for current field
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['options'] = strip_tags($new_instance['options']);
@@ -73,9 +59,9 @@ class Just_Field_Select extends Just_Field{
 	/**
 	 *	print settings form for field
 	 */	
-	function form( $instance ) {
+	public function form( $instance ) {
 		//Defaults
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'options' => '', 'empty_option' => '' ) );
+		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'description' => '', 'options' => '', 'empty_option' => '' ) );
 		$title = esc_attr( $instance['title'] );
 		$options = esc_attr( $this->get_instance_select_options($instance) );
 		$description = esc_html($instance['description']);
@@ -93,9 +79,11 @@ class Just_Field_Select extends Just_Field{
 	}
 	
 	/**
-	 * get current options settings
+	 * get current options settings based on plugin version
+	 * 
+	 * @param array $instance	current instance
 	 */
-	function get_instance_select_options( $instance ){
+	public function get_instance_select_options( $instance ){
 		// from version 1.4 key for storing select options changed to match it's meaning
 		if( $this->get_instance_version($instance) < 1.4 && empty($instance['options']) && !empty($instance['settings']) ){
 			return $instance['settings'];
@@ -104,5 +92,45 @@ class Just_Field_Select extends Just_Field{
 			return $instance['options'];
 		}
 	}
+	
+	/**
+	 * prepare list of options
+	 * 
+	 * @param array $instance	current instance
+	 */
+	public function parsed_select_options($instance){
+		$values = array();
+		$settings = $this->get_instance_select_options($instance);
+		
+		$v = explode("\n", $settings);
+		foreach($v as $val){
+			$val = trim($val);
+			if(strpos($val, '|') !== FALSE ){
+				$a = explode('|', $val);
+				$values[$a[0]] = $a[1];
+			}
+			elseif(!empty($val)){
+				$values[$val] = $val;
+			}
+		}
+		
+		return $values;
+	}
+
+	/**
+	 * print field values inside the shortcode
+	 * 
+	 * @params array $args	shortcode args
+	 */
+	public function shortcode_value( $args ){
+		
+		$options = $this->parsed_select_options($this->instance);
+		$options = array_flip($options);
+		$value = $this->entry;
+		if ( isset($options[$this->entry]) ){
+			$value = $options[$this->entry];
+		}
+		
+		return  $args['before_value'] . $value . $args['after_value'];
+	}
 }
-?>
