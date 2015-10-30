@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Include classes for shortcodes for the frontend usage
+ */
 function jcf_shortcode_init_fields(){
 	// init field classes and fields array
 	jcf_field_register( 'Just_Field_Input' );
@@ -23,46 +26,39 @@ function jcf_shortcode_init_fields(){
 
 /**
  *	Do shortcode
- *	@param array $atts Attributes from shortcode
+ *	@param array $args Attributes from shortcode
  *	@return string Field content
  */
-function jcf_do_shortcode($atts){
+function jcf_do_shortcode($args){
 	extract( shortcode_atts( array(
-		'class' => '',
-		'id' => '',
-		'slug' => '',
-		'post_id' => ''
-	), $atts ) );
-	//get type of field
-	$args['type'] =  preg_replace('/[0-9_]/', '', str_replace('_field_', '', $atts['slug']));
+		'field' => '',
+		'post_id' => '',
+	), $args ) );
+	
 	//init registered fields
 	jcf_shortcode_init_fields();
 	//get post id
-	$post_id = !empty($atts['post_id']) ? $atts['post_id'] : get_the_ID();
+	$post_id = !empty($args['post_id']) ? $args['post_id'] : get_the_ID();
 	//get post type
-	$args['post_type'] = get_post_type($post_id);
+	$post_type = get_post_type($post_id);
 	//set post type for fields
-	jcf_set_post_type($args['post_type']);
+	jcf_set_post_type($post_type);
 	//get field settings
 	$field_settings = jcf_field_settings_get();
 	//get field id
 	foreach($field_settings as $key_field => $field){
-		if( array_search($atts['slug'], $field) == 'slug' ){
+		if( strcmp($args['field'], $field['slug']) === 0 ){
 			$field_id = $key_field;
 			break;
 		}
 	}
-	//init field object and do shortcode
+	// init field object and do shortcode
 	if( $field_id ){
 		$field_obj = jcf_init_field_object($field_id);
 		$field_obj->set_post_ID( $post_id );
-		$args = array_merge($args, $atts);
-		if( $args['stype'] == 'value' ){
-			return $field_obj->show_shortcode_values($args);
-		}
-		elseif( $args['stype'] == 'label' ){
-			return $field_obj->show_shortcode_label($args);
-		}
+		
+		unset($args['field']);
+		return $field_obj->do_shortcode($args);
 	}
 	else{
 		return false;
@@ -70,32 +66,16 @@ function jcf_do_shortcode($atts){
 }
 
 /**
- *	Shortcode [jcf-field-value]
- *	@param array $atts Attributes from shortcode
+ *	Shortcode [jcf-value]
+ *	@param array $args Attributes from shortcode
  *	@return string Field content
  */
-function jcf_shortcode_field_value($atts){
-	if( !empty($atts['slug']) ){
-		$atts['stype'] = 'value';
-		return jcf_do_shortcode($atts);
+function jcf_shortcode_field_value($args){
+	if( !empty($args['field']) ){
+		return jcf_do_shortcode($args);
 	}else{
-		return _e('Error! Add "slug" to shortcode', JCF_TEXTDOMAIN);
-	}
-}
-
-/**
- *	Shortcode [jcf-field-label]
- *	@param array $atts Attributes from shortcode
- *	@return string Field content
- */
-function jcf_shortcode_field_label($atts){
-	if( !empty($atts['slug']) ){
-		$atts['stype'] = 'label';
-		return jcf_do_shortcode($atts);
-	}else{
-		return _e('Error! Add "slug" to shortcode', JCF_TEXTDOMAIN);
+		return _e('Error! "field" parameter is missing', JCF_TEXTDOMAIN);
 	}
 }
 
 add_shortcode( 'jcf-value',  'jcf_shortcode_field_value' );
-add_shortcode( 'jcf-label',  'jcf_shortcode_field_label' );

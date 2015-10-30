@@ -7,30 +7,20 @@
  */
 class Just_Field_Checkbox extends Just_Field{
 	
-	function Just_Field_Checkbox() {
+	public function __construct() {
 		$field_ops = array('classname' => 'field_checkbox' );
-		$this->Just_Field('checkbox', __('Checkbox', JCF_TEXTDOMAIN), $field_ops);
+		parent::__construct('checkbox', __('Checkbox', JCF_TEXTDOMAIN), $field_ops);
 	}
 	
 	/**
 	 *	draw field on post edit form
 	 *	you can use $this->instance, $this->entry
 	 */
-	function field( $args ) {
+	public function field( $args ) {
 		extract( $args );
 		
 		// prepare options array
-		$v = explode("\n", $this->instance['settings']);
-		foreach($v as $val){
-			$val = trim($val);
-			if(strpos($val, '|') !== FALSE ){
-				$a = explode('|', $val);
-				$values[$a[0]] = $a[1];
-			}
-			elseif(!empty($val)){
-				$values[$val] = $val;
-			}
-		}
+		$values = $this->parsed_select_options($this->instance);
 		
 		if( empty($values)){
 			echo '<p>'.__('Please check settings. Values are empty', JCF_TEXTDOMAIN).'</p>';
@@ -63,7 +53,7 @@ class Just_Field_Checkbox extends Just_Field{
 	/**
 	 *	save field on post edit form
 	 */
-	function save( $values ) {
+	public function save( $values ) {
 		$values = isset($values['val']) ? $values['val'] : '' ;
 		return $values;
 	}
@@ -71,7 +61,7 @@ class Just_Field_Checkbox extends Just_Field{
 	/**
 	 *	update instance (settings) for current field
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 
 		$instance['title'] 			= strip_tags($new_instance['title']);
@@ -84,7 +74,7 @@ class Just_Field_Checkbox extends Just_Field{
 	/**
 	 *	print settings form for field
 	 */	
-	function form( $instance ) {
+	public function form( $instance ) {
 		// Defaults
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'settings' => '', 'description' => '' ) );
 		
@@ -107,22 +97,51 @@ class Just_Field_Checkbox extends Just_Field{
 		</p>
 		<?php
 	}
+
+	/**
+	 * prepare list of options
+	 * 
+	 * @param array $instance	current instance
+	 */
+	protected function parsed_select_options($instance){
+		$values = array();
+		
+		$v = explode("\n", $instance['settings']);
+		foreach($v as $val){
+			$val = trim($val);
+			if(strpos($val, '|') !== FALSE ){
+				$a = explode('|', $val);
+				$values[$a[0]] = $a[1];
+			}
+			elseif(!empty($val)){
+				$values[$val] = $val;
+			}
+		}
+		
+		return $values;
+	}
 	
 	/**
 	 *	print fields values from shortcode
 	 */
-	function show_shortcode_values($args){
-		$class_name = 'jcf-' . $args['type'] . ' jcf-' . $args['type'] . '--' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
-		$id_name = !empty($args['id']) ? $args['id'] : '';
-
-		$html = '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>';
-		$html .= '<ul class="jcf-' . $args['type'] . '-list jcf-' . $args['type'] . '-list--' . $args['slug'] . '">';
-		foreach($this->entry as $key => $value){
-			$html .= '<li class="jcf-' . $args['type'] . '-row jcf-' . $args['type'] . '-row--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-row--' . $args['slug'] . '-' . $key . '">' . $value . '</li>';
+	public function shortcode_value($args){
+		$options = $this->parsed_select_options($this->instance);
+		$options = array_flip($options);
+		
+		if( empty($this->entry) ) return '';
+		
+		$html = '<ul class="jcf-list">';
+		foreach($this->entry as $value){
+			$key = preg_replace('/\s+/', '-', $value);
+			$key = preg_replace('/[^0-9a-z\-\_]/i', '', $key);
+			if(isset($options[$value])){
+				$value = $options[$value];
+			}
+			$html .= "<li class=\"jcf-item jcf-item-$key\">$value</li>\r\n";
 		}
-		$html .= '</ul></div>';
-
-		return $html;
+		$html .= '</ul>';
+		
+		return  $args['before_value'] . $html . $args['after_value'];
 	}
 
 }

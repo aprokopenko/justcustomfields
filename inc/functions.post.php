@@ -62,7 +62,7 @@
 	function jcf_post_show_custom_fields( $post = NULL, $box = NULL ){
 		$fieldset = $box['args'][0];
 
-		echo jcf_get_shortcodes_modal();
+		jcf_print_shortcodes_modal();
 
 		foreach($fieldset['fields'] as $field_id => $enabled){
 			if( !$enabled ) continue;
@@ -72,7 +72,9 @@
 
 			echo '<div id="jcf_field-' . $field_id . '" class="jcf_edit_field ' . $field_obj->field_options['classname'] . '">'."\r\n";
 			$args = $field_obj->field_options;
-			$args['after_title'] .= '<div class="jcf-get-shortcode" rel="' . $field_obj->slug . '"><img src="' . get_home_url() . '/wp-content/plugins/just-custom-fields/assets/shortcodes-icon.png" title="Get shortcode" width="100%" height="100%" /></div>'."\r\n";
+			$args['after_title'] .= '<div class="jcf-get-shortcode" rel="' . $field_obj->slug . '">'
+					. '<span class="dashicons dashicons-editor-help wp-ui-text-highlight"></span>'
+					. '</div>'."\r\n";
 			$field_obj->field( $args );
 
 			echo "\r\n </div> \r\n";
@@ -154,24 +156,31 @@
 	/**
 	 * get modal window for getting shortcodes
 	 */
-	function jcf_get_shortcodes_modal(){
-		$result = '<div class="jcf_shortcodes_tooltip" >'."\r\n";
-		$result .= '<div class="jcf_inner_box"><h3 class="header">' . __('Shortcodes for field ', JCF_TEXTDOMAIN) . '<span class="field-name"></span> <a href="#" class="jcf_shortcodes_tooltip-close"><span class="media-modal-icon"></span></a></h3>'."\r\n";
-		$result .= '<div class="jcf_inner_content">';
-		$result .= '<fieldset class="shortcode_usage"><legend>' . __('Shortcode usage ', JCF_TEXTDOMAIN) . '</legend>';
-		$result .= '<span class="fieldset-description">' . __('To insert the value or label into your post content, please copy and paste the code examples below to your editor.', JCF_TEXTDOMAIN) . '</span>';
-		$result .= '<label> ' . __('Field value', JCF_TEXTDOMAIN) . ':</label><input type="text" class="jcf-shortcode jcf-value" value="" /><a href="#" class="copy-to-clipboard copy-value" title="Copy to clipboard"></a><br />'."\r\n";
-		$result .= '<small> ' . __('optional parameters: class="myclass" id="myid" post_id="123"', JCF_TEXTDOMAIN) . '</small><br /><br />'."\r\n";
-		$result .= '<label> ' . __('Field label', JCF_TEXTDOMAIN) . ':</label><input type="text" class="jcf-shortcode jcf-label" value="" /><a href="#" class="copy-to-clipboard copy-label" title="Copy to clipboard"></a>'."\r\n";
-		$result .= '<small> ' . __('optional parameters: class="myclass" id="myid" post_id="123"', JCF_TEXTDOMAIN) . '</small><br /><br />'."\r\n";
-		$result .= '</fieldset>';
-		$result .= '<fieldset class="template_usage"><legend>' . __('Template usage ', JCF_TEXTDOMAIN) . '</legend>';
-		$result .= '<span class="fieldset-description">' . __('To print the value or label in your template (for example into single.php) please the examples below:', JCF_TEXTDOMAIN) . '</span>';
-		$result .= '<label> ' . __('Field value', JCF_TEXTDOMAIN) . ':</label><br /><span class="jcf-template jcf-value"></span><br />'."\r\n";
-		$result .= '<small> ' . __('optional parameters: class="myclass" id="myid" post_id="123"', JCF_TEXTDOMAIN) . '</small><br /><br />'."\r\n";
-		$result .= '<label> ' . __('Field label', JCF_TEXTDOMAIN) . ':</label><br /><span class="jcf-template jcf-label"></span>' . "\r\n";
-		$result .= '<small> ' . __('optional parameters: class="myclass" id="myid" post_id="123"', JCF_TEXTDOMAIN) . '</small><br /><br />'."\r\n";
-		$result .= '</fieldset>';
-		$result .= '</div></div></div>'."\r\n";
-		return $result;
+	function jcf_print_shortcodes_modal(){
+		?>
+		<div class="jcf_shortcodes_tooltip" >
+			<div class="jcf_inner_box">
+				<h3 class="header"><?php _e('Usage guidelines for field ', JCF_TEXTDOMAIN); ?> 
+					<span class="field-name"></span> 
+					<a href="#" class="jcf_shortcodes_tooltip-close"><span class="media-modal-icon"></span></a>
+				</h3>
+				<div class="jcf_inner_content">
+					<fieldset class="shortcode_usage">
+						<legend><?php _e('Inside the Editor', JCF_TEXTDOMAIN); ?></legend>
+						<span class="fieldset-description"><?php _e('To insert the value into your post editor, please copy and paste the code examples below to your editor.', JCF_TEXTDOMAIN); ?></span>
+						
+						<span class="jcf-relative"><input type="text" readonly="readonly" class="jcf-shortcode jcf-shortcode-value" value="" /><a href="#" class="copy-to-clipboard" title="Copy to clipboard"></a></span><br />
+						<small><?php _e('optional parameters: class="myclass" id="myid" post_id="123" label="yes"', JCF_TEXTDOMAIN); ?></small><br /><br />
+					</fieldset>
+					<fieldset class="template_usage">
+						<legend><?php _e('Inside your Templates ', JCF_TEXTDOMAIN); ?></legend>
+						<span class="fieldset-description"><?php _e('To print the value or label inside your template (for example in single.php) please use the examples below:', JCF_TEXTDOMAIN); ?></span>
+						
+						<span class="jcf-relative"><input type="text" readonly="readonly" class="jcf-shortcode jcf-template-value" value=""/><a href="#" class="copy-to-clipboard" title="Copy to clipboard"></a></span><br />
+						<small><?php _e('optional parameters: class="myclass" id="myid" post_id="123" label="yes"', JCF_TEXTDOMAIN); ?></small><br /><br />
+					</fieldset>
+				</div>
+			</div>
+		</div>
+		<?php
 	}

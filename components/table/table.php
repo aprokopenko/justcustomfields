@@ -7,9 +7,9 @@
  */
 class Just_Field_Table extends Just_Field{
 	
-	function Just_Field_Table(){
+	public function __construct(){
 		$field_ops = array( 'classname' => 'field_table' );
-		$this->Just_Field('table', __('Table', JCF_TEXTDOMAIN), $field_ops);
+		parent::__construct('table', __('Table', JCF_TEXTDOMAIN), $field_ops);
 	}
 	
 	/**
@@ -17,7 +17,7 @@ class Just_Field_Table extends Just_Field{
 	 *	you can use $this->instance, $this->entry
 	 */
 	
-	function field( $args ) {
+	public function field( $args ) {
 		extract( $args );
 		
 		echo $before_widget;
@@ -28,16 +28,7 @@ class Just_Field_Table extends Just_Field{
 		$entries = (array)$this->entry;
 
 		// get fields
-		$_columns = explode("\n", $this->instance['columns']);
-		foreach($_columns as $line){
-			$line = trim($line);
-			if(strpos($line, '|') !== FALSE ){
-				$col_name = explode('|', $line);
-				$columns[ $col_name[0] ] = $col_name[1];
-			}elseif(!empty($line)){
-				$columns[$line] = $line;
-			}
-		}
+		$columns = $this->parse_columns_options();
 
 		if( empty($columns) ){
 			echo '<p>'.__('Wrong columns configuration. Please check widget settings.', JCF_TEXTDOMAIN).'</p>';
@@ -45,6 +36,7 @@ class Just_Field_Table extends Just_Field{
 
 		$count_cols = count($columns);
 		$table_head = '<thead>';
+		$rows = '';
 		
 		foreach($entries as $key => $entry){
 			if( $key == 0 ){
@@ -105,7 +97,7 @@ class Just_Field_Table extends Just_Field{
 	/**
 	 *	save field on post edit form
 	 */
-	function save( $_values ){
+	public function save( $_values ){
 		$values = array();
 		if(empty($_values)) return $values;
 	
@@ -130,7 +122,7 @@ class Just_Field_Table extends Just_Field{
 	/**
 	 *	update instance (settings) for current field
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 
 		$instance['title'] = strip_tags($new_instance['title']);
@@ -143,7 +135,7 @@ class Just_Field_Table extends Just_Field{
 	/**
 	 *	print settings form for field
 	 */		
-	function form( $instance ) {
+	public function form( $instance ) {
 		//Defaults
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'columns' => '', 'description' => '' ) );
 
@@ -164,15 +156,15 @@ class Just_Field_Table extends Just_Field{
 	/**
 	 *	custom get_field functions to add one more deep level
 	 */
-	function get_field_id_l2( $field, $number ){
+	protected function get_field_id_l2( $field, $number ){
 		return $this->get_field_id( $number . '-' . $field );
 	}
 
-	function get_field_name_l2( $field, $number ){
+	protected function get_field_name_l2( $field, $number ){
 		return $this->get_field_name( $number . '][' . $field );
 	}
 	
-	function add_js(){
+	public function add_js(){
 		global $wp_version;
 		if($wp_version <= 3.2){
 			// ui core
@@ -204,18 +196,17 @@ class Just_Field_Table extends Just_Field{
 		wp_localize_script( 'jcf_table', 'jcf_textdomain', jcf_get_language_strings() );
 	}
 	
-	function add_css(){
+	public function add_css(){
 		wp_register_style('jcf_table', WP_PLUGIN_URL.'/just-custom-fields/components/table/table.css');
 		wp_enqueue_style('jcf_table');
 	}
 	
 	/**
-	 *	print fields values from shortcode
+	 * parse columns from settings
+	 * @return array
 	 */
-	function show_shortcode_values($args){
-		$class_name = 'jcf-' . $args['type'] . ' jcf-' . $args['type'] . '-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
-		$id_name = !empty($args['id']) ? $args['id'] : '';
-
+	protected function parse_columns_options(){
+		$columns = array();
 		$_columns = explode("\n", $this->instance['columns']);
 		foreach($_columns as $line){
 			$line = trim($line);
@@ -226,32 +217,35 @@ class Just_Field_Table extends Just_Field{
 				$columns[$line] = $line;
 			}
 		}
+		return $columns;
+	}
+	
+	/**
+	 *	print fields values from shortcode
+	 */
+	public function shortcode_value($args){
+		$columns = $this->parse_columns_options();
+		if(empty($columns) || empty($this->entry)) return '';
 
 		$count_cols = count($columns);
-		$table_head = '<thead class="jcf-' . $args['type'] . '-thead jcf-' . $args['type'] . '-thead-' . $args['slug'] . '"><tr class="jcf-' . $args['type'] . '-thead-row jcf-' . $args['type'] . '-thead-row--' . $args['slug'] . ' ">';
+		$thead_columns = '';
 		foreach($this->entry as $key => $entry){
-			$rows .= '<tr class="jcf-' . $args['type'] . '-row jcf-' . $args['type'] . '-row--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-row--' . $args['slug'] . '-' . $key . '">';
+			$rows .= '<tr class="jcf-table-row jcf-table-row-i' . $key . '">';
 			foreach($columns as $col_name => $col_title){
 				if( $key == 0 ){
-					$table_head .= '<th class="jcf-' . $args['type'] . '-thead-cell jcf-' . $args['type'] . '-thead-cell--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-thead-cell--' . $args['slug'] . '-' . $key . '-' . $col_name . '">' . $col_title . '</th>';
+					$thead_columns .= '<th class="jcf-table-cell jcf-table-cell-' . esc_attr($col_name) . '">' . esc_html($col_title) . '</th>';
 				}
-				$rows .= '<td class="jcf-' . $args['type'] . '-cell jcf-' . $args['type'] . '-cell--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-cell--' . $args['slug'] . '-' . $key . '-' . $col_name . '">' . esc_attr($entry[$col_name]) . '</td>';
-			}
-
-			if( $key == 0 ){
-				$table_head .= '</tr></thead>';
+				$rows .= '<td class="jcf-table-cell jcf-table-cell-' . esc_attr($col_name) . '">' . esc_html($entry[$col_name]) . '</td>';
 			}
 			$rows .= '</tr>';
 		}
 
-		$html = '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>';
-		$html .= '<table class="jcf-' . $args['type'] . '-table jcf-' . $args['type'] . '-table-' . $args['slug'] . '">';
-		$html .= $table_head;
+		$html .= '<table class="jcf-table">';
+		$html .= '<thead><tr>' . $thead_columns .'</tr></thead>';
 		$html .= $rows;
-		$html .= $first_row;
-		$html .= '</table></div>';
+		$html .= '</table>';
 
-		return $html;
+		return  $args['before_value'] . $html . $args['after_value'];
 	}
 
 }

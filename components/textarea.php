@@ -7,16 +7,16 @@
  */
 class Just_Field_Textarea extends Just_Field{
 	
-	function Just_Field_Textarea() {
+	public function __construct() {
 		$field_ops = array( 'classname' => 'field_textarea' );
-		$this->Just_Field('textarea', __('Textarea', JCF_TEXTDOMAIN), $field_ops);
+		parent::__construct('textarea', __('Textarea', JCF_TEXTDOMAIN), $field_ops);
 	}
 	
 	/**
 	 *	draw field on post edit form
 	 *	you can use $this->instance, $this->entry
 	 */
-	function field( $args ) {
+	public function field( $args ) {
 		extract( $args );
 
 		echo $before_widget;
@@ -63,15 +63,17 @@ class Just_Field_Textarea extends Just_Field{
 	/**
 	 *	save field on post edit form
 	 */
-	function save( $values ) {
+	public function save( $values ) {
 		global $wp_version;
 		$values = isset($values['val']) ? $values['val'] : '' ;
 		
-		if($wp_version <= 3.2){
-			$values = nl2br(wpautop($values));
-		}
-		else{
-			$values = wpautop($values);
+		if($this->instance['editor']){
+			if($wp_version <= 3.2){
+				$values = nl2br(wpautop($values));
+			}
+			else{
+				$values = wpautop($values);
+			}
 		}
 		return $values;
 	}
@@ -79,7 +81,7 @@ class Just_Field_Textarea extends Just_Field{
 	/**
 	 *	update instance (settings) for current field
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['editor'] = (int)@$new_instance['editor'];
@@ -91,7 +93,7 @@ class Just_Field_Textarea extends Just_Field{
 	/**
 	 *	print settings form for field
 	 */	
-	function form( $instance ) {
+	public function form( $instance ) {
 		//Defaults
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'description' => '' ) );
 		$title = esc_attr( $instance['title'] );
@@ -107,7 +109,7 @@ class Just_Field_Textarea extends Just_Field{
 	/**
 	 *	load custom script for tiny MCE for editors
 	 */
-	function customTinyMCE(){
+	public function customTinyMCE(){
 		global $jcf_flag_tiny_mce;
 		
 		if ( !empty($jcf_flag_tiny_mce) || ! user_can_richedit() )
@@ -126,13 +128,5 @@ class Just_Field_Textarea extends Just_Field{
 		$jcf_flag_tiny_mce = true;
 	}
 
-	/**
-	 *	print fields values from shortcode
-	 */
-	function show_shortcode_values($args){
-		$class_name = 'jcf-' . $args['type'] . ' jcf-' . $args['type'] . '-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
-		$id_name = !empty($args['id']) ? $args['id'] : '';
-		return '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>' . $this->entry . '</div>';
-	}
 }
 ?>

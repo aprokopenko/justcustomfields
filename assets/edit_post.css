@@ -10,7 +10,7 @@ div.jcf_edit_field label{
     color: #333333;
     display: inline-block;
     margin: 5px 5px 0 10px;
-    padding: 4px 20px 5px;
+    padding: 4px 20px 5px 0;
 	font-size:12px;
 	font-weight:bold;
 	text-shadow:0 1px 0 #FFFFFF;
@@ -91,10 +91,15 @@ div.jcf_edit_field .quicktags-toolbar input{
 }
 .jcf-get-shortcode{
 	float:right;
-	margin-right: 5%;
+	margin:5px 5% 0 10px;
 	width: 25px;
 	height: 25px;
 	cursor: pointer;
+	position:relative;
+	z-index:10;
+}
+.jcf-get-shortcode span.dashicons{
+	font-size:24px;
 }
 .jcf-get-shortcode:hover{
 	opacity:0.7;
@@ -175,4 +180,12 @@ input.jcf-shortcode{
 	display:inline-block;
 	margin-right: 5px;
 	width: 90%!important;
+}
+.jcf-relative{
+	position:relative;
+}
+span.jcf_copied_to_clip{
+	position:absolute;
+	top: -2px;
+	right: 25px;
 }
