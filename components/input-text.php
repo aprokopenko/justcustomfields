@@ -62,5 +62,13 @@ class Just_Field_Input extends Just_Field{
 		<?php
 	}
 	
+	/**
+	 *	print fields values from shortcode
+	 */
+	function show_shortcode_values($args){
+		$class_name = 'jcf-' . $args['type'] . ' jcf-' . $args['type'] . '-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
+		$id_name = !empty($args['id']) ? $args['id'] : '';
+		return '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>' . $this->entry . '</div>';
+	}
 }
 ?>

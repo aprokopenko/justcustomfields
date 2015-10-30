@@ -89,3 +89,90 @@ div.jcf_edit_field .wp-editor-wrap{
 div.jcf_edit_field .quicktags-toolbar input{
 	width:auto;
 }
+.jcf-get-shortcode{
+	float:right;
+	margin-right: 5%;
+	width: 25px;
+	height: 25px;
+	cursor: pointer;
+}
+.jcf-get-shortcode:hover{
+	opacity:0.7;
+}
+.jcf_shortcodes_tooltip{
+	display:none;
+	position:absolute;
+	right:0;
+	top:0;
+	background: #fff;
+	width: 50%;
+	z-index:9999;
+}
+.jcf_shortcodes_tooltip fieldset{
+	border:1px solid #000;
+	padding: 10px;
+	margin-bottom: 15px;
+}
+.jcf_shortcodes_tooltip fieldset legend{
+	font-size: 14px;
+}
+.jcf_shortcodes_tooltip fieldset legend, .jcf_shortcodes_tooltip fieldset label{
+	font-weight: bold;
+}
+.jcf_shortcodes_tooltip fieldset .fieldset-description{
+	display:block;
+	margin-bottom: 10px;
+}
+.jcf_shortcodes_tooltip .jcf_inner_box{
+	margin:10px;
+	background:#fff;
+	border:1px solid #C6C6C6;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+.jcf_shortcodes_tooltip .jcf_inner_box .header{
+	background:#f1f1f1 url(../../../../wp-admin/images/gray-grad.png) repeat-x 0 0;
+	color:#333;
+	text-shadow:0 1px 0 rgba(255, 255, 255, 0.8);
+	line-height:30px;
+	padding:0 10px;
+	font-size:12px;
+	border-bottom:1px solid #C6C6C6;
+	margin:0;
+}
+.jcf_inner_content{
+	padding:10px;
+}
+.jcf_inner_box .jcf_shortcodes_tooltip-close{
+	position: absolute;
+	text-decoration: none;
+	top: 15px;
+	right: 15px;
+	width: 20px;
+	height: 20px;
+	z-index: 1000;
+	-webkit-transition: color .1s ease-in-out,background .1s ease-in-out;
+	transition: color .1s ease-in-out,background .1s ease-in-out;
+}
+.jcf_inner_box .jcf_shortcodes_tooltip-close:before{
+	content: '\f158';
+	font: 400 20px/1 dashicons;
+	speak: none;
+	vertical-align: middle;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	color: #666;
+}
+.copy-to-clipboard{
+	width: 16px;
+	height: 16px;
+	background: url(../../../../wp-content/plugins/just-custom-fields/assets/copy.png) no-repeat;
+	display: inline-block;
+	cursor: pointer;
+}
+input.jcf-shortcode{
+	display:inline-block;
+	margin-right: 5px;
+	width: 90%!important;
+}

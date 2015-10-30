@@ -176,5 +176,25 @@ class Just_Field_FieldsGroup extends Just_Field{
 		wp_enqueue_style('jcf_fields_group');
 	}
 	
+	/**
+	 *	print fields values from shortcode
+	 */
+	function show_shortcode_values($args){
+		$class_name = 'jcf-' . $args['type'] . ' jcf-' . $args['type'] . '-' . $args['slug'] . ' ' . (!empty($args['class']) ? $args['class'] : '') ;
+		$id_name = !empty($args['id']) ? $args['id'] : '';
+
+		$html = '<div class="' . $class_name . '" ' . (!empty($id_name) ? 'id="' . $id_name . '"' : '') . '>';
+
+		foreach($this->entry as $key_entry => $entry){
+			$html .= '<div class="jcf-' . $args['type'] . '-row jcf-' . $args['type'] . '-row--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-row--' . $args['slug'] . '-' . $key_entry . '">';
+			foreach($entry as $key => $value){
+				$html .= '<div class="jcf-' . $args['type'] . '-cell jcf-' . $args['type'] . '-cell--' . $args['slug'] . '" id="jcf-' . $args['type'] . '-cell--' . $args['slug'] . '-' . $key . '">' . $value . '</div>';
+			}
+			$html .= '</div>';
+		}
+		$html .= '</div>';
+
+		return $html;
+	}
 }
 ?>
