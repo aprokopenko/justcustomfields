@@ -1,5 +1,5 @@
 /*global window,jQuery,wp */
-var MediaModal = function (options) {
+var JcfMediaModal = function (options) {
   'use strict';
   this.settings = {
     calling_selector: false,
@@ -64,11 +64,10 @@ var MediaModal = function (options) {
 };
 
 
-window.SimpleMedia = {
+window.JcfSimpleMedia = {
     
     selectMedia: function(attachment, id, type){
-		//console.log(attachment, attachment.url, id);
-		
+				
 		if( type == 'image') {
 			var html = '<a target="_blank" href="'+attachment.url+'"><img height="77" alt="" src="'+attachment.url+'"></a>';
 		} else {
@@ -84,10 +83,13 @@ window.SimpleMedia = {
 		row.find('p:first').html( html ).removeClass('jcf-hide').show();
     }
 }
+
+jQuery(document).ready(function(){
 	var node = jQuery( '#post-body');
-	node.find('div.jcf-simple-row a.jcf_delete').live( 'click', function(e) {
-		e.preventDefault();
+	node.find('div.jcf-simple-row a.jcf_simple_delete').live( 'click', function(e) {
+		var value_id = jQuery(this).data('field_id');
 		var row = jQuery(this).parents('div.jcf-simple-row');
+		jQuery('#'+value_id).prop('disabled', true);
 		row.find('div.jcf-simple-container').css({'opacity': 0.3});
 		row.find('div.jcf-delete-layer')
 			.show()
@@ -95,11 +97,14 @@ window.SimpleMedia = {
 		return false;
 	});
 
-	node.find('div.jcf-simple-row a.jcf_cancel').live( 'click' ,function() {
+	node.find('div.jcf-simple-row a.jcf_simple_cancel').live( 'click' ,function() {
+		var value_id = jQuery(this).data('field_id');
 		var row = jQuery(this).parents('div.jcf-simple-row');
+		jQuery('#'+value_id).prop('disabled', false);
 		row.find('div.jcf-simple-container').css({'opacity': 1});
 		row.find('div.jcf-delete-layer')
 			.hide()
 			.find('input:hidden').val('0');
 		return false;
-	});
+	});	
+})

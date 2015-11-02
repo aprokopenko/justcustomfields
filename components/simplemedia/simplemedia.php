@@ -21,20 +21,20 @@ class Just_Simple_Media extends Just_Field
 		
 		global $wp_version;
 		extract( $args );
-		//var_dump($args);
+		
 		echo $before_widget;
 		echo $before_title . $this->instance['title'] . $after_title;
 			
 		$del_image = WP_PLUGIN_URL.'/just-custom-fields/components/simplemedia/assets/jcf-delimage.png';
 		$noimage = $image = WP_PLUGIN_URL.'/just-custom-fields/components/simplemedia/assets/jcf-noimage100x77.jpg';
 		
-		$upload_text = __('Upload', JCF_TEXTDOMAIN);
+		$upload_text = __('Select', JCF_TEXTDOMAIN);
 		$delete_class = ' jcf-hide';
 		
 		$upload_type = $this->instance['type'];
 
 		$value = $link = '#';
-		//var_dump($this->entry);
+		
 		if(empty($this->entry)) $this->entry = 0;
 		
 ?>
@@ -56,6 +56,7 @@ class Just_Simple_Media extends Just_Field
 						</div>
 					<?php endif; ?>
 					<div class="jcf-simple-file-info">
+						<input type="hidden" name="<?php echo $this->get_field_name('simplemedia'); ?>" id="<?php echo $this->get_field_id('simplemedia'); ?>" value="true">
 						<input type="hidden"
 							   id="<?php echo $this->get_field_id('uploaded_file'); ?>"
 								name="<?php echo $this->get_field_name('uploaded_file'); ?>"
@@ -67,23 +68,23 @@ class Just_Simple_Media extends Just_Field
 							   data-media_type="<?php echo ($upload_type == 'image'?$upload_type:''); ?>"
 							   data-uploader_button_text="<?php echo $upload_text; ?>"><?php echo $upload_text; ?></a>
 							<script>
-								var mm_<?php echo md5($this->get_field_id('uploaded_file')); ?> = new MediaModal({
+								//create modal upload pop-ap to select Media Files
+								var mm_<?php echo preg_replace('/[^a-zA-z]/','',$this->get_field_id('uploaded_file')); ?> = new JcfMediaModal({
 									calling_selector : "#simplemedia-<?php echo $this->get_field_id('uploaded_file'); ?>",
 									cb : function(attachment){
-										SimpleMedia.selectMedia(attachment, 
+										JcfSimpleMedia.selectMedia(attachment, 
 											"<?php echo $this->get_field_id('uploaded_file'); ?>, \n\
 											<?php echo (( $upload_type == 'image' )?'image':'all');?>"
 										);
 									}
 								});
 							</script>
-						<a href="#" class="jcf-btn jcf_delete<?php echo $delete_class; ?>"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a>
+						<a href="#" class="jcf-btn jcf_simple_delete<?php echo $delete_class; ?>" data-field_id="<?php echo $this->get_field_id('uploaded_file'); ?>"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a>
 					</div>
 				</div>
 				<div class="jcf-delete-layer">
 					<img src="<?php echo $del_image; ?>" alt="" />
-					<input type="hidden" id="<?php echo $this->get_field_id('delete'); ?>" name="<?php echo $this->get_field_name('delete'); ?>" value="" />
-					<a href="#" class="jcf-btn jcf_cancel"><?php _e('Cancel', JCF_TEXTDOMAIN); ?></a><br/>
+					<a href="#" class="jcf-btn jcf_simple_cancel" data-field_id="<?php echo $this->get_field_id('uploaded_file'); ?>"><?php _e('Cancel', JCF_TEXTDOMAIN); ?></a><br/>
 				</div>
 			</div>
 		</div>
@@ -102,11 +103,9 @@ class Just_Simple_Media extends Just_Field
 	 */
 	public function save( $_values ){
 		$value = 0;
-		
 		if( empty($_values) ) return $value;
-		if( ! empty($_values['delete']) ) return $value;
-		if( ! $_values['uploaded_file'] ) return $value;
-		if( intval($_values['uploaded_file']) ) return $_values['uploaded_file'];
+		if( isset($_values['uploaded_file']) && intval($_values['uploaded_file']) ) return $_values['uploaded_file'];
+		return $value;
 	}
 		
 	/**
