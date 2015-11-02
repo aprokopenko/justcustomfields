@@ -1,25 +1,23 @@
 <?php
 
 /**
- *	Upload media field
+ *	Simple Upload media field
  */
-class Just_Simple_Media extends Just_Field{
+class Just_Simple_Media extends Just_Field
+{
 	
 	public function __construct(){
 
 		$field_ops = array( 'classname' => 'field_simplemedia' );
-		parent::__construct('simplemedia', __('Simple Media Upload', JCF_TEXTDOMAIN), $field_ops);
-		
-		//add_action('admin_head' , array($this , 'add_admin_js'));
-		//add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
-		
+		parent::__construct( 'simplemedia', __('Simple Media Upload', JCF_TEXTDOMAIN), $field_ops);
+			
 	}
 	
 	/**
 	 *	draw field on post edit form
 	 *	you can use $this->instance, $this->entry
 	 */
-	function field( $args ) {
+	public function field( $args ) {
 		
 		global $wp_version;
 		extract( $args );
@@ -63,14 +61,14 @@ class Just_Simple_Media extends Just_Field{
 								name="<?php echo $this->get_field_name('uploaded_file'); ?>"
 								value="<?php echo $value; ?>" />
 						<p class="<?php echo $delete_class; ?>"><a href="<?php echo $link; ?>" target="_blank"><?php echo basename($link); ?></a></p>
-							<a href="#"  id="simpleselect-<?php echo $this->get_field_id('uploaded_file'); ?>" class="jcf-btn"
+							<a href="#"  id="simplemedia-<?php echo $this->get_field_id('uploaded_file'); ?>" class="jcf-btn"
 							   data-selected_id="<?php echo $this->get_field_id('uploaded_file'); ?>" 
 							   data-uploader_title="<?php echo $upload_text; ?>" 
 							   data-media_type="<?php echo ($upload_type == 'image'?$upload_type:''); ?>"
 							   data-uploader_button_text="<?php echo $upload_text; ?>"><?php echo $upload_text; ?></a>
 							<script>
 								var mm_<?php echo md5($this->get_field_id('uploaded_file')); ?> = new MediaModal({
-									calling_selector : "#simpleselect-<?php echo $this->get_field_id('uploaded_file'); ?>",
+									calling_selector : "#simplemedia-<?php echo $this->get_field_id('uploaded_file'); ?>",
 									cb : function(attachment){
 										SimpleMedia.selectMedia(attachment, 
 											"<?php echo $this->get_field_id('uploaded_file'); ?>, \n\
@@ -79,7 +77,6 @@ class Just_Simple_Media extends Just_Field{
 									}
 								});
 							</script>
-						<a href="" class="jcf-btn"
 						<a href="#" class="jcf-btn jcf_delete<?php echo $delete_class; ?>"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a>
 					</div>
 				</div>
@@ -103,41 +100,19 @@ class Just_Simple_Media extends Just_Field{
 	/**
 	 *	save field on post edit form
 	 */
-	function save( $_values ){
+	public function save( $_values ){
 		$value = 0;
 		
 		if( empty($_values) ) return $value;
 		if( ! empty($_values['delete']) ) return $value;
 		if( ! $_values['uploaded_file'] ) return $value;
 		if( intval($_values['uploaded_file']) ) return $_values['uploaded_file'];
-		return $this->get_media_id($_values['uploaded_file']);
 	}
-	
-	/**
-	 * get media id by url
-	 * @global type $wpdb
-	 * @param type $url
-	 * @return type
-	 */
-	function get_media_id ( $url ) {
-		global $wpdb;
-		$media_id = 0;
-		preg_match( '|' . get_bloginfo('url') . '|i', $url, $matches );
-		if ( isset( $matches ) and 0 < count( $matches ) ) {
-			$url = preg_replace( '/([^?]+).*/', '\1', $url ); 
-			$guid = preg_replace( '/(.+)-\d+x\d+\.(\w+)/', '\1.\2', $url ); 
-			$media_id = $wpdb->get_var( $wpdb->prepare( "SELECT `ID` FROM $wpdb->posts WHERE `guid` = '%s'", $guid ) );
-			if ( $media_id ) {
-				$media_id = intval( $media_id );
-			}
-		} 
-		return $media_id;
-	}
-	
+		
 	/**
 	 *	update instance (settings) for current field
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		
 		$instance['title'] 			= strip_tags($new_instance['title']);
@@ -150,7 +125,7 @@ class Just_Simple_Media extends Just_Field{
 	/**
 	 *	print settings form for field
 	 */	
-	function form( $instance ) {
+	public function form( $instance ) {
 		//Defaults
 		$instance['type'] = (isset($instance['type']))? $instance['type'] : 'file';
 		$instance = wp_parse_args( (array) $instance,
@@ -177,12 +152,12 @@ class Just_Simple_Media extends Just_Field{
 	/**
 	 *	add custom scripts
 	 */
-	function add_js(){
+	public function add_js(){
 		global $pagenow, $wp_version, $post_ID;
 		// only load on select pages
 		if ( ! in_array( $pagenow, array( 'post-new.php', 'post.php', 'media-upload-popup' ) ) ) return;
 		wp_enqueue_media( array( 'post' => ( $post_ID ? $post_ID : null ) ) );
-		wp_enqueue_script( "jcf-simpleupload-modal", WP_PLUGIN_URL.'/just-custom-fields/components/simplemedia/assets/simpleselect-modal.js', array( 'jquery', 'media-models') );				
+		wp_enqueue_script( "jcf-simpleupload-modal", WP_PLUGIN_URL.'/just-custom-fields/components/simplemedia/assets/simplemedia-modal.js', array( 'jquery', 'media-models') );				
 
 		// add text domain if not registered with another component
 		global $wp_scripts;
@@ -191,7 +166,7 @@ class Just_Simple_Media extends Just_Field{
 		}
 	}
 	
-	function add_css(){
+	public function add_css(){
 		wp_register_style('jcf_simplemedia',
 				WP_PLUGIN_URL.'/just-custom-fields/components/simplemedia/assets/simplemedia.css',
 				array('thickbox'));
