@@ -10,11 +10,15 @@ class Just_Collection extends Just_Field{
 	public function __construct(){
 		$field_ops = array( 'classname' => 'field_collection' );
 		parent::__construct('collection', __('Collection', JCF_TEXTDOMAIN), $field_ops);
+		
 		add_action('jcf_custom_settings_row', array($this, 'settings_row'));
 		if( !empty($_GET['page']) && $_GET['page'] == 'just_custom_fields' ){
 			//add_action('admin_print_styles', 'jcf_admin_add_styles');
 			add_action('admin_print_scripts', array($this, 'add_collection_js') );
 		}
+		
+		add_action( 'wp_ajax_jcf_add_collection_field', array($this, 'ajax_add_field') );
+		add_action( 'wp_ajax_jcf_collection_save_field', array($this, 'jcf_ajax_save_field') );
 	}
 	
 		/**
@@ -107,6 +111,10 @@ class Just_Collection extends Just_Field{
 
 	}
 	
+	/**
+	 * registered Fields Type for collection 
+	 * @return type
+	 */
 	public function register_fields()
 	{
 		$registered_fields = array();
@@ -135,6 +143,31 @@ class Just_Collection extends Just_Field{
 		return $registered_fields;
 	}
 	
+	public function ajax_add_field(){
+		$field_type =  $_POST['field_type'];
+		$fieldset_id = $_POST['fieldset_id'];
+		$collection_id = $_POST['collection_id'];
+		
+		$field_obj = jcf_init_field_object($field_type, $fieldset_id, $collection_id);
+		$html = $field_obj->do_form();
+		jcf_ajax_reposnse($html, 'html');
+	}
 	
+	
+	/**
+	 * save field from the form callback
+	 */
+	public function jcf_ajax_save_field(){
+
+		$field_type =  $_POST['field_id'];
+		$fieldset_id = $_POST['fieldset_id'];
+		$collection_id = $_POST['collection_id'];
+		
+		$field_obj = jcf_init_field_object($field_type, $fieldset_id, $collection_id);
+		$resp = $field_obj->do_update();
+		var_dump($resp); die();
+		jcf_ajax_reposnse($resp, 'json');
+
+	}
 	
 }

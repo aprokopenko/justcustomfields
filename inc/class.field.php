@@ -33,6 +33,7 @@ class Just_Field{
 	 */
 	public $id = false;
 	public $fieldset_id = '';
+	public $collection_id = '';
 	public $post_type;
 	
 	/**
@@ -69,6 +70,14 @@ class Just_Field{
 	 */
 	public function set_fieldset( $fieldset_id ){
 		$this->fieldset_id = $fieldset_id;
+	}
+	
+	/**
+	 *	set class property $this->collection_id
+	 *	@param   string  $fieldset_id  fieldset string ID
+	 */
+	public function set_collection( $collection_id ){
+		$this->collection_id = $collection_id;
 	}
 	
 	/**
@@ -175,14 +184,16 @@ class Just_Field{
 		<div class="jcf_edit_field">
 			<h3 class="header"><?php echo $op . ' ' . $this->title; ?></h3>
 			<div class="jcf_inner_content">
-				<form action="#" method="post" id="jcform_edit_field">
+				<form action="#" method="post" id="<?php echo (!empty($this->collection_id)?'jcform_edit_collection_field':'jcform_edit_field');?>">
 					<fieldset>
 						<input type="hidden" name="field_id" value="<?php echo $this->id; ?>" />
 						<input type="hidden" name="field_number" value="<?php echo $this->number; ?>" />
 						<input type="hidden" name="field_id_base" value="<?php echo $this->id_base; ?>" />
 						<input type="hidden" name="fieldset_id" value="<?php echo $this->fieldset_id; ?>" />
+						<?php if( !empty($this->collection_id) ) : ?>
+							<input type="hidden" name="collection_id" value="<?php echo $this->collection_id; ?>" />
 						<?php
-							
+							endif;
 							$this->form( $this->instance );
 							
 							// need to add slug field too

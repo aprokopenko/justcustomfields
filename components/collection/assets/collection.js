@@ -21,7 +21,7 @@ function initCollectionFields(){
 		data['fieldset_id'] = jQuery('input[name=fieldset_id]').val();
 		
 		var loader = jQuery(this).find('img.ajax-feedback');
-		console.log(data); return false;
+		
 		jcf_ajax(data, 'html', loader, function(response){
 			jcf_show_ajax_container( response );
 		})
@@ -34,7 +34,7 @@ function initCollectionFields(){
 		e.preventDefault();
 
 		// get query string from the form
-		var query = jQuery('#jcform_edit_field').formSerialize();
+		var query = jQuery('#jcform_edit_collection_field').formSerialize();
 		var data = 'action=jcf_collection_save_field' + '&' + query;
 
 		var loader = jQuery(this).find('img.ajax-feedback');
@@ -68,7 +68,7 @@ function initCollectionFields(){
 			}
 			
 			// update fieldset row
-			var row = jQuery('#field_row_' + response.id);
+			var row = jQuery('#collection_field_row_' + response.id);
 			row.find('strong a').text(response.instance.title);
 			row.find('td:eq(2)').text(response.instance.slug);
 			row.find('td:eq(4)').text( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no );

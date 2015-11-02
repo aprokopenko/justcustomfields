@@ -100,7 +100,7 @@
 	/**
 	 *	init field object
 	 */
-	function jcf_init_field_object( $field_mixed, $fieldset_id = ''){
+	function jcf_init_field_object( $field_mixed, $fieldset_id = '', $collection_id = ''){
 		// $field_mixed can be real field id or only id_base
 		$id_base = preg_replace('/\-([0-9]+)/', '', $field_mixed);
 		$field = jcf_get_registered_fields( $id_base );
@@ -108,6 +108,7 @@
 		$field_obj = new $field['class_name']();
 
 		$field_obj->set_fieldset( $fieldset_id );
+		$field_obj->set_collection( $collection_id );
 		$field_obj->set_id( $field_mixed );
 
 		return $field_obj;
