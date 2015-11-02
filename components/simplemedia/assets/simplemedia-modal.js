@@ -84,3 +84,22 @@ window.SimpleMedia = {
 		row.find('p:first').html( html ).removeClass('jcf-hide').show();
     }
 }
+	var node = jQuery( '#post-body');
+	node.find('div.jcf-simple-row a.jcf_delete').live( 'click', function(e) {
+		e.preventDefault();
+		var row = jQuery(this).parents('div.jcf-simple-row');
+		row.find('div.jcf-simple-container').css({'opacity': 0.3});
+		row.find('div.jcf-delete-layer')
+			.show()
+			.find('input:hidden').val('1');
+		return false;
+	});
+
+	node.find('div.jcf-simple-row a.jcf_cancel').live( 'click' ,function() {
+		var row = jQuery(this).parents('div.jcf-simple-row');
+		row.find('div.jcf-simple-container').css({'opacity': 1});
+		row.find('div.jcf-delete-layer')
+			.hide()
+			.find('input:hidden').val('0');
+		return false;
+	});
