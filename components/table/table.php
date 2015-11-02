@@ -229,6 +229,7 @@ class Just_Field_Table extends Just_Field{
 
 		$count_cols = count($columns);
 		$thead_columns = '';
+		$html = $rows = '';
 		foreach($this->entry as $key => $entry){
 			$rows .= '<tr class="jcf-table-row jcf-table-row-i' . $key . '">';
 			foreach($columns as $col_name => $col_title){
