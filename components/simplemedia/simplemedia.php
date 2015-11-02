@@ -5,10 +5,10 @@
  */
 class Just_Simple_Media extends Just_Field{
 	
-	function Just_Simple_Media(){
+	public function __construct(){
 
 		$field_ops = array( 'classname' => 'field_simplemedia' );
-		$this->Just_Field( 'simplemedia', __('Simple Media Upload', JCF_TEXTDOMAIN), $field_ops);
+		parent::__construct('simplemedia', __('Simple Media Upload', JCF_TEXTDOMAIN), $field_ops);
 		
 		//add_action('admin_head' , array($this , 'add_admin_js'));
 		//add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));

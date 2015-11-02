@@ -7,9 +7,9 @@
  */
 class Just_Collection extends Just_Field{
 	
-	function Just_Collection(){
+	public function __construct(){
 		$field_ops = array( 'classname' => 'field_collection' );
-		$this->Just_Field('collection', __('Collection', JCF_TEXTDOMAIN), $field_ops);
+		parent::__construct('collection', __('Collection', JCF_TEXTDOMAIN), $field_ops);
 		add_action('jcf_custom_settings_row', array($this, 'settings_row'));
 		if( !empty($_GET['page']) && $_GET['page'] == 'just_custom_fields' ){
 			//add_action('admin_print_styles', 'jcf_admin_add_styles');
