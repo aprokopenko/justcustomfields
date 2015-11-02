@@ -68,19 +68,22 @@ window.JcfSimpleMedia = {
     
     selectMedia: function(attachment, id, type){
 				
-		if( type == 'image') {
-			var html = '<a target="_blank" href="'+attachment.url+'"><img height="77" alt="" src="'+attachment.url+'"></a>';
-		} else {
-			var html = '<a target="_blank" href="'+attachment.url+'">'+attachment.filename+'</a>';
-		}
 		var field = jQuery('#' + id);
 		var row = field.parents('div.jcf-simple-row:first');
 
+		if( type == 'image') {
+			field.parent().parent().find('div.jcf-simple-image img').attr('src', attachment.url);
+			field.parent().parent().find('div.jcf-simple-image a').attr('href', attachment.url);
+			var html = '<a target="_blank" href="'+attachment.url+'">'+attachment.filename+'</a>';
+		} else {
+			var html = '<a target="_blank" href="'+attachment.url+'">'+attachment.filename+'</a>';
+		}
 		// set hidden value
 		field.val( attachment.id );
 
 		// update info and thumb
 		row.find('p:first').html( html ).removeClass('jcf-hide').show();
+		row.find('a.jcf_simple_delete').removeClass('jcf-hide').show();
     }
 }
 
@@ -90,10 +93,10 @@ jQuery(document).ready(function(){
 		var value_id = jQuery(this).data('field_id');
 		var row = jQuery(this).parents('div.jcf-simple-row');
 		jQuery('#'+value_id).prop('disabled', true);
+		row.find('.jcf_simple_delete').hide();
+		row.find('#simplemedia-'+value_id).hide();
 		row.find('div.jcf-simple-container').css({'opacity': 0.3});
-		row.find('div.jcf-delete-layer')
-			.show()
-			.find('input:hidden').val('1');
+		row.find('div.jcf-delete-layer').show();
 		return false;
 	});
 
@@ -102,9 +105,9 @@ jQuery(document).ready(function(){
 		var row = jQuery(this).parents('div.jcf-simple-row');
 		jQuery('#'+value_id).prop('disabled', false);
 		row.find('div.jcf-simple-container').css({'opacity': 1});
-		row.find('div.jcf-delete-layer')
-			.hide()
-			.find('input:hidden').val('0');
+		row.find('.jcf_simple_delete').show();
+		row.find('#simplemedia-'+value_id).show();
+		row.find('div.jcf-delete-layer').hide();
 		return false;
 	});	
 })

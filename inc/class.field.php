@@ -6,7 +6,8 @@ class Just_Field{
 	 * Root id for all fields of this type (field type)
 	 * @var string
 	 */
-	public $id_base;		
+	public $id_base;	
+	public static $compatibility = '3.0+'; // compatibility with WP version + it >=, - it <
 	public $title;				// Name for this field type.
 	public $slug = null;
 	public $field_options = array(
@@ -63,6 +64,25 @@ class Just_Field{
 		$this->post_type = jcf_get_post_type();
 	}
 	
+	/**
+	 * check field compatibility with WP version
+	 */
+	
+	public static function checkCompatibility(){
+		global $wp_version;
+		$compatibility = self::$compatibility;
+		$operator = '<';
+		if(strpos($compatibility, '+')){
+			$compatibility = substr($compatibility, 0, -1);
+			$operator = '>=';
+		} elseif(strpos($compatibility, '-')){
+			$compatibility = substr($compatibility, 0, -1);			
+		}
+		if(!version_compare($wp_version, $compatibility, $operator)) return false;
+		return true;
+	}
+
+
 	/**
 	 *	set class property $this->fieldset_id
 	 *	@param   string  $fieldset_id  fieldset string ID

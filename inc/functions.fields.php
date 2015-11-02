@@ -6,6 +6,10 @@
 	function jcf_field_register( $class_name ){
 		global $jcf_fields;
 
+		
+		//check field compatibility with WP version
+		if(!$class_name::checkCompatibility()) return false;
+		
 		// check class exists and try to create class object to get title
 		if( !class_exists($class_name) ) return false;
 
@@ -16,7 +20,7 @@
 			'class_name' => $class_name,
 			'title' => $field_obj->title,
 		);
-
+		
 		$jcf_fields[$field_obj->id_base] = $field;
 	}
 
