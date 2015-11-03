@@ -32,8 +32,13 @@
 		);
 
 		jcf_fieldsets_update($slug, $fieldset);
-
-		jcf_ajax_reposnse( array('status' => "1", $jcf_settings['fieldsets'][$post_type]) );
+		
+		/**
+		 * @author Kirill Samojlenko 
+		 * remove $jcf_settings['fieldsets'][$post_type]
+		 * we dont have variables $jcf_settings and $post_type in this function
+		 */
+		jcf_ajax_reposnse( array('status' => "1" ) );// 
 	}
 	
 	/**

@@ -6,7 +6,8 @@ class Just_Field{
 	 * Root id for all fields of this type (field type)
 	 * @var string
 	 */
-	public $id_base;		
+	public $id_base;	
+	public static $compatibility = '3.0+'; // compatibility with WP version + it >=, - it <
 	public $title;				// Name for this field type.
 	public $slug = null;
 	public $field_options = array(
@@ -64,6 +65,25 @@ class Just_Field{
 	}
 	
 	/**
+	 * check field compatibility with WP version
+	 */
+	
+	public static function checkCompatibility(){
+		global $wp_version;
+		$compatibility = self::$compatibility;
+		$operator = '<';
+		if(strpos($compatibility, '+')){
+			$compatibility = substr($compatibility, 0, -1);
+			$operator = '>=';
+		} elseif(strpos($compatibility, '-')){
+			$compatibility = substr($compatibility, 0, -1);			
+		}
+		if(!version_compare($wp_version, $compatibility, $operator)) return false;
+		return true;
+	}
+
+
+	/**
 	 *	set class property $this->fieldset_id
 	 *	@param   string  $fieldset_id  fieldset string ID
 	 */
@@ -119,8 +139,8 @@ class Just_Field{
 	 *	generate unique id attribute based on id_base and number
 	 *	@param  string  $str  string to be converted
 	 */
-	public function get_field_id( $str ){
-		return 'field-'.$this->id_base.'-'.$this->number.'-'.$str;
+	public function get_field_id( $str, $delimeter = '-' ){
+		return 'field'.$delimeter.$this->id_base.$delimeter.$this->number.$delimeter.$str;
 	}
 
 	/**
