@@ -19,8 +19,6 @@ class Just_Simple_Media extends Just_Field
 	 *	you can use $this->instance, $this->entry
 	 */
 	public function field( $args ) {
-		
-		global $wp_version;
 		extract( $args );
 		
 		echo $before_widget;
@@ -70,7 +68,7 @@ class Just_Simple_Media extends Just_Field
 							   data-uploader_button_text="<?php echo $upload_text; ?>"><?php echo $upload_text; ?></a>
 							<script>
 								//create modal upload pop-up to select Media Files
-								var mm_<?php echo preg_replace('/[^a-zA-z]/','',$this->get_field_id('uploaded_file')); ?> = new JcfMediaModal({
+								var mm_<?php echo $this->get_field_id('uploaded_file', '_'); ?> = new JcfMediaModal({
 									calling_selector : "#simplemedia-<?php echo $this->get_field_id('uploaded_file'); ?>",
 									cb : function(attachment){
 										JcfSimpleMedia.selectMedia(attachment, 

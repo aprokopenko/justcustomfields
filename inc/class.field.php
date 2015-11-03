@@ -139,8 +139,8 @@ class Just_Field{
 	 *	generate unique id attribute based on id_base and number
 	 *	@param  string  $str  string to be converted
 	 */
-	public function get_field_id( $str ){
-		return 'field-'.$this->id_base.'-'.$this->number.'-'.$str;
+	public function get_field_id( $str, $delimeter = '-' ){
+		return 'field'.$delimeter.$this->id_base.$delimeter.$this->number.$delimeter.$str;
 	}
 
 	/**
