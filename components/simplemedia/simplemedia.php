@@ -8,6 +8,7 @@ class Just_Simple_Media extends Just_Field
 	
 	public function __construct(){
 
+		self::$compatibility = "4.0+";
 		$field_ops = array( 'classname' => 'field_simplemedia' );
 		parent::__construct( 'simplemedia', __('Simple Media Upload', JCF_TEXTDOMAIN), $field_ops);
 			
@@ -18,23 +19,21 @@ class Just_Simple_Media extends Just_Field
 	 *	you can use $this->instance, $this->entry
 	 */
 	public function field( $args ) {
-		
-		global $wp_version;
 		extract( $args );
-		//var_dump($args);
+		
 		echo $before_widget;
 		echo $before_title . $this->instance['title'] . $after_title;
 			
 		$del_image = WP_PLUGIN_URL.'/just-custom-fields/components/simplemedia/assets/jcf-delimage.png';
 		$noimage = $image = WP_PLUGIN_URL.'/just-custom-fields/components/simplemedia/assets/jcf-noimage100x77.jpg';
 		
-		$upload_text = __('Upload', JCF_TEXTDOMAIN);
 		$delete_class = ' jcf-hide';
 		
 		$upload_type = $this->instance['type'];
+		$upload_text = ($upload_type == 'image')? __('Select image', JCF_TEXTDOMAIN) : __('Select file', JCF_TEXTDOMAIN);
 
 		$value = $link = '#';
-		//var_dump($this->entry);
+		
 		if(empty($this->entry)) $this->entry = 0;
 		
 ?>
@@ -52,10 +51,11 @@ class Just_Simple_Media extends Just_Field
 				<div class="jcf-simple-container">
 					<?php if( $upload_type == 'image' ) : ?>
 						<div class="jcf-simple-image">
-							<a href="<?php echo $link; ?>" class="jcf-btn" target="_blank"><img src="<?php echo $link; ?>" height="77" alt="" /></a>
+							<a href="<?php echo $link; ?>" class="jcf-btn" target="_blank"><img src="<?php echo ((!empty($link) && $link!='#')? $link : $noimage); ?>" height="77" alt="" /></a>
 						</div>
 					<?php endif; ?>
 					<div class="jcf-simple-file-info">
+						<input type="hidden" name="<?php echo $this->get_field_name('simplemedia'); ?>" id="<?php echo $this->get_field_id('simplemedia'); ?>" value="true">
 						<input type="hidden"
 							   id="<?php echo $this->get_field_id('uploaded_file'); ?>"
 								name="<?php echo $this->get_field_name('uploaded_file'); ?>"
@@ -67,23 +67,22 @@ class Just_Simple_Media extends Just_Field
 							   data-media_type="<?php echo ($upload_type == 'image'?$upload_type:''); ?>"
 							   data-uploader_button_text="<?php echo $upload_text; ?>"><?php echo $upload_text; ?></a>
 							<script>
-								var mm_<?php echo md5($this->get_field_id('uploaded_file')); ?> = new MediaModal({
+								//create modal upload pop-up to select Media Files
+								var mm_<?php echo $this->get_field_id('uploaded_file', '_'); ?> = new JcfMediaModal({
 									calling_selector : "#simplemedia-<?php echo $this->get_field_id('uploaded_file'); ?>",
 									cb : function(attachment){
-										SimpleMedia.selectMedia(attachment, 
-											"<?php echo $this->get_field_id('uploaded_file'); ?>, \n\
-											<?php echo (( $upload_type == 'image' )?'image':'all');?>"
+										JcfSimpleMedia.selectMedia(attachment, 
+											"<?php echo $this->get_field_id('uploaded_file'); ?>", "<?php echo (( $upload_type == 'image' )?'image':'all');?>"
 										);
 									}
 								});
 							</script>
-						<a href="#" class="jcf-btn jcf_delete<?php echo $delete_class; ?>"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a>
+						<a href="#" class="jcf-btn jcf_simple_delete<?php echo $delete_class; ?>" data-field_id="<?php echo $this->get_field_id('uploaded_file'); ?>"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a>
 					</div>
 				</div>
 				<div class="jcf-delete-layer">
 					<img src="<?php echo $del_image; ?>" alt="" />
-					<input type="hidden" id="<?php echo $this->get_field_id('delete'); ?>" name="<?php echo $this->get_field_name('delete'); ?>" value="" />
-					<a href="#" class="jcf-btn jcf_cancel"><?php _e('Cancel', JCF_TEXTDOMAIN); ?></a><br/>
+					<a href="#" class="jcf-btn jcf_simple_cancel" data-field_id="<?php echo $this->get_field_id('uploaded_file'); ?>"><?php _e('Undo delete', JCF_TEXTDOMAIN); ?></a><br/>
 				</div>
 			</div>
 		</div>
@@ -102,11 +101,9 @@ class Just_Simple_Media extends Just_Field
 	 */
 	public function save( $_values ){
 		$value = 0;
-		
 		if( empty($_values) ) return $value;
-		if( ! empty($_values['delete']) ) return $value;
-		if( ! $_values['uploaded_file'] ) return $value;
-		if( intval($_values['uploaded_file']) ) return $_values['uploaded_file'];
+		if( isset($_values['uploaded_file']) && intval($_values['uploaded_file']) ) return $_values['uploaded_file'];
+		return $value;
 	}
 		
 	/**
