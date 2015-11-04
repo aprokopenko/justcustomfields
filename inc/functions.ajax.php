@@ -136,6 +136,7 @@
 		$fieldset_id = $_POST['fieldset_id'];
 		
 		$field_obj = jcf_init_field_object($field_type, $fieldset_id);
+		var_dump($field_obj); die();
 		$html = $field_obj->do_form();
 		jcf_ajax_reposnse($html, 'html');
 		
@@ -150,6 +151,7 @@
 		$fieldset_id = $_POST['fieldset_id'];
 		
 		$field_obj = jcf_init_field_object($field_type, $fieldset_id);
+		var_dump($field_obj); die();
 		$resp = $field_obj->do_update();
 		jcf_ajax_reposnse($resp, 'json');
 
