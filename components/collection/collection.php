@@ -7,18 +7,22 @@
  */
 class Just_Collection extends Just_Field{
 	
+	public static $compatibility = "4.0+";
+
+
 	public function __construct(){
 		$field_ops = array( 'classname' => 'field_collection' );
 		parent::__construct('collection', __('Collection', JCF_TEXTDOMAIN), $field_ops);
 		
 		add_action('jcf_custom_settings_row', array($this, 'settings_row'));
+		
 		if( !empty($_GET['page']) && $_GET['page'] == 'just_custom_fields' ){
 			//add_action('admin_print_styles', 'jcf_admin_add_styles');
 			add_action('admin_print_scripts', array($this, 'add_collection_js') );
 		}
-		
 		add_action( 'wp_ajax_jcf_add_collection_field', array($this, 'ajax_add_field') );
 		add_action( 'wp_ajax_jcf_collection_save_field', array($this, 'jcf_ajax_save_field') );
+		
 	}
 	
 		/**
@@ -165,7 +169,6 @@ class Just_Collection extends Just_Field{
 		
 		$field_obj = jcf_init_field_object($field_type, $fieldset_id, $collection_id);
 		$resp = $field_obj->do_update();
-		var_dump($resp); die();
 		jcf_ajax_reposnse($resp, 'json');
 
 	}

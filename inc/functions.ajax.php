@@ -175,8 +175,9 @@
 	function jcf_ajax_edit_field(){
 		$field_id = $_POST['field_id'];
 		$fieldset_id = $_POST['fieldset_id'];
+		$collection_id = (isset($_POST['collection_id'])?$_POST['collection_id']:'');
 		
-		$field_obj = jcf_init_field_object($field_id, $fieldset_id);
+		$field_obj = jcf_init_field_object($field_id, $fieldset_id,$collection_id);
 		$html = $field_obj->do_form();
 		jcf_ajax_reposnse($html, 'html');
 	}

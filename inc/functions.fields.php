@@ -8,7 +8,7 @@
 
 		
 		//check field compatibility with WP version
-		if(!$class_name::checkCompatibility()) return false;
+		if(!$class_name::checkCompatibility($class_name::$compatibility)) return false;
 		
 		// check class exists and try to create class object to get title
 		if( !class_exists($class_name) ) return false;

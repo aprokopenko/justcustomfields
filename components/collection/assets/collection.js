@@ -41,10 +41,9 @@ function initCollectionFields(){
 		
 		// send request
 		jcf_ajax(data, 'json', loader, function(response){
-			
-			console.log(response);
+			console.log('#the-collection-list-' + response.collection_id);
 			var fieldset = jQuery('#the-collection-list-' + response.collection_id);
-			
+			console.log(fieldset);
 			if( response.is_new ){
 				// check if fieldset is empty
 				if( fieldset.find('td').size() == 1 ){
@@ -54,15 +53,15 @@ function initCollectionFields(){
 				// add new row
 				var html;
 				html = '<tr id="collection_field_row_' + response.id + '">';
-				html += '	<td class="check-column"><span class="drag-handle">move</span></td>';
+				//html += '	<td class="check-column"><span class="drag-handle">move</span></td>';
 				html += '<td><strong><a href="#" rel="' + response.id + '">' + response.instance.title + '</a></strong>';
 				html += '	<div class="row-actions">';
-				html += '		<span class="edit"><a href="#" rel="' + response.id + '">'+ jcf_textdomain.edit +'</a></span> |';
-				html += '		<span class="delete"><a href="#" rel="' + response.id + '">'+ jcf_textdomain.delete +'</a></span>';
+				html += '		<span class="edit_collection"><a href="#" rel="' + response.id + '" data-collection_id="'+response.collection_id+'">'+ jcf_textdomain.edit +'</a></span> |';
+				html += '		<span class="delete"><a href="#" rel="' + response.id + '" data-collection_id="'+response.collection_id+'">'+ jcf_textdomain.delete +'</a></span>';
 				html += '	</div>';
 				html += '</td>';
-				html += '<td>'+response.instance.slug+'</td>';
 				html += '<td>'+response.id_base+'</td>';
+				html += '<td>0</td>';
 				html += '<td>'+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</td>';
 				fieldset.append(html);
 			}
@@ -79,6 +78,25 @@ function initCollectionFields(){
 		
 		return false;
 	});
+		
+	// edit button
+	jQuery('#jcf_fieldsets tbody span.edit_collection a').live('click', function(){
+		var f_id = jQuery(this).parents('tbody:first').parents('tbody:first').attr('id').replace('the-list-', '');
+		var c_id = jQuery(this).data('collection_id')
+		var data = {
+			action: 'jcf_edit_field',
+			fieldset_id: f_id,
+			collection_id: c_id,
+			field_id: jQuery(this).attr('rel')
+		};
+		jcf_ajax(data, 'html', null, function(response){
+			
+			jcf_show_ajax_container(response);
+			
+		});
+		
+		return false;
+	})
 	/*
 	// delete button
 	jQuery('#jcf_fieldsets tbody span.delete a').live('click', function(){
@@ -99,24 +117,7 @@ function initCollectionFields(){
 		}
 		return false;
 	})
-	
-	// edit button
-	jQuery('#jcf_fieldsets tbody span.edit a, #jcf_fieldsets tbody strong > a').live('click', function(){
-		var f_id = jQuery(this).parents('tbody:first').attr('id').replace('the-list-', '');
-		var data = {
-			action: 'jcf_edit_field',
-			fieldset_id: f_id,
-			field_id: jQuery(this).attr('rel')
-		};
-			
-		jcf_ajax(data, 'html', null, function(response){
-			
-			jcf_show_ajax_container(response);
-			
-		});
-		
-		return false;
-	})
+
 	
 	// delete button in edit form
 	jQuery('#jcform_edit_field a.field-control-remove').live('click', function(e){

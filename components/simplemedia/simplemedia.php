@@ -5,10 +5,11 @@
  */
 class Just_Simple_Media extends Just_Field
 {
-	
+	public static $compatibility = "4.0+";
+
+
 	public function __construct(){
 
-		self::$compatibility = "4.0+";
 		$field_ops = array( 'classname' => 'field_simplemedia' );
 		parent::__construct( 'simplemedia', __('Simple Media Upload', JCF_TEXTDOMAIN), $field_ops);
 			
