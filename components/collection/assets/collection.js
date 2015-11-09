@@ -1,5 +1,4 @@
 jQuery(document).ready(function(){
-	console.log('test');
 	initCollectionFields();
 });
 
@@ -13,7 +12,7 @@ function initCollectionFields(){
 	jQuery('form.jcform_add_collection_field').submit(function(e){
 		e.preventDefault();
 		
-		var data = { action: 'jcf_add_collection_field' };
+		var data = { action: 'jcf_add_field' };
 		
 		jQuery(this).find('input,select').each(function(i, input){
 			data[ jQuery(input).attr('name') ] = jQuery(input).val();
@@ -35,7 +34,7 @@ function initCollectionFields(){
 
 		// get query string from the form
 		var query = jQuery('#jcform_edit_collection_field').formSerialize();
-		var data = 'action=jcf_collection_save_field' + '&' + query;
+		var data = 'action=jcfsave_field' + '&' + query;
 
 		var loader = jQuery(this).find('img.ajax-feedback');
 		
@@ -69,7 +68,6 @@ function initCollectionFields(){
 			// update fieldset row
 			var row = jQuery('#collection_field_row_' + response.id);
 			row.find('strong a').text(response.instance.title);
-			row.find('td:eq(2)').text(response.instance.slug);
 			row.find('td:eq(4)').text( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no );
 			
 			// close add box at the end
@@ -82,7 +80,7 @@ function initCollectionFields(){
 	// edit button
 	jQuery('#jcf_fieldsets tbody span.edit_collection a').live('click', function(){
 		var f_id = jQuery(this).parents('tbody:first').parents('tbody:first').attr('id').replace('the-list-', '');
-		var c_id = jQuery(this).data('collection_id')
+		var c_id = jQuery(this).data('collection_id');
 		var data = {
 			action: 'jcf_edit_field',
 			fieldset_id: f_id,
@@ -97,15 +95,16 @@ function initCollectionFields(){
 		
 		return false;
 	})
-	/*
 	// delete button
-	jQuery('#jcf_fieldsets tbody span.delete a').live('click', function(){
+	jQuery('#jcf_fieldsets tbody span.delete_collection a').live('click', function(){
 		if( confirm( jcf_textdomain.confirm_field_delete ) ){
 			var row = jQuery(this).parents('tr:first');
-			var f_id = jQuery(this).parents('tbody:first').attr('id').replace('the-list-', '');
+			var f_id = jQuery(this).parents('tbody:first').parents('tbody:first').attr('id').replace('the-list-', '');
+			var c_id = jQuery(this).data('collection_id');
 			var data = {
 				action: 'jcf_delete_field',
 				fieldset_id: f_id,
+				collection_id: c_id,
 				field_id: jQuery(this).attr('rel')
 			};
 			
@@ -117,15 +116,16 @@ function initCollectionFields(){
 		}
 		return false;
 	})
-
 	
 	// delete button in edit form
-	jQuery('#jcform_edit_field a.field-control-remove').live('click', function(e){
+	jQuery('#jcform_edit_collection_field a.field-control-remove').live('click', function(e){
 		var field_id = jQuery(this).parents('form:first').find('input[name=field_id]').val();
-		var row = jQuery('#field_row_' + field_id);
-		row.find('span.delete a').click();
+		var row = jQuery('#collection_field_row_' + field_id);
+		row.find('span.delete_collection a').click();
 		return false;
 	});
+	/*
+
 	
 	// init sortable
 	jQuery('#jcf_fieldsets tbody').sortable({

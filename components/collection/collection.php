@@ -18,10 +18,8 @@ class Just_Collection extends Just_Field{
 		
 		if( !empty($_GET['page']) && $_GET['page'] == 'just_custom_fields' ){
 			//add_action('admin_print_styles', 'jcf_admin_add_styles');
-			add_action('admin_print_scripts', array($this, 'add_collection_js') );
+			add_action('admin_print_scripts', array($this, 'get_collection_js') );
 		}
-		add_action( 'wp_ajax_jcf_add_collection_field', array($this, 'ajax_add_field') );
-		add_action( 'wp_ajax_jcf_collection_save_field', array($this, 'jcf_ajax_save_field') );
 		
 	}
 	
@@ -105,7 +103,7 @@ class Just_Collection extends Just_Field{
 	/**
 	 *	add custom scripts
 	 */
-	function add_collection_js(){
+	function get_collection_js(){
 		wp_register_script(
 				'jcf_collections',
 				WP_PLUGIN_URL.'/just-custom-fields/components/collection/assets/collection.js',
@@ -132,6 +130,9 @@ class Just_Collection extends Just_Field{
 			'Just_Simple_Media',
 			'Just_Field_Table'
 		);
+		
+		$fields = apply_filters('jcf_collection_get_registered_fields',$fields);//add new field classes for collection fields list
+		
 		foreach($fields as $class_name){
 			if( !class_exists($class_name) ) continue;
 			$field_obj = new $class_name();
@@ -147,30 +148,37 @@ class Just_Collection extends Just_Field{
 		return $registered_fields;
 	}
 	
-	public function ajax_add_field(){
-		$field_type =  $_POST['field_type'];
-		$fieldset_id = $_POST['fieldset_id'];
-		$collection_id = $_POST['collection_id'];
-		
-		$field_obj = jcf_init_field_object($field_type, $fieldset_id, $collection_id);
-		$html = $field_obj->do_form();
-		jcf_ajax_reposnse($html, 'html');
-	}
-	
-	
 	/**
-	 * save field from the form callback
+	 * 
 	 */
-	public function jcf_ajax_save_field(){
+	public function delete_field($field_id)
+	{
+		$option_name = jcf_fields_get_option_name();
 
-		$field_type =  $_POST['field_id'];
-		$fieldset_id = $_POST['fieldset_id'];
-		$collection_id = $_POST['collection_id'];
-		
-		$field_obj = jcf_init_field_object($field_type, $fieldset_id, $collection_id);
-		$resp = $field_obj->do_update();
-		jcf_ajax_reposnse($resp, 'json');
+		$jcf_read_settings = jcf_get_read_settings();
+		if( $jcf_read_settings != JCF_CONF_SOURCE_DB ){
+			$jcf_settings = jcf_get_all_settings_from_file();
+			$post_type =  jcf_get_post_type();
+			$fieldset = $jcf_settings['fieldsets'][$post_type][$this->fieldset_id];
+			$field_settings = $jcf_settings['field_settings'][$post_type];
 
+			if( isset($field_settings[$this->id]['fields'][$field_id]) ){
+				unset($fieldset['fields'][$this->id]['fields'][$field_id]);
+				unset($field_settings[$this->id]['fields'][$field_id]);
+			}
+
+			$jcf_settings['fieldsets'][$post_type][$this->fieldset_id] = $fieldset;
+			$jcf_settings['field_settings'][$post_type] = $field_settings;
+			jcf_save_all_settings_in_file($jcf_settings);
+		} else {
+			$field_settings = jcf_get_options($option_name);
+			if(isset($field_settings[$this->id]['fields'][$field_id])){
+				unset($field_settings[$this->id]['fields'][$field_id]);
+			}
+
+			jcf_update_options($option_name, $field_settings);
+		}
+				
 	}
 	
 }
