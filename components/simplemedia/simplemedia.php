@@ -152,7 +152,7 @@ class Just_Simple_Media extends Just_Field
 	 */
 	public function add_js(){
 		global $pagenow, $wp_version, $post_ID;
-		// only load on select pages
+		// only load on select pages 
 		if ( ! in_array( $pagenow, array( 'post-new.php', 'post.php', 'media-upload-popup' ) ) ) return;
 		wp_enqueue_media( array( 'post' => ( $post_ID ? $post_ID : null ) ) );
 		wp_enqueue_script( "jcf-simpleupload-modal", WP_PLUGIN_URL.'/just-custom-fields/components/simplemedia/assets/simplemedia-modal.js', array( 'jquery', 'media-models') );				

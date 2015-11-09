@@ -137,7 +137,7 @@
 		$collection_id = (isset($_POST['collection_id'])?$_POST['collection_id']:'');
 		
 		$field_obj = jcf_init_field_object($field_type, $fieldset_id, $collection_id);
-		var_dump($field_obj); die();
+		
 		$html = $field_obj->do_form();
 		jcf_ajax_reposnse($html, 'html');
 		
@@ -153,7 +153,7 @@
 		$collection_id = (isset($_POST['collection_id'])?$_POST['collection_id']:'');
 		
 		$field_obj = jcf_init_field_object($field_type, $fieldset_id, $collection_id);
-		var_dump($field_obj); die();
+		
 		$resp = $field_obj->do_update();
 		jcf_ajax_reposnse($resp, 'json');
 

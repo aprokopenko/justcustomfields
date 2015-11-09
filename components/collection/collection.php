@@ -31,7 +31,19 @@ class Just_Collection extends Just_Field{
 		extract( $args );
 		
 		echo $before_widget;
-		echo $before_title . $this->instance['title'] . $after_title;		
+		echo $before_title . $this->instance['title'] . $after_title;
+		echo '<div class="jcf-field-container">';
+		foreach($this->instance['fields'] as $field_id => $field){
+			$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
+			$field_obj->set_slug($field['slug']);
+			if(isset($this->entry[$field['slug']])){
+				$field_obj->entry = $this->entry[$field['slug']];
+			}
+			$field_obj->instance = $field;
+			$field_obj->is_post_edit = true;
+			$field_obj->field($field_obj->field_options);
+		}
+		echo '</div>';
 		
 		echo $after_widget;
 	}
@@ -39,8 +51,16 @@ class Just_Collection extends Just_Field{
 	/**
 	 *	save field on post edit form
 	 */
-	function save( $values ){
-		$values = $values['val'];
+	function save( $_values ){
+		$values = array();
+		foreach($this->instance['fields'] as $field_id => $field){
+			$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
+			if(isset($_values[$field_id])){
+				$values[$field['slug']] = $field_obj->save($_values[$field_id]);
+			} else {
+				$values[$field['slug']] = $field_obj->save(array('val'=>''));
+			}
+		}
 		return $values;
 	}
 	
@@ -64,23 +84,8 @@ class Just_Collection extends Just_Field{
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'description' => '' ) );
 		$description = esc_html($instance['description']);
 		$title = esc_attr( $instance['title'] );
-?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', JCF_TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
-		<p><label for="<?php echo $this->get_field_id('description'); ?>"><?php _e('Description:', JCF_TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->get_field_name('description'); ?>" id="<?php echo $this->get_field_id('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
-<?php
 	}
-	
-	/**
-	 *	custom get_field functions to add one more deep level
-	 */
-	function get_field_id_l2( $field, $number ){
-		return $this->get_field_id( $number . '-' . $field );
-	}
-
-	function get_field_name_l2( $field, $number ){
-		return $this->get_field_name( $number . '][' . $field );
-	}
-	
+		
 	/**
 	 * create custom table on jcf settings fields
 	 */
@@ -100,6 +105,16 @@ class Just_Collection extends Just_Field{
 		include( JCF_ROOT . '/components/collection/tpl/fields_ui.tpl.php' );
 	}
 	
+	/**
+	 *	add custom scripts from collection fields
+	 */
+	public function add_js(){
+		foreach($this->instance['fields'] as $field_id => $field){
+			$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
+			if(  method_exists($field_obj, 'add_js')) $field_obj->add_js();
+			if(  method_exists($field_obj, 'add_css')) $field_obj->add_css();
+		}
+	}
 	/**
 	 *	add custom scripts
 	 */

@@ -21,6 +21,12 @@ class Just_Field{
 	public $is_new = false;
 	
 	/**
+	 * check for change field name if it edit on post edit page
+	 */
+	public $is_post_edit = false;
+
+
+	/**
 	 * Unique ID number of the current instance
 	 * 
 	 * @var integer 
@@ -84,8 +90,16 @@ class Just_Field{
 		return true;
 	}
 
-
 	/**
+	 * check, that this field is part of collection
+	 */
+	
+	public function is_collection_field(){
+		if(!empty($this->collection_id)) return true;
+		return false;
+	}
+
+		/**
 	 *	set class property $this->fieldset_id
 	 *	@param   string  $fieldset_id  fieldset string ID
 	 */
@@ -158,6 +172,13 @@ class Just_Field{
 	 *	@param  string  $str  string to be converted
 	 */
 	public function get_field_name( $str ){
+		/**
+		 * if is field of collection and itst post edit page create collection field name
+		 */
+		if( $this->is_collection_field() && $this->is_post_edit ){
+			$collection = jcf_init_field_object($this->collection_id, $this->fieldset_id);
+			return 'field-'.$collection->id_base.'['.$collection->number.']['.$this->id.']['.$str.']';
+		}
 		return 'field-'.$this->id_base.'['.$this->number.']['.$str.']';
 	}
 	
@@ -205,13 +226,13 @@ class Just_Field{
 		<div class="jcf_edit_field">
 			<h3 class="header"><?php echo $op . ' ' . $this->title; ?></h3>
 			<div class="jcf_inner_content">
-				<form action="#" method="post" id="<?php echo (!empty($this->collection_id)?'jcform_edit_collection_field':'jcform_edit_field');?>">
+				<form action="#" method="post" id="<?php echo ( $this->is_collection_field() ? 'jcform_edit_collection_field':'jcform_edit_field');?>">
 					<fieldset>
 						<input type="hidden" name="field_id" value="<?php echo $this->id; ?>" />
 						<input type="hidden" name="field_number" value="<?php echo $this->number; ?>" />
 						<input type="hidden" name="field_id_base" value="<?php echo $this->id_base; ?>" />
 						<input type="hidden" name="fieldset_id" value="<?php echo $this->fieldset_id; ?>" />
-						<?php if( !empty($this->collection_id) ) : ?>
+						<?php if( $this->is_collection_field() ) : ?>
 							<input type="hidden" name="collection_id" value="<?php echo $this->collection_id; ?>" />
 						<?php
 							endif;
@@ -268,9 +289,7 @@ class Just_Field{
 	 *	@param array $params for update field
 	 */
 	public function do_update($params = array()){
-		if(!empty($this->collection_id)){
-			$collection = jcf_init_field_object($this->collection_id, $this->fieldset_id);
-		}
+		
 		$input = !empty($params) ? $params : $_POST['field-'.$this->id_base][$this->number];
 		// remove all slashed from values
 		foreach($input as $var => $value){
@@ -312,7 +331,7 @@ class Just_Field{
 			$this->number = jcf_get_fields_index( $this->id_base );
 			$this->id = $this->id_base . '-' . $this->number;
 		}
-		if(!isset($collection)){
+		if( !$this->is_collection_field() ){
 			// update fieldset
 			$fieldset = jcf_fieldsets_get( $this->fieldset_id );
 			$fieldset['fields'][$this->id] = $instance['enabled']; 
@@ -335,6 +354,7 @@ class Just_Field{
 				'instance' => $instance,
 			);			
 		} else {
+			$collection = jcf_init_field_object($this->collection_id, $this->fieldset_id);
 			// check slug field
 			if( empty($instance['slug']) ){
 				$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;

@@ -34,15 +34,13 @@ function initCollectionFields(){
 
 		// get query string from the form
 		var query = jQuery('#jcform_edit_collection_field').formSerialize();
-		var data = 'action=jcfsave_field' + '&' + query;
+		var data = 'action=jcf_save_field' + '&' + query;
 
 		var loader = jQuery(this).find('img.ajax-feedback');
 		
 		// send request
 		jcf_ajax(data, 'json', loader, function(response){
-			console.log('#the-collection-list-' + response.collection_id);
 			var fieldset = jQuery('#the-collection-list-' + response.collection_id);
-			console.log(fieldset);
 			if( response.is_new ){
 				// check if fieldset is empty
 				if( fieldset.find('td').size() == 1 ){
