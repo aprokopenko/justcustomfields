@@ -44,6 +44,7 @@ require_once( JCF_ROOT.'/components/uploadmedia/uploadmedia.php' );
 require_once( JCF_ROOT.'/components/fieldsgroup/fields-group.php' );
 require_once( JCF_ROOT.'/components/relatedcontent/related-content.php' );
 require_once( JCF_ROOT.'/components/table/table.php' );
+require_once( JCF_ROOT.'/components/collection/collection.php' );
 
 
 if(!function_exists('pa')){
@@ -104,6 +105,7 @@ function jcf_init(){
 	jcf_field_register( 'Just_Field_FieldsGroup' );
 	jcf_field_register( 'Just_Field_RelatedContent' );
 	jcf_field_register( 'Just_Field_Table' );
+	jcf_field_register( 'Just_Collection' );
 	/**
 	 *	to add more fields with your custom plugin:
 	 *	- add_action  'jcf_register_fields'
@@ -210,7 +212,7 @@ function jcf_get_language_strings(){
 
 // print image with loader
 function print_loader_img(){
-	return '<img class="ajax-feedback " alt="" title="" src="' . get_bloginfo('url') . '/wp-admin/images/wpspin_light.gif" style="visibility: hidden;">';
+	return '<img class="ajax-feedback " alt="" title="" src="' . get_bloginfo('url') . '//wp-admin/images/wpspin_light.gif" style="visibility: hidden;">';
 }
 
 // set post_type in global variable, so we can use it in internal functions

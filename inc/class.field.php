@@ -34,6 +34,7 @@ class Just_Field{
 	 */
 	public $id = false;
 	public $fieldset_id = '';
+	public $collection_id = '';
 	public $post_type;
 	
 	/**
@@ -68,9 +69,9 @@ class Just_Field{
 	 * check field compatibility with WP version
 	 */
 	
-	public static function checkCompatibility(){
+	public static function checkCompatibility($compatibility){
 		global $wp_version;
-		$compatibility = self::$compatibility;
+		
 		$operator = '<';
 		if(strpos($compatibility, '+')){
 			$compatibility = substr($compatibility, 0, -1);
@@ -78,6 +79,7 @@ class Just_Field{
 		} elseif(strpos($compatibility, '-')){
 			$compatibility = substr($compatibility, 0, -1);			
 		}
+		
 		if(!version_compare($wp_version, $compatibility, $operator)) return false;
 		return true;
 	}
@@ -89,6 +91,14 @@ class Just_Field{
 	 */
 	public function set_fieldset( $fieldset_id ){
 		$this->fieldset_id = $fieldset_id;
+	}
+	
+	/**
+	 *	set class property $this->collection_id
+	 *	@param   string  $fieldset_id  fieldset string ID
+	 */
+	public function set_collection( $collection_id ){
+		$this->collection_id = $collection_id;
 	}
 	
 	/**
@@ -195,14 +205,16 @@ class Just_Field{
 		<div class="jcf_edit_field">
 			<h3 class="header"><?php echo $op . ' ' . $this->title; ?></h3>
 			<div class="jcf_inner_content">
-				<form action="#" method="post" id="jcform_edit_field">
+				<form action="#" method="post" id="<?php echo (!empty($this->collection_id)?'jcform_edit_collection_field':'jcform_edit_field');?>">
 					<fieldset>
 						<input type="hidden" name="field_id" value="<?php echo $this->id; ?>" />
 						<input type="hidden" name="field_number" value="<?php echo $this->number; ?>" />
 						<input type="hidden" name="field_id_base" value="<?php echo $this->id_base; ?>" />
 						<input type="hidden" name="fieldset_id" value="<?php echo $this->fieldset_id; ?>" />
+						<?php if( !empty($this->collection_id) ) : ?>
+							<input type="hidden" name="collection_id" value="<?php echo $this->collection_id; ?>" />
 						<?php
-							
+							endif;
 							$this->form( $this->instance );
 							
 							// need to add slug field too
@@ -256,6 +268,9 @@ class Just_Field{
 	 *	@param array $params for update field
 	 */
 	public function do_update($params = array()){
+		if(!empty($this->collection_id)){
+			$collection = jcf_init_field_object($this->collection_id, $this->fieldset_id);
+		}
 		$input = !empty($params) ? $params : $_POST['field-'.$this->id_base][$this->number];
 		// remove all slashed from values
 		foreach($input as $var => $value){
@@ -263,7 +278,6 @@ class Just_Field{
 				$input[$var] = stripslashes($value);
 			}
 		}
-		
 		// validate: title should be always there
 		if( empty($input['title']) ){
 			return array('status' => '0', 'error' => __('Title field is required.', JCF_TEXTDOMAIN));
@@ -298,28 +312,48 @@ class Just_Field{
 			$this->number = jcf_get_fields_index( $this->id_base );
 			$this->id = $this->id_base . '-' . $this->number;
 		}
-		
-		// update fieldset
-		$fieldset = jcf_fieldsets_get( $this->fieldset_id );
-		$fieldset['fields'][$this->id] = $instance['enabled'];
-		jcf_fieldsets_update( $this->fieldset_id, $fieldset );
+		if(!isset($collection)){
+			// update fieldset
+			$fieldset = jcf_fieldsets_get( $this->fieldset_id );
+			$fieldset['fields'][$this->id] = $instance['enabled']; 
+			jcf_fieldsets_update( $this->fieldset_id, $fieldset );
 
-		// check slug field
-		if( empty($instance['slug']) ){
-			$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
+			// check slug field
+			if( empty($instance['slug']) ){
+				$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
+			}
+			// save
+			jcf_field_settings_update($this->id, $instance, $this->fieldset_id);
+
+			// return status
+			$res = array(
+				'status' => '1',
+				'id' => $this->id,
+				'id_base' => $this->id_base,
+				'fieldset_id' => $this->fieldset_id,
+				'is_new' => $this->is_new,
+				'instance' => $instance,
+			);			
+		} else {
+			// check slug field
+			if( empty($instance['slug']) ){
+				$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
+			}
+			$collection->instance['fields'][$this->id] = $instance;
+			// save
+			jcf_field_settings_update($this->collection_id, $collection->instance, $this->fieldset_id);
+			// return status
+			$res = array(
+				'status' => '1',
+				'id' => $this->id,
+				'id_base' => $this->id_base,
+				'fieldset_id' => $this->fieldset_id,
+				'collection_id' => $this->collection_id,
+				'is_new' => $this->is_new,
+				'instance' => $instance,
+			);		
+			
 		}
-		// save
-		jcf_field_settings_update($this->id, $instance, $this->fieldset_id);
-
-		// return status
-		$res = array(
-			'status' => '1',
-			'id' => $this->id,
-			'id_base' => $this->id_base,
-			'fieldset_id' => $this->fieldset_id,
-			'is_new' => $this->is_new,
-			'instance' => $instance,
-		);
 		return $res;
 	}
 

@@ -8,7 +8,7 @@
 
 		
 		//check field compatibility with WP version
-		if(!$class_name::checkCompatibility()) return false;
+		if(!$class_name::checkCompatibility($class_name::$compatibility)) return false;
 		
 		// check class exists and try to create class object to get title
 		if( !class_exists($class_name) ) return false;
@@ -104,15 +104,24 @@
 	/**
 	 *	init field object
 	 */
-	function jcf_init_field_object( $field_mixed, $fieldset_id = ''){
+	function jcf_init_field_object( $field_mixed, $fieldset_id = '', $collection_id = ''){
 		// $field_mixed can be real field id or only id_base
 		$id_base = preg_replace('/\-([0-9]+)/', '', $field_mixed);
 		$field = jcf_get_registered_fields( $id_base );
-
 		$field_obj = new $field['class_name']();
 
 		$field_obj->set_fieldset( $fieldset_id );
+		$field_obj->set_collection( $collection_id );
 		$field_obj->set_id( $field_mixed );
+		//if is not new field and include to cillection
+		if(!$field_obj->is_new && $collection_id){
+			$collection_obj = new Just_Collection();
+			$collection_obj->set_fieldset($fieldset_id);
+			$collection_obj->set_id($collection_id);
+			$field = $collection_obj->instance['fields'][$field_mixed];
+			$field_obj->set_slug($field['slug']);
+			$field_obj->instance = $field;
+		}
 
 		return $field_obj;
 	}

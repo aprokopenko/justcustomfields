@@ -31,9 +31,11 @@ function jcf_get_thumb_path( $image, $size = '100x77' ){
  */
 class Just_Field_Upload extends Just_Field{
 	
+	public static $compatibility = '4.0-';
+
+
 	public function __construct(){
 
-		self::$compatibility = '4.0-';
 		$field_ops = array( 'classname' => 'field_uploadmedia' );
 		parent::__construct( 'uploadmedia', __('Upload Media', JCF_TEXTDOMAIN), $field_ops);
 		
