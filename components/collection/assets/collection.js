@@ -58,7 +58,7 @@ function initCollectionFields(){
 				html += '	</div>';
 				html += '</td>';
 				html += '<td>'+response.id_base+'</td>';
-				html += '<td>0</td>';
+				html += '<td>'+response.instance.cols_count+'</td>';
 				html += '<td>'+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</td>';
 				fieldset.append(html);
 			}
@@ -122,14 +122,13 @@ function initCollectionFields(){
 		row.find('span.delete_collection a').click();
 		return false;
 	});
-	/*
 
-	
+	//jQuery('span[class^=edit_collec]').click(function(){alert('die')});
 	// init sortable
-	jQuery('#jcf_fieldsets tbody').sortable({
+	jQuery('tbody[id^=the-collection-list-collection-]').sortable({
 		handle: 'span.drag-handle',
 		opacity:0.7,
-		placeholder: 'sortable_placeholder',
+		placeholder: 'collection_sortable_placeholder',
 		start: function (event, ui) { 
 			ui.placeholder.html('<td colspan="4"><br>&nbsp;</td>');
 		},
@@ -137,19 +136,22 @@ function initCollectionFields(){
 			// ui.item - item in the list
 			var order = '';
 			var fieldset = jQuery(ui.item).parent();
-			var f_id = fieldset.attr('id').replace('the-list-', '');
+			var f_id = jQuery(this).parents('tbody:first').attr('id').replace('the-list-', '');
+			var c_id = jQuery(this).attr('id').replace('the-collection-list-', '');
 			fieldset.find('tr').each(function(i, tr){
-				order += jQuery(tr).attr('id').replace('field_row_', '') + ',';
+				order += jQuery(tr).attr('id').replace('collection_field_row_', '') + ',';
 			});
 			
 			var data = {
-				'action': 'jcf_fields_order',
+				'action': 'jcf_collection_order',
 				'fieldset_id': f_id,
+				'collection_id': c_id,
 				'fields_order': order
 			};
-
 			//pa(data);
 			jcf_ajax(data, 'json');
 		}
-	});*/
+	});
+	
+	//**/
 }

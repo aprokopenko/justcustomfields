@@ -260,7 +260,21 @@ class Just_Field{
 										value="1" <?php checked(true, @$this->instance['enabled']); ?> />
 								<?php _e('Enabled', JCF_TEXTDOMAIN); ?></label>
 						</p>
-						
+						<?php if($this->is_collection_field()) : ?>
+							<p>
+								<label for="<?php echo $this->get_field_id('cols_count'); ?>"><?php _e('Select Column Count', JCF_TEXTDOMAIN); ?></label>
+									<select class="widefat" 
+											id="<?php echo $this->get_field_id('cols_count'); ?>"
+											name="<?php echo $this->get_field_name('cols_count'); ?>">
+										<option value="1"<?php echo (@$this->instance['cols_count']==1?' selected':''); ?>>1</option>
+										<option value="2"<?php echo (@$this->instance['cols_count']==2?' selected':''); ?>>2</option>
+										<option value="3"<?php echo (@$this->instance['cols_count']==3?' selected':''); ?>>3</option>
+										<option value="4"<?php echo (@$this->instance['cols_count']==4?' selected':''); ?>>4</option>
+										<option value="5"<?php echo (@$this->instance['cols_count']==5?' selected':''); ?>>5</option>
+									</select> 
+									
+							</p>
+						<?php endif; ?>
 						<div class="field-control-actions">
 							<div class="alignleft">
 								<?php if( $op != __('Add', JCF_TEXTDOMAIN) ) : ?>
@@ -359,6 +373,7 @@ class Just_Field{
 			if( empty($instance['slug']) ){
 				$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
 			}
+			$instance['cols_count'] = $input['cols_count'];
 			$collection->instance['fields'][$this->id] = $instance;
 			// save
 			jcf_field_settings_update($this->collection_id, $collection->instance, $this->fieldset_id);

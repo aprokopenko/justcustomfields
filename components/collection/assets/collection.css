@@ -1,0 +1,28 @@
+	.collection_field_border{
+	background: #fff;
+    border: 1px solid #dfdfdf;
+    border-radius: 11px;
+    padding: 5px 5px 40px;
+	float: left;
+	margin-right: 5px;
+}
+
+.collection_colssize_1{
+	width: 19%;	
+}
+.collection_colssize_2{
+	width: 38%;	
+}
+.collection_colssize_3{
+	width: 56%;	
+}
+.collection_colssize_4{
+	width: 72%;	
+}
+.collection_colssize_5{
+	width: 90%;	
+}
+.clr{
+	clear: both;
+	height: 0;
+}

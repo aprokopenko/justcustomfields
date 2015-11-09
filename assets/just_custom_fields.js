@@ -252,7 +252,7 @@ function initFieldsetFields(){
 	});
 	
 	// init sortable
-	jQuery('#jcf_fieldsets tbody').sortable({
+	jQuery('#jcf_fieldsets tbody:first').sortable({
 		handle: 'span.drag-handle',
 		opacity:0.7,
 		placeholder: 'sortable_placeholder',
@@ -394,7 +394,7 @@ function jcf_ajax( data, respType, loader, callback ){
 		}
 		
 		// if no errors - call main callback
-		_callback( response );
+		if(_callback) _callback( response );
 	})	
 }
 

@@ -1,13 +1,13 @@
 <table class="wp-list-table widefat fixed" cellspacing="0">
 	<thead><tr>
-		<!--th class="check-column">&nbsp;</th-->
+		<th class="check-column">&nbsp;</th>
 		<th><?php _e('Title', JCF_TEXTDOMAIN); ?></th>
 		<th><?php _e('Type', JCF_TEXTDOMAIN); ?></th>
 		<th><?php _e('Cols', JCF_TEXTDOMAIN); ?></th>
 		<th><?php _e('Enabled', JCF_TEXTDOMAIN); ?></th>
 	</tr></thead>
 	<tfoot><tr>
-		<!--th class="check-column">&nbsp;</th-->
+		<th class="check-column">&nbsp;</th>
 		<th><?php _e('Title', JCF_TEXTDOMAIN); ?></th>
 		<th><?php _e('Type', JCF_TEXTDOMAIN); ?></th>
 		<th><?php _e('Cols', JCF_TEXTDOMAIN); ?></th>
@@ -17,9 +17,9 @@
 		<?php if( !empty($collection['fields']) && is_array($collection['fields']) ) : ?>
 			<?php foreach($collection['fields'] as $field_id => $field) : ?>
 				<tr id="collection_field_row_<?php echo $field_id; ?>">
-					<!--td class="check-column">
+					<td class="check-column">
 						<span class="drag-handle">move</span>
-					</td-->
+					</td>
 					<td>
 						<strong><a href="#" rel="<?php echo $field_id; ?>"><?php echo $field['title']; ?></a></strong>
 						<div class="row-actions">
@@ -30,7 +30,7 @@
 						</div>
 					</td>
 					<td><?php echo preg_replace('/\-[0-9]+$/', '', $field_id); ?></td>
-					<td></td>
+					<td><?php echo $field['cols_count']; ?></td>
 					<td><?php if($field['enabled']) _e('Yes', JCF_TEXTDOMAIN); else  _e('No', JCF_TEXTDOMAIN);?></td>
 				</tr>
 			<?php endforeach; ?>

@@ -20,6 +20,7 @@ class Just_Collection extends Just_Field{
 			//add_action('admin_print_styles', 'jcf_admin_add_styles');
 			add_action('admin_print_scripts', array($this, 'get_collection_js') );
 		}
+		add_action('wp_ajax_jcf_collection_order', array( 'Just_Collection', 'ajax_collection_fields_order' ));
 		
 	}
 	
@@ -34,6 +35,7 @@ class Just_Collection extends Just_Field{
 		echo $before_title . $this->instance['title'] . $after_title;
 		echo '<div class="jcf-field-container">';
 		foreach($this->instance['fields'] as $field_id => $field){
+			echo '<div class="collection_field_border collection_colssize_'.$field['cols_count'].'">';
 			$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
 			$field_obj->set_slug($field['slug']);
 			if(isset($this->entry[$field['slug']])){
@@ -42,8 +44,9 @@ class Just_Collection extends Just_Field{
 			$field_obj->instance = $field;
 			$field_obj->is_post_edit = true;
 			$field_obj->field($field_obj->field_options);
+			echo '</div>';
 		}
-		echo '</div>';
+		echo '<div class="clr"></div></div>';
 		
 		echo $after_widget;
 	}
@@ -106,7 +109,7 @@ class Just_Collection extends Just_Field{
 	}
 	
 	/**
-	 *	add custom scripts from collection fields
+	 *	add custom scripts and styles from collection fields
 	 */
 	public function add_js(){
 		foreach($this->instance['fields'] as $field_id => $field){
@@ -115,8 +118,14 @@ class Just_Collection extends Just_Field{
 			if(  method_exists($field_obj, 'add_css')) $field_obj->add_css();
 		}
 	}
+	public function add_css(){
+		wp_register_style('jcf_collection',
+				WP_PLUGIN_URL.'/just-custom-fields/components/collection/assets/collection.css',
+				array('thickbox'));
+		wp_enqueue_style('jcf_collection');
+	}
 	/**
-	 *	add custom scripts
+	 *	add custom scripts for jcf fildset edit page
 	 */
 	function get_collection_js(){
 		wp_register_script(
@@ -194,6 +203,30 @@ class Just_Collection extends Just_Field{
 			jcf_update_options($option_name, $field_settings);
 		}
 				
+	}
+	
+	public static function ajax_collection_fields_order(){
+		
+		$fieldset_id = $_POST['fieldset_id'];
+		$collection_id = $_POST['collection_id'];
+		$collection = jcf_init_field_object($collection_id, $fieldset_id);
+		$order  = trim($_POST['fields_order'], ',');
+		
+		$new_fields = explode(',', $order);
+		$new_order = array();		
+		
+		if(! empty($new_fields) && ! empty($collection->instance['fields'])){
+			foreach($new_fields as $field_id){
+				if(isset($collection->instance['fields'][$field_id])){
+					$new_order[$field_id] = $collection->instance['fields'][$field_id];					
+				}
+			}
+		}
+		$collection->instance['fields'] = $new_order;
+		jcf_field_settings_update($collection_id, $collection->instance, $fieldset_id);
+		
+		$resp = array('status' => '1');
+		jcf_ajax_reposnse($resp, 'json');
 	}
 	
 }
