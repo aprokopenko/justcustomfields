@@ -52,11 +52,11 @@
 						<tbody id="the-list-<?php echo $fieldset['id']; ?>">
 							<?php if( !empty($fieldset['fields']) && is_array($fieldset['fields']) ) : ?>
 								<?php foreach($fieldset['fields'] as $field_id => $enabled) : ?>
-									<tr id="field_row_<?php echo $field_id; ?>">
-										<td class="check-column"<?php echo (isset($field_settings[$field_id]['custom_row'])?' rowspan="2"':'');?>>
+									<tr id="field_row_<?php echo $field_id; ?>" class="field_row">
+										<td class="check-column">
 											<span class="drag-handle">move</span>
 										</td>
-										<td<?php echo (isset($field_settings[$field_id]['custom_row'])?' rowspan="2"':'');?>>
+										<td>
 											<strong><a href="#" rel="<?php echo $field_id; ?>"><?php echo $field_settings[$field_id]['title']; ?></a></strong>
 											<div class="row-actions">
 												<span class="edit"><a href="#" rel="<?php echo $field_id; ?>"><?php _e('Edit', JCF_TEXTDOMAIN); ?></a></span> |
@@ -68,7 +68,10 @@
 										<td><?php if($enabled) _e('Yes', JCF_TEXTDOMAIN); else  _e('No', JCF_TEXTDOMAIN);?></td>
 									</tr>
 									<?php if(isset($field_settings[$field_id]['custom_row'])) : ?>
-										<tr><td colspan="3"><?php do_action('jcf_custom_settings_row', $field_id); ?></td></tr>
+										<tr class="collection_list">
+											<td colspan="2"></td>
+											<td colspan="3"><?php do_action('jcf_custom_settings_row', $field_id); ?></td>
+										</tr>
 									<?php endif; ?>
 								<?php endforeach; ?>
 							<?php else : ?>

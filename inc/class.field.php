@@ -164,6 +164,14 @@ class Just_Field{
 	 *	@param  string  $str  string to be converted
 	 */
 	public function get_field_id( $str, $delimeter = '-' ){
+		/**
+		 * if is field of collection and itst post edit page create collection field id
+		 */
+		if( $this->is_collection_field() && $this->is_post_edit ){
+			$collection = jcf_init_field_object($this->collection_id, $this->fieldset_id);
+			return str_replace('-',$delimeter,'field'.$delimeter.$collection->id_base.$delimeter.$collection->number.$delimeter
+					.Just_Collection::$current_collection_field_key.$delimeter.$this->id.$delimeter.$str);
+		}
 		return 'field'.$delimeter.$this->id_base.$delimeter.$this->number.$delimeter.$str;
 	}
 
@@ -177,7 +185,7 @@ class Just_Field{
 		 */
 		if( $this->is_collection_field() && $this->is_post_edit ){
 			$collection = jcf_init_field_object($this->collection_id, $this->fieldset_id);
-			return 'field-'.$collection->id_base.'['.$collection->number.']['.$this->id.']['.$str.']';
+			return 'field-'.$collection->id_base.'['.$collection->number.']['.Just_Collection::$current_collection_field_key.']['.$this->id.']['.$str.']';
 		}
 		return 'field-'.$this->id_base.'['.$this->number.']['.$str.']';
 	}
@@ -262,15 +270,16 @@ class Just_Field{
 						</p>
 						<?php if($this->is_collection_field()) : ?>
 							<p>
-								<label for="<?php echo $this->get_field_id('cols_count'); ?>"><?php _e('Select Column Count', JCF_TEXTDOMAIN); ?></label>
+								<label for="<?php echo $this->get_field_id('field_width'); ?>"><?php _e('Select Field Width', JCF_TEXTDOMAIN); ?></label>
 									<select class="widefat" 
-											id="<?php echo $this->get_field_id('cols_count'); ?>"
-											name="<?php echo $this->get_field_name('cols_count'); ?>">
-										<option value="1"<?php echo (@$this->instance['cols_count']==1?' selected':''); ?>>1</option>
-										<option value="2"<?php echo (@$this->instance['cols_count']==2?' selected':''); ?>>2</option>
-										<option value="3"<?php echo (@$this->instance['cols_count']==3?' selected':''); ?>>3</option>
-										<option value="4"<?php echo (@$this->instance['cols_count']==4?' selected':''); ?>>4</option>
-										<option value="5"<?php echo (@$this->instance['cols_count']==5?' selected':''); ?>>5</option>
+											id="<?php echo $this->get_field_id('field_width'); ?>"
+											name="<?php echo $this->get_field_name('field_width'); ?>">
+										<option value="jcf_collection_quarterwidth"<?php echo (@$this->instance['field_width']=='jcf_collection_quarterwidth'?' selected':''); ?>>
+											Quarter Width</option>
+										<option value="jcf_collection_halfwidth"<?php echo (@$this->instance['field_width']=='jcf_collection_halfwidth'?' selected':''); ?>>
+											Half Width</option>
+										<option value="jcf_collection_fullwidth"<?php echo (@$this->instance['field_width']=='jcf_collection_fullwidth'?' selected':''); ?>>
+											Full Width</option>
 									</select> 
 									
 							</p>
@@ -373,10 +382,24 @@ class Just_Field{
 			if( empty($instance['slug']) ){
 				$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
 			}
-			$instance['cols_count'] = $input['cols_count'];
+			$instance['field_width'] = $input['field_width'];
 			$collection->instance['fields'][$this->id] = $instance;
 			// save
 			jcf_field_settings_update($this->collection_id, $collection->instance, $this->fieldset_id);
+			switch ($instance['field_width']){
+				case 'jcf_collection_quarterwidth' :
+					$instance['field_width_value'] = 'Quarter';
+					break;
+				case 'jcf_collection_halfwidth' :
+					$instance['field_width_value'] = 'Half';
+					break;
+				case 'jcf_collection_fullwidth' :
+					$instance['field_width_value'] = 'Full';
+					break;
+				default :
+					$instance['field_width_value'] = 'Quarter';
+					break;
+			}
 			// return status
 			$res = array(
 				'status' => '1',

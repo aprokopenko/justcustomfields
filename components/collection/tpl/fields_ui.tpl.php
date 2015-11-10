@@ -2,15 +2,15 @@
 	<thead><tr>
 		<th class="check-column">&nbsp;</th>
 		<th><?php _e('Title', JCF_TEXTDOMAIN); ?></th>
-		<th><?php _e('Type', JCF_TEXTDOMAIN); ?></th>
-		<th><?php _e('Cols', JCF_TEXTDOMAIN); ?></th>
-		<th><?php _e('Enabled', JCF_TEXTDOMAIN); ?></th>
+		<th width="150"><?php _e('Type', JCF_TEXTDOMAIN); ?></th>
+		<th width="50"><?php _e('Width', JCF_TEXTDOMAIN); ?></th>
+		<th width="100"><?php _e('Enabled', JCF_TEXTDOMAIN); ?></th>
 	</tr></thead>
 	<tfoot><tr>
 		<th class="check-column">&nbsp;</th>
 		<th><?php _e('Title', JCF_TEXTDOMAIN); ?></th>
 		<th><?php _e('Type', JCF_TEXTDOMAIN); ?></th>
-		<th><?php _e('Cols', JCF_TEXTDOMAIN); ?></th>
+		<th><?php _e('Width', JCF_TEXTDOMAIN); ?></th>
 		<th><?php _e('Enabled', JCF_TEXTDOMAIN); ?></th>
 	</tr></tfoot>
 	<tbody id="the-collection-list-<?php echo $collection_id; ?>">
@@ -30,7 +30,24 @@
 						</div>
 					</td>
 					<td><?php echo preg_replace('/\-[0-9]+$/', '', $field_id); ?></td>
-					<td><?php echo $field['cols_count']; ?></td>
+					<td>
+<?php 
+						switch ($field['field_width']){
+							case 'jcf_collection_quarterwidth' :
+								echo 'Quarter';
+								break;
+							case 'jcf_collection_halfwidth' :
+								echo 'Half';
+								break;
+							case 'jcf_collection_fullwidth' :
+								echo 'Full';
+								break;
+							default :
+								echo 'Quarter';
+								break;
+						}
+?>
+					</td>
 					<td><?php if($field['enabled']) _e('Yes', JCF_TEXTDOMAIN); else  _e('No', JCF_TEXTDOMAIN);?></td>
 				</tr>
 			<?php endforeach; ?>

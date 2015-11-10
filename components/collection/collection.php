@@ -8,6 +8,8 @@
 class Just_Collection extends Just_Field{
 	
 	public static $compatibility = "4.0+";
+	
+	public static $current_collection_field_key = 0;
 
 
 	public function __construct(){
@@ -24,30 +26,56 @@ class Just_Collection extends Just_Field{
 		
 	}
 	
-		/**
+	/**
 	 *	draw field on post edit form
 	 *	you can use $this->instance, $this->entry
 	 */
 	function field( $args ) {
 		extract( $args );
 		
+		self::$current_collection_field_key = 0;
+		if(empty($this->entry)) $this->entry = array('0' => '');
+		// add null element for etalon copy
+		$entries = array( '00' => '' ) + (array)$this->entry;
 		echo $before_widget;
 		echo $before_title . $this->instance['title'] . $after_title;
-		echo '<div class="jcf-field-container">';
-		foreach($this->instance['fields'] as $field_id => $field){
-			echo '<div class="collection_field_border collection_colssize_'.$field['cols_count'].'">';
-			$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
-			$field_obj->set_slug($field['slug']);
-			if(isset($this->entry[$field['slug']])){
-				$field_obj->entry = $this->entry[$field['slug']];
+?>
+		<div class="jcf-field-container">
+<?php
+			foreach($entries as $key => $fields){
+				if( $key === '00' ){
+					self::$current_collection_field_key = '00';
+				}
+?>
+				<div class="collection_field_group<?php echo (self::$current_collection_field_key === '00'?' hidden_collection':'')?>">
+					<span class="dashicons dashicons-sort wp-ui-text-highlight"></span>
+					<span class="dashicons dashicons-trash wp-ui-text-highlight"></span>
+<?php
+					foreach($this->instance['fields'] as $field_id => $field){
+						echo '<div class="collection_field_border '.($field['field_width']?$field['field_width']:'jcf_collection_fullwidth').'">';
+						$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
+						$field_obj->set_slug($field['slug']);
+						if(isset($fields[$field['slug']])){
+							$field_obj->entry = $fields[$field['slug']];
+						}
+						$field_obj->instance = $field;
+						$field_obj->is_post_edit = true;
+						$field_obj->field($field_obj->field_options);
+						echo '</div>';
+					}
+?>
+					
+					<div class="clr"></div>
+				</div>
+<?php
+				if(self::$current_collection_field_key === '00') {
+					self::$current_collection_field_key = 0;	
+				} else self::$current_collection_field_key = self::$current_collection_field_key + 1;
 			}
-			$field_obj->instance = $field;
-			$field_obj->is_post_edit = true;
-			$field_obj->field($field_obj->field_options);
-			echo '</div>';
-		}
-		echo '<div class="clr"></div></div>';
-		
+?>
+			<a href="#" class="jcf-btn jcf_add_more_collection"><?php _e('+ Add another Collection Item', JCF_TEXTDOMAIN); ?></a>
+		</div>
+<?php
 		echo $after_widget;
 	}
 	
@@ -56,13 +84,20 @@ class Just_Collection extends Just_Field{
 	 */
 	function save( $_values ){
 		$values = array();
-		foreach($this->instance['fields'] as $field_id => $field){
-			$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
-			if(isset($_values[$field_id])){
-				$values[$field['slug']] = $field_obj->save($_values[$field_id]);
-			} else {
-				$values[$field['slug']] = $field_obj->save(array('val'=>''));
+		// remove etalon element
+		$counter=0;
+		if(isset($_values['00'])) 
+			unset($_values['00']);
+		foreach($_values as $_value){
+			foreach($this->instance['fields'] as $field_id => $field){
+				$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
+				if(isset($_value[$field_id])){
+					$values[$counter][$field['slug']] = $field_obj->save($_value[$field_id]);
+				} else {
+					$values[$counter][$field['slug']] = $field_obj->save(array('val'=>''));
+				}
 			}
+			$counter++;
 		}
 		return $values;
 	}
@@ -74,7 +109,6 @@ class Just_Collection extends Just_Field{
 		$instance = $old_instance;
 		//var_dump($new_instance);
 		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['description'] = strip_tags($new_instance['description']);
 		$instance['custom_row'] = true;
 		return $instance;
 	}
@@ -87,6 +121,9 @@ class Just_Collection extends Just_Field{
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'description' => '' ) );
 		$description = esc_html($instance['description']);
 		$title = esc_attr( $instance['title'] );
+		?>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', JCF_TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		<?php
 	}
 		
 	/**
@@ -112,6 +149,13 @@ class Just_Collection extends Just_Field{
 	 *	add custom scripts and styles from collection fields
 	 */
 	public function add_js(){
+		
+		wp_register_script(
+				'jcf_collection_post_edit',
+				WP_PLUGIN_URL.'/just-custom-fields/components/collection/assets/collection_post_edit.js',
+				array('jquery')
+			);
+		wp_enqueue_script('jcf_collection_post_edit');
 		foreach($this->instance['fields'] as $field_id => $field){
 			$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
 			if(  method_exists($field_obj, 'add_js')) $field_obj->add_js();

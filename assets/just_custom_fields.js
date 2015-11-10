@@ -252,20 +252,28 @@ function initFieldsetFields(){
 	});
 	
 	// init sortable
+	var collection_fields_list='';
 	jQuery('#jcf_fieldsets tbody:first').sortable({
 		handle: 'span.drag-handle',
 		opacity:0.7,
 		placeholder: 'sortable_placeholder',
+		scroll: true,
 		start: function (event, ui) { 
+			if(jQuery(ui.placeholder).next('tr').hasClass('collection_list')){
+				collection_fields_list = jQuery(ui.placeholder).next('tr').html();
+				jQuery(ui.placeholder).next('tr').remove();
+			}
+			jQuery('.collection_list').hide();
 			ui.placeholder.html('<td colspan="4"><br>&nbsp;</td>');
 		},
 		stop: function(event, ui){
 			// ui.item - item in the list
+			jQuery('.collection_list').show();
 			var order = '';
 			var fieldset = jQuery(ui.item).parent();
 			var f_id = fieldset.attr('id').replace('the-list-', '');
-			fieldset.find('tr').each(function(i, tr){
-				order += jQuery(tr).attr('id').replace('field_row_', '') + ',';
+			fieldset.find('tr.field_row').each(function(i, tr){
+				if(jQuery(tr).attr('id')) order += jQuery(tr).attr('id').replace('field_row_', '') + ',';
 			});
 			
 			var data = {
@@ -273,7 +281,10 @@ function initFieldsetFields(){
 				'fieldset_id': f_id,
 				'fields_order': order
 			};
-
+			if(collection_fields_list) {
+				jQuery(ui.item).after('<tr class="collection_list">'+collection_fields_list+'</tr>');
+				collection_fields_list = '';
+			}
 			//pa(data);
 			jcf_ajax(data, 'json');
 		}

@@ -1,26 +1,38 @@
-	.collection_field_border{
+.collection_field_group{
+	border-bottom: 1px solid #dfdfdf;
+	padding-bottom: 15px;
+	margin-bottom: 15px;
+}
+.collection_field_group .collection_field_border{
 	background: #fff;
-    border: 1px solid #dfdfdf;
     border-radius: 11px;
-    padding: 5px 5px 40px;
+    padding: 5px 5px 20px;
 	float: left;
-	margin-right: 5px;
+	margin-right: 2px;
 }
-
-.collection_colssize_1{
-	width: 19%;	
+.collection_field_group span.dashicons{
+	cursor: pointer;
+	font-size: 24px;
 }
-.collection_colssize_2{
-	width: 38%;	
+.hidden_collection{
+	display: none;
 }
-.collection_colssize_3{
-	width: 56%;	
+.jcf_collection_quarterwidth{
+	width: 24%;	
 }
-.collection_colssize_4{
-	width: 72%;	
+.jcf_collection_halfwidth{
+	width: 48%;	
 }
-.collection_colssize_5{
-	width: 90%;	
+.jcf_collection_fullwidth{
+	width: 99%;	
+	margin: 0;
+	float: none;
+	clear: both;
+}
+div.jcf_edit_field .jcf_collection_quarterwidth input, 
+div.jcf_edit_field .jcf_collection_quarterwidth select, 
+div.jcf_edit_field .jcf_collection_quarterwidth textarea{
+	width: 100% !important;
 }
 .clr{
 	clear: both;

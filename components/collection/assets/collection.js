@@ -50,7 +50,7 @@ function initCollectionFields(){
 				// add new row
 				var html;
 				html = '<tr id="collection_field_row_' + response.id + '">';
-				//html += '	<td class="check-column"><span class="drag-handle">move</span></td>';
+				html += '	<td class="check-column"><span class="drag-handle">move</span></td>';
 				html += '<td><strong><a href="#" rel="' + response.id + '">' + response.instance.title + '</a></strong>';
 				html += '	<div class="row-actions">';
 				html += '		<span class="edit_collection"><a href="#" rel="' + response.id + '" data-collection_id="'+response.collection_id+'">'+ jcf_textdomain.edit +'</a></span> |';
@@ -58,7 +58,7 @@ function initCollectionFields(){
 				html += '	</div>';
 				html += '</td>';
 				html += '<td>'+response.id_base+'</td>';
-				html += '<td>'+response.instance.cols_count+'</td>';
+				html += '<td>'+response.instance.field_width_value+'</td>';
 				html += '<td>'+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</td>';
 				fieldset.append(html);
 			}
@@ -129,6 +129,7 @@ function initCollectionFields(){
 		handle: 'span.drag-handle',
 		opacity:0.7,
 		placeholder: 'collection_sortable_placeholder',
+		scroll: true,
 		start: function (event, ui) { 
 			ui.placeholder.html('<td colspan="4"><br>&nbsp;</td>');
 		},

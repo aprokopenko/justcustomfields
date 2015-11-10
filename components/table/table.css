@@ -1,4 +1,4 @@
-.jcf_edit_field.field_table table.sortable .drag-handle{
+table.sortable .drag-handle{
 	cursor: move;
 	background:url(icon-move.png) no-repeat 0 0;
 	float:left;
@@ -9,7 +9,7 @@
 	margin:5px 3px;
 }
 
-.jcf_edit_field.field_table table.sortable  .jcf_delete_row{
+table.sortable  .jcf_delete_row{
 	cursor: pointer;
 	background:url(icon-delete.png) no-repeat 0 0;
 	float:left;
@@ -20,7 +20,7 @@
 	margin:5px 3px;
 }
 
-.jcf_edit_field.field_table table.sortable .hide{
+table.sortable .hide{
 	display:none;
 }
 .jcf_option_column{
