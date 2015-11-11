@@ -155,6 +155,11 @@
 		$field_obj = jcf_init_field_object($field_type, $fieldset_id, $collection_id);
 		
 		$resp = $field_obj->do_update();
+		if(isset($resp['id_base']) && $resp['id_base'] == 'collection'){
+			ob_start();
+			Just_Collection::settings_row($resp['id']);
+			$resp["collection_fields"] = ob_get_clean();
+		}
 		jcf_ajax_reposnse($resp, 'json');
 
 	}

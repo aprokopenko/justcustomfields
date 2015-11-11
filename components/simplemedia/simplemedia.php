@@ -52,7 +52,7 @@ class Just_Simple_Media extends Just_Field
 				<div class="jcf-simple-container">
 					<?php if( $upload_type == 'image' ) : ?>
 						<div class="jcf-simple-image">
-							<a href="<?php echo $link; ?>" class="jcf-btn" target="_blank"><img src="<?php echo ((!empty($link) && $link!='#')? $link : $noimage); ?>" height="77" alt="" /></a>
+							<a href="<?php echo $link; ?>" class="" target="_blank"><img src="<?php echo ((!empty($link) && $link!='#')? $link : $noimage); ?>" height="77" alt="" /></a>
 						</div>
 					<?php endif; ?>
 					<div class="jcf-simple-file-info">
@@ -62,7 +62,7 @@ class Just_Simple_Media extends Just_Field
 								name="<?php echo $this->get_field_name('uploaded_file'); ?>"
 								value="<?php echo $value; ?>" />
 						<p class="<?php echo $delete_class; ?>"><a href="<?php echo $link; ?>" target="_blank"><?php echo basename($link); ?></a></p>
-							<a href="#"  id="simplemedia-<?php echo $this->get_field_id('uploaded_file'); ?>" class="jcf-btn"
+							<a href="#"  id="simplemedia-<?php echo $this->get_field_id('uploaded_file'); ?>" class="button button-large "
 							   data-selected_id="<?php echo $this->get_field_id('uploaded_file'); ?>" 
 							   data-uploader_title="<?php echo $upload_text; ?>" 
 							   data-media_type="<?php echo ($upload_type == 'image'?$upload_type:''); ?>"
@@ -78,12 +78,12 @@ class Just_Simple_Media extends Just_Field
 									}
 								});
 							</script>
-						<a href="#" class="jcf-btn jcf_simple_delete<?php echo $delete_class; ?>" data-field_id="<?php echo $this->get_field_id('uploaded_file'); ?>"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a>
+						<a href="#" class="button button-large jcf_simple_delete<?php echo $delete_class; ?>" data-field_id="<?php echo $this->get_field_id('uploaded_file'); ?>"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a>
 					</div>
 				</div>
 				<div class="jcf-delete-layer">
 					<img src="<?php echo $del_image; ?>" alt="" />
-					<a href="#" class="jcf-btn jcf_simple_cancel" data-field_id="<?php echo $this->get_field_id('uploaded_file'); ?>"><?php _e('Undo delete', JCF_TEXTDOMAIN); ?></a><br/>
+					<a href="#" class="button button-large jcf_simple_cancel" data-field_id="<?php echo $this->get_field_id('uploaded_file'); ?>"><?php _e('Undo delete', JCF_TEXTDOMAIN); ?></a><br/>
 				</div>
 			</div>
 		</div>
@@ -128,7 +128,7 @@ class Just_Simple_Media extends Just_Field
 		$instance['type'] = (isset($instance['type']))? $instance['type'] : 'file';
 		$instance = wp_parse_args( (array) $instance,
 				array( 'title' => '', 'type' => 'file', 'autoresize' => '',
-					  'description' => __('Press "Upload" button, upload file or select in the library. Then choose Link "None" and "Full size" and press "Select File".', JCF_TEXTDOMAIN) ) );
+					  'description' => ''));
 
 		$title = esc_attr( $instance['title'] );
 		$type = $instance['type'];

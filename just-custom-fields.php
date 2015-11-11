@@ -212,7 +212,7 @@ function jcf_get_language_strings(){
 
 // print image with loader
 function print_loader_img(){
-	return '<img class="ajax-feedback " alt="" title="" src="' . get_bloginfo('url') . '//wp-admin/images/wpspin_light.gif" style="visibility: hidden;">';
+	return '<img class="ajax-feedback " alt="" title="" src="' . get_bloginfo('wpurl') . '/wp-admin/images/wpspin_light.gif" style="visibility: hidden;">';
 }
 
 // set post_type in global variable, so we can use it in internal functions

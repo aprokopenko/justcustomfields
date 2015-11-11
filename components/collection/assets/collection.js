@@ -9,7 +9,7 @@ jQuery(document).ready(function(){
 function initCollectionFields(){
 	
 	// init add form
-	jQuery('form.jcform_add_collection_field').submit(function(e){
+	jQuery('form.jcform_add_collection_field').live('submit', function(e){
 		e.preventDefault();
 		
 		var data = { action: 'jcf_add_field' };
@@ -142,7 +142,6 @@ function initCollectionFields(){
 			fieldset.find('tr').each(function(i, tr){
 				order += jQuery(tr).attr('id').replace('collection_field_row_', '') + ',';
 			});
-			
 			var data = {
 				'action': 'jcf_collection_order',
 				'fieldset_id': f_id,
@@ -153,6 +152,4 @@ function initCollectionFields(){
 			jcf_ajax(data, 'json');
 		}
 	});
-	
-	//**/
 }

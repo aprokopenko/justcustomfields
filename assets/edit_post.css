@@ -137,7 +137,6 @@ div.jcf_edit_field .quicktags-toolbar input{
 	-webkit-border-radius: 5px;
 }
 .jcf_shortcodes_tooltip .jcf_inner_box .header{
-	background:#f1f1f1 url(../../../../wp-admin/images/gray-grad.png) repeat-x 0 0;
 	color:#333;
 	text-shadow:0 1px 0 rgba(255, 255, 255, 0.8);
 	line-height:30px;

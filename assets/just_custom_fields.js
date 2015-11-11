@@ -167,7 +167,6 @@ function initFieldsetFields(){
 		// send request
 		jcf_ajax(data, 'json', loader, function(response){
 			
-			console.log(response);
 			var fieldset = jQuery('#the-list-' + response.fieldset_id);
 			
 			if( response.is_new ){
@@ -178,9 +177,9 @@ function initFieldsetFields(){
 				}
 				// add new row
 				var html;
-				html = '<tr id="field_row_' + response.id + '">';
+				html = '<tr id="field_row_' + response.id + '" class="field_row">';
 				html += '	<td class="check-column"><span class="drag-handle">move</span></td>';
-				html += '<td><strong><a href="#" rel="' + response.id + '">' + response.instance.title + '</a></strong>';
+				html += '	<td><strong><a href="#" rel="' + response.id + '">' + response.instance.title + '</a></strong>';
 				html += '	<div class="row-actions">';
 				html += '		<span class="edit"><a href="#" rel="' + response.id + '">'+ jcf_textdomain.edit +'</a></span> |';
 				html += '		<span class="delete"><a href="#" rel="' + response.id + '">'+ jcf_textdomain.delete +'</a></span>';
@@ -189,6 +188,12 @@ function initFieldsetFields(){
 				html += '<td>'+response.instance.slug+'</td>';
 				html += '<td>'+response.id_base+'</td>';
 				html += '<td>'+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</td>';
+				if(response.collection_fields){
+					html +='<tr class="collection_list">';
+					html += '<td colspan="2"></td>';
+					html += '<td colspan="3">'+response.collection_fields+'</td>';
+					html += '</tr>';
+				}
 				fieldset.append(html);
 			}
 			
@@ -217,6 +222,7 @@ function initFieldsetFields(){
 			};
 			
 			jcf_ajax(data, 'json', null, function(response){
+				row.next('tr.collection_list:first').remove();
 				row.remove();
 				// close edit box if exists
 				jcf_hide_ajax_container();
@@ -275,6 +281,7 @@ function initFieldsetFields(){
 			fieldset.find('tr.field_row').each(function(i, tr){
 				if(jQuery(tr).attr('id')) order += jQuery(tr).attr('id').replace('field_row_', '') + ',';
 			});
+			setCollectionFieldsToPosition(fieldset)
 			
 			var data = {
 				'action': 'jcf_fields_order',
@@ -289,6 +296,14 @@ function initFieldsetFields(){
 			jcf_ajax(data, 'json');
 		}
 	});
+	
+	function setCollectionFieldsToPosition( fieldset ){
+		fieldset.find('tr.collection_list').each(function(i, tr){
+			var collection_id = jQuery(tr).find('td:first').data('collection_id');
+			jQuery('tr.'+collection_id).after('<tr class="collection_list">'+jQuery(tr).html()+'</tr>');
+			tr.remove();
+		});
+	}
 }
 
 /**

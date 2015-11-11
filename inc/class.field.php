@@ -269,18 +269,30 @@ class Just_Field{
 								<?php _e('Enabled', JCF_TEXTDOMAIN); ?></label>
 						</p>
 						<?php if($this->is_collection_field()) : ?>
+							<?php if($this->id_base == 'inputtext') : ?>
+								<p>
+									<label for="<?php echo $this->get_field_id('group_title'); ?>">
+										<input class="checkbox" type="checkbox" 
+											id="<?php echo $this->get_field_id('group_title'); ?>"
+											name="<?php echo $this->get_field_name('group_title'); ?>"
+											value="1" <?php checked(true, @$this->instance['group_title']); ?> />
+										<?php _e('Use this field as collection item title?', JCF_TEXTDOMAIN); ?>
+									</label>
+								</p>
+						
+							<?php endif; ?>
 							<p>
 								<label for="<?php echo $this->get_field_id('field_width'); ?>"><?php _e('Select Field Width', JCF_TEXTDOMAIN); ?></label>
-									<select class="widefat" 
-											id="<?php echo $this->get_field_id('field_width'); ?>"
-											name="<?php echo $this->get_field_name('field_width'); ?>">
-										<option value="jcf_collection_quarterwidth"<?php echo (@$this->instance['field_width']=='jcf_collection_quarterwidth'?' selected':''); ?>>
-											Quarter Width</option>
-										<option value="jcf_collection_halfwidth"<?php echo (@$this->instance['field_width']=='jcf_collection_halfwidth'?' selected':''); ?>>
-											Half Width</option>
-										<option value="jcf_collection_fullwidth"<?php echo (@$this->instance['field_width']=='jcf_collection_fullwidth'?' selected':''); ?>>
-											Full Width</option>
-									</select> 
+								<select class="widefat" 
+										id="<?php echo $this->get_field_id('field_width'); ?>"
+										name="<?php echo $this->get_field_name('field_width'); ?>">
+									<option value="jcf_collection_quarterwidth"<?php echo (@$this->instance['field_width']=='jcf_collection_quarterwidth'?' selected':''); ?>>
+										Quarter Width</option>
+									<option value="jcf_collection_halfwidth"<?php echo (@$this->instance['field_width']=='jcf_collection_halfwidth'?' selected':''); ?>>
+										Half Width</option>
+									<option value="jcf_collection_fullwidth"<?php echo (@$this->instance['field_width']=='jcf_collection_fullwidth'?' selected':''); ?>>
+										Full Width</option>
+								</select> 
 									
 							</p>
 						<?php endif; ?>
@@ -383,6 +395,7 @@ class Just_Field{
 				$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
 			}
 			$instance['field_width'] = $input['field_width'];
+			if(isset($input['group_title'])) $instance['group_title'] = true;
 			$collection->instance['fields'][$this->id] = $instance;
 			// save
 			jcf_field_settings_update($this->collection_id, $collection->instance, $this->fieldset_id);

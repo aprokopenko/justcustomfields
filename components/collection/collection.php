@@ -16,7 +16,7 @@ class Just_Collection extends Just_Field{
 		$field_ops = array( 'classname' => 'field_collection' );
 		parent::__construct('collection', __('Collection', JCF_TEXTDOMAIN), $field_ops);
 		
-		add_action('jcf_custom_settings_row', array($this, 'settings_row'));
+		add_action('jcf_custom_settings_row', array('Just_Collection', 'settings_row'));
 		
 		if( !empty($_GET['page']) && $_GET['page'] == 'just_custom_fields' ){
 			//add_action('admin_print_styles', 'jcf_admin_add_styles');
@@ -40,7 +40,7 @@ class Just_Collection extends Just_Field{
 		echo $before_widget;
 		echo $before_title . $this->instance['title'] . $after_title;
 ?>
-		<div class="jcf-field-container">
+		<div class="collection_fields">
 <?php
 			foreach($entries as $key => $fields){
 				if( $key === '00' ){
@@ -48,24 +48,40 @@ class Just_Collection extends Just_Field{
 				}
 ?>
 				<div class="collection_field_group<?php echo (self::$current_collection_field_key === '00'?' hidden_collection':'')?>">
-					<span class="dashicons dashicons-sort wp-ui-text-highlight"></span>
-					<span class="dashicons dashicons-trash wp-ui-text-highlight"></span>
-<?php
-					foreach($this->instance['fields'] as $field_id => $field){
-						echo '<div class="collection_field_border '.($field['field_width']?$field['field_width']:'jcf_collection_fullwidth').'">';
-						$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
-						$field_obj->set_slug($field['slug']);
-						if(isset($fields[$field['slug']])){
-							$field_obj->entry = $fields[$field['slug']];
+					<h3>
+						<span class="dashicons dashicons-editor-justify"></span>
+						<?php
+							$group_title = __('Collection Fields',JCF_TEXTDOMAIN);
+							foreach($this->instance['fields'] as $field_id => $field){
+								if(isset($field['group_title'])){
+									$group_title = $this->instance['title'].' Item';
+									if(isset($fields[$field['slug']])) $group_title = $group_title.' : '.$fields[$field['slug']];
+									break;
+								}
+							}
+							echo $group_title;
+						 ?>
+						<span class="dashicons dashicons-trash"></span>
+						
+					</h3>
+					<div>
+<?php					
+						foreach($this->instance['fields'] as $field_id => $field){
+							echo '<div class="collection_field_border '.($field['field_width']?$field['field_width']:'jcf_collection_fullwidth').'">';
+							$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
+							$field_obj->set_slug($field['slug']);
+							if(isset($fields[$field['slug']])){
+								$field_obj->entry = $fields[$field['slug']];
+							}
+							$field_obj->instance = $field;
+							$field_obj->is_post_edit = true;
+							$field_obj->field($field_obj->field_options);
+							echo '</div>';
 						}
-						$field_obj->instance = $field;
-						$field_obj->is_post_edit = true;
-						$field_obj->field($field_obj->field_options);
-						echo '</div>';
-					}
 ?>
-					
-					<div class="clr"></div>
+
+						<div class="clr"></div>
+					</div>
 				</div>
 <?php
 				if(self::$current_collection_field_key === '00') {
@@ -73,7 +89,7 @@ class Just_Collection extends Just_Field{
 				} else self::$current_collection_field_key = self::$current_collection_field_key + 1;
 			}
 ?>
-			<a href="#" class="jcf-btn jcf_add_more_collection"><?php _e('+ Add another Collection Item', JCF_TEXTDOMAIN); ?></a>
+			<input type="button" value="<?php _e('Add another Collection Item', JCF_TEXTDOMAIN); ?>" class="button button-large jcf_add_more_collection"" name="save">
 		</div>
 <?php
 		echo $after_widget;
@@ -125,25 +141,6 @@ class Just_Collection extends Just_Field{
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', JCF_TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 		<?php
 	}
-		
-	/**
-	 * create custom table on jcf settings fields
-	 */
-	
-	public function settings_row($collection_id)
-	{
-		$jcf_read_settings = jcf_get_read_settings();
-		if( $jcf_read_settings == JCF_CONF_SOURCE_DB ){
-			$collection = jcf_field_settings_get($collection_id);		
-		}
-		else{
-			$post_type = jcf_get_post_type();
-			$jcf_settings = jcf_get_all_settings_from_file();
-			$collection = $jcf_settings['field_settings'][ $post_type->name ][$collection_id];
-		}
-		$registered_fields = $this->register_fields();
-		include( JCF_ROOT . '/components/collection/tpl/fields_ui.tpl.php' );
-	}
 	
 	/**
 	 *	add custom scripts and styles from collection fields
@@ -151,10 +148,11 @@ class Just_Collection extends Just_Field{
 	public function add_js(){
 		
 		wp_register_script(
-				'jcf_collection_post_edit',
-				WP_PLUGIN_URL.'/just-custom-fields/components/collection/assets/collection_post_edit.js',
-				array('jquery')
-			);
+			'jcf_collection_post_edit',
+			WP_PLUGIN_URL.'/just-custom-fields/components/collection/assets/collection_post_edit.js',
+			array('jquery')
+		);
+		wp_enqueue_script('jquery-ui-accordion');
 		wp_enqueue_script('jcf_collection_post_edit');
 		foreach($this->instance['fields'] as $field_id => $field){
 			$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
@@ -180,12 +178,31 @@ class Just_Collection extends Just_Field{
 		wp_enqueue_script('jcf_collections');
 
 	}
+		
+	/**
+	 * create custom table on jcf settings fields
+	 */
+	
+	public static function settings_row($collection_id)
+	{
+		$jcf_read_settings = jcf_get_read_settings();
+		if( $jcf_read_settings == JCF_CONF_SOURCE_DB ){
+			$collection = jcf_field_settings_get($collection_id);		
+		}
+		else{
+			$post_type = jcf_get_post_type();
+			$jcf_settings = jcf_get_all_settings_from_file();
+			$collection = $jcf_settings['field_settings'][ $post_type ][$collection_id];
+		}
+		$registered_fields = self::register_fields();
+		include( JCF_ROOT . '/components/collection/tpl/fields_ui.tpl.php' );
+	}
 	
 	/**
 	 * registered Fields Type for collection 
 	 * @return type
 	 */
-	public function register_fields()
+	public static function register_fields()
 	{
 		$registered_fields = array();
 		$fields = array(
