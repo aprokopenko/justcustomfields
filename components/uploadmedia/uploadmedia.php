@@ -4,8 +4,7 @@
  *	function to get link to the thumbnail script
  */
 function jcf_get_thumb_path( $image, $size = '100x77' ){
-	$dirname = str_replace('\\', '/', dirname(__FILE__));
-	$cachedir = array_shift( explode('/plugins/', $dirname) ) . '/uploads/jcfupload';
+	$cachedir = WP_CONTENT_DIR . '/uploads/jcfupload';
 	
 	$new_size = explode('x', $size);
 	
@@ -20,10 +19,10 @@ function jcf_get_thumb_path( $image, $size = '100x77' ){
 	$hash = md5($image.$new_size[0].'x'.$new_size[1]);
 	$thumbfile = $cachedir . '/' . $hash . '.' . $ext;
 	if( is_file($thumbfile) ){
-		return get_bloginfo('wpurl') . '/wp-content/uploads/jcfupload/' . basename($thumbfile);
+		return get_bloginfo('url') . '/wp-content/uploads/jcfupload/' . basename($thumbfile);
 	}
 	else{
-		return get_bloginfo('wpurl') . '/wp-content/plugins/just-custom-fields/components/uploadmedia/thump.php?image='.rawurlencode($image).'&amp;size='.$size;
+		return get_bloginfo('url') . '/wp-content/plugins/just-custom-fields/components/uploadmedia/thump.php?image='.rawurlencode($image).'&amp;size='.$size;
 	}
 }
 
@@ -32,10 +31,13 @@ function jcf_get_thumb_path( $image, $size = '100x77' ){
  */
 class Just_Field_Upload extends Just_Field{
 	
-	function Just_Field_Upload(){
+	public static $compatibility = '4.0-';
+
+
+	public function __construct(){
 
 		$field_ops = array( 'classname' => 'field_uploadmedia' );
-		$this->Just_Field( 'uploadmedia', __('Upload Media', JCF_TEXTDOMAIN), $field_ops);
+		parent::__construct( 'uploadmedia', __('Upload Media', JCF_TEXTDOMAIN), $field_ops);
 		
 		add_action('admin_head' , array($this , 'add_MediaUploader_js'));
 	}
@@ -44,7 +46,7 @@ class Just_Field_Upload extends Just_Field{
 	 *	draw field on post edit form
 	 *	you can use $this->instance, $this->entry
 	 */
-	function field( $args ) {
+	public function field( $args ) {
 		extract( $args );
 		
 		echo $before_widget;
@@ -133,7 +135,7 @@ class Just_Field_Upload extends Just_Field{
 	/**
 	 *	save field on post edit form
 	 */
-	function save( $_values ){
+	public function save( $_values ){
 		$values = array();
 		if(empty($_values)) return $values;
 	
@@ -183,7 +185,7 @@ class Just_Field_Upload extends Just_Field{
 	/**
 	 *	update instance (settings) for current field
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		
 		$instance['title'] 			= strip_tags($new_instance['title']);
@@ -199,9 +201,8 @@ class Just_Field_Upload extends Just_Field{
 	/**
 	 *	print settings form for field
 	 */	
-	function form( $instance ) {
+	public function form( $instance ) {
 		//Defaults
-		$instance['type'] = ($instance['type'])? $instance['type'] : 'file';
 		$instance = wp_parse_args( (array) $instance,
 				array( 'title' => '', 'type' => 'file', 'autoresize' => '',
 					  'description' => __('Press "Upload" button, upload file or select in the library. Then choose Link "None" and "Full size" and press "Select File".', JCF_TEXTDOMAIN) ) );
@@ -235,18 +236,18 @@ class Just_Field_Upload extends Just_Field{
 	/**
 	 *	custom get_field functions to add one more deep level
 	 */
-	function get_field_id_l2( $field, $number ){
+	protected function get_field_id_l2( $field, $number ){
 		return $this->get_field_id( $number . '-' . $field );
 	}
 
-	function get_field_name_l2( $field, $number ){
+	protected function get_field_name_l2( $field, $number ){
 		return $this->get_field_name( $number . '][' . $field );
 	}
 	
 	/**
 	 *	add custom scripts
 	 */
-	function add_js(){
+	public function add_js(){
 		wp_register_script(
 				'jcf_uploadmedia',
 				WP_PLUGIN_URL.'/just-custom-fields/components/uploadmedia/assets/uploadmedia.js',
@@ -261,7 +262,7 @@ class Just_Field_Upload extends Just_Field{
 		}
 	}
 	
-	function add_css(){
+	public function add_css(){
 		wp_register_style('jcf_uploadmedia',
 				WP_PLUGIN_URL.'/just-custom-fields/components/uploadmedia/assets/uploadmedia.css',
 				array('thickbox'));
@@ -271,7 +272,7 @@ class Just_Field_Upload extends Just_Field{
 	/**
 	 *	this add js script to the Upload Media wordpress popup
 	 */
-	function add_MediaUploader_js(){
+	public function add_MediaUploader_js(){
 		global $pagenow;
 		if ($pagenow != 'media-upload.php' || empty($_GET ['jcf_media']))
 			return;
@@ -295,5 +296,26 @@ class Just_Field_Upload extends Just_Field{
 		<?php
 	}
 	
+	/**
+	 *	print fields values from shortcode
+	 */
+	public function shortcode_value($args){
+		if(empty($this->entry)) return '';
+		
+		$html = '';
+		foreach($this->entry as $key => $value){
+			$html .= '<div class="jcf-item jcf-item-i'.$key.'">';
+			$html .= '<div class="jcf-item-image">';
+			$html .= '	<img src="' . esc_attr($value['image']) . '" ' . (!empty($value['title']) ? 'alt="' . esc_attr($value['title']) . '" ' : '') . ' />';
+			$html .= '</div>';
+			if( !empty($value['title']) )
+				$html .= '<span class="jcf-item-title">' . esc_html($value['title']) . '</span>';
+			if( !empty($value['description']) )
+				$html .= '<div class="jcf-item-description">' . esc_html($value['description']) . '</div>';
+			$html .= '</div>';
+		}
+
+		return  $args['before_value'] . $html . $args['after_value'];
+	}
 }
 ?>

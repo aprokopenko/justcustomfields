@@ -29,6 +29,7 @@ require_once( JCF_ROOT.'/inc/functions.fields.php' );
 require_once( JCF_ROOT.'/inc/functions.ajax.php' );
 require_once( JCF_ROOT.'/inc/functions.post.php' );
 require_once( JCF_ROOT.'/inc/functions.themes.php' );
+require_once( JCF_ROOT.'/inc/functions.shortcodes.php' );
 require_once( JCF_ROOT.'/inc/functions.import.php' );
 
 // composants
@@ -38,10 +39,12 @@ require_once( JCF_ROOT.'/components/select-multiple.php' );
 require_once( JCF_ROOT.'/components/checkbox.php' );
 require_once( JCF_ROOT.'/components/textarea.php' );
 require_once( JCF_ROOT.'/components/datepicker/datepicker.php' );
+require_once( JCF_ROOT.'/components/simplemedia/simplemedia.php' );
 require_once( JCF_ROOT.'/components/uploadmedia/uploadmedia.php' );
 require_once( JCF_ROOT.'/components/fieldsgroup/fields-group.php' );
 require_once( JCF_ROOT.'/components/relatedcontent/related-content.php' );
 require_once( JCF_ROOT.'/components/table/table.php' );
+require_once( JCF_ROOT.'/components/collection/collection.php' );
 
 
 if(!function_exists('pa')){
@@ -97,10 +100,12 @@ function jcf_init(){
 	jcf_field_register( 'Just_Field_Checkbox' );
 	jcf_field_register( 'Just_Field_Textarea' );
 	jcf_field_register( 'Just_Field_DatePicker' );
+	jcf_field_register( 'Just_Simple_Media' );
 	jcf_field_register( 'Just_Field_Upload' );
 	jcf_field_register( 'Just_Field_FieldsGroup' );
 	jcf_field_register( 'Just_Field_RelatedContent' );
 	jcf_field_register( 'Just_Field_Table' );
+	jcf_field_register( 'Just_Collection' );
 	/**
 	 *	to add more fields with your custom plugin:
 	 *	- add_action  'jcf_register_fields'
@@ -207,7 +212,7 @@ function jcf_get_language_strings(){
 
 // print image with loader
 function print_loader_img(){
-	return '<img class="ajax-feedback " alt="" title="" src="' . get_bloginfo('url') . '/wp-admin/images/wpspin_light.gif" style="visibility: hidden;">';
+	return '<img class="ajax-feedback " alt="" title="" src="' . get_bloginfo('url') . '//wp-admin/images/wpspin_light.gif" style="visibility: hidden;">';
 }
 
 // set post_type in global variable, so we can use it in internal functions
