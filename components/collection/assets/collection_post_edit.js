@@ -10,7 +10,11 @@ jQuery(document).ready(function(){
 	jQuery('.collection_fields').accordion({
 		header: "h3",
 		icons: false,
-		//collapsible: true
+		beforeActivate: function(event, ui){
+			if(jQuery(ui.newHeader).hasClass('jcf_field_removed')){
+				return false;
+			}
+		}
 	});
 	
 	// init sortable
@@ -52,7 +56,10 @@ function jcf_collection_fields_control(){
 	})
 	
 	jQuery('div.collection_field_group span.dashicons-trash').live( 'click', function(e) {
-		e.preventDefault();
+		e.preventDefault();		
+			/*jQuery(this).parent().find('.collection_group_title').after('<span class="jcf_collection_removed">Removed</span>');
+			jQuery(this).parent().addClass('jcf_field_removed');
+			jQuery(this).parent().next('div').slideToggle();*/
 		if(confirm('Are you sure you want to delete the Collection Fields Group?')){
 			jQuery(this).parent().parent().remove();
 		}

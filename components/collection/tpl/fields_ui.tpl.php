@@ -44,20 +44,12 @@
 					<td><?php echo preg_replace('/\-[0-9]+$/', '', $field_id); ?></td>
 					<td>
 <?php 
-						switch ($field['field_width']){
-							case 'jcf_collection_quarterwidth' :
-								echo 'Quarter';
+						foreach(Just_Collection::$field_width as $key => $width) : 
+							if( $key == $field['field_width']) :
+								echo $width;
 								break;
-							case 'jcf_collection_halfwidth' :
-								echo 'Half';
-								break;
-							case 'jcf_collection_fullwidth' :
-								echo 'Full';
-								break;
-							default :
-								echo 'Quarter';
-								break;
-						}
+							endif;
+						endforeach;
 ?>
 					</td>
 					<td><?php if($field['enabled']) _e('Yes', JCF_TEXTDOMAIN); else  _e('No', JCF_TEXTDOMAIN);?></td>

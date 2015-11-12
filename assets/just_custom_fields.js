@@ -190,7 +190,7 @@ function initFieldsetFields(){
 				html += '<td>'+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</td>';
 				if(response.collection_fields){
 					html +='<tr class="collection_list">';
-					html += '<td colspan="2"></td>';
+					html += '<td colspan="2" data-collection_id="' + response.id + '"></td>';
 					html += '<td colspan="3">'+response.collection_fields+'</td>';
 					html += '</tr>';
 				}
@@ -265,16 +265,15 @@ function initFieldsetFields(){
 		placeholder: 'sortable_placeholder',
 		scroll: true,
 		start: function (event, ui) { 
-			if(jQuery(ui.placeholder).next('tr').hasClass('collection_list')){
+			/*if(jQuery(ui.placeholder).next('tr').hasClass('collection_list')){
 				collection_fields_list = jQuery(ui.placeholder).next('tr').html();
 				jQuery(ui.placeholder).next('tr').remove();
-			}
+			}*/
 			jQuery('.collection_list').hide();
 			ui.placeholder.html('<td colspan="4"><br>&nbsp;</td>');
 		},
 		stop: function(event, ui){
 			// ui.item - item in the list
-			jQuery('.collection_list').show();
 			var order = '';
 			var fieldset = jQuery(ui.item).parent();
 			var f_id = fieldset.attr('id').replace('the-list-', '');
@@ -282,16 +281,17 @@ function initFieldsetFields(){
 				if(jQuery(tr).attr('id')) order += jQuery(tr).attr('id').replace('field_row_', '') + ',';
 			});
 			setCollectionFieldsToPosition(fieldset)
+			jQuery('.collection_list').show();
 			
 			var data = {
 				'action': 'jcf_fields_order',
 				'fieldset_id': f_id,
 				'fields_order': order
 			};
-			if(collection_fields_list) {
+			/*if(collection_fields_list) {
 				jQuery(ui.item).after('<tr class="collection_list">'+collection_fields_list+'</tr>');
 				collection_fields_list = '';
-			}
+			}*/
 			//pa(data);
 			jcf_ajax(data, 'json');
 		}

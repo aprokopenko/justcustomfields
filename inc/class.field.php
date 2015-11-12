@@ -286,12 +286,10 @@ class Just_Field{
 								<select class="widefat" 
 										id="<?php echo $this->get_field_id('field_width'); ?>"
 										name="<?php echo $this->get_field_name('field_width'); ?>">
-									<option value="jcf_collection_quarterwidth"<?php echo (@$this->instance['field_width']=='jcf_collection_quarterwidth'?' selected':''); ?>>
-										Quarter Width</option>
-									<option value="jcf_collection_halfwidth"<?php echo (@$this->instance['field_width']=='jcf_collection_halfwidth'?' selected':''); ?>>
-										Half Width</option>
-									<option value="jcf_collection_fullwidth"<?php echo (@$this->instance['field_width']=='jcf_collection_fullwidth'?' selected':''); ?>>
-										Full Width</option>
+									<?php foreach(Just_Collection::$field_width as $key => $width) : ?>
+										<option value="<?php echo $key; ?>"<?php echo (@$this->instance['field_width']==$key?' selected':''); ?>>
+											<?php echo $width; ?></option>
+									<?php endforeach; ?>
 								</select> 
 									
 							</p>

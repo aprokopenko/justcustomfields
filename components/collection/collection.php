@@ -10,6 +10,14 @@ class Just_Collection extends Just_Field{
 	public static $compatibility = "4.0+";
 	
 	public static $current_collection_field_key = 0;
+	
+	public static $field_width = array(
+		'100' => '100%',
+		'75' => '75%',
+		'50' => '50%',
+		'33' => '33%',
+		'25' => '25%',
+	);
 
 
 	public function __construct(){
@@ -50,6 +58,7 @@ class Just_Collection extends Just_Field{
 				<div class="collection_field_group<?php echo (self::$current_collection_field_key === '00'?' hidden_collection':'')?>">
 					<h3>
 						<span class="dashicons dashicons-editor-justify"></span>
+						<span class="collection_group_title">
 						<?php
 							$group_title = __('Collection Fields',JCF_TEXTDOMAIN);
 							foreach($this->instance['fields'] as $field_id => $field){
@@ -61,13 +70,14 @@ class Just_Collection extends Just_Field{
 							}
 							echo $group_title;
 						 ?>
+						</span>
 						<span class="dashicons dashicons-trash"></span>
 						
 					</h3>
 					<div>
 <?php					
 						foreach($this->instance['fields'] as $field_id => $field){
-							echo '<div class="collection_field_border '.($field['field_width']?$field['field_width']:'jcf_collection_fullwidth').'">';
+							echo '<div class="collection_field_border jcf_collection_'.(intval($field['field_width'])?$field['field_width']:'100').'">';
 							$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
 							$field_obj->set_slug($field['slug']);
 							if(isset($fields[$field['slug']])){

@@ -7,7 +7,8 @@
     border-radius: 11px;
     padding: 5px 5px 20px;
 	float: left;
-	margin-right: 2px;
+	padding: 0 2px;
+	box-sizing: border-box;
 }
 .collection_field_group span.dashicons{
 	cursor: pointer;
@@ -16,20 +17,41 @@
 .hidden_collection{
 	display: none;
 }
-.jcf_collection_quarterwidth{
-	width: 24%;	
+.jcf_collection_25{
+	width: 25%;	
 }
-.jcf_collection_halfwidth{
-	width: 48%;	
+.jcf_collection_33{
+	width: 33%;	
 }
-.jcf_collection_fullwidth{
-	width: 99%;	
+.jcf_collection_50{
+	width: 50%;	
+}
+.jcf_collection_75{
+	width: 75%;	
+}
+.jcf_collection_100{
+	width: 100%;	
 	margin: 0;
 	float: none;
 	clear: both;
 }
+div.jcf_edit_field .jcf_collection_25 input, 
+div.jcf_edit_field .jcf_collection_25 select, 
+div.jcf_edit_field .jcf_collection_25 textarea,
+div.jcf_edit_field .jcf_collection_33 input, 
+div.jcf_edit_field .jcf_collection_33 select, 
+div.jcf_edit_field .jcf_collection_33 textarea{
+	width: 100% !important;
+}
 .collection_field_group .dashicons-trash{
 	color: #a00;
+}
+.collection_field_group .jcf_field_removed{
+	opacity: 0.7;
+}
+.collection_field_group .jcf_collection_removed{
+	color: #a00;
+	font-weight: bold;
 }
 .collection_field_group h3 span.ui-icon{
 	float: left;
@@ -39,11 +61,6 @@
 }
 .collection_field_group span.dashicons.dashicons-editor-justify{
 	margin-right: 15px;
-}
-div.jcf_edit_field .jcf_collection_quarterwidth input, 
-div.jcf_edit_field .jcf_collection_quarterwidth select, 
-div.jcf_edit_field .jcf_collection_quarterwidth textarea{
-	width: 100% !important;
 }
 .collection_field_group div.form-field .jcf-field-container,
 .collection_field_group div.jcf_edit_field div.checkboxes-set,
