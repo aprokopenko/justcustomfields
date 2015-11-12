@@ -38,7 +38,7 @@ class Just_Simple_Media extends Just_Field
 		if(empty($this->entry)) $this->entry = 0;
 		
 ?>
-		<div class="jcf-simple-field jcf-simple-type-<?php echo $upload_type; ?> jcf-field-container">
+		<div class="jcf-simple-field jcf-simple-type-<?php echo $upload_type; ?> ">
 <?php
 			if( !empty($this->entry) ){
 				$value = esc_attr( $this->entry );

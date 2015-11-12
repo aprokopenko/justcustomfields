@@ -72,7 +72,7 @@ class Just_Collection extends Just_Field{
 						<span class="dashicons dashicons-trash"></span>
 						
 					</h3>
-					<div>
+					<div class="collection_field_group_entry">
 <?php					
 						foreach($this->instance['fields'] as $field_id => $field){
 							echo '<div class="collection_field_border jcf_collection_'.(intval($field['field_width'])?$field['field_width']:'100').'">';
@@ -96,7 +96,7 @@ class Just_Collection extends Just_Field{
 			}
 ?>
 			<div class="clr"></div>
-			<input type="button" value="<?php _e('Add another Collection Item', JCF_TEXTDOMAIN); ?>" 
+			<input type="button" value="<?php echo sprintf(__('Add %s Item', JCF_TEXTDOMAIN),$this->instance['title']); ?>" 
 				   class="button button-large jcf_add_more_collection"
 				   data-collection_id="<?php echo $this->id; ?>"
 				   data-fieldset_id="<?php echo $this->fieldset_id; ?>"
@@ -125,7 +125,7 @@ class Just_Collection extends Just_Field{
 					<span class="dashicons dashicons-trash"></span>
 
 				</h3>
-				<div>
+				<div class="collection_field_group_entry">
 <?php					
 					foreach($collection->instance['fields'] as $field_id => $field){
 						echo '<div class="collection_field_border jcf_collection_'.(intval($field['field_width'])?$field['field_width']:'100').'">';
@@ -294,9 +294,9 @@ class Just_Collection extends Just_Field{
 			$post_type =  jcf_get_post_type();
 			$fieldset = $jcf_settings['fieldsets'][$post_type][$this->fieldset_id];
 			$field_settings = $jcf_settings['field_settings'][$post_type];
-
+			////var_dump($field_settings,$fieldset);
 			if( isset($field_settings[$this->id]['fields'][$field_id]) ){
-				unset($fieldset['fields'][$this->id]['fields'][$field_id]);
+				//unset($fieldset['fields'][$this->id]['fields'][$field_id]);
 				unset($field_settings[$this->id]['fields'][$field_id]);
 			}
 

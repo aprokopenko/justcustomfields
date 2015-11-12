@@ -29,7 +29,9 @@
 #poststuff .inside .jcf-simple-type-file p a{
 	color: #21252B;
 }
-
+.field_simplemedia .jcf-simple-field{
+	padding-bottom: 5px;
+}
 .jcf-simple-field .jcf-simple-image{
 	float:left;
 	margin:0 10px 0 0;
@@ -52,6 +54,7 @@
 	text-indent:-9999px;
 	margin:16px 15px 0 7px;
 }
-.jcf-simple-field .sortable-placeholder{
+.jcf-simple-field div.form-field div.sortable-placeholder{
 	height: 133px;
+	border: none;
 }

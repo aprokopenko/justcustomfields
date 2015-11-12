@@ -59,7 +59,7 @@ function jcf_collection_fields_control(){
 	
 	jQuery('div.collection_field_group span.dashicons-trash').live( 'click', function(e) {
 		e.preventDefault();		
-		jQuery(this).parent().find('.collection_group_title').after('<span class="jcf_collection_removed">Deleted</span>');
+		jQuery(this).parent().find('.collection_group_title').after('<span class="jcf_collection_removed">To be deleted</span>');
 		jQuery(this).parent().addClass('jcf_field_removed');
 		jQuery(this).parent().next('div').hide();
 		jQuery(this).parent().find('.collection_undo_remove_group').show();
