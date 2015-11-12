@@ -31,6 +31,7 @@ class Just_Collection extends Just_Field{
 			add_action('admin_print_scripts', array($this, 'get_collection_js') );
 		}
 		add_action('wp_ajax_jcf_collection_order', array( 'Just_Collection', 'ajax_collection_fields_order' ));
+		add_action('wp_ajax_jcf_collection_add_new_field_group', array( 'Just_Collection', 'ajax_return_collection_field_group' ));
 		
 	}
 	
@@ -43,19 +44,15 @@ class Just_Collection extends Just_Field{
 		
 		self::$current_collection_field_key = 0;
 		if(empty($this->entry)) $this->entry = array('0' => '');
-		// add null element for etalon copy
-		$entries = array( '00' => '' ) + (array)$this->entry;
+		$entries = (array)$this->entry;
 		echo $before_widget;
 		echo $before_title . $this->instance['title'] . $after_title;
 ?>
 		<div class="collection_fields">
 <?php
 			foreach($entries as $key => $fields){
-				if( $key === '00' ){
-					self::$current_collection_field_key = '00';
-				}
 ?>
-				<div class="collection_field_group<?php echo (self::$current_collection_field_key === '00'?' hidden_collection':'')?>">
+				<div class="collection_field_group">
 					<h3>
 						<span class="dashicons dashicons-editor-justify"></span>
 						<span class="collection_group_title">
@@ -71,6 +68,7 @@ class Just_Collection extends Just_Field{
 							echo $group_title;
 						 ?>
 						</span>
+						<a href="#" class="collection_undo_remove_group"><?php _e('UNDO',JCF_TEXTDOMAIN); ?></a>
 						<span class="dashicons dashicons-trash"></span>
 						
 					</h3>
@@ -94,17 +92,57 @@ class Just_Collection extends Just_Field{
 					</div>
 				</div>
 <?php
-				if(self::$current_collection_field_key === '00') {
-					self::$current_collection_field_key = 0;	
-				} else self::$current_collection_field_key = self::$current_collection_field_key + 1;
+				self::$current_collection_field_key = self::$current_collection_field_key + 1;
 			}
 ?>
-			<input type="button" value="<?php _e('Add another Collection Item', JCF_TEXTDOMAIN); ?>" class="button button-large jcf_add_more_collection"" name="save">
+			<div class="clr"></div>
+			<input type="button" value="<?php _e('Add another Collection Item', JCF_TEXTDOMAIN); ?>" 
+				   class="button button-large jcf_add_more_collection"
+				   data-collection_id="<?php echo $this->id; ?>"
+				   data-fieldset_id="<?php echo $this->fieldset_id; ?>"
+				   name="jcf_add_more_collection">
+			<div class="clr"></div>
 		</div>
 <?php
 		echo $after_widget;
 	}
 	
+	/**
+	 * return empty collection fields group
+	 */
+	public static function ajax_return_collection_field_group(){
+		$fieldset_id = $_POST['fieldset_id'];
+		$collection_id = $_POST['collection_id'];
+		$collection = jcf_init_field_object($collection_id, $fieldset_id);
+		self::$current_collection_field_key = $_POST['group_id'];
+	?>
+			<div class="collection_field_group">
+				<h3>
+					<span class="dashicons dashicons-editor-justify"></span>
+					<span class="collection_group_title">
+					<?php echo $collection->instance['title'].' Item'; ?>
+					</span>
+					<span class="dashicons dashicons-trash"></span>
+
+				</h3>
+				<div>
+<?php					
+					foreach($collection->instance['fields'] as $field_id => $field){
+						echo '<div class="collection_field_border jcf_collection_'.(intval($field['field_width'])?$field['field_width']:'100').'">';
+						$field_obj = jcf_init_field_object($field_id, $collection->fieldset_id, $collection->id);
+						$field_obj->set_slug($field['slug']);
+						$field_obj->instance = $field;
+						$field_obj->is_post_edit = true;
+						$field_obj->field($field_obj->field_options);
+						echo '</div>';
+					}
+?>
+					<div class="clr"></div>
+				</div>
+			</div>
+<?php
+		die();
+	}
 	/**
 	 *	save field on post edit form
 	 */
@@ -179,7 +217,7 @@ class Just_Collection extends Just_Field{
 	/**
 	 *	add custom scripts for jcf fildset edit page
 	 */
-	function get_collection_js(){
+	function add_collection_js(){
 		wp_register_script(
 				'jcf_collections',
 				WP_PLUGIN_URL.'/just-custom-fields/components/collection/assets/collection.js',

@@ -67,15 +67,17 @@ class Just_Simple_Media extends Just_Field
 							   data-uploader_title="<?php echo $upload_text; ?>" 
 							   data-media_type="<?php echo ($upload_type == 'image'?$upload_type:''); ?>"
 							   data-uploader_button_text="<?php echo $upload_text; ?>"><?php echo $upload_text; ?></a>
-							<script>
+						<script type="text/javascript">
 								//create modal upload pop-up to select Media Files
-								var mm_<?php echo $this->get_field_id('uploaded_file', '_'); ?> = new JcfMediaModal({
-									calling_selector : "#simplemedia-<?php echo $this->get_field_id('uploaded_file'); ?>",
-									cb : function(attachment){
-										JcfSimpleMedia.selectMedia(attachment, 
-											"<?php echo $this->get_field_id('uploaded_file'); ?>", "<?php echo (( $upload_type == 'image' )?'image':'all');?>"
-										);
-									}
+								jQuery(document).ready(function(){
+									var mm_<?php echo $this->get_field_id('uploaded_file', '_'); ?> = new JcfMediaModal({
+										calling_selector : "#simplemedia-<?php echo $this->get_field_id('uploaded_file'); ?>",
+										cb : function(attachment){
+											JcfSimpleMedia.selectMedia(attachment, 
+												"<?php echo $this->get_field_id('uploaded_file'); ?>", "<?php echo (( $upload_type == 'image' )?'image':'all');?>"
+											);
+										}
+									});
 								});
 							</script>
 						<a href="#" class="button button-large jcf_simple_delete<?php echo $delete_class; ?>" data-field_id="<?php echo $this->get_field_id('uploaded_file'); ?>"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a>

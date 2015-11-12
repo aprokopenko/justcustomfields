@@ -10,6 +10,8 @@ jQuery(document).ready(function(){
 	jQuery('.collection_fields').accordion({
 		header: "h3",
 		icons: false,
+		heightStyle: "content",
+		collapsible: true,
 		beforeActivate: function(event, ui){
 			if(jQuery(ui.newHeader).hasClass('jcf_field_removed')){
 				return false;
@@ -18,15 +20,13 @@ jQuery(document).ready(function(){
 	});
 	
 	// init sortable
-	jQuery('.jcf-field-container').sortable({
+	jQuery('.collection_fields').sortable({
 		handle: 'span.dashicons-editor-justify',
 		opacity:0.7,
 		placeholder: 'sortable-placeholder',
 		scroll: true, 
 		start: function (event, ui) { 
-			console.log(ui);
-			//jQuery('.collection_field_group').css({overflow: 'hidden', height: '50px'});
-			ui.placeholder.html('<div class="sort-placheholder"></div>');
+			ui.placeholder.html('<div class="sortable-placeholder"></div>');
 		},
 		/*stop: function (event, ui){
 			
@@ -41,28 +41,40 @@ function jcf_collection_fields_control(){
 		var container = jQuery(this).parent();
 		
 		var next_field_group_index = container.find('.collection_field_group').size();
-		var new_html = container.find('div.collection_field_group:first').html();
-		new_html = new_html
-			.replace(/\[00\]/g, '[' + next_field_group_index + ']')
-			.replace(/\-00\-/g, '-' + next_field_group_index + '-');
-		new_html = '<div class="collection_field_group">' + new_html + '</div>';
-		
-		// add new html row
-		container.find('div.collection_field_group:last').after( new_html );
-		jQuery('.collection_fields').accordion('refresh');
-		container.find('div.collection_field_group:last').find('h3').click();
-		
+		var data = {
+				action: 'jcf_collection_add_new_field_group',
+				fieldset_id: jQuery(this).data('fieldset_id'),
+				collection_id: jQuery(this).data('collection_id'),
+				group_id: next_field_group_index,
+				post_type: jQuery('input#post_type').val()
+			};
+			
+		jQuery.post(ajaxurl, data, function(response){
+			container.find('div.collection_field_group:last').after( response );
+			jQuery('.collection_fields').accordion('refresh');
+			container.find('div.collection_field_group:last').find('h3').click();
+		});
 		return false;
 	})
 	
 	jQuery('div.collection_field_group span.dashicons-trash').live( 'click', function(e) {
 		e.preventDefault();		
-			/*jQuery(this).parent().find('.collection_group_title').after('<span class="jcf_collection_removed">Removed</span>');
-			jQuery(this).parent().addClass('jcf_field_removed');
-			jQuery(this).parent().next('div').slideToggle();*/
-		if(confirm('Are you sure you want to delete the Collection Fields Group?')){
-			jQuery(this).parent().parent().remove();
-		}
+		jQuery(this).parent().find('.collection_group_title').after('<span class="jcf_collection_removed">Deleted</span>');
+		jQuery(this).parent().addClass('jcf_field_removed');
+		jQuery(this).parent().next('div').hide();
+		jQuery(this).parent().find('.collection_undo_remove_group').show();
+		jQuery(this).parent().next('div').find('input,select,textarea').attr('disabled','disabled');
+		jQuery(this).hide();
+		return false;
+	});
+	
+	jQuery('div.collection_field_group a.collection_undo_remove_group').live( 'click', function(e) {
+		e.preventDefault();		
+		jQuery(this).parent().find('.jcf_collection_removed').remove();
+		jQuery(this).parent().removeClass('jcf_field_removed');
+		jQuery(this).parent().find('span.dashicons-trash').show();
+		jQuery(this).parent().next('div').find('input,select,textarea').removeAttr('disabled');
+		jQuery(this).hide();
 		return false;
 	});
 }

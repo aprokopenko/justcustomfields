@@ -4,10 +4,8 @@
 	margin-bottom: 15px;
 }
 .collection_field_group .collection_field_border{
-    border-radius: 11px;
-    padding: 5px 5px 20px;
 	float: left;
-	padding: 0 2px;
+	padding: 0 10px;
 	box-sizing: border-box;
 }
 .collection_field_group span.dashicons{
@@ -17,19 +15,19 @@
 .hidden_collection{
 	display: none;
 }
-.jcf_collection_25{
+.collection_field_group .jcf_collection_25{
 	width: 25%;	
 }
-.jcf_collection_33{
+.collection_field_group .jcf_collection_33{
 	width: 33%;	
 }
-.jcf_collection_50{
+.collection_field_group .jcf_collection_50{
 	width: 50%;	
 }
-.jcf_collection_75{
+.collection_field_group .jcf_collection_75{
 	width: 75%;	
 }
-.jcf_collection_100{
+.collection_field_group .jcf_collection_100{
 	width: 100%;	
 	margin: 0;
 	float: none;
@@ -47,17 +45,26 @@ div.jcf_edit_field .jcf_collection_33 textarea{
 	color: #a00;
 }
 .collection_field_group .jcf_field_removed{
-	opacity: 0.7;
+	opacity: 0.6;
 }
 .collection_field_group .jcf_collection_removed{
 	color: #a00;
 	font-weight: bold;
+}
+.collection_field_group h3, .collection_field_group h3:active, .collection_field_group h3:focus{
+	outline: none;
 }
 .collection_field_group h3 span.ui-icon{
 	float: left;
 }
 .collection_field_group span.dashicons.dashicons-trash{
 	float: right;
+}
+.collection_field_group h3 a.collection_undo_remove_group{
+	display: none;
+	float: right;
+	color: #1e8cbe;
+	font-weight: bold;
 }
 .collection_field_group span.dashicons.dashicons-editor-justify{
 	margin-right: 15px;
