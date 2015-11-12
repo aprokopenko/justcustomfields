@@ -258,17 +258,12 @@ function initFieldsetFields(){
 	});
 	
 	// init sortable
-	var collection_fields_list='';
 	jQuery('#jcf_fieldsets tbody:first').sortable({
 		handle: 'span.drag-handle',
 		opacity:0.7,
 		placeholder: 'sortable_placeholder',
 		scroll: true,
 		start: function (event, ui) { 
-			/*if(jQuery(ui.placeholder).next('tr').hasClass('collection_list')){
-				collection_fields_list = jQuery(ui.placeholder).next('tr').html();
-				jQuery(ui.placeholder).next('tr').remove();
-			}*/
 			jQuery('.collection_list').hide();
 			ui.placeholder.html('<td colspan="4"><br>&nbsp;</td>');
 		},
@@ -288,10 +283,6 @@ function initFieldsetFields(){
 				'fieldset_id': f_id,
 				'fields_order': order
 			};
-			/*if(collection_fields_list) {
-				jQuery(ui.item).after('<tr class="collection_list">'+collection_fields_list+'</tr>');
-				collection_fields_list = '';
-			}*/
 			//pa(data);
 			jcf_ajax(data, 'json');
 		}

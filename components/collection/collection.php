@@ -28,7 +28,7 @@ class Just_Collection extends Just_Field{
 		
 		if( !empty($_GET['page']) && $_GET['page'] == 'just_custom_fields' ){
 			//add_action('admin_print_styles', 'jcf_admin_add_styles');
-			add_action('admin_print_scripts', array($this, 'get_collection_js') );
+			add_action('admin_print_scripts', array($this, 'add_collection_js') );
 		}
 		add_action('wp_ajax_jcf_collection_order', array( 'Just_Collection', 'ajax_collection_fields_order' ));
 		add_action('wp_ajax_jcf_collection_add_new_field_group', array( 'Just_Collection', 'ajax_return_collection_field_group' ));
