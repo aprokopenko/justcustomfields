@@ -177,8 +177,12 @@ function jcf_admin_fields_page( $post_type ){
 	}
 	else{
 		$jcf_settings = jcf_get_all_settings_from_file();
-		$fieldsets = $jcf_settings['fieldsets'][ $post_type->name ];
-		$field_settings = $jcf_settings['field_settings'][ $post_type->name ];
+		if(isset($jcf_settings['fieldsets'][ $post_type->name ])){
+			$fieldsets = $jcf_settings['fieldsets'][ $post_type->name ];			
+		} else $fieldsets = array();
+		if(isset($jcf_settings['field_settings'][ $post_type->name ])){
+			$field_settings = $jcf_settings['field_settings'][ $post_type->name ];			
+		} else $field_settings = array();
 	}
 	
 	$jcf_tabs = 'fields';

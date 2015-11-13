@@ -42,7 +42,6 @@ class Just_Field_Input extends Just_Field{
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		//var_dump($new_instance);
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['description'] = strip_tags($new_instance['description']);
 		return $instance;

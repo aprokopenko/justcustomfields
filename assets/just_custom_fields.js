@@ -177,7 +177,7 @@ function initFieldsetFields(){
 				}
 				// add new row
 				var html;
-				html = '<tr id="field_row_' + response.id + '" class="field_row">';
+				html = '<tr id="field_row_' + response.id + '" class="field_row ' + response.id + '">';
 				html += '	<td class="check-column"><span class="drag-handle">move</span></td>';
 				html += '	<td><strong><a href="#" rel="' + response.id + '">' + response.instance.title + '</a></strong>';
 				html += '	<div class="row-actions">';

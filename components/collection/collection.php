@@ -148,17 +148,15 @@ class Just_Collection extends Just_Field{
 	 */
 	function save( $_values ){
 		$values = array();
-		$counter=0;
 		foreach($_values as $_value){
 			foreach($this->instance['fields'] as $field_id => $field){
 				$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
 				if(isset($_value[$field_id])){
-					$values[$counter][$field['slug']] = $field_obj->save($_value[$field_id]);
+					$values[][$field['slug']] = $field_obj->save($_value[$field_id]);
 				} else {
-					$values[$counter][$field['slug']] = $field_obj->save(array('val'=>''));
+					$values[][$field['slug']] = $field_obj->save(array('val'=>''));
 				}
 			}
-			$counter++;
 		}
 		return $values;
 	}
@@ -168,7 +166,6 @@ class Just_Collection extends Just_Field{
 	 */
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		//var_dump($new_instance);
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['custom_row'] = true;
 		return $instance;
@@ -188,7 +185,7 @@ class Just_Collection extends Just_Field{
 	}
 	
 	/**
-	 *	add custom scripts and styles from collection fields
+	 *	add script for collection and custom scripts and styles from collection fields
 	 */
 	public function add_js(){
 		
@@ -205,12 +202,18 @@ class Just_Collection extends Just_Field{
 			if(  method_exists($field_obj, 'add_css')) $field_obj->add_css();
 		}
 	}
+	
+	/**
+	 *	add custom  styles from collection
+	 */
+	
 	public function add_css(){
 		wp_register_style('jcf_collection',
 				WP_PLUGIN_URL.'/just-custom-fields/components/collection/assets/collection.css',
 				array('thickbox'));
 		wp_enqueue_style('jcf_collection');
 	}
+	
 	/**
 	 *	add custom scripts for jcf fildset edit page
 	 */
@@ -279,7 +282,7 @@ class Just_Collection extends Just_Field{
 	}
 	
 	/**
-	 * 
+	 * delete field from collection
 	 */
 	public function delete_field($field_id)
 	{
@@ -291,9 +294,7 @@ class Just_Collection extends Just_Field{
 			$post_type =  jcf_get_post_type();
 			$fieldset = $jcf_settings['fieldsets'][$post_type][$this->fieldset_id];
 			$field_settings = $jcf_settings['field_settings'][$post_type];
-			////var_dump($field_settings,$fieldset);
 			if( isset($field_settings[$this->id]['fields'][$field_id]) ){
-				//unset($fieldset['fields'][$this->id]['fields'][$field_id]);
 				unset($field_settings[$this->id]['fields'][$field_id]);
 			}
 

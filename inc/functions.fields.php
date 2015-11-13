@@ -48,7 +48,9 @@
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$post_type =  jcf_get_post_type();
 			$fieldset = $jcf_settings['fieldsets'][$post_type][$fieldset_id];
-			$field_settings = $jcf_settings['field_settings'][$post_type];
+			if( isset($jcf_settings['field_settings']) && isset($jcf_settings['field_settings'][$post_type]) ){
+				$field_settings = $jcf_settings['field_settings'][$post_type];				
+			} else $field_settings = array();
 
 			if( $values === NULL && isset($field_settings[$key]) ){
 				unset($fieldset['fields'][$key]);

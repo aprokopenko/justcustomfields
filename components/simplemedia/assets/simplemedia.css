@@ -41,6 +41,9 @@
 	float:left;
 	width:75%;
 }
+.jcf-simple-field .jcf-simple-file-info p{
+	margin: 5px;
+}
 .jcf-simple-field a.jcf_add_more{
 	margin:10px 10px 0 0 !important;
 }

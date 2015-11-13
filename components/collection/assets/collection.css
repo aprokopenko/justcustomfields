@@ -42,6 +42,10 @@ div.jcf_edit_field .jcf_collection_33 select,
 div.jcf_edit_field .jcf_collection_33 textarea{
 	width: 100% !important;
 }
+div.jcf_edit_field .jcf_collection_25 div.checkboxes-set label, 
+div.jcf_edit_field .jcf_collection_33 div.checkboxes-set label{ 
+	width: auto !important;
+}
 .collection_field_group .dashicons-trash{
 	color: #a00;
 }

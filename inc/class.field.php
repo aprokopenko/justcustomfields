@@ -206,7 +206,7 @@ class Just_Field{
 	 */
 	public function validate_instance_slug( $slug ){
 		$slug = trim($slug);
-		if( !empty($slug) && $slug{0} != '_' ){
+		if( !empty($slug) && $slug{0} != '_' && !$this->is_collection_field() ){
 			$slug = '_' . $slug;
 		}
 		return $slug;
@@ -397,20 +397,7 @@ class Just_Field{
 			$collection->instance['fields'][$this->id] = $instance;
 			// save
 			jcf_field_settings_update($this->collection_id, $collection->instance, $this->fieldset_id);
-			switch ($instance['field_width']){
-				case 'jcf_collection_quarterwidth' :
-					$instance['field_width_value'] = 'Quarter';
-					break;
-				case 'jcf_collection_halfwidth' :
-					$instance['field_width_value'] = 'Half';
-					break;
-				case 'jcf_collection_fullwidth' :
-					$instance['field_width_value'] = 'Full';
-					break;
-				default :
-					$instance['field_width_value'] = 'Quarter';
-					break;
-			}
+		
 			// return status
 			$res = array(
 				'status' => '1',
