@@ -24,7 +24,7 @@ class Just_Collection extends Just_Field{
 		$field_ops = array( 'classname' => 'field_collection' );
 		parent::__construct('collection', __('Collection', JCF_TEXTDOMAIN), $field_ops);
 		
-		add_action('jcf_custom_settings_row', array('Just_Collection', 'settings_row'));
+		add_action('jcf_custom_settings_row', array('Just_Collection', 'settings_row'),10,2);
 		
 		if( !empty($_GET['page']) && $_GET['page'] == 'just_custom_fields' ){
 			//add_action('admin_print_styles', 'jcf_admin_add_styles');
@@ -231,7 +231,7 @@ class Just_Collection extends Just_Field{
 	 * create custom table on jcf settings fields
 	 */
 	
-	public static function settings_row($collection_id)
+	public static function settings_row($collection_id, $fieldset_id)
 	{
 		$jcf_read_settings = jcf_get_read_settings();
 		if( $jcf_read_settings == JCF_CONF_SOURCE_DB ){

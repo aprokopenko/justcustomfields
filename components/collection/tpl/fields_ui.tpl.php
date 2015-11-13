@@ -12,6 +12,7 @@
 				<form action="#" method="post" class="jcform_add_collection_field">
 					<fieldset>
 						<input type="hidden" name="collection_id" value="<?php echo $collection_id; ?>" />
+						<input type="hidden" name="fieldset_id" value="<?php echo $fieldset_id; ?>" />
 						<label class="nowrap"><?php _e('Add new Field:', JCF_TEXTDOMAIN); ?> </label>
 						<select name="field_type" class="jcf_add_collection_field">
 							<?php foreach($registered_fields as $field) : ?>
@@ -25,7 +26,7 @@
 			</div>
 		</th>
 	</tr></tfoot>
-	<tbody id="the-collection-list-<?php echo $collection_id; ?>">
+	<tbody id="the-collection-list-<?php echo $collection_id; ?>" class="ui-sortable">
 		<?php if( !empty($collection['fields']) && is_array($collection['fields']) ) : ?>
 			<?php foreach($collection['fields'] as $field_id => $field) : ?>
 				<tr id="collection_field_row_<?php echo $field_id; ?>">

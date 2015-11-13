@@ -189,12 +189,24 @@ function initFieldsetFields(){
 				html += '<td>'+response.id_base+'</td>';
 				html += '<td>'+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</td>';
 				if(response.collection_fields){
-					html +='<tr class="collection_list">';
+					html +='<tr class="collection_list" >';
 					html += '<td colspan="2" data-collection_id="' + response.id + '"></td>';
 					html += '<td colspan="3">'+response.collection_fields+'</td>';
 					html += '</tr>';
 				}
 				fieldset.append(html);
+				if(response.collection_fields){
+						jQuery('tbody[id^=the-collection-list-collection-]').sortable({
+							handle: 'span.drag-handle',
+							opacity:0.7,
+							placeholder: 'collection_sortable_placeholder',
+							scroll: true,
+							start: function (event, ui) { 
+								ui.placeholder.html('<td colspan="4"><br>&nbsp;</td>');
+							},
+							stop: function(event, ui){ collectionFieldSortableStop(event, ui, this); }
+						});
+				}
 			}
 			
 			// update fieldset row

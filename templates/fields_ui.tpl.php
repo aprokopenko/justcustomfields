@@ -70,7 +70,7 @@
 									<?php if(isset($field_settings[$field_id]['custom_row'])) : ?>
 										<tr class="collection_list">
 											<td colspan="2" data-collection_id="<?php echo $field_id; ?>"></td>
-											<td colspan="3"><?php do_action('jcf_custom_settings_row', $field_id); ?></td>
+											<td colspan="3"><?php do_action('jcf_custom_settings_row', $field_id,$fieldset['id']); ?></td>
 										</tr>
 									<?php endif; ?>
 								<?php endforeach; ?>

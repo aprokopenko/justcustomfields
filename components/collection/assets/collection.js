@@ -17,7 +17,7 @@ function initCollectionFields(){
 		jQuery(this).find('input,select').each(function(i, input){
 			data[ jQuery(input).attr('name') ] = jQuery(input).val();
 		})
-		data['fieldset_id'] = jQuery('input[name=fieldset_id]').val();
+		data['fieldset_id'] = jQuery(this).find('input[name=fieldset_id]').val();
 		
 		var loader = jQuery(this).find('img.ajax-feedback');
 		
@@ -58,7 +58,7 @@ function initCollectionFields(){
 				html += '	</div>';
 				html += '</td>';
 				html += '<td>'+response.id_base+'</td>';
-				html += '<td>'+response.instance.field_width_value+'</td>';
+				html += '<td>'+response.instance.field_width+'%</td>';
 				html += '<td>'+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</td>';
 				fieldset.append(html);
 			}
@@ -123,7 +123,7 @@ function initCollectionFields(){
 		return false;
 	});
 
-	//jQuery('span[class^=edit_collec]').click(function(){alert('die')});
+
 	// init sortable
 	jQuery('tbody[id^=the-collection-list-collection-]').sortable({
 		handle: 'span.drag-handle',
@@ -133,12 +133,16 @@ function initCollectionFields(){
 		start: function (event, ui) { 
 			ui.placeholder.html('<td colspan="4"><br>&nbsp;</td>');
 		},
-		stop: function(event, ui){
+		stop: function(event, ui){ collectionFieldSortableStop(event, ui, this); },
+	});
+}
+
+function collectionFieldSortableStop(event, ui, e){
 			// ui.item - item in the list
 			var order = '';
 			var fieldset = jQuery(ui.item).parent();
-			var f_id = jQuery(this).parents('tbody:first').attr('id').replace('the-list-', '');
-			var c_id = jQuery(this).attr('id').replace('the-collection-list-', '');
+			var f_id = jQuery(e).parents('tbody:first').attr('id').replace('the-list-', '');
+			var c_id = jQuery(e).attr('id').replace('the-collection-list-', '');
 			fieldset.find('tr').each(function(i, tr){
 				order += jQuery(tr).attr('id').replace('collection_field_row_', '') + ',';
 			});
@@ -151,5 +155,3 @@ function initCollectionFields(){
 			//pa(data);
 			jcf_ajax(data, 'json');
 		}
-	});
-}
