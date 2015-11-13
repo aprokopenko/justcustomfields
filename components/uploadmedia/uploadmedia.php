@@ -69,6 +69,7 @@ class Just_Field_Upload extends Just_Field{
 		$entries = array( '00' => '' ) + (array)$this->entry;
 		?>
 		<div class="jcf-upload-field jcf-upload-type-<?php echo $upload_type; ?> jcf-field-container">
+			<div><span class="upload_deprecated"><?php _e('This field is deprecated. Please use Collection with Simple Media instead.', JCF_TEXTDOMAIN); ?></span></div>
 			<?php
 			foreach($entries as $key => $entry) : 
 				if( !empty($entry) ){
