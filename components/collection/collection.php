@@ -148,10 +148,7 @@ class Just_Collection extends Just_Field{
 	 */
 	function save( $_values ){
 		$values = array();
-		// remove etalon element
 		$counter=0;
-		if(isset($_values['00'])) 
-			unset($_values['00']);
 		foreach($_values as $_value){
 			foreach($this->instance['fields'] as $field_id => $field){
 				$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
