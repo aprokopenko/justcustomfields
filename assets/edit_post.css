@@ -138,6 +138,7 @@ div.jcf_edit_field .quicktags-toolbar input{
 }
 .jcf_shortcodes_tooltip .jcf_inner_box .header{
 	color:#333;
+	background: #f1f1f1;
 	text-shadow:0 1px 0 rgba(255, 255, 255, 0.8);
 	line-height:30px;
 	padding:0 10px;
