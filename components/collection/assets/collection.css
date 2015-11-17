@@ -1,0 +1,112 @@
+.collection_field_group{
+	padding:0;
+	margin-bottom: 15px;
+}
+.collection_field_group .collection_field_group_entry{
+	padding: 0 15px 15px;
+}
+.collection_field_group .collection_field_border{
+	float: left;
+	padding: 0;
+}
+.collection_field_group span.dashicons{
+	cursor: pointer;
+	font-size: 18px;
+}
+.hidden_collection{
+	display: none;
+}
+.collection_field_group .jcf_collection_25{
+	width: 25%;	
+}
+.collection_field_group .jcf_collection_33{
+	width: 33%;	
+}
+.collection_field_group .jcf_collection_50{
+	width: 50%;	
+}
+.collection_field_group .jcf_collection_75{
+	width: 75%;	
+}
+.collection_field_group .jcf_collection_100{
+	width: 100%;	
+	margin: 0;
+	float: none;
+	clear: both;
+}
+div.jcf_edit_field .jcf_collection_25 input, 
+div.jcf_edit_field .jcf_collection_25 select, 
+div.jcf_edit_field .jcf_collection_25 textarea,
+div.jcf_edit_field .jcf_collection_33 input, 
+div.jcf_edit_field .jcf_collection_33 select, 
+div.jcf_edit_field .jcf_collection_33 textarea{
+	width: 100% !important;
+}
+div.jcf_edit_field .jcf_collection_25 div.checkboxes-set label, 
+div.jcf_edit_field .jcf_collection_33 div.checkboxes-set label{ 
+	width: auto !important;
+}
+.collection_field_group .dashicons-trash{
+	color: #a00;
+}
+.collection_field_group .jcf_field_removed{
+	opacity: 0.6;
+}
+.collection_field_group .jcf_collection_removed{
+	color: #a00;
+	font-weight: bold;
+}
+.collection_field_group h3, .collection_field_group h3:active, .collection_field_group h3:focus{
+	outline: none;
+}
+.collection_field_group h3 span.ui-icon{
+	float: left;
+}
+.collection_field_group span.dashicons.dashicons-trash{
+	float: right;
+}
+.collection_field_group h3 a.collection_undo_remove_group{
+	display: none;
+	float: right;
+	color: #1e8cbe;
+	font-weight: bold;
+}
+.collection_field_group span.dashicons.dashicons-editor-justify{
+	margin-right: 15px;
+}
+.collection_field_group div.form-field .jcf-field-container,
+.collection_field_group div.jcf_edit_field div.checkboxes-set,
+.collection_field_group div.form-field a.jcf-btn,
+.collection_field_group .ui-corner-bottom,
+.collection_field_group .ui-corner-top,
+.collection_field_group .ui-corner-all{
+	border-radius: 0px;
+}
+.collection_field_group .ui-widget-content{
+	border-top: none;
+}
+.collection_field_group  div.form-field{
+	padding-right: 15px;
+}
+.collection_field_group .collection_field_group_entry .wp-editor-wrap{
+	margin: 0;
+}
+.collection_field_group  div.form-field .jcf-field-container{
+	background: none;
+	border: none;
+	padding: 0;margib: 0;
+}
+.collection_field_group h3{
+	background: #efefef;
+}
+.collection_field_group h3.ui-state-active{
+	background: #efefef;
+	
+}
+.collection_field_group .ui-accordion-content{
+	background: #fcfcfc;
+}
+.clr{
+	clear: both;
+	height: 0;
+}

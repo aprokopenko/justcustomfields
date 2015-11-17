@@ -1,16 +1,18 @@
 <?php
 class Just_Field_DatePicker extends Just_Field{
 	
-	function Just_Field_DatePicker(){
+	public static $compatibility = '3.3+';
+
+	public function __construct(){
 		$field_ops = array( 'classname' => 'field_datepicker' );
-		$this->Just_Field('datepicker', __('Date Picker', JCF_TEXTDOMAIN), $field_ops);
+		parent::__construct('datepicker', __('Date Picker', JCF_TEXTDOMAIN), $field_ops);
 	}
 	
 	/**
 	 *	draw field on post edit form
 	 *	you can use $this->instance, $this->entry
 	 */
-	function field( $args ) {
+	public function field( $args ) {
 		extract( $args );
 		
 		echo $before_widget;
@@ -34,7 +36,7 @@ class Just_Field_DatePicker extends Just_Field{
 	/**
 	 *	save field on post edit form
 	 */
-	function save( $values ){
+	public function save( $values ){
 		$values = $values['val'];
 		return $values;
 	}
@@ -42,7 +44,7 @@ class Just_Field_DatePicker extends Just_Field{
 	/**
 	 *	update instance (settings) for current field
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['show_monthes'] = (int)@$new_instance['show_monthes'];
@@ -53,7 +55,7 @@ class Just_Field_DatePicker extends Just_Field{
 	/**
 	 *	print settings form for field
 	 */	
-	function form( $instance ) {
+	public function form( $instance ) {
 		//Defaults
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '' ) );
 
@@ -72,17 +74,17 @@ class Just_Field_DatePicker extends Just_Field{
 		<?php
 	}
 
-	function add_js(){
+	public function add_js(){
 		/**
 		 * WP version 3.0 and above have datepicker ui-core;
 		 */
 		wp_enqueue_script('jquery-ui-datepicker');
 	}
 	
-	function add_css(){
+	public function add_css(){
 		wp_register_style('jcf_ui_datepicker', WP_PLUGIN_URL.'/just-custom-fields/components/datepicker/ui-theme-smoothness/jquery-ui-1.8.13.custom.css');
 		wp_enqueue_style('jcf_ui_datepicker');
 	}
-	
+
 }
 ?>

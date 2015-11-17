@@ -6,16 +6,16 @@
  */
 class Just_Field_FieldsGroup extends Just_Field{
 	
-	function Just_Field_FieldsGroup(){
+	public function __construct(){
 		$field_ops = array( 'classname' => 'field_fieldsgroup' );
-		$this->Just_Field( 'fieldsgroup', __('Fields Group', JCF_TEXTDOMAIN), $field_ops);
+		parent::__construct( 'fieldsgroup', __('Fields Group', JCF_TEXTDOMAIN), $field_ops);
 	}
 	
 	/**
 	 *	draw field on post edit form
 	 *	you can use $this->instance, $this->entry
 	 */
-	function field( $args ) {
+	public function field( $args ) {
 		extract( $args );
 		
 		echo $before_widget;
@@ -29,15 +29,7 @@ class Just_Field_FieldsGroup extends Just_Field{
 		$entries = array( '00' => '' ) + (array)$this->entry;
 
 		// get fields
-		$fields = array();
-		$_fields = explode("\n", $this->instance['fields']);
-		foreach($_fields as $line){
-			$line = trim($line);
-			$field = explode('|', $line);
-			if( count($field) == 2 ){
-				$fields[ $field[0] ] = $field[1];
-			}
-		}
+		$fields = $this->parse_fields_options();
 		
 		if( empty($fields) ){
 			echo '<p>'.__('Wrong fields configuration. Please check widget settings.', JCF_TEXTDOMAIN).'</p>';
@@ -86,7 +78,7 @@ class Just_Field_FieldsGroup extends Just_Field{
 	/**
 	 *	save field on post edit form
 	 */
-	function save( $_values ){
+	public function save( $_values ){
 		$values = array();
 		if(empty($_values)) return $values;
 	
@@ -111,7 +103,7 @@ class Just_Field_FieldsGroup extends Just_Field{
 	/**
 	 *	update instance (settings) for current field
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		
 		$instance['title'] 			= strip_tags($new_instance['title']);
@@ -124,7 +116,7 @@ class Just_Field_FieldsGroup extends Just_Field{
 	/**
 	 *	print settings form for field
 	 */	
-	function form( $instance ) {
+	public function form( $instance ) {
 		//Defaults
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'fields' => '', 'description' => '' ) );
 
@@ -132,6 +124,8 @@ class Just_Field_FieldsGroup extends Just_Field{
 		$fields = esc_html( $instance['fields'] );
 		$description = esc_html($instance['description']);
 		?>
+		<div class="error"><?php _e('This field is <b>deprecated</b>. Please use Collection instead.', JCF_TEXTDOMAIN); ?></div>
+
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', JCF_TEXTDOMAIN); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 		<p><label for="<?php echo $this->get_field_id('fields'); ?>"><?php _e('Fields:', JCF_TEXTDOMAIN); ?></label> 
@@ -145,18 +139,18 @@ class Just_Field_FieldsGroup extends Just_Field{
 	/**
 	 *	custom get_field functions to add one more deep level
 	 */
-	function get_field_id_l2( $field, $number ){
+	protected function get_field_id_l2( $field, $number ){
 		return $this->get_field_id( $number . '-' . $field );
 	}
 
-	function get_field_name_l2( $field, $number ){
+	protected function get_field_name_l2( $field, $number ){
 		return $this->get_field_name( $number . '][' . $field );
 	}
 	
 	/**
 	 *	add custom scripts
 	 */
-	function add_js(){
+	public function add_js(){
 		wp_register_script(
 				'jcf_fields_group',
 				WP_PLUGIN_URL.'/just-custom-fields/components/fieldsgroup/fields-group.js',
@@ -171,10 +165,48 @@ class Just_Field_FieldsGroup extends Just_Field{
 		}
 	}
 	
-	function add_css(){
+	public function add_css(){
 		wp_register_style('jcf_fields_group', WP_PLUGIN_URL.'/just-custom-fields/components/fieldsgroup/fields-group.css');
 		wp_enqueue_style('jcf_fields_group');
 	}
 	
+	/**
+	 * Parse fields settings
+	 * @return array
+	 */
+	protected function parse_fields_options(){
+		$fields = array();
+		$_fields = explode("\n", $this->instance['fields']);
+		foreach($_fields as $line){
+			$line = trim($line);
+			$field = explode('|', $line);
+			if( count($field) == 2 ){
+				$fields[ $field[0] ] = $field[1];
+			}
+		}
+		return $fields;
+	}
+	
+	/**
+	 *	print fields values from shortcode
+	 */
+	public function shortcode_value($args){
+		$fields = $this->parse_fields_options();
+		if(empty($this->entry) || empty($fields)) return '';
+		
+
+		$html = '';
+
+		foreach($this->entry as $key_entry => $entry){
+			$html .= '<div class="jcf-item jcf-item-i' . $key_entry . '">';
+			foreach($entry as $key => $value){
+				$title = $fields[$key];
+				$html .= '<div class="jcf-cell jcf-cell-' . $key . '"><span class="jcf-cell-label">' . esc_html($title) . '</span><span class="jcf-cell-value">' . esc_html($value) . '</span></div>';
+			}
+			$html .= '</div>';
+		}
+
+		return  $args['before_value'] . $html . $args['after_value'];
+	}
 }
 ?>

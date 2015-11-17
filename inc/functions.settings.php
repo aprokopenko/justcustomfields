@@ -125,7 +125,7 @@ function jcf_update_read_settings(){
 	else{
 		if( !empty($current_value) ){
 			// if need to copy settings from db to FS
-			if( $_POST['jcf_keep_settings'] ){
+			if( !empty($_POST['jcf_keep_settings']) ){
 				if( in_array($new_value, array(JCF_CONF_SOURCE_FS_GLOBAL, JCF_CONF_SOURCE_FS_THEME)) ){
 					$file = jcf_get_settings_file_path( $new_value );
 					if( jcf_clone_db_settings_to_fs( $file, $new_value ) ){

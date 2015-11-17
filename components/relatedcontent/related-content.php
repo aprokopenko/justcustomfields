@@ -6,9 +6,11 @@
  */
 class Just_Field_RelatedContent extends Just_Field{
 	
-	function Just_Field_RelatedContent(){
+	public static $compatibility = '3.3+';
+
+	public function __construct(){
 		$field_ops = array( 'classname' => 'field_relatedcontent' );
-		$this->Just_Field( 'relatedcontent', __('Related Content', JCF_TEXTDOMAIN), $field_ops);
+		parent::__construct( 'relatedcontent', __('Related Content', JCF_TEXTDOMAIN), $field_ops);
 		
 		// add wp_ajax for autocomplete response
 		add_action('wp_ajax_jcf_related_content_autocomplete', array($this, 'autocomplete'));
@@ -18,7 +20,7 @@ class Just_Field_RelatedContent extends Just_Field{
 	 *	draw field on post edit form
 	 *	you can use $this->instance, $this->entry
 	 */
-	function field( $args ) {
+	public function field( $args ) {
 		extract( $args );
 		
 		echo $before_widget;
@@ -127,7 +129,7 @@ class Just_Field_RelatedContent extends Just_Field{
 	/**
 	 *	save field on post edit form
 	 */
-	function save( $_values ){
+	public function save( $_values ){
 		$values = array();
 		if(empty($_values)) return $values;
 	
@@ -151,7 +153,7 @@ class Just_Field_RelatedContent extends Just_Field{
 	/**
 	 *	update instance (settings) for current field
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		
 		$instance['title'] 			= strip_tags($new_instance['title']);
@@ -165,7 +167,7 @@ class Just_Field_RelatedContent extends Just_Field{
 	/**
 	 *	print settings form for field
 	 */	
-	function form( $instance ) {
+	public function form( $instance ) {
 		//Defaults
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'post_type' => 'page', 'input_type' => 'autocomplete',
 				'description' => __('Start typing entry Title to see the list.', JCF_TEXTDOMAIN) ) );
@@ -203,7 +205,7 @@ class Just_Field_RelatedContent extends Just_Field{
 	/**
 	 *	autocomplete
 	 */
-	function autocomplete(){
+	public static function autocomplete(){
 		$term = $_POST['term'];
 		if(empty($term)) die('');
 		
@@ -249,18 +251,18 @@ class Just_Field_RelatedContent extends Just_Field{
 	/**
 	 *	custom get_field functions to add one more deep level
 	 */
-	function get_field_id_l2( $field, $number ){
+	protected function get_field_id_l2( $field, $number ){
 		return $this->get_field_id( $number . '-' . $field );
 	}
 
-	function get_field_name_l2( $field, $number ){
+	protected function get_field_name_l2( $field, $number ){
 		return $this->get_field_name( $number . '][' . $field );
 	}
 	
 	/**
 	 *	add custom scripts
 	 */
-	function add_js(){
+	public function add_js(){
 		/**
 		 * WP version 3.2 and below does not have autocomplete in ui-core
 		 */
@@ -305,13 +307,30 @@ class Just_Field_RelatedContent extends Just_Field{
 		}
 	}
 
-	function add_css(){
+	public function add_css(){
 		wp_register_style('ui-autocomplete', WP_PLUGIN_URL.'/just-custom-fields/components/relatedcontent/assets/jquery-ui-1.8.14.autocomplete.css');
 		wp_enqueue_style('ui-autocomplete');
 
 		wp_register_style('jcf_related_content', WP_PLUGIN_URL.'/just-custom-fields/components/relatedcontent/related-content.css');
 		wp_enqueue_style('jcf_related_content');
 	}
-	
+
+	/**
+	 *	print fields values from shortcode
+	 */
+	public function shortcode_value($args){
+		if(empty($this->entry)) return;
+
+		$html = '<ul class="jcf-list">';
+		foreach($this->entry as $key => $entry){
+			$post_link = get_permalink($entry);
+			$post_title = get_the_title($entry);
+			$html .= '<li class="jcf-item jcf-item-i' . $key . '"><a href="' . $post_link . '">'. esc_html($post_title) . '</a></li>';
+		}
+		$html .= '</ul>';
+
+		return  $args['before_value'] . $html . $args['after_value'];
+	}
+
 }
 ?>
