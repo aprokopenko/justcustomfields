@@ -6,6 +6,8 @@
  */
 class Just_Field_RelatedContent extends Just_Field{
 	
+	public static $compatibility = '3.3+';
+
 	public function __construct(){
 		$field_ops = array( 'classname' => 'field_relatedcontent' );
 		parent::__construct( 'relatedcontent', __('Related Content', JCF_TEXTDOMAIN), $field_ops);

@@ -43,15 +43,7 @@
 						</div>
 					</td>
 					<td><?php echo preg_replace('/\-[0-9]+$/', '', $field_id); ?></td>
-					<td>
-<?php 
-						foreach(Just_Collection::$field_width as $key => $width) : 
-							if( $key == $field['field_width']) :
-								echo $width;
-								break;
-							endif;
-						endforeach;
-?>
+					<td><?php echo Just_Field_Collection::get_width_alias($field['field_width']); ?>
 					</td>
 					<td><?php if($field['enabled']) _e('Yes', JCF_TEXTDOMAIN); else  _e('No', JCF_TEXTDOMAIN);?></td>
 				</tr>

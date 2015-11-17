@@ -5,7 +5,7 @@
  * @package default
  * @author Kirill samojlenko
  */
-class Just_Collection extends Just_Field{
+class Just_Field_Collection extends Just_Field{
 	
 	public static $compatibility = "4.0+";
 	
@@ -24,14 +24,14 @@ class Just_Collection extends Just_Field{
 		$field_ops = array( 'classname' => 'field_collection' );
 		parent::__construct('collection', __('Collection', JCF_TEXTDOMAIN), $field_ops);
 		
-		add_action('jcf_custom_settings_row', array('Just_Collection', 'settings_row'),10,2);
+		add_action('jcf_custom_settings_row', array('Just_Field_Collection', 'settings_row'),10,2);
 		
 		if( !empty($_GET['page']) && $_GET['page'] == 'just_custom_fields' ){
 			//add_action('admin_print_styles', 'jcf_admin_add_styles');
 			add_action('admin_print_scripts', array($this, 'add_collection_js') );
 		}
-		add_action('wp_ajax_jcf_collection_order', array( 'Just_Collection', 'ajax_collection_fields_order' ));
-		add_action('wp_ajax_jcf_collection_add_new_field_group', array( 'Just_Collection', 'ajax_return_collection_field_group' ));
+		add_action('wp_ajax_jcf_collection_order', array( 'Just_Field_Collection', 'ajax_collection_fields_order' ));
+		add_action('wp_ajax_jcf_collection_add_new_field_group', array( 'Just_Field_Collection', 'ajax_return_collection_field_group' ));
 		
 	}
 	
@@ -149,14 +149,16 @@ class Just_Collection extends Just_Field{
 	function save( $_values ){
 		$values = array();
 		foreach($_values as $_value){
+			$item = array();
 			foreach($this->instance['fields'] as $field_id => $field){
 				$field_obj = jcf_init_field_object($field_id, $this->fieldset_id, $this->id);
 				if(isset($_value[$field_id])){
-					$values[][$field['slug']] = $field_obj->save($_value[$field_id]);
+					$item[$field['slug']] = $field_obj->save($_value[$field_id]);
 				} else {
-					$values[][$field['slug']] = $field_obj->save(array('val'=>''));
+					$item[$field['slug']] = $field_obj->save(array('val'=>''));
 				}
 			}
+			$values[] = $item;
 		}
 		return $values;
 	}
@@ -217,7 +219,7 @@ class Just_Collection extends Just_Field{
 	/**
 	 *	add custom scripts for jcf fildset edit page
 	 */
-	function add_collection_js(){
+	public function add_collection_js(){
 		wp_register_script(
 				'jcf_collections',
 				WP_PLUGIN_URL.'/just-custom-fields/components/collection/assets/collection.js',
@@ -226,7 +228,21 @@ class Just_Collection extends Just_Field{
 		wp_enqueue_script('jcf_collections');
 
 	}
+	
+	/**
+	 * Get nice name for width attribute
+	 * 
+	 * @param string $width_key
+	 * @return string|null
+	 */
+	public static function get_width_alias( $width_key ) {
+		if ( isset(self::$field_width[$width_key]) ){
+			return self::$field_width[$width_key];
+		}
 		
+		return null;
+	}
+	
 	/**
 	 * create custom table on jcf settings fields
 	 */
@@ -260,7 +276,7 @@ class Just_Collection extends Just_Field{
 			'Just_Field_Checkbox',
 			'Just_Field_Textarea',
 			'Just_Field_DatePicker',
-			'Just_Simple_Media',
+			'Just_Field_Simple_Media',
 			'Just_Field_Table'
 		);
 		

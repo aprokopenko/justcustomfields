@@ -11,10 +11,12 @@ function jcf_shortcode_init_fields(){
 	jcf_field_register( 'Just_Field_Checkbox' );
 	jcf_field_register( 'Just_Field_Textarea' );
 	jcf_field_register( 'Just_Field_DatePicker' );
+	jcf_field_register( 'Just_Field_Simple_Media' );
+	jcf_field_register( 'Just_Field_Table' );
+	jcf_field_register( 'Just_Field_Collection' );
+	jcf_field_register( 'Just_Field_RelatedContent' );
 	jcf_field_register( 'Just_Field_Upload' );
 	jcf_field_register( 'Just_Field_FieldsGroup' );
-	jcf_field_register( 'Just_Field_RelatedContent' );
-	jcf_field_register( 'Just_Field_Table' );
 	/**
 	 *	to add more fields with your custom plugin:
 	 *	- add_action  'jcf_register_fields'

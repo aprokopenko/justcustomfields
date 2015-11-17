@@ -124,6 +124,8 @@ class Just_Field_FieldsGroup extends Just_Field{
 		$fields = esc_html( $instance['fields'] );
 		$description = esc_html($instance['description']);
 		?>
+		<div class="error"><?php _e('This field is <b>deprecated</b>. Please use Collection instead.', JCF_TEXTDOMAIN); ?></div>
+
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', JCF_TEXTDOMAIN); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 		<p><label for="<?php echo $this->get_field_id('fields'); ?>"><?php _e('Fields:', JCF_TEXTDOMAIN); ?></label> 

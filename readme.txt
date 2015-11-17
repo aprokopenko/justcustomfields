@@ -25,31 +25,37 @@ For now plugin support such field types:
 * Checkbox (single and multiple)
 * Textarea (you can use editor light for it)
 * Date Picker\*
-* Upload Media (for upload files and images)
-* Fields Group (for grouped textual data)
+* Simple Media (files and images upload)
 * Table
+* Fields Collection (several fields grouping)
 * Related Content (to set relation to another Post/Page or Custom Post Type)\*
 
-_\*NOTE: Available **only** for WordPress 3.1+ (Related Content field works in Select mode). WordPress 3.0.\* has old  jQuery/jQuery UI versions and they are not compatible with DatePicker and Autocomplete fields._
+_\*NOTE: Available **from** WordPress 3.3+_
 
-**IMPORTANT** In version 1.3 added new functions to use in theme templates to print Upload Media fields content. Read more about it on plugins home page:
-http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/
+Since version 2.2 such fields are **deprecated**, but they are still there because of backward compatibility:
 
-**IMPORTANT** Starting from version 1.4 all fields machine names (slug) will be started from underscore ('_'). This prevent appearing them in standard WordPress Custom fields meta box.
+* Upload Media (for upload files and images)
+* Fields Group (for grouped textual data)
 
-**EXPERIMENTAL FEATURES**
+**IMPORTANT** Starting from version 1.4 all fields machine names (slug) will be started from underscore ('_'). This update prevents appearing them in standard WordPress Custom fields meta box.
 
-Starting from v2.0b we have new experimental features:
+Starting from v2.0 we have new features:
 
 * Ability to set Fields Settings global if you have MultiSite. So you can set them once, without copying all settings to every new site.
 * Ability to save Fields Settings to file system. Directly in the theme. We expect this option will be popular among the developers. It will be much easier to move your fields settings between site versions (dev/production).
 * Export Fields Settings
 * Import Fields Settings
 
+**EXPERIMENTAL FEATURES v2.2**
+
+* Simple Media field is now single file only (before it was multiple). It use new media upload box from WordPress and save post thumbnail ID (before it was just file url). So now you can use get_the_post_thumbnail() function to work with attachments.
+* New "Fields Collection" has been promoted in v2.2. There are still some issues with drag & drop to re-order fields but all other features are working okay.
+* All fields now have "Shortcodes" and hints how to use them inside the templates for non-professional developers.
+
 FILL FREE TO CONTACT ME IF YOU FIND ANY BUGS/ISSUES!
 
 **ISSUES TRACKER**
-I've setup github repo for this plugin. Git is great repo with many features i can use as branches and also it has nice issue tracker. So i listed known bugs and future features there. You can post new bugs or feature requests for me there.
+Main plugin development are done under github public repository. I listed known bugs and future features there. You can post new bugs or feature requests for me there.
 https://github.com/aprokopenko/justcustomfields/issues
 
 == Installation ==
@@ -80,6 +86,13 @@ get_post_custom()
 	* PHP-Code generators to use in templates when editing custom fields
 	* Shortcodes for WP editor
 	* make fieldsets related to categories (show/hide based on category select)
+* Version 2.2
+	* Bug fixes: Some annoying notices with WP_DEBUG On
+	* New feature: Fields shortcodes and template functions
+	* New feature: "Simple Media" field
+	* New feature: Ability to group several field in "Collection" (beta)
+	* Deprecated: Upload Media is now deprecated
+	* Deprecated: Fields Group is now deprecated
 * Version 2.1.2
 	* Bug fixes: Notice on Fields edit page when E_ALL errors On
 	* Bug fixes: Notice on post/page quick edit update

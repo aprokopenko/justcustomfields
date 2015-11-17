@@ -1,6 +1,8 @@
 <?php
 class Just_Field_DatePicker extends Just_Field{
 	
+	public static $compatibility = '3.3+';
+
 	public function __construct(){
 		$field_ops = array( 'classname' => 'field_datepicker' );
 		parent::__construct('datepicker', __('Date Picker', JCF_TEXTDOMAIN), $field_ops);

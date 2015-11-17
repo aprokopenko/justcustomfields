@@ -31,8 +31,7 @@ function jcf_get_thumb_path( $image, $size = '100x77' ){
  */
 class Just_Field_Upload extends Just_Field{
 	
-	public static $compatibility = '4.0-';
-
+	public static $compatibility = '3.3+';
 
 	public function __construct(){
 
@@ -69,7 +68,6 @@ class Just_Field_Upload extends Just_Field{
 		$entries = array( '00' => '' ) + (array)$this->entry;
 		?>
 		<div class="jcf-upload-field jcf-upload-type-<?php echo $upload_type; ?> jcf-field-container">
-			<div><span class="upload_deprecated"><?php _e('This field is deprecated. Please use Collection with Simple Media instead.', JCF_TEXTDOMAIN); ?></span></div>
 			<?php
 			foreach($entries as $key => $entry) : 
 				if( !empty($entry) ){
@@ -213,6 +211,8 @@ class Just_Field_Upload extends Just_Field{
 		$autoresize = esc_attr( $instance['autoresize'] );
 		$description = esc_html($instance['description']);
 		?>
+		<div class="error"><?php _e('This field is <b>deprecated</b>. Please use Simple Media instead. In case you need multiple images you can use Collection of Simple Media', JCF_TEXTDOMAIN); ?></div>
+		
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', JCF_TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 		<p>
 			<label for="<?php echo $this->get_field_id('type'); ?>"><?php _e('Type of files:', JCF_TEXTDOMAIN); ?></label>

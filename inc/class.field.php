@@ -170,7 +170,7 @@ class Just_Field{
 		if( $this->is_collection_field() && $this->is_post_edit ){
 			$collection = jcf_init_field_object($this->collection_id, $this->fieldset_id);
 			return str_replace('-',$delimeter,'field'.$delimeter.$collection->id_base.$delimeter.$collection->number.$delimeter
-					.Just_Collection::$current_collection_field_key.$delimeter.$this->id.$delimeter.$str);
+					.Just_Field_Collection::$current_collection_field_key.$delimeter.$this->id.$delimeter.$str);
 		}
 		return 'field'.$delimeter.$this->id_base.$delimeter.$this->number.$delimeter.$str;
 	}
@@ -185,7 +185,7 @@ class Just_Field{
 		 */
 		if( $this->is_collection_field() && $this->is_post_edit ){
 			$collection = jcf_init_field_object($this->collection_id, $this->fieldset_id);
-			return 'field-'.$collection->id_base.'['.$collection->number.']['.Just_Collection::$current_collection_field_key.']['.$this->id.']['.$str.']';
+			return 'field-'.$collection->id_base.'['.$collection->number.']['.Just_Field_Collection::$current_collection_field_key.']['.$this->id.']['.$str.']';
 		}
 		return 'field-'.$this->id_base.'['.$this->number.']['.$str.']';
 	}
@@ -286,7 +286,7 @@ class Just_Field{
 								<select class="widefat" 
 										id="<?php echo $this->get_field_id('field_width'); ?>"
 										name="<?php echo $this->get_field_name('field_width'); ?>">
-									<?php foreach(Just_Collection::$field_width as $key => $width) : ?>
+									<?php foreach(Just_Field_Collection::$field_width as $key => $width) : ?>
 										<option value="<?php echo $key; ?>"<?php echo (@$this->instance['field_width']==$key?' selected':''); ?>>
 											<?php echo $width; ?></option>
 									<?php endforeach; ?>

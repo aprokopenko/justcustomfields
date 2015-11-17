@@ -117,7 +117,7 @@
 		$field_obj->set_id( $field_mixed );
 		//if is not new field and include to cillection
 		if(!$field_obj->is_new && $collection_id){
-			$collection_obj = new Just_Collection();
+			$collection_obj = new Just_Field_Collection();
 			$collection_obj->set_fieldset($fieldset_id);
 			$collection_obj->set_id($collection_id);
 			$field = $collection_obj->instance['fields'][$field_mixed];
