@@ -26,15 +26,32 @@ class Just_Field_Textarea extends Just_Field{
 		if( !empty($this->instance['editor']) ){
 			// WP 3.3+ >> we have new cool function to make wysiwyg field
 			if( function_exists('wp_editor') ){
+				ob_start();
+				/**
+				 * @todo have bug with switching editor/text after ajax field loading, now disabled this functionality
+				 * @author Kirill Samojlenko
+				 */
 				wp_editor($this->entry, $this->get_field_id('val'), array(
 					'textarea_name' => $this->get_field_name('val'),
 					'textarea_rows' => 5,
-					'media_buttons' => false,
+					'media_buttons' => true,
 					'wpautop' => true,
+					'quicktags' => false,
 					'tinymce' => array(
 						'theme_advanced_buttons1' => 'bold,italic,strikethrough,|,bullist,numlist,blockquote,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,spellchecker,fullscreen,wp_adv',
 					),
 				));
+				echo ob_get_clean();
+				if(defined('DOING_AJAX') && DOING_AJAX){
+?>
+				<script type="text/javascript">
+					jQuery(document).ready(function(){
+						tinymce.execCommand( 'mceRemoveEditor', false, '<?php echo $this->get_field_id('val'); ?>' );
+						tinymce.execCommand( 'mceAddEditor', false, '<?php echo $this->get_field_id('val'); ?>' );
+					})
+				</script>
+<?php
+				}
 			}
 			// old version >> hook js, print textarea
 			else{

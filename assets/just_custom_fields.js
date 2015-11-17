@@ -167,7 +167,6 @@ function initFieldsetFields(){
 		// send request
 		jcf_ajax(data, 'json', loader, function(response){
 			
-			console.log(response);
 			var fieldset = jQuery('#the-list-' + response.fieldset_id);
 			
 			if( response.is_new ){
@@ -178,9 +177,9 @@ function initFieldsetFields(){
 				}
 				// add new row
 				var html;
-				html = '<tr id="field_row_' + response.id + '">';
+				html = '<tr id="field_row_' + response.id + '" class="field_row ' + response.id + '">';
 				html += '	<td class="check-column"><span class="drag-handle">move</span></td>';
-				html += '<td><strong><a href="#" rel="' + response.id + '">' + response.instance.title + '</a></strong>';
+				html += '	<td><strong><a href="#" rel="' + response.id + '">' + response.instance.title + '</a></strong>';
 				html += '	<div class="row-actions">';
 				html += '		<span class="edit"><a href="#" rel="' + response.id + '">'+ jcf_textdomain.edit +'</a></span> |';
 				html += '		<span class="delete"><a href="#" rel="' + response.id + '">'+ jcf_textdomain.delete +'</a></span>';
@@ -189,7 +188,25 @@ function initFieldsetFields(){
 				html += '<td>'+response.instance.slug+'</td>';
 				html += '<td>'+response.id_base+'</td>';
 				html += '<td>'+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</td>';
+				if(response.collection_fields){
+					html +='<tr class="collection_list" >';
+					html += '<td colspan="2" data-collection_id="' + response.id + '"></td>';
+					html += '<td colspan="3">'+response.collection_fields+'</td>';
+					html += '</tr>';
+				}
 				fieldset.append(html);
+				if(response.collection_fields){
+						jQuery('tbody[id^=the-collection-list-collection-]').sortable({
+							handle: 'span.drag-handle',
+							opacity:0.7,
+							placeholder: 'collection_sortable_placeholder',
+							scroll: true,
+							start: function (event, ui) { 
+								ui.placeholder.html('<td colspan="4"><br>&nbsp;</td>');
+							},
+							stop: function(event, ui){ collectionFieldSortableStop(event, ui, this); }
+						});
+				}
 			}
 			
 			// update fieldset row
@@ -217,6 +234,7 @@ function initFieldsetFields(){
 			};
 			
 			jcf_ajax(data, 'json', null, function(response){
+				row.next('tr.collection_list:first').remove();
 				row.remove();
 				// close edit box if exists
 				jcf_hide_ajax_container();
@@ -252,11 +270,13 @@ function initFieldsetFields(){
 	});
 	
 	// init sortable
-	jQuery('#jcf_fieldsets tbody').sortable({
+	jQuery('#jcf_fieldsets tbody:first').sortable({
 		handle: 'span.drag-handle',
 		opacity:0.7,
 		placeholder: 'sortable_placeholder',
+		scroll: true,
 		start: function (event, ui) { 
+			jQuery('.collection_list').hide();
 			ui.placeholder.html('<td colspan="4"><br>&nbsp;</td>');
 		},
 		stop: function(event, ui){
@@ -264,20 +284,29 @@ function initFieldsetFields(){
 			var order = '';
 			var fieldset = jQuery(ui.item).parent();
 			var f_id = fieldset.attr('id').replace('the-list-', '');
-			fieldset.find('tr').each(function(i, tr){
-				order += jQuery(tr).attr('id').replace('field_row_', '') + ',';
+			fieldset.find('tr.field_row').each(function(i, tr){
+				if(jQuery(tr).attr('id')) order += jQuery(tr).attr('id').replace('field_row_', '') + ',';
 			});
+			setCollectionFieldsToPosition(fieldset)
+			jQuery('.collection_list').show();
 			
 			var data = {
 				'action': 'jcf_fields_order',
 				'fieldset_id': f_id,
 				'fields_order': order
 			};
-
 			//pa(data);
 			jcf_ajax(data, 'json');
 		}
 	});
+	
+	function setCollectionFieldsToPosition( fieldset ){
+		fieldset.find('tr.collection_list').each(function(i, tr){
+			var collection_id = jQuery(tr).find('td:first').data('collection_id');
+			jQuery('tr.'+collection_id).after('<tr class="collection_list">'+jQuery(tr).html()+'</tr>');
+			tr.remove();
+		});
+	}
 }
 
 /**
@@ -394,7 +423,7 @@ function jcf_ajax( data, respType, loader, callback ){
 		}
 		
 		// if no errors - call main callback
-		_callback( response );
+		if(_callback) _callback( response );
 	})	
 }
 

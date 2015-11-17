@@ -1,3 +1,7 @@
+
+.jcf-upload-field .upload_deprecated{
+	color: #a00;
+}
 .jcf-upload-field .jcf-upload-row{
 	width:100%;
 	overflow:hidden;

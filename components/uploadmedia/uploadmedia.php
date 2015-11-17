@@ -31,9 +31,11 @@ function jcf_get_thumb_path( $image, $size = '100x77' ){
  */
 class Just_Field_Upload extends Just_Field{
 	
+	public static $compatibility = '4.0-';
+
+
 	public function __construct(){
 
-		self::$compatibility = '4.0-';
 		$field_ops = array( 'classname' => 'field_uploadmedia' );
 		parent::__construct( 'uploadmedia', __('Upload Media', JCF_TEXTDOMAIN), $field_ops);
 		
@@ -67,6 +69,7 @@ class Just_Field_Upload extends Just_Field{
 		$entries = array( '00' => '' ) + (array)$this->entry;
 		?>
 		<div class="jcf-upload-field jcf-upload-type-<?php echo $upload_type; ?> jcf-field-container">
+			<div><span class="upload_deprecated"><?php _e('This field is deprecated. Please use Collection with Simple Media instead.', JCF_TEXTDOMAIN); ?></span></div>
 			<?php
 			foreach($entries as $key => $entry) : 
 				if( !empty($entry) ){

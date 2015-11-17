@@ -81,7 +81,7 @@ class Just_Field_Table extends Just_Field{
 				<?php echo $rows; ?>
 				<?php echo $first_row; ?>
 			</table>
-			<p><a href="#" class="jcf-btn jcf_add_row"><?php _e('+ Add row', JCF_TEXTDOMAIN); ?></a></p>
+			<p><a href="#" class="button button-large jcf_add_row"><?php _e('+ Add row', JCF_TEXTDOMAIN); ?></a></p>
 		</div>
 		<?php
 		endif; 

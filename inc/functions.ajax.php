@@ -134,8 +134,10 @@
 		
 		$field_type =  $_POST['field_type'];
 		$fieldset_id = $_POST['fieldset_id'];
+		$collection_id = (isset($_POST['collection_id'])?$_POST['collection_id']:'');
 		
-		$field_obj = jcf_init_field_object($field_type, $fieldset_id);
+		$field_obj = jcf_init_field_object($field_type, $fieldset_id, $collection_id);
+		
 		$html = $field_obj->do_form();
 		jcf_ajax_reposnse($html, 'html');
 		
@@ -148,9 +150,16 @@
 
 		$field_type =  $_POST['field_id'];
 		$fieldset_id = $_POST['fieldset_id'];
+		$collection_id = (isset($_POST['collection_id'])?$_POST['collection_id']:'');
 		
-		$field_obj = jcf_init_field_object($field_type, $fieldset_id);
+		$field_obj = jcf_init_field_object($field_type, $fieldset_id, $collection_id);
+		
 		$resp = $field_obj->do_update();
+		if(isset($resp['id_base']) && $resp['id_base'] == 'collection'){
+			ob_start();
+			Just_Collection::settings_row($resp['id'],$fieldset_id);
+			$resp["collection_fields"] = ob_get_clean();
+		}
 		jcf_ajax_reposnse($resp, 'json');
 
 	}
@@ -161,9 +170,14 @@
 	function jcf_ajax_delete_field(){
 		$field_id = $_POST['field_id'];
 		$fieldset_id = $_POST['fieldset_id'];
-		
-		$field_obj = jcf_init_field_object($field_id, $fieldset_id);
-		$field_obj->do_delete();
+		$collection_id = (isset($_POST['collection_id'])?$_POST['collection_id']:'');
+		if($collection_id){
+			$field_obj = jcf_init_field_object($collection_id, $fieldset_id);
+			$field_obj->delete_field($field_id);
+		} else {
+			$field_obj = jcf_init_field_object($field_id, $fieldset_id);
+			$field_obj->do_delete();			
+		}
 		
 		$resp = array('status' => '1');
 		jcf_ajax_reposnse($resp, 'json');
@@ -175,8 +189,9 @@
 	function jcf_ajax_edit_field(){
 		$field_id = $_POST['field_id'];
 		$fieldset_id = $_POST['fieldset_id'];
+		$collection_id = (isset($_POST['collection_id'])?$_POST['collection_id']:'');
 		
-		$field_obj = jcf_init_field_object($field_id, $fieldset_id);
+		$field_obj = jcf_init_field_object($field_id, $fieldset_id,$collection_id);
 		$html = $field_obj->do_form();
 		jcf_ajax_reposnse($html, 'html');
 	}

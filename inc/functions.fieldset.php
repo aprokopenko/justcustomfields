@@ -10,7 +10,9 @@
 		if( $jcf_read_settings != JCF_CONF_SOURCE_DB ){
 			$jcf_settings = jcf_get_all_settings_from_file();
 			$post_type = jcf_get_post_type();
-			$fieldsets = $jcf_settings['fieldsets'][$post_type];
+			if(isset($jcf_settings['fieldsets'][$post_type])){
+				$fieldsets = $jcf_settings['fieldsets'][$post_type];
+			} else $fieldsets = array();
 		}
 		else{
 			$fieldsets = jcf_get_options($option_name);
@@ -75,7 +77,12 @@
 		$jcf_read_settings = jcf_get_read_settings();
 		if( $jcf_read_settings != JCF_CONF_SOURCE_DB ){
 			$jcf_settings = jcf_get_all_settings_from_file();
-			$fieldsets = $jcf_settings['fieldsets'][$post_type];
+			if(isset($jcf_settings['fieldsets'][$post_type])){
+				$fieldsets = $jcf_settings['fieldsets'][$post_type];
+			} else {
+				$fieldsets = array();
+			}
+			
 		} 
 		else {
 			$fieldsets = jcf_get_options('jcf_fieldsets-'.$post_type);

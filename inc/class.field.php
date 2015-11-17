@@ -21,6 +21,12 @@ class Just_Field{
 	public $is_new = false;
 	
 	/**
+	 * check for change field name if it edit on post edit page
+	 */
+	public $is_post_edit = false;
+
+
+	/**
 	 * Unique ID number of the current instance
 	 * 
 	 * @var integer 
@@ -34,6 +40,7 @@ class Just_Field{
 	 */
 	public $id = false;
 	public $fieldset_id = '';
+	public $collection_id = '';
 	public $post_type;
 	
 	/**
@@ -68,9 +75,9 @@ class Just_Field{
 	 * check field compatibility with WP version
 	 */
 	
-	public static function checkCompatibility(){
+	public static function checkCompatibility($compatibility){
 		global $wp_version;
-		$compatibility = self::$compatibility;
+		
 		$operator = '<';
 		if(strpos($compatibility, '+')){
 			$compatibility = substr($compatibility, 0, -1);
@@ -78,17 +85,34 @@ class Just_Field{
 		} elseif(strpos($compatibility, '-')){
 			$compatibility = substr($compatibility, 0, -1);			
 		}
+		
 		if(!version_compare($wp_version, $compatibility, $operator)) return false;
 		return true;
 	}
 
-
 	/**
+	 * check, that this field is part of collection
+	 */
+	
+	public function is_collection_field(){
+		if(!empty($this->collection_id)) return true;
+		return false;
+	}
+
+		/**
 	 *	set class property $this->fieldset_id
 	 *	@param   string  $fieldset_id  fieldset string ID
 	 */
 	public function set_fieldset( $fieldset_id ){
 		$this->fieldset_id = $fieldset_id;
+	}
+	
+	/**
+	 *	set class property $this->collection_id
+	 *	@param   string  $fieldset_id  fieldset string ID
+	 */
+	public function set_collection( $collection_id ){
+		$this->collection_id = $collection_id;
 	}
 	
 	/**
@@ -140,6 +164,14 @@ class Just_Field{
 	 *	@param  string  $str  string to be converted
 	 */
 	public function get_field_id( $str, $delimeter = '-' ){
+		/**
+		 * if is field of collection and itst post edit page create collection field id
+		 */
+		if( $this->is_collection_field() && $this->is_post_edit ){
+			$collection = jcf_init_field_object($this->collection_id, $this->fieldset_id);
+			return str_replace('-',$delimeter,'field'.$delimeter.$collection->id_base.$delimeter.$collection->number.$delimeter
+					.Just_Collection::$current_collection_field_key.$delimeter.$this->id.$delimeter.$str);
+		}
 		return 'field'.$delimeter.$this->id_base.$delimeter.$this->number.$delimeter.$str;
 	}
 
@@ -148,6 +180,13 @@ class Just_Field{
 	 *	@param  string  $str  string to be converted
 	 */
 	public function get_field_name( $str ){
+		/**
+		 * if is field of collection and itst post edit page create collection field name
+		 */
+		if( $this->is_collection_field() && $this->is_post_edit ){
+			$collection = jcf_init_field_object($this->collection_id, $this->fieldset_id);
+			return 'field-'.$collection->id_base.'['.$collection->number.']['.Just_Collection::$current_collection_field_key.']['.$this->id.']['.$str.']';
+		}
 		return 'field-'.$this->id_base.'['.$this->number.']['.$str.']';
 	}
 	
@@ -167,7 +206,7 @@ class Just_Field{
 	 */
 	public function validate_instance_slug( $slug ){
 		$slug = trim($slug);
-		if( !empty($slug) && $slug{0} != '_' ){
+		if( !empty($slug) && $slug{0} != '_' && !$this->is_collection_field() ){
 			$slug = '_' . $slug;
 		}
 		return $slug;
@@ -195,14 +234,16 @@ class Just_Field{
 		<div class="jcf_edit_field">
 			<h3 class="header"><?php echo $op . ' ' . $this->title; ?></h3>
 			<div class="jcf_inner_content">
-				<form action="#" method="post" id="jcform_edit_field">
+				<form action="#" method="post" id="<?php echo ( $this->is_collection_field() ? 'jcform_edit_collection_field':'jcform_edit_field');?>">
 					<fieldset>
 						<input type="hidden" name="field_id" value="<?php echo $this->id; ?>" />
 						<input type="hidden" name="field_number" value="<?php echo $this->number; ?>" />
 						<input type="hidden" name="field_id_base" value="<?php echo $this->id_base; ?>" />
 						<input type="hidden" name="fieldset_id" value="<?php echo $this->fieldset_id; ?>" />
+						<?php if( $this->is_collection_field() ) : ?>
+							<input type="hidden" name="collection_id" value="<?php echo $this->collection_id; ?>" />
 						<?php
-							
+							endif;
 							$this->form( $this->instance );
 							
 							// need to add slug field too
@@ -227,7 +268,32 @@ class Just_Field{
 										value="1" <?php checked(true, @$this->instance['enabled']); ?> />
 								<?php _e('Enabled', JCF_TEXTDOMAIN); ?></label>
 						</p>
+						<?php if($this->is_collection_field()) : ?>
+							<?php if($this->id_base == 'inputtext') : ?>
+								<p>
+									<label for="<?php echo $this->get_field_id('group_title'); ?>">
+										<input class="checkbox" type="checkbox" 
+											id="<?php echo $this->get_field_id('group_title'); ?>"
+											name="<?php echo $this->get_field_name('group_title'); ?>"
+											value="1" <?php checked(true, @$this->instance['group_title']); ?> />
+										<?php _e('Use this field as collection item title?', JCF_TEXTDOMAIN); ?>
+									</label>
+								</p>
 						
+							<?php endif; ?>
+							<p>
+								<label for="<?php echo $this->get_field_id('field_width'); ?>"><?php _e('Select Field Width', JCF_TEXTDOMAIN); ?></label>
+								<select class="widefat" 
+										id="<?php echo $this->get_field_id('field_width'); ?>"
+										name="<?php echo $this->get_field_name('field_width'); ?>">
+									<?php foreach(Just_Collection::$field_width as $key => $width) : ?>
+										<option value="<?php echo $key; ?>"<?php echo (@$this->instance['field_width']==$key?' selected':''); ?>>
+											<?php echo $width; ?></option>
+									<?php endforeach; ?>
+								</select> 
+									
+							</p>
+						<?php endif; ?>
 						<div class="field-control-actions">
 							<div class="alignleft">
 								<?php if( $op != __('Add', JCF_TEXTDOMAIN) ) : ?>
@@ -256,6 +322,7 @@ class Just_Field{
 	 *	@param array $params for update field
 	 */
 	public function do_update($params = array()){
+		
 		$input = !empty($params) ? $params : $_POST['field-'.$this->id_base][$this->number];
 		// remove all slashed from values
 		foreach($input as $var => $value){
@@ -263,7 +330,6 @@ class Just_Field{
 				$input[$var] = stripslashes($value);
 			}
 		}
-		
 		// validate: title should be always there
 		if( empty($input['title']) ){
 			return array('status' => '0', 'error' => __('Title field is required.', JCF_TEXTDOMAIN));
@@ -298,28 +364,52 @@ class Just_Field{
 			$this->number = jcf_get_fields_index( $this->id_base );
 			$this->id = $this->id_base . '-' . $this->number;
 		}
+		if( !$this->is_collection_field() ){
+			// update fieldset
+			$fieldset = jcf_fieldsets_get( $this->fieldset_id );
+			$fieldset['fields'][$this->id] = $instance['enabled']; 
+			jcf_fieldsets_update( $this->fieldset_id, $fieldset );
+
+			// check slug field
+			if( empty($instance['slug']) ){
+				$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
+			}
+			// save
+			jcf_field_settings_update($this->id, $instance, $this->fieldset_id);
+
+			// return status
+			$res = array(
+				'status' => '1',
+				'id' => $this->id,
+				'id_base' => $this->id_base,
+				'fieldset_id' => $this->fieldset_id,
+				'is_new' => $this->is_new,
+				'instance' => $instance,
+			);			
+		} else {
+			$collection = jcf_init_field_object($this->collection_id, $this->fieldset_id);
+			// check slug field
+			if( empty($instance['slug']) ){
+				$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
+			}
+			$instance['field_width'] = $input['field_width'];
+			if(isset($input['group_title'])) $instance['group_title'] = true;
+			$collection->instance['fields'][$this->id] = $instance;
+			// save
+			jcf_field_settings_update($this->collection_id, $collection->instance, $this->fieldset_id);
 		
-		// update fieldset
-		$fieldset = jcf_fieldsets_get( $this->fieldset_id );
-		$fieldset['fields'][$this->id] = $instance['enabled'];
-		jcf_fieldsets_update( $this->fieldset_id, $fieldset );
-
-		// check slug field
-		if( empty($instance['slug']) ){
-			$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
+			// return status
+			$res = array(
+				'status' => '1',
+				'id' => $this->id,
+				'id_base' => $this->id_base,
+				'fieldset_id' => $this->fieldset_id,
+				'collection_id' => $this->collection_id,
+				'is_new' => $this->is_new,
+				'instance' => $instance,
+			);		
+			
 		}
-		// save
-		jcf_field_settings_update($this->id, $instance, $this->fieldset_id);
-
-		// return status
-		$res = array(
-			'status' => '1',
-			'id' => $this->id,
-			'id_base' => $this->id_base,
-			'fieldset_id' => $this->fieldset_id,
-			'is_new' => $this->is_new,
-			'instance' => $instance,
-		);
 		return $res;
 	}
 
