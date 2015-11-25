@@ -184,15 +184,20 @@ function initFieldsetFields(){
 				html += '		<span class="edit"><a href="#" rel="' + response.id + '">'+ jcf_textdomain.edit +'</a></span> |';
 				html += '		<span class="delete"><a href="#" rel="' + response.id + '">'+ jcf_textdomain.delete +'</a></span>';
 				html += '	</div>';
+                if(response.collection_fields){
+                    html += '   <ul>';
+                    html += '       <li><strong>' + jcf_textdomain.slug + '</strong>: '+response.instance.slug+'</li>';
+                    html += '       <li><strong>' + jcf_textdomain.type + '</strong>: '+response.id_base+'</li>';
+                    html += '       <li><strong>' + jcf_textdomain.enabled + '</strong>: '+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</li>';
+                    html += '   </ul>';
+                }
 				html += '</td>';
-				html += '<td>'+response.instance.slug+'</td>';
-				html += '<td>'+response.id_base+'</td>';
-				html += '<td>'+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</td>';
-				if(response.collection_fields){
-					html +='<tr class="collection_list" >';
-					html += '<td colspan="2" data-collection_id="' + response.id + '"></td>';
-					html += '<td colspan="3">'+response.collection_fields+'</td>';
-					html += '</tr>';
+                if(response.collection_fields){
+                    html += '<td colspan="3" class="collection_list" data-collection_id="' + response.id + '">' + response.collection_fields + '</td>';
+                }else{
+                    html += '<td>'+response.instance.slug+'</td>';
+                    html += '<td>'+response.id_base+'</td>';
+                    html += '<td>'+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</td>';
 				}
 				fieldset.append(html);
 				if(response.collection_fields){
@@ -208,13 +213,13 @@ function initFieldsetFields(){
 						});
 				}
 			}
-			
-			// update fieldset row
-			var row = jQuery('#field_row_' + response.id);
-			row.find('strong a').text(response.instance.title);
-			row.find('td:eq(2)').text(response.instance.slug);
-			row.find('td:eq(4)').text( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no );
-			
+			if(!response.collection_fields){
+                // update fieldset row
+                var row = jQuery('#field_row_' + response.id);
+                row.find('strong a').text(response.instance.title);
+                row.find('td:eq(2)').text(response.instance.slug);
+                row.find('td:eq(4)').text( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no );
+            }
 			// close add box at the end
 			jcf_hide_ajax_container();
 		})
@@ -234,7 +239,7 @@ function initFieldsetFields(){
 			};
 			
 			jcf_ajax(data, 'json', null, function(response){
-				row.next('tr.collection_list:first').remove();
+				row.next('td.collection_list:first').remove();
 				row.remove();
 				// close edit box if exists
 				jcf_hide_ajax_container();
@@ -275,8 +280,7 @@ function initFieldsetFields(){
 		opacity:0.7,
 		placeholder: 'sortable_placeholder',
 		scroll: true,
-		start: function (event, ui) { 
-			jQuery('.collection_list').hide();
+		start: function (event, ui) {
 			ui.placeholder.html('<td colspan="4"><br>&nbsp;</td>');
 		},
 		stop: function(event, ui){
@@ -287,8 +291,6 @@ function initFieldsetFields(){
 			fieldset.find('tr.field_row').each(function(i, tr){
 				if(jQuery(tr).attr('id')) order += jQuery(tr).attr('id').replace('field_row_', '') + ',';
 			});
-			setCollectionFieldsToPosition(fieldset)
-			jQuery('.collection_list').show();
 			
 			var data = {
 				'action': 'jcf_fields_order',
@@ -299,14 +301,7 @@ function initFieldsetFields(){
 			jcf_ajax(data, 'json');
 		}
 	});
-	
-	function setCollectionFieldsToPosition( fieldset ){
-		fieldset.find('tr.collection_list').each(function(i, tr){
-			var collection_id = jQuery(tr).find('td:first').data('collection_id');
-			jQuery('tr.'+collection_id).after('<tr class="collection_list">'+jQuery(tr).html()+'</tr>');
-			tr.remove();
-		});
-	}
+
 }
 
 /**
