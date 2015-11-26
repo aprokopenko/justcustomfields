@@ -127,7 +127,38 @@ function initFieldsetsEdit(){
 			jcf_ajax(data, 'json');
 		}
 	});
-
+	
+	// choose base for visibility rule
+	jQuery('#rule-based-on').live('change', function() {
+		var data = {
+			'rule': jQuery(this).val(),
+			'action': 'jcf_get_rule_options',
+		};
+		
+		var loader = jQuery(this).find('img.ajax-feedback');
+		
+		jcf_ajax(data, 'html', loader, function(response){
+			jQuery('.rules-options').html(response);
+		});
+	});
+	
+	// choose taxonomy terms for visibility rule
+	jQuery('.taxonomy-options #rule-taxonomy').live('change', function() {
+		var data = {
+			'taxonomy': jQuery(this).val(),
+			'action': 'jcf_get_taxonomy_terms',
+		};
+		
+		var loader = jQuery(this).find('img.ajax-feedback');
+		
+		jcf_ajax(data, 'html', loader, function(response){
+			jQuery('.taxonomy-terms-options').html(response);
+		});
+	});
+	
+	jQuery('.save_rule_btn').live('click', function() {
+		var data = jQuery('.field-control-actions fieldset').formSerialize();
+	});
 }
 
 /**

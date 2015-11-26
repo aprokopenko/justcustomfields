@@ -76,7 +76,9 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_change_fieldset', 'jcf_ajax_change_fieldset');
 	add_action('wp_ajax_jcf_update_fieldset', 'jcf_ajax_update_fieldset');
 	add_action('wp_ajax_jcf_order_fieldsets', 'jcf_ajax_order_fieldsets');
-
+	add_action('wp_ajax_jcf_get_rule_options', 'jcf_ajax_get_rule_options');
+	add_action('wp_ajax_jcf_get_taxonomy_terms', 'jcf_ajax_get_taxonomy_terms');
+	
 	add_action('wp_ajax_jcf_add_field', 'jcf_ajax_add_field');
 	add_action('wp_ajax_jcf_save_field', 'jcf_ajax_save_field');
 	add_action('wp_ajax_jcf_delete_field', 'jcf_ajax_delete_field');

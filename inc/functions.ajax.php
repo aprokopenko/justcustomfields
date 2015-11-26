@@ -74,10 +74,38 @@
 						<p><label for="jcf_edit_fieldset_title"><?php _e('Title:', JCF_TEXTDOMAIN); ?></label> <input class="widefat" id="jcf_edit_fieldset_title" type="text" value="<?php echo esc_attr($fieldset['title']); ?>" /></p>
 						
 						<div class="field-control-actions">
+							<h4><?php _e('Set visibility:', JCF_TEXTDOMAIN); ?></h4>
+							<input type="button" class="add_rule_btn hidden" name="add_rule" value="<?php _e('Add rule', JCF_TEXTDOMAIN); ?>"/>
+							<fieldset id="fieldset_visibility_rules">
+								<label for="rule-based-on"><?php _e('Based on', JCF_TEXTDOMAIN); ?></label>
+								<select name="based_on" id="rule-based-on">
+									<option value="" disabled="disabled" selected="selected" ><?php _e('Choose option', JCF_TEXTDOMAIN); ?></option>
+									<option value="page_template">Page template</option>
+									<option value="taxonomy">Taxonomy</option>
+								</select>
+								<div class="join-condition hidden" >
+									<label for="rule-join-condition"><?php _e('Join condition with other rules', JCF_TEXTDOMAIN); ?></label>
+									<select name="join-condition" id="rule-join-condition">
+										<option value="and"><?php _e('AND', JCF_TEXTDOMAIN); ?></option>
+										<option value="or"><?php _e('OR', JCF_TEXTDOMAIN); ?></option>
+									</select>
+								</div>
+								<div class="visibility-options">
+									<input type="radio" name="visibility-option" id="visibility-option-hide" value="hide" checked="checked" />
+									<label for="visibility-option-hide"><?php _e('Hide', JCF_TEXTDOMAIN); ?></label>
+									<br class="clear"/>
+									<input type="radio" name="visibility-option" id="visibility-option-show" value="show" />
+									<label for="visibility-option-show"><?php _e('Show', JCF_TEXTDOMAIN); ?></label>
+								</div>
+								<div class="rules-options">	</div>
+								<input type="button" class="save_rule_btn" name="save_rule" value="<?php _e('Save rule', JCF_TEXTDOMAIN); ?>"/>
+							</fieldset>
+							<br class="clear"/>
 							<div class="alignleft">
 								<a href="#remove" class="field-control-remove"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a> |
 								<a href="#close" class="field-control-close"><?php _e('Close', JCF_TEXTDOMAIN); ?></a>
 							</div>
+							<br class="clear"/>
 							<div class="alignright">
 								<?php echo print_loader_img(); ?>
 								<input type="submit" value="<?php _e('Save', JCF_TEXTDOMAIN); ?>" class="button-primary" name="savefield">
@@ -86,9 +114,102 @@
 						</div>
 					</fieldset>
 				</form>
+				
+				
 			</div>
 		</div>
 		<?php
+		$html = ob_get_clean();
+		jcf_ajax_reposnse($html, 'html');
+	}
+
+	/**
+	 * get base options for visibility rules
+	 */
+	function jcf_ajax_get_rule_options() {
+		
+		$rule = $_POST['rule'];
+		
+		if( $rule == 'page_template' ) {
+
+			$templates = get_page_templates();
+			ob_start();
+			?>
+			<div class="templates-options">
+				<label for="rule-templates"><?php _e('Choose templates', JCF_TEXTDOMAIN); ?></label>
+				<br class="clear"/>
+				<select multiple id="rule-templates">
+
+					<?php foreach( $templates as $name => $slug ): ?>
+
+						<option value="<?php echo $slug; ?>"><?php echo $name; ?></option>
+
+					<?php	endforeach; ?>
+
+				</select>
+			</div>
+			<?php 
+		}
+		else {
+			global $jcf_post_type;
+			$taxonomies = get_taxonomies( array('object_type' => (array)$jcf_post_type, 'show_ui' => true), 'objects' );
+			ob_start();
+			?>
+			<div class="taxonomy-options">
+				<label for="rule-taxonomy"><?php _e('Choose taxonomy', JCF_TEXTDOMAIN); ?></label>
+				<br class="clear"/>
+				<select id="rule-taxonomy">
+					<option value="" disabled="disabled" selected="selected" ><?php _e('Choose taxonomy', JCF_TEXTDOMAIN); ?></option>
+
+					<?php foreach( $taxonomies as $slug => $taxonomy ): ?>
+
+						<option value="<?php echo $slug; ?>"><?php echo $taxonomy->labels->singular_name; ?></option>
+
+					<?php	endforeach; ?>
+				</select>
+				<div class="taxonomy-terms-options"></div>
+			</div>
+			<?php 
+		}
+		
+		
+		$html = ob_get_clean();
+		jcf_ajax_reposnse($html, 'html');
+	}
+	
+	function jcf_ajax_get_taxonomy_terms() {
+		
+		$taxonomy = $_POST['taxonomy'];
+		
+		$terms = get_terms($taxonomy);
+
+		ob_start();
+		?>
+
+		<?php if( !empty($terms) ): ?>
+
+			<label for="taxonomy_terms"><?php _e('Choose terms', JCF_TEXTDOMAIN); ?></label>
+			<br class="clear"/>
+
+
+				<select multiple id="rule_taxonomy_terms">
+
+					<?php foreach( $terms as $term ): ?>
+
+						<option value="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></option>
+
+					<?php	endforeach; ?>
+
+				</select>
+		
+		<?php else: ?>
+			
+			<p><?php _e('No available terms', JCF_TEXTDOMAIN); ?></p>
+			
+		<?php endif; ?>
+
+		<?php
+
 		$html = ob_get_clean();
 		jcf_ajax_reposnse($html, 'html');
 	}
