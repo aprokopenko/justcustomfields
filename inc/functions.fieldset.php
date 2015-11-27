@@ -29,7 +29,7 @@
 	 * @param string $key	fieldset id
 	 * @param array $values		fieldset settings
 	 */
-	function jcf_fieldsets_update( $key, $values = array()){
+	function jcf_fieldsets_update( $key, $values = array() ){
 		$option_name = jcf_fieldsets_get_option_name();
 
 		$jcf_read_settings = jcf_get_read_settings();
@@ -41,7 +41,12 @@
 				unset($jcf_settings['fieldsets'][$post_type][$key]);
 			}
 			if( !empty($values) ){
-				$jcf_settings['fieldsets'][$post_type][$key] = $values;
+				if(!empty($values['rules'])) {
+					$jcf_settings['fieldsets'][$post_type][$key]['visibility_rules'][] = $values['rules'];
+				}
+				else{
+					$jcf_settings['fieldsets'][$post_type][$key] = $values;
+				}
 			}
 			jcf_save_all_settings_in_file($jcf_settings);
 		}
@@ -52,7 +57,13 @@
 			}
 
 			if( !empty($values) ){
-				$fieldsets[$key] = $values;
+				if(!empty($values['rules'])) {
+					$fieldsets[$key]['visibility_rules'][] = $values['rules'];
+				}
+				else{
+					$fieldsets[$key] = $values;
+				}
+				
 			}
 
 			jcf_update_options($option_name, $fieldsets);

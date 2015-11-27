@@ -156,8 +156,40 @@ function initFieldsetsEdit(){
 		});
 	});
 	
+	//parse rule block for saving
 	jQuery('.save_rule_btn').live('click', function() {
-		var data = jQuery('.field-control-actions fieldset').formSerialize();
+		
+//		var form_results = {
+//			'action': 'jcf_save_visibility_rules&' + jQuery('.field-control-actions fieldset').formSerialize(),
+//			'templates': jQuery('.field-control-actions fieldset .rules-options select#rule-templates').val(),
+//			'taxonomy': jQuery('.field-control-actions fieldset .rules-options select#rule-taxonomy').val(),
+//			'terms': jQuery('.field-control-actions fieldset .rules-options select#rule_taxonomy_terms').val(),
+//		}
+		var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();;
+		
+		var data = { 
+			'action': 'jcf_save_visibility_rules',
+			'fieldset_id' : f_id,
+			'visibility_rules': {}
+		};
+		
+		jQuery(this).parent('fieldset').find('input,select').each(function(i, input){
+			if(jQuery(input).attr('type') == 'radio'){
+				if(jQuery(input).is(':checked')){
+					data.visibility_rules[ jQuery(input).attr('name') ] = jQuery(input).val();
+				}
+			}
+			else{
+				data.visibility_rules[ jQuery(input).attr('name') ] = jQuery(input).val();
+			}
+		});
+
+		var loader = jQuery(this).find('img.ajax-feedback');
+
+		jcf_ajax(data, 'json', loader, function(response){
+			console.log(response);
+		}); 
+		
 	});
 }
 

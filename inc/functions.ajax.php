@@ -59,11 +59,58 @@
 	 * change fieldset link process callback
 	 */
 	function jcf_ajax_change_fieldset(){
+		global $jcf_post_type;
+		
 		$f_id = $_POST['fieldset_id'];
 		$fieldset = jcf_fieldsets_get($f_id);
 
-		ob_start();
-		?>
+		ob_start(); ?>
+			<div class="rule">
+				<table class="wp-list-table widefat fixed">
+					<thead>
+						<tr>
+							<th style="width: 10%;">№</th>
+							<th><?php _e('Rules', JCF_TEXTDOMAIN); ?></th>
+							<th style="width: 20%;"><?php _e('Options', JCF_TEXTDOMAIN); ?></th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<th style="width: 10%;">№</th>
+							<th><?php _e('Rules', JCF_TEXTDOMAIN); ?></th>
+							<th style="width: 20%;"><?php _e('Options', JCF_TEXTDOMAIN); ?></th>
+						</tr>
+					</tfoot>
+					<tbody>
+					<?php	foreach($fieldset['visibility_rules'] as $key => $rule): ?>
+						<?php	$rule_text = ucfirst($rule['visibility_option']);
+								$rule_text .= ' when ';
+								if($rule['based_on'] == 'taxonomy'){
+									foreach($rule['rule_taxonomy_terms'] as $key_term => $term) {
+										$term_obj = get_term_by('id', $term, $rule['rule_taxonomy']);
+										$term_text .= ($key_term != 0 ? ',' . $term_obj->name : $term_obj->name);
+									}
+									$rule_text .=  ucfirst($rule['rule_taxonomy']);
+									$rule_text .=  ' in ';
+									$rule_text .=  $term_text;
+								}
+								else{
+									$rule_text .= '';
+								}
+						?>
+						<tr>
+							<td><?php echo ($key+1); ?></td>
+							<td><?php echo $rule_text; ?></td>
+							<td><a href="#" class="dashicons-before dashicons-edit"></a><a href="#" class="dashicons-before dashicons-no"></a><?php ?></td>
+						</tr>
+					<?php	endforeach; ?>
+					</tbody>
+				</table>
+				<input type="button" class="add_rule_btn" name="add_rule" value="<?php _e('Add rule', JCF_TEXTDOMAIN); ?>"/>
+			</div>
+		<?php $rules = ob_get_clean(); ?>
+
+		<?php ob_start(); ?>
 		<div class="jcf_edit_fieldset">
 			<h3 class="header"><?php echo __('Edit Fieldset:', JCF_TEXTDOMAIN) . ' ' . $fieldset['title']; ?></h3>
 			<div class="jcf_inner_content">
@@ -75,31 +122,36 @@
 						
 						<div class="field-control-actions">
 							<h4><?php _e('Set visibility:', JCF_TEXTDOMAIN); ?></h4>
-							<input type="button" class="add_rule_btn hidden" name="add_rule" value="<?php _e('Add rule', JCF_TEXTDOMAIN); ?>"/>
-							<fieldset id="fieldset_visibility_rules">
-								<label for="rule-based-on"><?php _e('Based on', JCF_TEXTDOMAIN); ?></label>
-								<select name="based_on" id="rule-based-on">
-									<option value="" disabled="disabled" selected="selected" ><?php _e('Choose option', JCF_TEXTDOMAIN); ?></option>
-									<option value="page_template">Page template</option>
-									<option value="taxonomy">Taxonomy</option>
-								</select>
-								<div class="join-condition hidden" >
-									<label for="rule-join-condition"><?php _e('Join condition with other rules', JCF_TEXTDOMAIN); ?></label>
-									<select name="join-condition" id="rule-join-condition">
-										<option value="and"><?php _e('AND', JCF_TEXTDOMAIN); ?></option>
-										<option value="or"><?php _e('OR', JCF_TEXTDOMAIN); ?></option>
+							<?php if( !empty($fieldset['visibility_rules']) ): ?>
+								<?php echo $rules; ?>
+							<?php else: ?>
+								<fieldset id="fieldset_visibility_rules">
+									<label for="rule-based-on"><?php _e('Based on', JCF_TEXTDOMAIN); ?></label>
+									<select name="based_on" id="rule-based-on">
+										<option value="" disabled="disabled" selected="selected" ><?php _e('Choose option', JCF_TEXTDOMAIN); ?></option>
+										<?php if($jcf_post_type == 'page'):?>
+											<option value="page_template">Page template</option>
+										<?php endif; ?>
+										<option value="taxonomy">Taxonomy</option>
 									</select>
-								</div>
-								<div class="visibility-options">
-									<input type="radio" name="visibility-option" id="visibility-option-hide" value="hide" checked="checked" />
-									<label for="visibility-option-hide"><?php _e('Hide', JCF_TEXTDOMAIN); ?></label>
-									<br class="clear"/>
-									<input type="radio" name="visibility-option" id="visibility-option-show" value="show" />
-									<label for="visibility-option-show"><?php _e('Show', JCF_TEXTDOMAIN); ?></label>
-								</div>
-								<div class="rules-options">	</div>
-								<input type="button" class="save_rule_btn" name="save_rule" value="<?php _e('Save rule', JCF_TEXTDOMAIN); ?>"/>
-							</fieldset>
+									<div class="join-condition hidden" >
+										<label for="rule-join-condition"><?php _e('Join condition with other rules', JCF_TEXTDOMAIN); ?></label>
+										<select name="join_condition" id="rule-join-condition">
+											<option value="and"><?php _e('AND', JCF_TEXTDOMAIN); ?></option>
+											<option value="or"><?php _e('OR', JCF_TEXTDOMAIN); ?></option>
+										</select>
+									</div>
+									<div class="visibility-options">
+										<input type="radio" name="visibility_option" id="visibility-option-hide" value="hide" checked="checked" />
+										<label for="visibility-option-hide"><?php _e('Hide', JCF_TEXTDOMAIN); ?></label>
+										<br class="clear"/>
+										<input type="radio" name="visibility_option" id="visibility-option-show" value="show" />
+										<label for="visibility-option-show"><?php _e('Show', JCF_TEXTDOMAIN); ?></label>
+									</div>
+									<div class="rules-options">	</div>
+									<input type="button" class="save_rule_btn" name="save_rule" value="<?php _e('Save rule', JCF_TEXTDOMAIN); ?>"/>
+								</fieldset>
+							<?php endif; ?>
 							<br class="clear"/>
 							<div class="alignleft">
 								<a href="#remove" class="field-control-remove"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a> |
@@ -114,8 +166,6 @@
 						</div>
 					</fieldset>
 				</form>
-				
-				
 			</div>
 		</div>
 		<?php
@@ -138,7 +188,7 @@
 			<div class="templates-options">
 				<label for="rule-templates"><?php _e('Choose templates', JCF_TEXTDOMAIN); ?></label>
 				<br class="clear"/>
-				<select multiple id="rule-templates">
+				<select multiple name="rule_templates" id="rule-templates">
 
 					<?php foreach( $templates as $name => $slug ): ?>
 
@@ -158,7 +208,7 @@
 			<div class="taxonomy-options">
 				<label for="rule-taxonomy"><?php _e('Choose taxonomy', JCF_TEXTDOMAIN); ?></label>
 				<br class="clear"/>
-				<select id="rule-taxonomy">
+				<select name="rule_taxonomy" id="rule-taxonomy">
 					<option value="" disabled="disabled" selected="selected" ><?php _e('Choose taxonomy', JCF_TEXTDOMAIN); ?></option>
 
 					<?php foreach( $taxonomies as $slug => $taxonomy ): ?>
@@ -192,7 +242,7 @@
 			<br class="clear"/>
 
 
-				<select multiple id="rule_taxonomy_terms">
+				<select multiple name="rule_taxonomy_terms" id="rule_taxonomy_terms">
 
 					<?php foreach( $terms as $term ): ?>
 
@@ -214,6 +264,16 @@
 		jcf_ajax_reposnse($html, 'html');
 	}
 	
+	/*
+	 * Save rules for visibility
+	 */
+	
+	function jcf_ajax_save_visibility_rules(){
+		$data = $_POST;
+		$resp = array('status' => '1');
+		jcf_fieldsets_update($data['fieldset_id'], array('rules' => $data['visibility_rules']));
+		jcf_ajax_reposnse($resp, 'json');
+	}
 	/**
 	 * save fieldset functions callback
 	 */
@@ -247,7 +307,7 @@
 		$resp = array('status' => '1');
 		jcf_ajax_reposnse($resp, 'json');
 	}
-
+	
 	/**
 	 *  add field form show callback
 	 */
