@@ -42,7 +42,14 @@
 			}
 			if( !empty($values) ){
 				if(!empty($values['rules'])) {
-					$jcf_settings['fieldsets'][$post_type][$key]['visibility_rules'][] = $values['rules'];
+					if(!empty($values['rules']['remove'])){
+						$key_rule = $values['rules']['remove'];
+						unset($jcf_settings['fieldsets'][$post_type][$key]['visibility_rules'][$key_rule-1]);
+						sort($jcf_settings['fieldsets'][$post_type][$key]['visibility_rules']);
+					}
+					else{
+						$jcf_settings['fieldsets'][$post_type][$key]['visibility_rules'][] = $values['rules'];
+					}
 				}
 				else{
 					$jcf_settings['fieldsets'][$post_type][$key] = $values;
@@ -58,7 +65,17 @@
 
 			if( !empty($values) ){
 				if(!empty($values['rules'])) {
-					$fieldsets[$key]['visibility_rules'][] = $values['rules'];
+					if(!empty($values['rules']['remove'])){
+						$key_rule = $values['rules']['remove'];
+						unset($fieldsets[$key]['visibility_rules'][$key_rule-1]);
+						sort($fieldsets[$key]['visibility_rules']);
+					}
+					elseif{
+						
+					}
+					else{
+						$fieldsets[$key]['visibility_rules'][] = $values['rules'];
+					}
 				}
 				else{
 					$fieldsets[$key] = $values;

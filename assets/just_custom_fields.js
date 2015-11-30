@@ -158,14 +158,7 @@ function initFieldsetsEdit(){
 	
 	//parse rule block for saving
 	jQuery('.save_rule_btn').live('click', function() {
-		
-//		var form_results = {
-//			'action': 'jcf_save_visibility_rules&' + jQuery('.field-control-actions fieldset').formSerialize(),
-//			'templates': jQuery('.field-control-actions fieldset .rules-options select#rule-templates').val(),
-//			'taxonomy': jQuery('.field-control-actions fieldset .rules-options select#rule-taxonomy').val(),
-//			'terms': jQuery('.field-control-actions fieldset .rules-options select#rule_taxonomy_terms').val(),
-//		}
-		var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();;
+		var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
 		
 		var data = { 
 			'action': 'jcf_save_visibility_rules',
@@ -186,11 +179,90 @@ function initFieldsetsEdit(){
 
 		var loader = jQuery(this).find('img.ajax-feedback');
 
-		jcf_ajax(data, 'json', loader, function(response){
-			console.log(response);
+		jcf_ajax(data, 'html', loader, function(response){
+			jQuery('div.rules').remove();
+			jQuery('div.field-control-actions h4').after(response);
+			jQuery('fieldset#fieldset_visibility_rules').remove();
+			
 		}); 
 		
 	});
+	
+	jQuery('.add_rule_btn').live('click', function() {
+		var loader = jQuery(this).find('img.ajax-feedback');
+		var data = {
+			'action': 'jcf_add_visibility_rules_form',
+			'add_rule': true
+		}
+		jcf_ajax(data, 'html', loader, function(response){
+			jQuery('div.rules').after(response);
+			jQuery('.add_rule_btn').remove();
+		});
+	});
+	
+	jQuery('a.remove-rule').live('click', function(){
+		var rule_id = jQuery(this).data('rule_id');
+		var loader = jQuery(this).find('img.ajax-feedback');
+		var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
+		var data = {
+			'action': 'jcf_delete_visibility_rule',
+			'rule_id': rule_id,
+			'fieldset_id' : f_id
+		}
+		jcf_ajax(data, 'json', loader, function(response){
+			jQuery('tr.visibility_rule_' + rule_id).remove();
+			if(jQuery('table.fieldset-visibility-rules tbody tr').length < 1) {
+				jQuery('table.fieldset-visibility-rules').remove();
+			}
+		});
+	});
+	
+	jQuery('a.edit-rule').live('click', function(){
+		var rule_id = jQuery(this).data('rule_id');
+		var loader = jQuery(this).find('img.ajax-feedback');
+		var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
+		var data = {
+			'action': 'jcf_add_visibility_rules_form',
+			'rule_id': rule_id,
+			'fieldset_id' : f_id,
+			'edit_rule' : true
+		}
+		jcf_ajax(data, 'html', loader, function(response){
+			jQuery('fieldset#fieldset_visibility_rules').remove();
+			jQuery('div.rules').after(response);
+			jQuery('.add_rule_btn').remove();
+		});
+	});
+	
+	jQuery('.update_rule_btn').live('click', function() {
+		var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
+		
+		var data = { 
+			'action': 'jcf_save_visibility_rules',
+			'fieldset_id' : f_id,
+			'visibility_rules': {}
+		};
+		
+		jQuery(this).parent('fieldset').find('input,select').each(function(i, input){
+			if(jQuery(input).attr('type') == 'radio'){
+				if(jQuery(input).is(':checked')){
+					data.visibility_rules[ jQuery(input).attr('name') ] = jQuery(input).val();
+				}
+			}
+			else{
+				data.visibility_rules[ jQuery(input).attr('name') ] = jQuery(input).val();
+			}
+		});
+
+		var loader = jQuery(this).find('img.ajax-feedback');
+
+		jcf_ajax(data, 'html', loader, function(response){
+			jQuery('div.rules').remove();
+			jQuery('div.field-control-actions h4').after(response);
+			jQuery('fieldset#fieldset_visibility_rules').remove();
+			
+		}); 
+	})
 }
 
 /**

@@ -79,6 +79,8 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_get_rule_options', 'jcf_ajax_get_rule_options');
 	add_action('wp_ajax_jcf_get_taxonomy_terms', 'jcf_ajax_get_taxonomy_terms');
 	add_action('wp_ajax_jcf_save_visibility_rules', 'jcf_ajax_save_visibility_rules');
+	add_action('wp_ajax_jcf_add_visibility_rules_form', 'jcf_ajax_add_visibility_rules_form');
+	add_action('wp_ajax_jcf_delete_visibility_rule', 'jcf_ajax_delete_visibility_rule');
 	
 	add_action('wp_ajax_jcf_add_field', 'jcf_ajax_add_field');
 	add_action('wp_ajax_jcf_save_field', 'jcf_ajax_save_field');
