@@ -49,9 +49,64 @@
 			add_action('admin_print_scripts', 'jcf_edit_post_scripts');
 
 			foreach($fieldsets as $f_id => $fieldset){
-				add_meta_box('jcf_fieldset-'.$f_id, $fieldset['title'], 'jcf_post_show_custom_fields', $post_type, 'advanced', 'default', array($fieldset) );
+
+				$visibility_rules = $fieldset['visibility_rules'];
+
+				if( count($visibility_rules) < 1 ) {//fieldset doesn't have any rules
+					$display = true;
+				}
+				elseif( count($visibility_rules) < 2 ) {//fieldset has just one rule
+					$rule = $visibility_rules[0];
+					$default_display = ($rule['visibility_option'] == 'hide');
+					$display = jcf_check_visibility_fieldset($rule, $default_display);
+				}
+				else{ //fieldset has many rules
+					foreach( $visibility_rules as $key => $rule ) {
+						if($key == 0) { //set default visibility option
+							$default_display = ($rule['visibility_option'] == 'hide');
+							$display = ($rule['visibility_option'] == 'hide');
+						}
+						else{ //set options in dependence of conditions
+							if($rule['visibility_option'] == 'and'){
+								$default_display &= ($rule['visibility_option'] == 'hide');
+								$display &= jcf_check_visibility_fieldset($rule, $default_display);
+							}
+							else{
+								$default_display |= ($rule['visibility_option'] == 'hide');
+								$display |= jcf_check_visibility_fieldset($rule, $default_display);
+							}
+						}
+					}
+				}
+
+				if($display){
+					add_meta_box('jcf_fieldset-'.$f_id, $fieldset['title'], 'jcf_post_show_custom_fields', $post_type, 'advanced', 'default', array($fieldset) );
+				}
 			}
 		}
+	}
+
+	/**
+	 * Check visibility rule for fieldset
+	 *
+	 * @param boolean $display
+	 */
+	function jcf_check_visibility_fieldset($rule, $default_display) {
+		global $post;
+		if($rule['based_on'] == 'page_template') {
+			$page_template = get_page_template_slug($post->ID);
+			if( in_array($page_template, $rule['rule_templates']) ) {
+				return ($rule['visibility_option'] == 'show');
+			}
+		}
+		elseif( $rule['based_on'] == 'taxonomy' ) {
+			$terms = wp_get_post_terms( $post->ID, $rule['rule_taxonomy'], array('fields' => 'ids'));
+			$compare = array_intersect($terms, $rule['rule_taxonomy_terms']);
+			if(!empty($compare)) {
+				return ($rule['visibility_option'] == 'show');
+			}
+		}
+		return $default_display;
 	}
 	
 	/**
@@ -66,7 +121,6 @@
 
 		foreach($fieldset['fields'] as $field_id => $enabled){
 			if( !$enabled ) continue;
-
 			$field_obj = jcf_init_field_object($field_id, $fieldset['id']);
 			$field_obj->set_post_ID( $post->ID );
 

@@ -126,7 +126,7 @@
 		<fieldset id="fieldset_visibility_rules">
 			<label for="rule-based-on"><?php _e('Based on', JCF_TEXTDOMAIN); ?></label>
 			<select name="based_on" id="rule-based-on">
-				<option value="" disabled="disabled" <?php echo !empty($add_rule) ? 'selected' : ''; ?> ><?php _e('Choose option', JCF_TEXTDOMAIN); ?></option>
+				<option value="" disabled="disabled" <?php echo !empty($edit_rule) ? '' : 'selected'; ?> ><?php _e('Choose option', JCF_TEXTDOMAIN); ?></option>
 				<?php if($jcf_post_type == 'page'): ?>
 					<option value="page_template" <?php selected( $visibility_rule['based_on'], 'page_tempalate' ); ?>>Page template</option>
 				<?php endif; ?>
@@ -187,7 +187,7 @@
 				<?php endif;?>
 			</div>
 			<?php if( !empty($edit_rule) ): ?>
-			<input type="button" class="update_rule_btn" name="update_rule" value="<?php _e('Update rule', JCF_TEXTDOMAIN); ?>"/>
+			<input type="button" class="update_rule_btn" data-rule_id="<?php echo $_POST['rule_id'];?>" name="update_rule" value="<?php _e('Update rule', JCF_TEXTDOMAIN); ?>"/>
 			<?php else: ?>
 			<input type="button" class="save_rule_btn" name="save_rule" value="<?php _e('Save rule', JCF_TEXTDOMAIN); ?>"/>
 			<?php endif;?>
@@ -325,7 +325,7 @@
 									$rule_text .= $tpl_text;
 								}
 						?>
-						<tr class="visibility_rule_<?php echo $key+1; ?>">
+							<tr class="visibility_rule_<?php echo $key+1; ?>">
 							<td><?php echo ($key+1); ?></td>
 							<td><?php echo $rule_text; ?></td>
 							<td>
@@ -346,8 +346,12 @@
 	 */
 	function jcf_ajax_save_visibility_rules(){
 		$data = $_POST;
-
-		jcf_fieldsets_update($data['fieldset_id'], array('rules' => $data['visibility_rules']));
+		if(!empty($data['rule_id'])){
+			jcf_fieldsets_update($data['fieldset_id'], array('rules' => array('update' => $data['rule_id'], 'data' => $data['visibility_rules'])));
+		}
+		else{
+			jcf_fieldsets_update($data['fieldset_id'], array('rules' => $data['visibility_rules']));
+		}
 		$fieldset = jcf_fieldsets_get($data['fieldset_id']);
 		$resp = jcf_get_visibility_rules_html($fieldset['visibility_rules']);
 		jcf_ajax_reposnse($resp, 'html');
@@ -357,14 +361,18 @@
 		$data = $_POST;
 
 		jcf_fieldsets_update($data['fieldset_id'], array('rules' => array('remove' => $data['rule_id'])));
-		jcf_ajax_reposnse(array('status' => '1'), 'json');
+		$fieldset = jcf_fieldsets_get($data['fieldset_id']);
+		$resp = jcf_get_visibility_rules_html($fieldset['visibility_rules']);
+		jcf_ajax_reposnse($resp, 'html');
 	}
 	
 	function  jcf_ajax_update_visibility_rule(){
 		$data = $_POST;
 
-		jcf_fieldsets_update($data['fieldset_id'], array('rules' => array('remove' => $data['rule_id'])));
-		jcf_ajax_reposnse(array('status' => '1'), 'json');
+		jcf_fieldsets_update($data['fieldset_id'], array('rules' => array('update' => $data['rule_id'])));
+		$fieldset = jcf_fieldsets_get($data['fieldset_id']);
+		$resp = jcf_get_visibility_rules_html($fieldset['visibility_rules']);
+		jcf_ajax_reposnse($resp, 'html');
 		
 	}
 

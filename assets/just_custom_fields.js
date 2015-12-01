@@ -157,15 +157,17 @@ function initFieldsetsEdit(){
 	});
 	
 	//parse rule block for saving
-	jQuery('.save_rule_btn').live('click', function() {
+	jQuery('.save_rule_btn, .update_rule_btn').live('click', function() {
 		var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
-		
+		var rule_id = jQuery(this).data('rule_id');
+
 		var data = { 
 			'action': 'jcf_save_visibility_rules',
-			'fieldset_id' : f_id,
+			'fieldset_id': f_id,
+			'rule_id': rule_id,
 			'visibility_rules': {}
 		};
-		
+
 		jQuery(this).parent('fieldset').find('input,select').each(function(i, input){
 			if(jQuery(input).attr('type') == 'radio'){
 				if(jQuery(input).is(':checked')){
@@ -183,9 +185,7 @@ function initFieldsetsEdit(){
 			jQuery('div.rules').remove();
 			jQuery('div.field-control-actions h4').after(response);
 			jQuery('fieldset#fieldset_visibility_rules').remove();
-			
-		}); 
-		
+		});
 	});
 	
 	jQuery('.add_rule_btn').live('click', function() {
@@ -209,11 +209,10 @@ function initFieldsetsEdit(){
 			'rule_id': rule_id,
 			'fieldset_id' : f_id
 		}
-		jcf_ajax(data, 'json', loader, function(response){
-			jQuery('tr.visibility_rule_' + rule_id).remove();
-			if(jQuery('table.fieldset-visibility-rules tbody tr').length < 1) {
-				jQuery('table.fieldset-visibility-rules').remove();
-			}
+		jcf_ajax(data, 'html', loader, function(response){
+			jQuery('div.rules').remove();
+			jQuery('div.field-control-actions h4').after(response);
+			jQuery('fieldset#fieldset_visibility_rules').remove();
 		});
 	});
 	
@@ -233,36 +232,6 @@ function initFieldsetsEdit(){
 			jQuery('.add_rule_btn').remove();
 		});
 	});
-	
-	jQuery('.update_rule_btn').live('click', function() {
-		var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
-		
-		var data = { 
-			'action': 'jcf_save_visibility_rules',
-			'fieldset_id' : f_id,
-			'visibility_rules': {}
-		};
-		
-		jQuery(this).parent('fieldset').find('input,select').each(function(i, input){
-			if(jQuery(input).attr('type') == 'radio'){
-				if(jQuery(input).is(':checked')){
-					data.visibility_rules[ jQuery(input).attr('name') ] = jQuery(input).val();
-				}
-			}
-			else{
-				data.visibility_rules[ jQuery(input).attr('name') ] = jQuery(input).val();
-			}
-		});
-
-		var loader = jQuery(this).find('img.ajax-feedback');
-
-		jcf_ajax(data, 'html', loader, function(response){
-			jQuery('div.rules').remove();
-			jQuery('div.field-control-actions h4').after(response);
-			jQuery('fieldset#fieldset_visibility_rules').remove();
-			
-		}); 
-	})
 }
 
 /**

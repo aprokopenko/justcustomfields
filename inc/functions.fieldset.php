@@ -47,6 +47,10 @@
 						unset($jcf_settings['fieldsets'][$post_type][$key]['visibility_rules'][$key_rule-1]);
 						sort($jcf_settings['fieldsets'][$post_type][$key]['visibility_rules']);
 					}
+					elseif(!empty($values['rules']['update'])){
+						$key_rule = $values['rules']['update'];
+						$jcf_settings['fieldsets'][$post_type][$key]['visibility_rules'][$key_rule-1] = $values['rules']['data'];
+					}
 					else{
 						$jcf_settings['fieldsets'][$post_type][$key]['visibility_rules'][] = $values['rules'];
 					}
@@ -70,8 +74,9 @@
 						unset($fieldsets[$key]['visibility_rules'][$key_rule-1]);
 						sort($fieldsets[$key]['visibility_rules']);
 					}
-					elseif{
-						
+					elseif(!empty($values['rules']['update'])){
+						$key_rule = $values['rules']['update'];
+						$fieldsets[$key]['visibility_rules'][$key_rule-1] = $values['rules']['data'];
 					}
 					else{
 						$fieldsets[$key]['visibility_rules'][] = $values['rules'];
