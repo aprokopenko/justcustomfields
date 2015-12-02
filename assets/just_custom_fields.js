@@ -8,8 +8,8 @@ jQuery(document).ready(function(){
 	initImport();
 	initExport();
 	initSettings();
-});
-
+	});
+	
 jQuery(document).scroll(function(){
 	initEditFormPosition();
 });
@@ -183,7 +183,7 @@ function initFieldsetsEdit(){
 
 		jcf_ajax(data, 'html', loader, function(response){
 			jQuery('div.rules').remove();
-			jQuery('div.field-control-actions h4').after(response);
+			jQuery('div#visibility').append(response);
 			jQuery('fieldset#fieldset_visibility_rules').remove();
 		});
 	});
@@ -195,8 +195,8 @@ function initFieldsetsEdit(){
 			'add_rule': true
 		}
 		jcf_ajax(data, 'html', loader, function(response){
-			jQuery('div.rules').after(response);
-			jQuery('.add_rule_btn').remove();
+			jQuery('div#visibility').append(response);
+			jQuery('.add_rule_btn').hide();
 		});
 	});
 	
@@ -211,7 +211,7 @@ function initFieldsetsEdit(){
 		}
 		jcf_ajax(data, 'html', loader, function(response){
 			jQuery('div.rules').remove();
-			jQuery('div.field-control-actions h4').after(response);
+			jQuery('div#visibility').append(response);
 			jQuery('fieldset#fieldset_visibility_rules').remove();
 		});
 	});
@@ -228,10 +228,21 @@ function initFieldsetsEdit(){
 		}
 		jcf_ajax(data, 'html', loader, function(response){
 			jQuery('fieldset#fieldset_visibility_rules').remove();
-			jQuery('div.rules').after(response);
-			jQuery('.add_rule_btn').remove();
+			jQuery('div#visibility').append(response);
+			jQuery('.add_rule_btn').hide();
 		});
 	});
+	
+	jQuery('a.visibility_toggle').live('click', function(){
+		jQuery('#visibility').toggle();
+		jQuery(this).find('span').toggleClass('dashicons-arrow-down-alt2');
+		jQuery(this).find('span').toggleClass('dashicons-arrow-up-alt2');
+	});
+	
+	jQuery('.cancel_rule_btn').live('click', function(){
+		jQuery(this).parents('fieldset#fieldset_visibility_rules').remove();
+		jQuery('.add_rule_btn').show();
+	})
 }
 
 /**

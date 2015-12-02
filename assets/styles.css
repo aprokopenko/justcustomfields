@@ -334,3 +334,14 @@ form.jcform_add_field .ajax-feedback{
 .jcf_tab-content input[type="file"]{
 	margin-bottom: 0;
 }
+fieldset#fieldset_visibility_rules{
+	border: 1px solid #000000;
+	padding: 10px;
+}
+a.visibility_toggle{
+	text-decoration: none;
+	color: #000000;
+}
+a:focus{
+	outline:none;
+}
