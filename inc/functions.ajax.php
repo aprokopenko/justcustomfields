@@ -74,7 +74,7 @@
 						<div class="field-control-actions">
 							<h4>
 								<a href="#" class="visibility_toggle" >
-									<?php _e('Visibility', JCF_TEXTDOMAIN); ?>
+									<?php _e('Visibility rules', JCF_TEXTDOMAIN); ?>
 									<span class="<?php echo !empty($fieldset['visibility_rules']) ? 'dashicons-arrow-up-alt2' : 'dashicons-arrow-down-alt2' ?> dashicons-before"></span>
 								</a>
 							</h4>
@@ -90,7 +90,6 @@
 								<a href="#remove" class="field-control-remove"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a> |
 								<a href="#close" class="field-control-close"><?php _e('Close', JCF_TEXTDOMAIN); ?></a>
 							</div>
-							<br class="clear"/>
 							<div class="alignright">
 								<?php echo print_loader_img(); ?>
 								<input type="submit" value="<?php _e('Save', JCF_TEXTDOMAIN); ?>" class="button-primary" name="savefield">
@@ -235,11 +234,13 @@
 				<?php endif;?>
 			</div>
 			<?php if( !empty($edit_rule) ): ?>
-			<input type="button" class="update_rule_btn" data-rule_id="<?php echo $_POST['rule_id'];?>" name="update_rule" value="<?php _e('Update rule', JCF_TEXTDOMAIN); ?>"/>
+				<input type="button" class="update_rule_btn button-primary" data-rule_id="<?php echo $_POST['rule_id'];?>" name="update_rule" value="<?php _e('Update rule', JCF_TEXTDOMAIN); ?>"/>
 			<?php else: ?>
-			<input type="button" class="save_rule_btn" name="save_rule" value="<?php _e('Save rule', JCF_TEXTDOMAIN); ?>"/>
+				<input type="button" class="save_rule_btn button-primary" name="save_rule" value="<?php _e('Save rule', JCF_TEXTDOMAIN); ?>"/>
 			<?php endif;?>
-			<input type="button" class="cancel_rule_btn" value="<?php _e('Cancel', JCF_TEXTDOMAIN); ?>" />
+			<?php if( $edit_rule || $add_rule ):?>
+				<input type="button" class="cancel_rule_btn button-primary" value="<?php _e('Cancel', JCF_TEXTDOMAIN); ?>" />
+			<?php endif;?>
 		</fieldset>
 
 		<?php
@@ -334,7 +335,6 @@
 		ob_start(); ?>
 			<div class="rules">
 				<?php if(!empty($visibility_rules)): ?>
-				<p><?php _e('Visibility rules:', JCF_TEXTDOMAIN); ?></p>
 				<table class="wp-list-table widefat fixed fieldset-visibility-rules">
 					<thead>
 						<tr>
@@ -384,7 +384,7 @@
 					</tbody>
 				</table>
 				<?php endif; ?>
-				<p><input type="button" class="add_rule_btn" name="add_rule" value="<?php _e('Add rule', JCF_TEXTDOMAIN); ?>"/></p>
+				<p><input type="button" class="add_rule_btn button-primary" name="add_rule" value="<?php _e('Add rule', JCF_TEXTDOMAIN); ?>"/></p>
 			</div>
 		<?php $rules = ob_get_clean(); 
 		return $rules;
