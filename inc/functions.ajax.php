@@ -107,12 +107,13 @@
 	}
 	
 	/**
-	 * add form for new rule
+	 * add form for new rule functions callback
 	 */
 	function jcf_ajax_add_visibility_rules_form() {
 		global $jcf_post_type;
 		$taxonomies = get_taxonomies( array('object_type' => (array)$jcf_post_type, 'show_ui' => true), 'objects' );
 		$add_rule = !empty($_POST['add_rule']) ? $_POST['add_rule'] : false;
+
 		if(!empty($_POST['edit_rule'])){
 			$rule_id = $_POST['rule_id'] - 1;
 			$fieldset_id = $_POST['fieldset_id'];
@@ -131,6 +132,8 @@
 		?>
 		<fieldset id="fieldset_visibility_rules">
 			<legend><?php !empty($edit_rule) ? _e('Edit rule', JCF_TEXTDOMAIN) : _e('Add rule', JCF_TEXTDOMAIN)  ?></legend>
+
+			<?php // Status for fieldset ?>
 			<div class="visibility-options">
 				<p><?php _e('You are about to set the visibility option for this fieldset', JCF_TEXTDOMAIN); ?></p>
 				<input type="radio" name="visibility_option" id="visibility-option-hide" value="hide" <?php echo (!empty($edit_rule) ? checked( $visibility_rule['visibility_option'], 'hide' ) : 'checked' );  ?> />
@@ -139,6 +142,8 @@
 				<input type="radio" name="visibility_option" id="visibility-option-show" value="show" <?php checked( $visibility_rule['visibility_option'], 'show' ); ?> />
 				<label for="visibility-option-show"><?php _e('Show fieldset', JCF_TEXTDOMAIN); ?></label>
 			</div>
+			
+			<?php // Condition fields for rule ?>
 			<div class="join-condition <?php echo ( (!empty($add_rule) || $rule_id != 0) ? '' : 'hidden' ); ?>" >
 				<p>
 					<label for="rule-join-condition"><?php _e('Join condition with previous rules with operator:', JCF_TEXTDOMAIN); ?></label>
@@ -149,90 +154,34 @@
 					</select>
 				</p>
 			</div>
-			<?php if($jcf_post_type != 'page'): ?>
+
+			<?php if($jcf_post_type != 'page'): // Form for post types wich are not page ?>
 				<p><?php _e('Based on', JCF_TEXTDOMAIN); ?> <strong><?php _e('Taxonomy terms', JCF_TEXTDOMAIN); ?></strong></p>
 				<input type="hidden" name="based_on" value="taxonomy" />
-				<?php if( !empty($taxonomies) ): ?>
-					<div class="taxonomy-options">
-						<p>
-							<label for="rule-taxonomy"><?php _e('Choose taxonomy:', JCF_TEXTDOMAIN); ?></label>
-							<br class="clear"/>
-							<select name="rule_taxonomy" id="rule-taxonomy">
-								<option value="" disabled="disabled" selected="selected" ><?php _e('Choose taxonomy', JCF_TEXTDOMAIN); ?></option>
-								<?php foreach( $taxonomies as $slug => $taxonomy ): ?>
-									<option value="<?php echo $slug; ?>" <?php selected($visibility_rule['rule_taxonomy'], $slug); ?>><?php echo $taxonomy->labels->singular_name; ?></option>
-								<?php	endforeach; ?>
-							</select>
-						</p>
-						<div class="taxonomy-terms-options">
-						<?php if($edit_rule): ?>		
-								<p>
-									<label for="taxonomy_terms"><?php _e('Choose terms:', JCF_TEXTDOMAIN); ?></label>;
-									<br class="clear"/>
-									<select multiple name="rule_taxonomy_terms" id="rule_taxonomy_terms">
-										<?php foreach( $terms as $term ): ?>
-											<option value="<?php echo $term->term_id; ?>" <?php selected(in_array($term->term_id, $visibility_rule['rule_taxonomy_terms']), true ); ?>><?php echo $term->name; ?></option>
-										<?php	endforeach; ?>
-									</select>
-								</p>
-						<?php endif; ?>
-						</div>
-					</div>
-				<?php else:?>
-					<p><?php _e('No available taxonomies', JCF_TEXTDOMAIN); ?></p>
-				<?php endif;?>
-			<?php else: ?>
+				<?php jcf_ajax_get_taxonomies_html($taxonomies, $visibility_rule['rule_taxonomy'], $terms, $visibility_rule['rule_taxonomy_terms']); ?>
+			<?php else: // Form for post type wich is page ?>
 				<p>
-					<label for="rule-based-on"><?php _e('Based on:', JCF_TEXTDOMAIN); ?></label><br />
-					<select name="based_on" id="rule-based-on">
-						<option value="" disabled="disabled" <?php echo !empty($edit_rule) ? '' : 'selected'; ?> ><?php _e('Choose option', JCF_TEXTDOMAIN); ?></option>
-						<option value="page_template" <?php selected( $visibility_rule['based_on'], 'page_tempalate' ); ?>>Page template</option>
-						<?php if(!empty($taxonomies)):?>
-							<option value="taxonomy" <?php selected( $visibility_rule['based_on'], 'taxonomy' ); ?>>Taxonomy</option>
-						<?php endif; ?>	
-					</select>
+				<label for="rule-based-on"><?php _e('Based on:', JCF_TEXTDOMAIN); ?></label><br />
+				<select name="based_on" id="rule-based-on">
+					<option value="" disabled="disabled" <?php echo !empty($edit_rule) ? '' : 'selected'; ?> ><?php _e('Choose option', JCF_TEXTDOMAIN); ?></option>
+					<option value="page_template" <?php selected( $visibility_rule['based_on'], 'page_tempalate' ); ?> >Page template</option>
+					<?php if(!empty($taxonomies)):?>
+						<option value="taxonomy" <?php selected( $visibility_rule['based_on'], 'taxonomy' ); ?> >Taxonomy</option>
+					<?php endif; ?>	
+				</select>
 				</p>
+				
+				<div class="rules-options">
+					<?php if($visibility_rule['based_on'] == 'taxonomy'): //Taxonomy options for post type page based on taxonomy ?>
+						<?php jcf_ajax_get_taxonomies_html($taxonomies, $visibility_rule['rule_taxonomy'], $terms, $visibility_rule['rule_taxonomy_terms']); ?>
+					<?php elseif($visibility_rule['based_on'] == 'page_template'): //Page template options ?>
+						<?php jcf_ajax_get_page_templates_html($templates, $visibility_rule['rule_templates']); ?>
+					<?php endif;?>
+				</div>
+
 			<?php endif; ?>
-			<div class="rules-options">	
-				<?php if($visibility_rule['based_on'] == 'taxonomy' && $jcf_post_type == 'page'): ?>
-					<div class="taxonomy-options">
-						<label for="rule-taxonomy"><?php _e('Choose taxonomy:', JCF_TEXTDOMAIN); ?></label>
-						<br class="clear"/>
-						<select name="rule_taxonomy" id="rule-taxonomy">
-							<option value="" disabled="disabled" ><?php _e('Choose taxonomy', JCF_TEXTDOMAIN); ?></option>
-							<?php foreach( $taxonomies as $slug => $taxonomy ): ?>
-								<option value="<?php echo $slug; ?>" <?php selected($visibility_rule['rule_taxonomy'], $slug); ?> ><?php echo $taxonomy->labels->singular_name; ?></option>
-							<?php	endforeach; ?>
-						</select>
-						<div class="taxonomy-terms-options">
-							<p>
-								<label for="taxonomy_terms"><?php _e('Choose terms:', JCF_TEXTDOMAIN); ?></label>;
-								<br class="clear"/>
 
-								<select multiple name="rule_taxonomy_terms" id="rule_taxonomy_terms">
-
-									<?php foreach( $terms as $term ): ?>
-
-										<option value="<?php echo $term->term_id; ?>" <?php selected(in_array($term->term_id, $visibility_rule['rule_taxonomy_terms']), true ); ?>><?php echo $term->name; ?></option>
-
-									<?php	endforeach; ?>
-
-								</select>
-							</p>
-						</div>
-					</div>
-				<?php elseif($visibility_rule['based_on'] == 'page_template'): ?>
-					<div class="templates-options">
-						<label for="rule-templates"><?php _e('Choose templates:', JCF_TEXTDOMAIN); ?></label>
-						<br class="clear"/>
-						<select multiple name="rule_templates" id="rule-templates">
-							<?php foreach( $templates as $name => $slug ): ?>
-								<option value="<?php echo $slug; ?>" <?php selected(in_array($slug, $visibility_rule['rule_templates']), true ); ?> ><?php echo $name; ?></option>
-							<?php	endforeach; ?>
-						</select>
-					</div>
-				<?php endif;?>
-			</div>
+			<?php // From buttons ?>
 			<?php if( !empty($edit_rule) ): ?>
 				<input type="button" class="update_rule_btn button-primary" data-rule_id="<?php echo $_POST['rule_id'];?>" name="update_rule" value="<?php _e('Update rule', JCF_TEXTDOMAIN); ?>"/>
 			<?php else: ?>
@@ -241,6 +190,7 @@
 			<?php if( $edit_rule || $add_rule ):?>
 				<input type="button" class="cancel_rule_btn button-primary" value="<?php _e('Cancel', JCF_TEXTDOMAIN); ?>" />
 			<?php endif;?>
+
 		</fieldset>
 
 		<?php
@@ -254,85 +204,155 @@
 	}
 	
 	/**
-	 * get base options for visibility rules
+	 * get base options for visibility rules functions callback
 	 */
 	function jcf_ajax_get_rule_options() {
 		$rule = $_POST['rule'];
+		global $jcf_post_type;
 		ob_start();
 
 		if( $rule == 'page_template' ) {
-			$templates = get_page_templates();
-			?>
-			<div class="templates-options">
-				<label for="rule-templates"><?php _e('Choose templates:', JCF_TEXTDOMAIN); ?></label>
-				<br class="clear"/>
-				<select multiple name="rule_templates" id="rule-templates">
-					<?php foreach( $templates as $name => $slug ): ?>
-						<option value="<?php echo $slug; ?>"><?php echo $name; ?></option>
-					<?php	endforeach; ?>
-				</select>
-			</div>
-			<?php 
-		}
-		else {
-			global $jcf_post_type;
+			$templates = get_page_templates(); 
+			jcf_ajax_get_page_templates_html($templates);
+		} 
+		else { 
 			$taxonomies = get_taxonomies( array('object_type' => (array)$jcf_post_type, 'show_ui' => true), 'objects' );
-			?>
-			<?php if( !empty($taxonomies) ): ?>
-				<div class="taxonomy-options">
-					<p>
-						<label for="rule-taxonomy"><?php _e('Choose taxonomy:', JCF_TEXTDOMAIN); ?></label>
-						<br class="clear"/>
-						<select name="rule_taxonomy" id="rule-taxonomy">
-							<option value="" disabled="disabled" selected="selected" ><?php _e('Choose taxonomy', JCF_TEXTDOMAIN); ?></option>
-							<?php foreach( $taxonomies as $slug => $taxonomy ): ?>
-								<option value="<?php echo $slug; ?>"><?php echo $taxonomy->labels->singular_name; ?></option>
-							<?php	endforeach; ?>
-						</select>
-					</p>
-					<div class="taxonomy-terms-options"></div>
-				</div>
-			<?php else:?>
-				<p><?php _e('No available taxonomies', JCF_TEXTDOMAIN); ?></p>
-			<?php endif;?>
-			<?php 
-		}
+			jcf_ajax_get_taxonomies_html($taxonomies);
+		} 
 
 		$html = ob_get_clean();
 		jcf_ajax_reposnse($html, 'html');
 	}
 	
+	/**
+	 * Get taxonomy terms options functions callback
+	 */
 	function jcf_ajax_get_taxonomy_terms() {
-		
 		$taxonomy = $_POST['taxonomy'];
-		
 		$terms = get_terms($taxonomy, array('hide_empty' => false));
-
+		ob_start();
+		jcf_ajax_get_taxonomy_terms_html($terms);
+		$html = ob_get_clean();
+		jcf_ajax_reposnse($html, 'html');
+	}
+	
+	/**
+	 * Get html for templates options for adding visibility rules
+	 * @param array $templates
+	 * @param array $current
+	 */
+	function jcf_ajax_get_page_templates_html($templates, $current = array()) {
 		ob_start();
 		?>
+		<?php if( !empty($templates) ): ?>
+			<div class="templates-options">
+				<p>
+					<p><?php _e('Choose templates:', JCF_TEXTDOMAIN); ?></p>
+					<?php if( count($terms) <= 20 ) :?>
+						<div class="alignleft">
+						<?php $i=1; foreach( $templates as $name => $slug ): ?>
+							<input type="checkbox" name="rule_templates" value="<?php echo $slug; ?>" id="rule_taxonomy_term_<?php echo $i; ?>"
+								<?php checked(in_array($slug, $current), true ); ?>/>
+							<label for="rule_taxonomy_term_<?php echo $i; ?>"><?php echo $name; ?></label>
+							<br />
+							<?php if( $i % 5 == 0 ): ?>
+								</div><div class="alignleft">
+							<?php endif; ?>
+						<?php $i++; endforeach; ?>
+						</div>
+					<?php else: ?>
+					<?php endif; ?>
+					<br class="clear">
+				</p>
+			</div>
+		<?php else:?>
+			<p><?php _e('No available templates', JCF_TEXTDOMAIN); ?></p>
+		<?php endif;
 
+		$html = ob_get_clean();
+		echo $html;
+	}
+
+	/**
+	 * Get html for taxonomies options for adding visibility rules
+	 * @param array $taxonomies
+	 * @param array $current
+	 * @param array $terms
+	 * @param array $current_term
+	 */
+	function jcf_ajax_get_taxonomies_html( $taxonomies = array(), $current_tax = array(), $terms = array(), $current_term = array() ) {
+		ob_start();
+		?>
+		<?php if( !empty($taxonomies) ): ?>
+			<div class="taxonomy-options">
+				<p>
+					<label for="rule-taxonomy"><?php _e('Choose taxonomy:', JCF_TEXTDOMAIN); ?></label>
+					<br class="clear"/>
+					<select name="rule_taxonomy" id="rule-taxonomy">
+						<option value="" disabled="disabled" <?php selected(empty($current_tax)); ?> ><?php _e('Choose taxonomy', JCF_TEXTDOMAIN); ?></option>
+						<?php foreach( $taxonomies as $slug => $taxonomy ): ?>
+							<option value="<?php echo $slug; ?>" <?php selected($current_tax, $slug); ?> ><?php echo $taxonomy->labels->singular_name; ?></option>
+						<?php	endforeach; ?>
+					</select>
+				</p>
+				<div class="taxonomy-terms-options">
+					<?php if(!empty($terms)) :?>
+						<?php jcf_ajax_get_taxonomy_terms_html($terms, $current_term); ?>
+					<?php endif;?>
+				</div>
+			</div>
+		<?php else: ?>
+			<p><?php _e('No available taxonomies', JCF_TEXTDOMAIN); ?></p>
+		<?php endif;
+
+		$html = ob_get_clean();
+		echo $html;
+	}
+
+	/**
+	 * Get html for taxonomy terms options for adding visibility rules
+	 * @param array $terms
+	 * @param array $current_term
+	 */
+	function jcf_ajax_get_taxonomy_terms_html($terms, $current_term = array()) {
+		ob_start();
+		?>
 		<?php if( !empty($terms) ): ?>
 			<p>
-				<label for="taxonomy_terms"><?php _e('Choose terms:', JCF_TEXTDOMAIN); ?></label>
-				<br class="clear"/>
-				<select multiple name="rule_taxonomy_terms" id="rule_taxonomy_terms">
-					<?php foreach( $terms as $term ): ?>
-						<option value="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></option>
-					<?php	endforeach; ?>
-				</select>
+				<p><?php _e('Choose terms:', JCF_TEXTDOMAIN); ?></p>
+				<?php if( count($terms) <= 20 ) :?>
+					<div class="alignleft">
+					<?php $i=1; foreach( $terms as $term ): ?>
+						<input type="checkbox" name="rule_taxonomy_terms" value="<?php echo $term->term_id; ?>"
+							<?php checked(in_array($term->term_id, $current_term), true ); ?>
+							   id="rule_taxonomy_term_<?php echo $term->term_id; ?>" />
+						<label for="rule_taxonomy_term_<?php echo $term->term_id; ?>"><?php echo $term->name; ?></label>
+						<br />
+						<?php if( $i % 5 == 0 ): ?>
+							</div><div class="alignleft">
+						<?php endif; ?>
+					<?php $i++; endforeach; ?>
+					</div>
+				<?php else: ?>
+				<?php endif; ?>
+				<br class="clear">
 			</p>
 		<?php else: ?>
 			<p><?php _e('No available terms', JCF_TEXTDOMAIN); ?></p>
-		<?php endif; ?>
-
-		<?php
-
+		<?php endif;
 		$html = ob_get_clean();
-		jcf_ajax_reposnse($html, 'html');
+		echo $html;
 	}
-	
+
+	/**
+	 * Get table with added visibility rules
+	 * @param array $visibility_rules
+	 * @return html
+	 */
 	function jcf_get_visibility_rules_html($visibility_rules){
-		ob_start(); ?>
+		ob_start(); 
+		?>
+
 			<div class="rules">
 				<?php if(!empty($visibility_rules)): ?>
 				<table class="wp-list-table widefat fixed fieldset-visibility-rules">
@@ -345,40 +365,45 @@
 					</thead>
 					<tbody>
 					<?php	foreach($visibility_rules as $key => $rule): ?>
-						<?php	$rule_text = $key == 0 ? '' : ucfirst($rule['join_condition']) . ' ';
-								$rule_text .= ucfirst($rule['visibility_option']);
-								$rule_text .= ' when ';
-								if($rule['based_on'] == 'taxonomy'){
-									$term_text = '';
-									if(!empty($rule['rule_taxonomy_terms'])){
-										foreach($rule['rule_taxonomy_terms'] as $key_term => $term) {
-											$term_obj = get_term_by('id', $term, $rule['rule_taxonomy']);
-											$term_text .= ($key_term != 0 ? ', ' . $term_obj->name : $term_obj->name);
-										}
+						<?php	
+							$rule_text = '';
+							$rule_text .= ucfirst($rule['visibility_option']);
+							$rule_text .= ' when ';
+							if($rule['based_on'] == 'taxonomy'){
+								$term_text = '';
+								if(!empty($rule['rule_taxonomy_terms'])){
+									foreach($rule['rule_taxonomy_terms'] as $key_term => $term) {
+										$term_obj = get_term_by('id', $term, $rule['rule_taxonomy']);
+										$term_text .= ($key_term != 0 ? ', ' . $term_obj->name : $term_obj->name);
 									}
-									$tax = get_taxonomy($rule['rule_taxonomy']);
-									$rule_text .=  '<strong>'.$tax->labels->singular_name.'</strong>';
-									$rule_text .=  ' in ';
-									$rule_text .= '<strong>' . $term_text . '</strong>';
 								}
-								else{
-									$templates = get_page_templates();
-									$tpl_text = '';
-									foreach($rule['rule_templates'] as $key_tpl => $template) {
-										$tpl_name = array_search($template, $templates);
-										$tpl_text .= ($key_tpl != 0 ? ', ' . $tpl_name : $tpl_name);
-									}
-									$rule_text .= '<strong>'.ucfirst(str_replace('_', ' ', $rule['based_on'] )).'</strong>';
-									$rule_text .=  ' in ';
-									$rule_text .= '<strong>'.$tpl_text.'<strong>';
+								$tax = get_taxonomy($rule['rule_taxonomy']);
+								$rule_text .=  '<strong>'.$tax->labels->singular_name.'</strong>';
+								$rule_text .=  ' in ';
+								$rule_text .= '<strong>' . $term_text . '</strong>';
+							}
+							else{
+								$templates = get_page_templates();
+								$tpl_text = '';
+								foreach($rule['rule_templates'] as $key_tpl => $template) {
+									$tpl_name = array_search($template, $templates);
+									$tpl_text .= ($key_tpl != 0 ? ', ' . $tpl_name : $tpl_name);
 								}
+								$rule_text .= '<strong>'.ucfirst(str_replace('_', ' ', $rule['based_on'] )).'</strong>';
+								$rule_text .=  ' in ';
+								$rule_text .= '<strong>'.$tpl_text.'<strong>';
+							}
 						?>
-							<tr class="visibility_rule_<?php echo $key+1; ?>">
+						<?php if($key != 0):?>
+							<tr><td colspan="3"><strong><?php echo strtoupper($rule['join_condition']); ?></strong></td></tr>
+						<?php endif;?>
+						<tr class="visibility_rule_<?php echo $key+1; ?>">
 							<td><?php echo ($key+1); ?></td>
 							<td><?php echo $rule_text; ?></td>
 							<td>
 								<a href="#" class="dashicons-before dashicons-edit edit-rule" data-rule_id="<?php echo $key+1; ?>"></a>
-								<a href="#" class="dashicons-before dashicons-no remove-rule" data-rule_id="<?php echo $key+1; ?>"></a><?php ?></td>
+								<a href="#" class="dashicons-before dashicons-no remove-rule" data-rule_id="<?php echo $key+1; ?>"></a><?php ?>
+							</td>
 						</tr>
 					<?php	endforeach; ?>
 					</tbody>
@@ -386,12 +411,14 @@
 				<?php endif; ?>
 				<p><input type="button" class="add_rule_btn button-primary" name="add_rule" value="<?php _e('Add rule', JCF_TEXTDOMAIN); ?>"/></p>
 			</div>
-		<?php $rules = ob_get_clean(); 
+
+		<?php 
+		$rules = ob_get_clean(); 
 		return $rules;
 	}
-	
-	/*
-	 * Save rules for visibility
+
+	/**
+	 * Save rules for visibility functions callback
 	 */
 	function jcf_ajax_save_visibility_rules(){
 		$data = $_POST;
@@ -405,7 +432,10 @@
 		$resp = jcf_get_visibility_rules_html($fieldset['visibility_rules']);
 		jcf_ajax_reposnse($resp, 'html');
 	}
-	
+
+	/**
+	 * Delete rule for visibility functions callback
+	 */
 	function jcf_ajax_delete_visibility_rule(){
 		$data = $_POST;
 
@@ -414,7 +444,10 @@
 		$resp = jcf_get_visibility_rules_html($fieldset['visibility_rules']);
 		jcf_ajax_reposnse($resp, 'html');
 	}
-	
+
+	/**
+	 * Update rule functions callback
+	 */
 	function  jcf_ajax_update_visibility_rule(){
 		$data = $_POST;
 

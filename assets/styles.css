@@ -335,7 +335,7 @@ form.jcform_add_field .ajax-feedback{
 	margin-bottom: 0;
 }
 fieldset#fieldset_visibility_rules{
-	border: 1px solid #000000;
+	border: 1px solid #ddd;
 	padding: 10px;
 }
 a.visibility_toggle{
