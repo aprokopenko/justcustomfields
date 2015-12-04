@@ -29,7 +29,7 @@
 	 * @param string $key	fieldset id
 	 * @param array $values		fieldset settings
 	 */
-	function jcf_fieldsets_update( $key, $values = array()){
+	function jcf_fieldsets_update( $key, $values = array() ){
 		$option_name = jcf_fieldsets_get_option_name();
 
 		$jcf_read_settings = jcf_get_read_settings();
@@ -41,7 +41,23 @@
 				unset($jcf_settings['fieldsets'][$post_type][$key]);
 			}
 			if( !empty($values) ){
-				$jcf_settings['fieldsets'][$post_type][$key] = $values;
+				if(!empty($values['rules'])) {
+					if(!empty($values['rules']['remove'])){
+						$key_rule = $values['rules']['remove'];
+						unset($jcf_settings['fieldsets'][$post_type][$key]['visibility_rules'][$key_rule-1]);
+						sort($jcf_settings['fieldsets'][$post_type][$key]['visibility_rules']);
+					}
+					elseif(!empty($values['rules']['update'])){
+						$key_rule = $values['rules']['update'];
+						$jcf_settings['fieldsets'][$post_type][$key]['visibility_rules'][$key_rule-1] = $values['rules']['data'];
+					}
+					else{
+						$jcf_settings['fieldsets'][$post_type][$key]['visibility_rules'][] = $values['rules'];
+					}
+				}
+				else{
+					$jcf_settings['fieldsets'][$post_type][$key] = $values;
+				}
 			}
 			jcf_save_all_settings_in_file($jcf_settings);
 		}
@@ -52,7 +68,24 @@
 			}
 
 			if( !empty($values) ){
-				$fieldsets[$key] = $values;
+				if(!empty($values['rules'])) {
+					if(!empty($values['rules']['remove'])){
+						$key_rule = $values['rules']['remove'];
+						unset($fieldsets[$key]['visibility_rules'][$key_rule-1]);
+						sort($fieldsets[$key]['visibility_rules']);
+					}
+					elseif(!empty($values['rules']['update'])){
+						$key_rule = $values['rules']['update'];
+						$fieldsets[$key]['visibility_rules'][$key_rule-1] = $values['rules']['data'];
+					}
+					else{
+						$fieldsets[$key]['visibility_rules'][] = $values['rules'];
+					}
+				}
+				else{
+					$fieldsets[$key] = $values;
+				}
+				
 			}
 
 			jcf_update_options($option_name, $fieldsets);
