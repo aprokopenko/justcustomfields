@@ -81,6 +81,7 @@ function jcf_init(){
 	add_action('wp_ajax_jcf_save_visibility_rules', 'jcf_ajax_save_visibility_rules');
 	add_action('wp_ajax_jcf_add_visibility_rules_form', 'jcf_ajax_add_visibility_rules_form');
 	add_action('wp_ajax_jcf_delete_visibility_rule', 'jcf_ajax_delete_visibility_rule');
+	add_action('wp_ajax_jcf_visibility_autocomplete', 'jcf_ajax_visibility_autocomplete');
 	
 	add_action('wp_ajax_jcf_add_field', 'jcf_ajax_add_field');
 	add_action('wp_ajax_jcf_save_field', 'jcf_ajax_save_field');
@@ -212,6 +213,8 @@ function jcf_get_language_strings(){
 		'update_file' => __('Update File', JCF_TEXTDOMAIN),
 		'yes' => __('Yes', JCF_TEXTDOMAIN),
 		'no' => __('No', JCF_TEXTDOMAIN),
+		'no_term' => __('The term doesn\'t exist', JCF_TEXTDOMAIN),
+		'no_templates' => __('The template doesn\'t exist', JCF_TEXTDOMAIN),
 		
 		'wp_version' => $wp_version,
 	);
@@ -262,6 +265,7 @@ function jcf_admin_add_scripts() {
 			array('jquery', 'json2', 'jquery-form', 'jquery-ui-sortable')
 		);
 	wp_enqueue_script('just_custom_fields');
+	wp_enqueue_script('jquery-ui-autocomplete');
 	
 	// add text domain
 	wp_localize_script( 'just_custom_fields', 'jcf_textdomain', jcf_get_language_strings() );
@@ -338,3 +342,4 @@ function jcf_print_admin_notice($args = array()){
 			</div>';
 	}
 }
+

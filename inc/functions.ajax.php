@@ -183,12 +183,12 @@
 
 			<?php // From buttons ?>
 			<?php if( !empty($edit_rule) ): ?>
-				<input type="button" class="update_rule_btn button-primary" data-rule_id="<?php echo $_POST['rule_id'];?>" name="update_rule" value="<?php _e('Update rule', JCF_TEXTDOMAIN); ?>"/>
+				<input type="button" class="update_rule_btn button" data-rule_id="<?php echo $_POST['rule_id'];?>" name="update_rule" value="<?php _e('Update rule', JCF_TEXTDOMAIN); ?>"/>
 			<?php else: ?>
-				<input type="button" class="save_rule_btn button-primary" name="save_rule" value="<?php _e('Save rule', JCF_TEXTDOMAIN); ?>"/>
+				<input type="button" class="save_rule_btn button" name="save_rule" value="<?php _e('Save rule', JCF_TEXTDOMAIN); ?>"/>
 			<?php endif;?>
 			<?php if( $edit_rule || $add_rule ):?>
-				<input type="button" class="cancel_rule_btn button-primary" value="<?php _e('Cancel', JCF_TEXTDOMAIN); ?>" />
+				<input type="button" class="cancel_rule_btn button" name="cancel_rule" value="<?php _e('Cancel', JCF_TEXTDOMAIN); ?>" />
 			<?php endif;?>
 
 		</fieldset>
@@ -248,20 +248,15 @@
 			<div class="templates-options">
 				<p>
 					<p><?php _e('Choose templates:', JCF_TEXTDOMAIN); ?></p>
-					<?php if( count($terms) <= 20 ) :?>
-						<div class="alignleft">
-						<?php $i=1; foreach( $templates as $name => $slug ): ?>
+					<ul class="visibility-list-items">
+					<?php $i=1; foreach( $templates as $name => $slug ): ?>
+						<li>
 							<input type="checkbox" name="rule_templates" value="<?php echo $slug; ?>" id="rule_taxonomy_term_<?php echo $i; ?>"
 								<?php checked(in_array($slug, $current), true ); ?>/>
 							<label for="rule_taxonomy_term_<?php echo $i; ?>"><?php echo $name; ?></label>
-							<br />
-							<?php if( $i % 5 == 0 ): ?>
-								</div><div class="alignleft">
-							<?php endif; ?>
-						<?php $i++; endforeach; ?>
-						</div>
-					<?php else: ?>
-					<?php endif; ?>
+						</li>
+					<?php $i++; endforeach; ?>
+					</ul>
 					<br class="clear">
 				</p>
 			</div>
@@ -321,19 +316,21 @@
 			<p>
 				<p><?php _e('Choose terms:', JCF_TEXTDOMAIN); ?></p>
 				<?php if( count($terms) <= 20 ) :?>
-					<div class="alignleft">
+					<ul class="visibility-list-items">
 					<?php $i=1; foreach( $terms as $term ): ?>
-						<input type="checkbox" name="rule_taxonomy_terms" value="<?php echo $term->term_id; ?>"
-							<?php checked(in_array($term->term_id, $current_term), true ); ?>
-							   id="rule_taxonomy_term_<?php echo $term->term_id; ?>" />
-						<label for="rule_taxonomy_term_<?php echo $term->term_id; ?>"><?php echo $term->name; ?></label>
-						<br />
-						<?php if( $i % 5 == 0 ): ?>
-							</div><div class="alignleft">
-						<?php endif; ?>
+						<li>
+							<input type="checkbox" name="rule_taxonomy_terms" value="<?php echo $term->term_id; ?>"
+								<?php checked(in_array($term->term_id, $current_term), true ); ?>
+								   id="rule_taxonomy_term_<?php echo $term->term_id; ?>" />
+							<label for="rule_taxonomy_term_<?php echo $term->term_id; ?>"><?php echo $term->name; ?></label>
+						</li>
 					<?php $i++; endforeach; ?>
-					</div>
+					</ul>
 				<?php else: ?>
+					<p>
+						<input type="text" id="new-term" name="newterm" class="newterm form-input-tip" size="16" autocomplete="on" value="">
+						<input type="button" class="button termadd" value="Add">
+					</p>
 				<?php endif; ?>
 				<br class="clear">
 			</p>
@@ -394,12 +391,15 @@
 								$rule_text .= '<strong>'.$tpl_text.'<strong>';
 							}
 						?>
-						<?php if($key != 0):?>
-							<tr><td colspan="3"><strong><?php echo strtoupper($rule['join_condition']); ?></strong></td></tr>
-						<?php endif;?>
+						
 						<tr class="visibility_rule_<?php echo $key+1; ?>">
 							<td><?php echo ($key+1); ?></td>
-							<td><?php echo $rule_text; ?></td>
+							<td>
+								<?php if($key != 0):?>
+									<strong><?php echo strtoupper($rule['join_condition']); ?></strong><br/>
+								<?php endif;?>
+								<?php echo $rule_text; ?>
+							</td>
 							<td>
 								<a href="#" class="dashicons-before dashicons-edit edit-rule" data-rule_id="<?php echo $key+1; ?>"></a>
 								<a href="#" class="dashicons-before dashicons-no remove-rule" data-rule_id="<?php echo $key+1; ?>"></a><?php ?>
@@ -409,12 +409,38 @@
 					</tbody>
 				</table>
 				<?php endif; ?>
-				<p><input type="button" class="add_rule_btn button-primary" name="add_rule" value="<?php _e('Add rule', JCF_TEXTDOMAIN); ?>"/></p>
+				<p><input type="button" class="add_rule_btn button" name="add_rule" value="<?php _e('Add rule', JCF_TEXTDOMAIN); ?>"/></p>
 			</div>
 
 		<?php 
 		$rules = ob_get_clean(); 
 		return $rules;
+	}
+
+	// autocomplete for input
+	function jcf_ajax_visibility_autocomplete(){
+		global $wpdb;
+		$taxonomy = $_POST['taxonomy'];
+		$term = $_POST['term'];
+		$query = "SELECT t.term_id, t.name
+			FROM wp_terms AS t
+			LEFT JOIN wp_term_taxonomy AS tt ON t.term_id = tt.term_id
+			WHERE t.name LIKE '%$term%' AND tt.taxonomy = '$taxonomy'";
+		$terms = $wpdb->get_results($query);
+
+		$response = array();
+		foreach($terms as $p){
+			$response[] = array(
+				'id' => $p->term_id,
+				'label' => $p->name,
+				'value' => $p->name,
+			);
+		}
+		$json = json_encode($response);
+		
+		header( "Content-Type: application/json" );
+		echo $json;
+		exit();
 	}
 
 	/**

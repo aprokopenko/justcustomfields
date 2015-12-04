@@ -153,6 +153,8 @@ function initFieldsetsEdit(){
 		
 		jcf_ajax(data, 'html', loader, function(response){
 			jQuery('.taxonomy-terms-options').html(response);
+			var input = jQuery('#new-term');
+			jcf_attach_autocomplete_event( input );
 		});
 	});
 	
@@ -174,11 +176,20 @@ function initFieldsetsEdit(){
 					data.visibility_rules[ jQuery(input).attr('name') ] = jQuery(input).val();
 				}
 			}
+			else if(jQuery(input).attr('type') == 'checkbox'){
+				if(typeof data.visibility_rules[ jQuery(input).attr('name') ] === 'undefined'){
+					data.visibility_rules[ jQuery(input).attr('name') ] = new Array();
+				}
+				if(jQuery(input).is(':checked')){
+					data.visibility_rules[ jQuery(input).attr('name') ].push(jQuery(this).val());
+				}
+			}
 			else{
-				data.visibility_rules[ jQuery(input).attr('name') ] = jQuery(input).val();
+				if(jQuery(input).attr('type') != 'button'){
+					data.visibility_rules[ jQuery(input).attr('name') ] = jQuery(input).val();
+				}
 			}
 		});
-
 		var loader = jQuery(this).find('img.ajax-feedback');
 
 		jcf_ajax(data, 'html', loader, function(response){
@@ -188,6 +199,7 @@ function initFieldsetsEdit(){
 		});
 	});
 	
+    // add form for new visibility rule
 	jQuery('.add_rule_btn').live('click', function() {
 		var loader = jQuery(this).find('img.ajax-feedback');
 		var data = {
@@ -200,6 +212,7 @@ function initFieldsetsEdit(){
 		});
 	});
 	
+    // delete visibility rule 
 	jQuery('a.remove-rule').live('click', function(){
 		var rule_id = jQuery(this).data('rule_id');
 		var loader = jQuery(this).find('img.ajax-feedback');
@@ -216,6 +229,7 @@ function initFieldsetsEdit(){
 		});
 	});
 	
+    // edit visibility rule 
 	jQuery('a.edit-rule').live('click', function(){
 		var rule_id = jQuery(this).data('rule_id');
 		var loader = jQuery(this).find('img.ajax-feedback');
@@ -233,16 +247,62 @@ function initFieldsetsEdit(){
 		});
 	});
 	
+    // show/hide visibility options for fieldset
 	jQuery('a.visibility_toggle').live('click', function(){
 		jQuery('#visibility').toggle();
 		jQuery(this).find('span').toggleClass('dashicons-arrow-down-alt2');
 		jQuery(this).find('span').toggleClass('dashicons-arrow-up-alt2');
 	});
 	
+    // cancel form for add or edit visibility rule
 	jQuery('.cancel_rule_btn').live('click', function(){
 		jQuery(this).parents('fieldset#fieldset_visibility_rules').remove();
 		jQuery('.add_rule_btn').show();
-	})
+	});
+    
+	var input = jQuery('#new-term');
+	jcf_attach_autocomplete_event( input );
+    
+    jQuery('#new-term').live('keyup', function(){
+        var taxonomy = jQuery('.taxonomy-options #rule-taxonomy').val();
+        var data = {
+            action: 'jcf_visibility_autocomplete',
+            taxonomy: taxonomy,
+            term: jQuery(this).val()
+        };
+        var status = false;
+        jQuery.post(ajaxurl, data, function(response){
+            for(var key in response){ 
+                if(response[key].label == data.term) {
+                    status = true;
+                    jQuery('#new-term').attr({'data-term_id': response[key].id, 'data-term_label': response[key].label});
+                }
+                break;
+            }
+        });
+        if(!status){
+            jQuery('#new-term').removeAttr('data-term_id data-term_label');
+        }
+    });
+    
+	jQuery('.termadd').live('click', function(){
+		var term_id = jQuery('#new-term').attr('data-term_id');
+		var term_label = jQuery('#new-term').attr('data-term_label');
+        var wrapper_for_terms = jQuery('.taxonomy-terms-options ul.visibility-list-items');
+        if( typeof term_id !== 'undefined' && typeof term_label !== 'undefined' ){
+            jQuery('.taxonomy-terms-options p.visible-notice').remove();
+            var label = '<label>' + term_label + '</label>';
+            var chbox = '<input type="checkbox" checked="checked" name="rule_taxonomy_terms" value="' + term_id + '" />';
+            if(wrapper_for_terms.length < 1){
+                jQuery(this).parent().append('<ul class="visibility-list-items"></ul>');
+            }
+            jQuery('.taxonomy-terms-options ul.visibility-list-items').append('<li>' + chbox + label +'</li>');
+        }
+        else{
+            jQuery('.taxonomy-terms-options').append('<p class="visible-notice">' + jcf_textdomain.no_term  + '</p>');
+        }
+		return false;
+	});
 }
 
 /**
@@ -619,4 +679,31 @@ function initEditFormPosition(){
 	else{
 		edit_form.css({'position':'relative', 'top':'', 'width':'30%', 'left' : ''});
 	}
+}
+
+//add autocomplete
+function jcf_attach_autocomplete_event( input ){
+	var taxonomy = jQuery('.taxonomy-options #rule-taxonomy').val();
+	var data = {
+		action: 'jcf_visibility_autocomplete',
+		taxonomy: taxonomy
+	};
+	input.autocomplete({
+		minLength: 2,
+		source: function( request, response ) {
+				data.term = request.term;
+				jQuery.post(ajaxurl, data, response);
+			},
+		select: function(event, ui){
+			input.attr({'data-term_id': ui.item.id, 'data-term_label': ui.item.label});
+		},
+		search: function( event, ui ) {
+				input.parent().find('span.loading').remove();
+				input.parent().append('<span class="loading">loading...</span>');
+			},
+		open: function( event, ui ){
+				input.parent().find('span.loading').remove();
+			}
+	});
+
 }

@@ -345,3 +345,11 @@ a.visibility_toggle{
 a:focus{
 	outline:none;
 }
+ul.visibility-list-items{
+	width: 100%;
+}
+ul.visibility-list-items li{
+	width: 24%;
+	float: left;
+	padding-right:1%;
+}
