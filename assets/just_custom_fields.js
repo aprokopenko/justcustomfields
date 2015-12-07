@@ -184,20 +184,21 @@ function initFieldsetFields(){
 				html += '		<span class="edit"><a href="#" rel="' + response.id + '">'+ jcf_textdomain.edit +'</a></span> |';
 				html += '		<span class="delete"><a href="#" rel="' + response.id + '">'+ jcf_textdomain.delete +'</a></span>';
 				html += '	</div>';
-                if(response.collection_fields){
-                    html += '   <ul>';
-                    html += '       <li><strong>' + jcf_textdomain.slug + '</strong>: '+response.instance.slug+'</li>';
-                    html += '       <li><strong>' + jcf_textdomain.type + '</strong>: '+response.id_base+'</li>';
-                    html += '       <li><strong>' + jcf_textdomain.enabled + '</strong>: '+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</li>';
-                    html += '   </ul>';
-                }
+				if(response.collection_fields) {
+					html += '   <ul>';
+					html += '       <li><strong>' + jcf_textdomain.slug + '</strong>: '+response.instance.slug+'</li>';
+					html += '       <li><strong>' + jcf_textdomain.type + '</strong>: '+response.id_base+'</li>';
+					html += '       <li><strong>' + jcf_textdomain.enabled + '</strong>: '+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</li>';
+				html += '   </ul>';
+				}
 				html += '</td>';
-                if(response.collection_fields){
-                    html += '<td colspan="3" class="collection_list" data-collection_id="' + response.id + '">' + response.collection_fields + '</td>';
-                }else{
-                    html += '<td>'+response.instance.slug+'</td>';
-                    html += '<td>'+response.id_base+'</td>';
-                    html += '<td>'+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</td>';
+				if(response.collection_fields) {
+					html += '<td colspan="3" class="collection_list" data-collection_id="' + response.id + '">' + response.collection_fields + '</td>';
+				}
+				else {
+					html += '<td>'+response.instance.slug+'</td>';
+					html += '<td>'+response.id_base+'</td>';
+					html += '<td>'+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</td>';
 				}
 				fieldset.append(html);
 				if(response.collection_fields){
@@ -213,13 +214,13 @@ function initFieldsetFields(){
 						});
 				}
 			}
-			if(!response.collection_fields){
-                // update fieldset row
-                var row = jQuery('#field_row_' + response.id);
-                row.find('strong a').text(response.instance.title);
-                row.find('td:eq(2)').text(response.instance.slug);
-                row.find('td:eq(4)').text( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no );
-            }
+			if(!response.collection_fields) {
+				// update fieldset row
+				var row = jQuery('#field_row_' + response.id);
+				row.find('strong a').text(response.instance.title);
+				row.find('td:eq(2)').text(response.instance.slug);
+				row.find('td:eq(4)').text( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no );
+			}
 			// close add box at the end
 			jcf_hide_ajax_container();
 		})
