@@ -207,6 +207,9 @@ function jcf_get_language_strings(){
 		'update_file' => __('Update File', JCF_TEXTDOMAIN),
 		'yes' => __('Yes', JCF_TEXTDOMAIN),
 		'no' => __('No', JCF_TEXTDOMAIN),
+		'slug' => __('Slug', JCF_TEXTDOMAIN),
+		'type' => __('Type', JCF_TEXTDOMAIN),
+		'enabled' => __('Enabled', JCF_TEXTDOMAIN),
 		
 		'wp_version' => $wp_version,
 	);

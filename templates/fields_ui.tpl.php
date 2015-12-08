@@ -62,17 +62,22 @@
 												<span class="edit"><a href="#" rel="<?php echo $field_id; ?>"><?php _e('Edit', JCF_TEXTDOMAIN); ?></a></span> |
 												<span class="delete"><a href="#" rel="<?php echo $field_id; ?>"><?php _e('Delete', JCF_TEXTDOMAIN); ?></a></span>
 											</div>
+											<?php if(isset($field_settings[$field_id]['custom_row'])) : ?>
+												<ul>
+													<li><strong><?php _e('Slug', JCF_TEXTDOMAIN); ?></strong>: <?php echo $field_settings[$field_id]['slug']; ?></li>
+													<li><strong><?php _e('Type', JCF_TEXTDOMAIN); ?></strong>: <?php echo preg_replace('/\-[0-9]+$/', '', $field_id); ?></li>
+													<li><strong><?php _e('Enabled', JCF_TEXTDOMAIN); ?></strong>: <?php if($enabled) _e('Yes', JCF_TEXTDOMAIN); else  _e('No', JCF_TEXTDOMAIN);?></li>
+												</ul>
+											<?php endif; ?>
 										</td>
-										<td><?php echo $field_settings[$field_id]['slug']; ?></td>
-										<td><?php echo preg_replace('/\-[0-9]+$/', '', $field_id); ?></td>
-										<td><?php if($enabled) _e('Yes', JCF_TEXTDOMAIN); else  _e('No', JCF_TEXTDOMAIN);?></td>
+										<?php if(!isset($field_settings[$field_id]['custom_row'])) : ?>
+											<td><?php echo $field_settings[$field_id]['slug']; ?></td>
+											<td><?php echo preg_replace('/\-[0-9]+$/', '', $field_id); ?></td>
+											<td><?php if($enabled) _e('Yes', JCF_TEXTDOMAIN); else  _e('No', JCF_TEXTDOMAIN);?></td>
+										<?php else: ?>
+											<td colspan="3" class="collection_list" data-collection_id="<?php echo $field_id; ?>"><?php do_action('jcf_custom_settings_row', $field_id,$fieldset['id']); ?></td>
+										<?php endif; ?>
 									</tr>
-									<?php if(isset($field_settings[$field_id]['custom_row'])) : ?>
-										<tr class="collection_list">
-											<td colspan="2" data-collection_id="<?php echo $field_id; ?>"></td>
-											<td colspan="3"><?php do_action('jcf_custom_settings_row', $field_id,$fieldset['id']); ?></td>
-										</tr>
-									<?php endif; ?>
 								<?php endforeach; ?>
 							<?php else : ?>
 							<tr><td colspan="4" align="center"><?php _e('Please create fields for this fieldset', JCF_TEXTDOMAIN); ?></td></tr>

@@ -334,3 +334,9 @@ form.jcform_add_field .ajax-feedback{
 .jcf_tab-content input[type="file"]{
 	margin-bottom: 0;
 }
+.row-actions .delete_collection a{
+	color: #a00;
+}
+.row-actions .delete_collection a:hover{
+	color: red;
+}
