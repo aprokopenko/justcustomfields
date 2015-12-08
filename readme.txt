@@ -49,7 +49,7 @@ Starting from v2.0 we have new features:
 **EXPERIMENTAL FEATURES v2.2**
 
 * Simple Media field is now single file only (before it was multiple). It use new media upload box from WordPress and save post thumbnail ID (before it was just file url). So now you can use get_the_post_thumbnail() function to work with attachments.
-* New "Fields Collection" has been promoted in v2.2. There are still some issues with drag & drop to re-order fields but all other features are working okay.
+* New "Fields Collection" has been promoted in v2.2.
 * All fields now have "Shortcodes" and hints how to use them inside the templates for non-professional developers.
 
 FILL FREE TO CONTACT ME IF YOU FIND ANY BUGS/ISSUES!
@@ -83,9 +83,9 @@ get_post_custom()
 
 == Changelog ==
 * Next release plans
-	* PHP-Code generators to use in templates when editing custom fields
-	* Shortcodes for WP editor
 	* make fieldsets related to categories (show/hide based on category select)
+* Version 2.3
+	* Improvements: Collection field settings UI and field sorting fixed
 * Version 2.2
 	* Bug fixes: Some annoying notices with WP_DEBUG On
 	* New feature: Fields shortcodes and template functions
