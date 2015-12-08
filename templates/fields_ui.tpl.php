@@ -34,7 +34,7 @@
 					<?php echo print_loader_img(); ?>
 				</h3>
 				<div class="jcf_inner_content">
-					<table class="wp-list-table widefat fixed" cellspacing="0">
+					<table class="wp-list-table widefat fixed fieldset-fields-table" cellspacing="0">
 						<thead><tr>
 							<th class="check-column">&nbsp;</th>
 							<th><?php _e('Field', JCF_TEXTDOMAIN); ?></th>
@@ -64,8 +64,8 @@
 											</div>
 											<?php if(isset($field_settings[$field_id]['custom_row'])) : ?>
 												<ul>
-													<li><strong><?php _e('Slug', JCF_TEXTDOMAIN); ?></strong>: <?php echo $field_settings[$field_id]['slug']; ?></li>
 													<li><strong><?php _e('Type', JCF_TEXTDOMAIN); ?></strong>: <?php echo preg_replace('/\-[0-9]+$/', '', $field_id); ?></li>
+													<li><strong><?php _e('Slug', JCF_TEXTDOMAIN); ?></strong>: <?php echo $field_settings[$field_id]['slug']; ?></li>
 													<li><strong><?php _e('Enabled', JCF_TEXTDOMAIN); ?></strong>: <?php if($enabled) _e('Yes', JCF_TEXTDOMAIN); else  _e('No', JCF_TEXTDOMAIN);?></li>
 												</ul>
 											<?php endif; ?>

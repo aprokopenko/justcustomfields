@@ -108,7 +108,9 @@ form.jcform_add_field .ajax-feedback{
 	margin:0 0 5px;
 }
 #jcf_fieldsets .sortable_placeholder,
-#jcf_fieldsets .sortable_placeholder td{
+#jcf_fieldsets .sortable_placeholder td,
+#jcf_fieldsets .collection_sortable_placeholder,
+#jcf_fieldsets .collection_sortable_placeholder td{
 	background:#FFFFF0;
 }
 .jcf-export-list li{
