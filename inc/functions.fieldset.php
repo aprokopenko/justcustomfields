@@ -41,23 +41,8 @@
 				unset($jcf_settings['fieldsets'][$post_type][$key]);
 			}
 			if( !empty($values) ){
-				if(!empty($values['rules'])) {
-					if(!empty($values['rules']['remove'])){
-						$key_rule = $values['rules']['remove'];
-						unset($jcf_settings['fieldsets'][$post_type][$key]['visibility_rules'][$key_rule-1]);
-						sort($jcf_settings['fieldsets'][$post_type][$key]['visibility_rules']);
-					}
-					elseif(!empty($values['rules']['update'])){
-						$key_rule = $values['rules']['update'];
-						$jcf_settings['fieldsets'][$post_type][$key]['visibility_rules'][$key_rule-1] = $values['rules']['data'];
-					}
-					else{
-						$jcf_settings['fieldsets'][$post_type][$key]['visibility_rules'][] = $values['rules'];
-					}
-				}
-				else{
-					$jcf_settings['fieldsets'][$post_type][$key] = $values;
-				}
+				$fielset_values = jcf_apply_visibility_settings($values, $jcf_settings['fieldsets'][$post_type][$key]);
+				$jcf_settings['fieldsets'][$post_type][$key] = $fielset_values;
 			}
 			jcf_save_all_settings_in_file($jcf_settings);
 		}
@@ -68,24 +53,8 @@
 			}
 
 			if( !empty($values) ){
-				if(!empty($values['rules'])) {
-					if(!empty($values['rules']['remove'])){
-						$key_rule = $values['rules']['remove'];
-						unset($fieldsets[$key]['visibility_rules'][$key_rule-1]);
-						sort($fieldsets[$key]['visibility_rules']);
-					}
-					elseif(!empty($values['rules']['update'])){
-						$key_rule = $values['rules']['update'];
-						$fieldsets[$key]['visibility_rules'][$key_rule-1] = $values['rules']['data'];
-					}
-					else{
-						$fieldsets[$key]['visibility_rules'][] = $values['rules'];
-					}
-				}
-				else{
-					$fieldsets[$key] = $values;
-				}
-				
+				$fielset_values = jcf_apply_visibility_settings($values, $fieldsets[$key]);
+				$fieldsets[$key] = $fielset_values;
 			}
 
 			jcf_update_options($option_name, $fieldsets);
@@ -163,4 +132,31 @@
 			}
 			jcf_update_options($option_name, $new_fieldsets);
 		}
+	}
+
+	/**
+	 * apply viibility settings for fieldsets
+	 * @param array $values Visibility values
+	 * @return array Fieldsets visibility values
+	 */
+	function jcf_apply_visibility_settings($values, $fieldset){
+		$visibility_rules = array();
+		if(!empty($values['rules'])) {
+			if(!empty($values['rules']['remove'])){
+				$key_rule = $values['rules']['remove'];
+				unset($fieldset['visibility_rules'][$key_rule-1]);
+				sort($fieldset['visibility_rules']);
+			}
+			elseif(!empty($values['rules']['update'])){
+				$key_rule = $values['rules']['update'];
+				$fieldset['visibility_rules'][$key_rule-1] = $values['rules']['data'];
+			}
+			else{
+				$fieldset['visibility_rules'][] = $values['rules'];
+			}
+		}
+		else {
+			return $values;
+		}
+		return $fieldset;
 	}

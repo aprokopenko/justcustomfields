@@ -111,7 +111,7 @@
 	 */
 	function jcf_ajax_add_visibility_rules_form() {
 		global $jcf_post_type;
-		$taxonomies = get_taxonomies( array('object_type' => (array)$jcf_post_type, 'show_ui' => true), 'objects' );
+		$taxonomies = get_object_taxonomies( $jcf_post_type, 'objects' );
 		$add_rule = !empty($_POST['add_rule']) ? $_POST['add_rule'] : false;
 
 		if(!empty($_POST['edit_rule'])){
@@ -216,7 +216,7 @@
 			jcf_ajax_get_page_templates_html($templates);
 		} 
 		else { 
-			$taxonomies = get_taxonomies( array('object_type' => (array)$jcf_post_type, 'show_ui' => true), 'objects' );
+			$taxonomies = get_object_taxonomies( $jcf_post_type, 'objects' );
 			jcf_ajax_get_taxonomies_html($taxonomies);
 		} 
 
@@ -286,7 +286,9 @@
 					<select name="rule_taxonomy" id="rule-taxonomy">
 						<option value="" disabled="disabled" <?php selected(empty($current_tax)); ?> ><?php _e('Choose taxonomy', JCF_TEXTDOMAIN); ?></option>
 						<?php foreach( $taxonomies as $slug => $taxonomy ): ?>
-							<option value="<?php echo $slug; ?>" <?php selected($current_tax, $slug); ?> ><?php echo $taxonomy->labels->singular_name; ?></option>
+							<?php if($slug != 'post_format'):?>
+								<option value="<?php echo $slug; ?>" <?php selected($current_tax, $slug); ?> ><?php echo $taxonomy->labels->singular_name; ?></option>
+							<?php endif;?>
 						<?php	endforeach; ?>
 					</select>
 				</p>
@@ -309,13 +311,14 @@
 	 * @param array $terms
 	 * @param array $current_term
 	 */
-	function jcf_ajax_get_taxonomy_terms_html($terms, $current_term = array()) {
+	function jcf_ajax_get_taxonomy_terms_html($terms, $current_term = array(), $taxonomy = '') {
+		$taxonomy = get_taxonomy($terms[0]->taxonomy);
 		ob_start();
 		?>
 		<?php if( !empty($terms) ): ?>
 			<p>
-				<p><?php _e('Choose terms:', JCF_TEXTDOMAIN); ?></p>
-				<?php if( count($terms) <= 20 ) :?>
+				<p><?php _e('Choose ' . $taxonomy->labels->name .  ':', JCF_TEXTDOMAIN); ?></p>
+				<?php if( count($terms) <= 20 ) : ?>
 					<ul class="visibility-list-items">
 					<?php $i=1; foreach( $terms as $term ): ?>
 						<li>
@@ -331,6 +334,20 @@
 						<input type="text" id="new-term" name="newterm" class="newterm form-input-tip" size="16" autocomplete="on" value="">
 						<input type="button" class="button termadd" value="Add">
 					</p>
+					<?php if(!empty($current_term)): ?>
+						<ul class="visibility-list-items">
+						<?php $i=1; foreach( $terms as $term ): ?>
+							<?php if(in_array($term->term_id, $current_term)) :?>
+								<li>
+									<input type="checkbox" name="rule_taxonomy_terms" value="<?php echo $term->term_id; ?>"
+										<?php checked(true); ?>
+										   id="rule_taxonomy_term_<?php echo $term->term_id; ?>" />
+									<label for="rule_taxonomy_term_<?php echo $term->term_id; ?>"><?php echo $term->name; ?></label>
+								</li>
+							<?php endif; ?>
+						<?php $i++; endforeach; ?>
+						</ul>
+					<?php endif;?>
 				<?php endif; ?>
 				<br class="clear">
 			</p>

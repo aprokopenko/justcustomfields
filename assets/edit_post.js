@@ -1,5 +1,6 @@
 jQuery(document).ready(function(){
 	jcf_init_shortcodes_popup();
+	jcf_init_fieldset_visibility_rules();
 });
 
 /*
@@ -50,6 +51,121 @@ function jcf_init_shortcodes_popup(){
 		jcf_copy_to_clipboard(input);
 		return false;
 	});
+}
+
+/**
+ * Set visibility rules for fieldsets
+ */
+function jcf_init_fieldset_visibility_rules() {
+	var checked_taxonomies = jcf_get_selected_taxonomies();
+	jcf_apply_visibility_rules(checked_taxonomies);
+
+	// Check selected categories
+	jQuery('input[id^="in-category"]').change(function(){
+		checked_taxonomies = jcf_get_selected_taxonomies();
+		jcf_apply_visibility_rules(checked_taxonomies);
+	});
+
+	//Check selected tags and custom taxonomies
+	jQuery('.tagchecklist').bind("DOMSubtreeModified",function(){
+		checked_taxonomies = jcf_get_selected_taxonomies();
+		jcf_apply_visibility_rules(checked_taxonomies);
+	});
+
+	//Check selected template
+	jQuery('#page_template').change(function(){
+		checked_taxonomies = jcf_get_selected_taxonomies();
+		jcf_apply_visibility_rules(checked_taxonomies);
+	});
+}
+
+/*
+ * Get selected terms of taxonomies
+ * @returns {jcf_get_selected_taxonomies.tags|Array}
+ */
+function jcf_get_selected_taxonomies(){
+	var tags = [];
+	jQuery('input[id^="in-category"]').each(function(){
+		if(jQuery(this).is(':checked')){
+			tags.push(jQuery(this).parent().text().trim());
+		}
+	});
+	jQuery('.tagchecklist').find('span').each(function(){
+		tags.push(jQuery(this)[0].lastChild.data.trim());
+	});
+	return tags;
+}
+
+/*
+ * Apply rules for display fieldsets
+ * @param {Array} checked_taxonomies
+ */
+function jcf_apply_visibility_rules(checked_taxonomies) {
+	var visibility_rules = jQuery.parseJSON(fieldsets_visibility_rules);
+
+	for (var fieldset_id in visibility_rules) {
+
+		if( visibility_rules[fieldset_id].length < 1 ) {//fieldset doesn't have any rules
+			var display = true;
+		}
+		else if( visibility_rules[fieldset_id].length < 2 ) {//fieldset has just one rule
+			var rule = visibility_rules[fieldset_id][0];
+			var default_display = (rule.visibility_option == 'hide');
+			var display = jcf_set_display_option(rule, checked_taxonomies, default_display);
+		}
+		else { //fieldset has many rules
+			for(var key in visibility_rules[fieldset_id]) {
+				var rule = visibility_rules[fieldset_id][key];
+				if(key == 0) { //set default visibility option
+					var default_display = (rule.visibility_option == 'hide');
+					var display = jcf_set_display_option(rule, checked_taxonomies, default_display);
+				}
+				else{ //set options in dependence of conditions
+					if(rule.join_condition == 'and') {
+						default_display += (rule.visibility_option == 'hide');
+						display += jcf_set_display_option(rule, checked_taxonomies, default_display);
+					}
+					else {
+						default_display *= (rule.visibility_option == 'hide');
+						display *= jcf_set_display_option(rule, checked_taxonomies, default_display);
+					}
+				}
+			}
+		}
+
+		if( display ) {
+			jQuery('#jcf_fieldset-' + fieldset_id).show();
+		}
+		else {
+			jQuery('#jcf_fieldset-' + fieldset_id).hide();
+		}
+	}
+}
+
+/*
+ * Set display option for fieldsets
+ * @param {Object} rule
+ * @param {Array} checked_taxonomies
+ * @param {Boolean} default_display
+ * @returns {Boolean}
+ */
+function jcf_set_display_option(rule, checked_taxonomies, default_display){
+	if(rule.based_on == 'page_template') {
+		var templates = rule.rule_templates;
+		var selected_template = jQuery('#page_template').val();
+		if(templates.indexOf(selected_template) > -1){
+			return (rule.visibility_option == 'show');
+		}
+	}
+	else if( rule.based_on == 'taxonomy' ) {
+		var terms = rule.rule_taxonomy_terms;
+		for(var i = 0; i < terms.length; i++){
+			if(checked_taxonomies.indexOf(terms[i].name) > -1){
+				return (rule.visibility_option == 'show');
+			}
+		}
+	}
+	return default_display;
 }
 
 /*

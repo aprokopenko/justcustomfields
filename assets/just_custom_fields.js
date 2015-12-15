@@ -1,6 +1,6 @@
 jQuery(document).ready(function(){
 	//JSON.parse('{"jsontest":"1"}');
-	
+
 	initAddFieldsetBox();
 	initFieldsetsEdit();
 	initAjaxBoxClose();
@@ -9,7 +9,7 @@ jQuery(document).ready(function(){
 	initExport();
 	initSettings();
 	});
-	
+
 jQuery(document).scroll(function(){
 	initEditFormPosition();
 });
@@ -21,7 +21,7 @@ function initAddFieldsetBox(){
 	// init ajax submit
 	jQuery('#jcform_add_fieldset').submit(function(e){
 		e.preventDefault();
-		
+
 		var title = jQuery('#jcf_fieldset_title').val();
 		var data = {
 			'action': 'jcf_add_fieldset',
@@ -29,13 +29,13 @@ function initAddFieldsetBox(){
 		};
 
 		var loader = jQuery(this).find('img.ajax-feedback');
-		
+
 		// ajax call
 		jcf_ajax(data, 'json', loader, function(response){
 			// all is ok: refresh page
 			window.location.reload(true);
 		});
-		
+
 		return false;
 	});
 }
@@ -44,10 +44,10 @@ function initAddFieldsetBox(){
  *	init all fieldset edit operations (edit/save/delete)
  */
 function initFieldsetsEdit(){
-	
+
 	// delete
 	jQuery('#jcf_fieldsets a.jcf_fieldset_delete').click(function(){
-		
+
 		if( confirm( jcf_textdomain.confirm_fieldset_delete ) )
 		{
 			var f_id = jQuery(this).attr('rel');
@@ -55,7 +55,7 @@ function initFieldsetsEdit(){
 				'action': 'jcf_delete_fieldset',
 				'fieldset_id': f_id
 			};
-				
+
 			var loader = jQuery(this).parents('h3').find('img.ajax-feedback');
 
 			jcf_ajax(data, 'json', loader, function(response){
@@ -65,7 +65,7 @@ function initFieldsetsEdit(){
 			});
 		}
 	})
-	
+
 	// change
 	jQuery('#jcf_fieldsets a.jcf_fieldset_change').click(function(){
 		var loader = jQuery(this).parents('h3').find('img.ajax-feedback');
@@ -80,14 +80,14 @@ function initFieldsetsEdit(){
 			jcf_show_ajax_container( response );
 		});
 	})
-	
+
 	// init delete button on change popup
 	jQuery('#jcf_ajax_content .jcf_edit_fieldset a.field-control-remove').live('click', function(){
 		var f_id = jQuery(this).parents('form:first').find('input[name=fieldset_id]').val();
 		jQuery('#jcf_fieldset_' + f_id + ' a.jcf_fieldset_delete').click();
 		return false;
 	});
-	
+
 	// save on edit form
 	jQuery('#jcform_edit_fieldset').live('submit', function(e){
 		e.preventDefault();
@@ -97,13 +97,13 @@ function initFieldsetsEdit(){
 			'fieldset_id': f_id,
 			'title': jQuery('#jcf_edit_fieldset_title').val()
 		};
-		
+
 		var loader = jQuery(this).find('img.ajax-feedback');
 
 		jcf_ajax(data, 'html', loader, function(response){
 			// update title
 			jQuery('#jcf_fieldset_' + f_id + ' h3 span').text( response.title );
-			
+
 			jcf_hide_ajax_container();
 		});
 
@@ -127,37 +127,37 @@ function initFieldsetsEdit(){
 			jcf_ajax(data, 'json');
 		}
 	});
-	
+
 	// choose base for visibility rule
 	jQuery('#rule-based-on').live('change', function() {
 		var data = {
 			'rule': jQuery(this).val(),
 			'action': 'jcf_get_rule_options',
 		};
-		
+
 		var loader = jQuery(this).find('img.ajax-feedback');
-		
+
 		jcf_ajax(data, 'html', loader, function(response){
 			jQuery('.rules-options').html(response);
 		});
 	});
-	
+
 	// choose taxonomy terms for visibility rule
-	jQuery('.taxonomy-options #rule-taxonomy').live('change', function() {
+	jQuery('#rule-taxonomy').live('change', function() {
 		var data = {
 			'taxonomy': jQuery(this).val(),
 			'action': 'jcf_get_taxonomy_terms',
 		};
-		
+
 		var loader = jQuery(this).find('img.ajax-feedback');
-		
+
 		jcf_ajax(data, 'html', loader, function(response){
 			jQuery('.taxonomy-terms-options').html(response);
 			var input = jQuery('#new-term');
 			jcf_attach_autocomplete_event( input );
 		});
 	});
-	
+
 	//parse rule block for saving
 	jQuery('.save_rule_btn, .update_rule_btn').live('click', function() {
 		var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
@@ -170,26 +170,8 @@ function initFieldsetsEdit(){
 			'visibility_rules': {}
 		};
 
-		jQuery(this).parent('fieldset').find('input,select').each(function(i, input){
-			if(jQuery(input).attr('type') == 'radio'){
-				if(jQuery(input).is(':checked')){
-					data.visibility_rules[ jQuery(input).attr('name') ] = jQuery(input).val();
-				}
-			}
-			else if(jQuery(input).attr('type') == 'checkbox'){
-				if(typeof data.visibility_rules[ jQuery(input).attr('name') ] === 'undefined'){
-					data.visibility_rules[ jQuery(input).attr('name') ] = new Array();
-				}
-				if(jQuery(input).is(':checked')){
-					data.visibility_rules[ jQuery(input).attr('name') ].push(jQuery(this).val());
-				}
-			}
-			else{
-				if(jQuery(input).attr('type') != 'button'){
-					data.visibility_rules[ jQuery(input).attr('name') ] = jQuery(input).val();
-				}
-			}
-		});
+		data.visibility_rules = jcf_form_serialize_object( jQuery(this).parent('fieldset') );
+
 		var loader = jQuery(this).find('img.ajax-feedback');
 
 		jcf_ajax(data, 'html', loader, function(response){
@@ -198,8 +180,8 @@ function initFieldsetsEdit(){
 			jQuery('fieldset#fieldset_visibility_rules').remove();
 		});
 	});
-	
-    // add form for new visibility rule
+
+	// add form for new visibility rule
 	jQuery('.add_rule_btn').live('click', function() {
 		var loader = jQuery(this).find('img.ajax-feedback');
 		var data = {
@@ -211,8 +193,8 @@ function initFieldsetsEdit(){
 			jQuery('.add_rule_btn').hide();
 		});
 	});
-	
-    // delete visibility rule 
+
+	// delete visibility rule
 	jQuery('a.remove-rule').live('click', function(){
 		var rule_id = jQuery(this).data('rule_id');
 		var loader = jQuery(this).find('img.ajax-feedback');
@@ -228,8 +210,8 @@ function initFieldsetsEdit(){
 			jQuery('fieldset#fieldset_visibility_rules').remove();
 		});
 	});
-	
-    // edit visibility rule 
+
+	// edit visibility rule
 	jQuery('a.edit-rule').live('click', function(){
 		var rule_id = jQuery(this).data('rule_id');
 		var loader = jQuery(this).find('img.ajax-feedback');
@@ -244,63 +226,64 @@ function initFieldsetsEdit(){
 			jQuery('fieldset#fieldset_visibility_rules').remove();
 			jQuery('div#visibility').append(response);
 			jQuery('.add_rule_btn').hide();
+			var input = jQuery('#new-term');
+			jcf_attach_autocomplete_event( input )
 		});
 	});
-	
-    // show/hide visibility options for fieldset
+
+	// show/hide visibility options for fieldset
 	jQuery('a.visibility_toggle').live('click', function(){
 		jQuery('#visibility').toggle();
 		jQuery(this).find('span').toggleClass('dashicons-arrow-down-alt2');
 		jQuery(this).find('span').toggleClass('dashicons-arrow-up-alt2');
 	});
-	
-    // cancel form for add or edit visibility rule
+
+	// cancel form for add or edit visibility rule
 	jQuery('.cancel_rule_btn').live('click', function(){
 		jQuery(this).parents('fieldset#fieldset_visibility_rules').remove();
 		jQuery('.add_rule_btn').show();
 	});
-    
-	var input = jQuery('#new-term');
-	jcf_attach_autocomplete_event( input );
-    
-    jQuery('#new-term').live('keyup', function(){
-        var taxonomy = jQuery('.taxonomy-options #rule-taxonomy').val();
-        var data = {
-            action: 'jcf_visibility_autocomplete',
-            taxonomy: taxonomy,
-            term: jQuery(this).val()
-        };
-        var status = false;
-        jQuery.post(ajaxurl, data, function(response){
-            for(var key in response){ 
-                if(response[key].label == data.term) {
-                    status = true;
-                    jQuery('#new-term').attr({'data-term_id': response[key].id, 'data-term_label': response[key].label});
-                }
-                break;
-            }
-        });
-        if(!status){
-            jQuery('#new-term').removeAttr('data-term_id data-term_label');
-        }
-    });
-    
+
+	jQuery('.termadd').live('click', function(){
+		if(!jQuery('#new-term').attr('data-term_id') && !jQuery('#new-term').attr('data-term_label')){
+			var taxonomy = jQuery('.taxonomy-options #rule-taxonomy').val();
+			var data = {
+				action: 'jcf_visibility_autocomplete',
+				taxonomy: taxonomy,
+				term: jQuery(this).val()
+			};
+			var status = false;
+			jQuery.post(ajaxurl, data, function(response){
+				for(var key in response){
+					if(response[key].label == data.term) {
+						status = true;
+						jQuery('#new-term').attr({'data-term_id': response[key].id, 'data-term_label': response[key].label});
+					}
+					break;
+				}
+			});
+			if(!status){
+				jQuery('#new-term').removeAttr('data-term_id data-term_label');
+			}
+		}
+	});
+
 	jQuery('.termadd').live('click', function(){
 		var term_id = jQuery('#new-term').attr('data-term_id');
 		var term_label = jQuery('#new-term').attr('data-term_label');
-        var wrapper_for_terms = jQuery('.taxonomy-terms-options ul.visibility-list-items');
-        if( typeof term_id !== 'undefined' && typeof term_label !== 'undefined' ){
-            jQuery('.taxonomy-terms-options p.visible-notice').remove();
-            var label = '<label>' + term_label + '</label>';
-            var chbox = '<input type="checkbox" checked="checked" name="rule_taxonomy_terms" value="' + term_id + '" />';
-            if(wrapper_for_terms.length < 1){
-                jQuery(this).parent().append('<ul class="visibility-list-items"></ul>');
-            }
-            jQuery('.taxonomy-terms-options ul.visibility-list-items').append('<li>' + chbox + label +'</li>');
-        }
-        else{
-            jQuery('.taxonomy-terms-options').append('<p class="visible-notice">' + jcf_textdomain.no_term  + '</p>');
-        }
+		var wrapper_for_terms = jQuery('.taxonomy-terms-options ul.visibility-list-items');
+		if( typeof term_id !== 'undefined' && typeof term_label !== 'undefined' ){
+			jQuery('.taxonomy-terms-options p.visible-notice').remove();
+			var label = '<label>' + term_label + '</label>';
+			var chbox = '<input type="checkbox" checked="checked" name="rule_taxonomy_terms" value="' + term_id + '" />';
+			if(wrapper_for_terms.length < 1){
+				jQuery(this).parent().append('<ul class="visibility-list-items"></ul>');
+			}
+			jQuery('.taxonomy-terms-options ul.visibility-list-items').append('<li>' + chbox + label +'</li>');
+		}
+		else{
+			jQuery('.taxonomy-terms-options').append('<p class="visible-notice">' + jcf_textdomain.no_term  + '</p>');
+		}
 		return false;
 	});
 }
@@ -309,26 +292,26 @@ function initFieldsetsEdit(){
  *	init fieldset fields grid and add form
  */
 function initFieldsetFields(){
-	
+
 	// init add form
 	jQuery('#jcf_fieldsets form.jcform_add_field').submit(function(e){
 		e.preventDefault();
-		
+
 		var data = { action: 'jcf_add_field' };
-		
+
 		jQuery(this).find('input,select').each(function(i, input){
 			data[ jQuery(input).attr('name') ] = jQuery(input).val();
 		})
-		
+
 		var loader = jQuery(this).find('img.ajax-feedback');
-		
+
 		jcf_ajax(data, 'html', loader, function(response){
 			jcf_show_ajax_container( response );
 		})
-		
+
 		return false;
 	});
-	
+
 	// init save button on edit form
 	jQuery('#jcform_edit_field').live('submit', function(e){
 		e.preventDefault();
@@ -338,12 +321,12 @@ function initFieldsetFields(){
 		var data = 'action=jcf_save_field' + '&' + query;
 
 		var loader = jQuery(this).find('img.ajax-feedback');
-		
+
 		// send request
 		jcf_ajax(data, 'json', loader, function(response){
-			
+
 			var fieldset = jQuery('#the-list-' + response.fieldset_id);
-			
+
 			if( response.is_new ){
 				// check if fieldset is empty
 				if( fieldset.find('td').size() == 1 ){
@@ -383,20 +366,20 @@ function initFieldsetFields(){
 						});
 				}
 			}
-			
+
 			// update fieldset row
 			var row = jQuery('#field_row_' + response.id);
 			row.find('strong a').text(response.instance.title);
 			row.find('td:eq(2)').text(response.instance.slug);
 			row.find('td:eq(4)').text( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no );
-			
+
 			// close add box at the end
 			jcf_hide_ajax_container();
 		})
-		
+
 		return false;
 	});
-	
+
 	// delete button
 	jQuery('#jcf_fieldsets tbody span.delete a').live('click', function(){
 		if( confirm( jcf_textdomain.confirm_field_delete ) ){
@@ -407,7 +390,7 @@ function initFieldsetFields(){
 				fieldset_id: f_id,
 				field_id: jQuery(this).attr('rel')
 			};
-			
+
 			jcf_ajax(data, 'json', null, function(response){
 				row.next('tr.collection_list:first').remove();
 				row.remove();
@@ -417,7 +400,7 @@ function initFieldsetFields(){
 		}
 		return false;
 	})
-	
+
 	// edit button
 	jQuery('#jcf_fieldsets tbody span.edit a, #jcf_fieldsets tbody strong > a').live('click', function(){
 		var f_id = jQuery(this).parents('tbody:first').attr('id').replace('the-list-', '');
@@ -426,16 +409,16 @@ function initFieldsetFields(){
 			fieldset_id: f_id,
 			field_id: jQuery(this).attr('rel')
 		};
-			
+
 		jcf_ajax(data, 'html', null, function(response){
-			
+
 			jcf_show_ajax_container(response);
-			
+
 		});
-		
+
 		return false;
 	})
-	
+
 	// delete button in edit form
 	jQuery('#jcform_edit_field a.field-control-remove').live('click', function(e){
 		var field_id = jQuery(this).parents('form:first').find('input[name=field_id]').val();
@@ -443,7 +426,7 @@ function initFieldsetFields(){
 		row.find('span.delete a').click();
 		return false;
 	});
-	
+
 	// init sortable
 	jQuery('#jcf_fieldsets tbody:first').sortable({
 		handle: 'span.drag-handle',
@@ -464,7 +447,7 @@ function initFieldsetFields(){
 			});
 			setCollectionFieldsToPosition(fieldset)
 			jQuery('.collection_list').show();
-			
+
 			var data = {
 				'action': 'jcf_fields_order',
 				'fieldset_id': f_id,
@@ -474,7 +457,7 @@ function initFieldsetFields(){
 			jcf_ajax(data, 'json');
 		}
 	});
-	
+
 	function setCollectionFieldsToPosition( fieldset ){
 		fieldset.find('tr.collection_list').each(function(i, tr){
 			var collection_id = jQuery(tr).find('td:first').data('collection_id');
@@ -569,9 +552,9 @@ function jcf_ajax( data, respType, loader, callback ){
 	var _callback = callback;
 	var _loader = loader;
 	var _respType = respType;
-	
+
 	//pa('wp-ajax call: ' + data.action);
-	
+
 	// add post_type to data
 	var post_type = jQuery('#jcf_post_type_hidden').val();
 	if( typeof(data) == 'object' ){
@@ -580,23 +563,23 @@ function jcf_ajax( data, respType, loader, callback ){
 	else if( typeof(data) == 'string' ){
 		data += '&post_type=' + post_type;
 	}
-	
+
 	// if we have loader - show loader
 	if(_loader && _loader.size) _loader.css('visibility', 'visible');
-	
+
 	// send ajax
 	jQuery.post(ajaxurl, data, function(response){
 		//pa(response);
-		
+
 		// if we have loader - hide loader
 		if(_loader && _loader.size) _loader.css('visibility', 'hidden');
-		
+
 		// if json - check for errors
 		if( _respType == 'json' && response.status != '1' ){
 			alert( response.error );
 			return;
 		}
-		
+
 		// if no errors - call main callback
 		if(_callback) _callback( response );
 	})	
@@ -700,10 +683,37 @@ function jcf_attach_autocomplete_event( input ){
 		search: function( event, ui ) {
 				input.parent().find('span.loading').remove();
 				input.parent().append('<span class="loading">loading...</span>');
+				input.attr({'data-term_id': '', 'data-term_label': ''});
 			},
 		open: function( event, ui ){
 				input.parent().find('span.loading').remove();
 			}
 	});
 
+}
+
+//serialize object
+function jcf_form_serialize_object(obj){
+	var data = {};
+	obj.find('input, select').each(function(i, input){
+		if(jQuery(input).attr('type') == 'radio'){
+			if(jQuery(input).is(':checked')){
+				data[ jQuery(input).attr('name') ] = jQuery(input).val();
+			}
+		}
+		else if(jQuery(input).attr('type') == 'checkbox'){
+			if(typeof data[ jQuery(input).attr('name') ] === 'undefined'){
+				data[ jQuery(input).attr('name') ] = new Array();
+			}
+			if(jQuery(input).is(':checked')){
+				data[ jQuery(input).attr('name') ].push(jQuery(this).val());
+			}
+		}
+		else{
+			if(jQuery(input).attr('type') != 'button'){
+				data[ jQuery(input).attr('name') ] = jQuery(input).val();
+			}
+		}
+	});
+	return data;
 }

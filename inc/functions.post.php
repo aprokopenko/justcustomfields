@@ -48,67 +48,37 @@
 			add_action('admin_print_styles', 'jcf_edit_post_styles');
 			add_action('admin_print_scripts', 'jcf_edit_post_scripts');
 
+			?>
+			<script>
+				var visibility_rules = {};
+			</script>
+			<?php
+			$visibility_rules = array();
 			foreach($fieldsets as $f_id => $fieldset){
+				if(!empty($fieldset['visibility_rules'])){
+					$visibility_rules[$f_id] = $fieldset['visibility_rules'];
 
-				$visibility_rules = $fieldset['visibility_rules'];
-
-				if( count($visibility_rules) < 1 ) {//fieldset doesn't have any rules
-					$display = true;
-				}
-				elseif( count($visibility_rules) < 2 ) {//fieldset has just one rule
-					$rule = $visibility_rules[0];
-					$default_display = ($rule['visibility_option'] == 'hide');
-					$display = jcf_check_visibility_fieldset($rule, $default_display);
-				}
-				else{ //fieldset has many rules
-					foreach( $visibility_rules as $key => $rule ) {
-						if($key == 0) { //set default visibility option
-							$default_display = ($rule['visibility_option'] == 'hide');
-							$display = ($rule['visibility_option'] == 'hide');
-						}
-						else{ //set options in dependence of conditions
-							if($rule['visibility_option'] == 'and'){
-								$default_display &= ($rule['visibility_option'] == 'hide');
-								$display &= jcf_check_visibility_fieldset($rule, $default_display);
+					foreach($visibility_rules[$f_id] as $key => $rule) {
+						if($rule['based_on'] == 'taxonomy'){
+							$taxonomy_terms = array();
+							foreach($rule['rule_taxonomy_terms'] as $term_id){
+								$taxonomy_terms[] = get_term_by('id', $term_id, $rule['rule_taxonomy']);
 							}
-							else{
-								$default_display |= ($rule['visibility_option'] == 'hide');
-								$display |= jcf_check_visibility_fieldset($rule, $default_display);
-							}
+							$visibility_rules[$f_id][$key]['rule_taxonomy_terms'] = $taxonomy_terms;
 						}
 					}
 				}
 
-				if($display){
-					add_meta_box('jcf_fieldset-'.$f_id, $fieldset['title'], 'jcf_post_show_custom_fields', $post_type, 'advanced', 'default', array($fieldset) );
-				}
+				add_meta_box('jcf_fieldset-'.$f_id, $fieldset['title'], 'jcf_post_show_custom_fields', $post_type, 'advanced', 'default', array($fieldset) );
 			}
+			?>
+			<script>
+				fieldsets_visibility_rules = '<?php echo json_encode($visibility_rules);?>';
+			</script>
+			<?php
 		}
 	}
 
-	/**
-	 * Check visibility rule for fieldset
-	 *
-	 * @param boolean $display
-	 */
-	function jcf_check_visibility_fieldset($rule, $default_display) {
-		global $post;
-		if($rule['based_on'] == 'page_template') {
-			$page_template = get_page_template_slug($post->ID);
-			if( in_array($page_template, $rule['rule_templates']) ) {
-				return ($rule['visibility_option'] == 'show');
-			}
-		}
-		elseif( $rule['based_on'] == 'taxonomy' ) {
-			$terms = wp_get_post_terms( $post->ID, $rule['rule_taxonomy'], array('fields' => 'ids'));
-			$compare = array_intersect($terms, $rule['rule_taxonomy_terms']);
-			if(!empty($compare)) {
-				return ($rule['visibility_option'] == 'show');
-			}
-		}
-		return $default_display;
-	}
-	
 	/**
 	 *	prepare and print fieldset html.
 	 *	- load each field class
