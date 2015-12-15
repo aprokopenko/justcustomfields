@@ -250,7 +250,7 @@ function initFieldsetsEdit(){
 			var data = {
 				action: 'jcf_visibility_autocomplete',
 				taxonomy: taxonomy,
-				term: jQuery(this).val()
+				term: jQuery('#new-term').val()
 			};
 			var status = false;
 			jQuery.post(ajaxurl, data, function(response){
@@ -258,19 +258,30 @@ function initFieldsetsEdit(){
 					if(response[key].label == data.term) {
 						status = true;
 						jQuery('#new-term').attr({'data-term_id': response[key].id, 'data-term_label': response[key].label});
+						var term_id = response[key].id;
+						var term_label = response[key].label;
+						jcf_add_terms_to_list(term_id, term_label);
 					}
 					break;
 				}
+				if(!status){
+					jQuery('#new-term').removeAttr('data-term_id data-term_label');
+				}
 			});
-			if(!status){
-				jQuery('#new-term').removeAttr('data-term_id data-term_label');
-			}
 		}
+		else{
+			var term_id = jQuery('#new-term').attr('data-term_id');
+			var term_label = jQuery('#new-term').attr('data-term_label');
+			jcf_add_terms_to_list(term_id, term_label);
+		}
+		jQuery('#new-term').val('').focus();
+		return false;
 	});
-
-	jQuery('.termadd').live('click', function(){
-		var term_id = jQuery('#new-term').attr('data-term_id');
-		var term_label = jQuery('#new-term').attr('data-term_label');
+	
+	/*
+	 * Add terms to list when add rules
+	 */
+	function jcf_add_terms_to_list(term_id, term_label){
 		var wrapper_for_terms = jQuery('.taxonomy-terms-options ul.visibility-list-items');
 		if( typeof term_id !== 'undefined' && typeof term_label !== 'undefined' ){
 			jQuery('.taxonomy-terms-options p.visible-notice').remove();
@@ -284,8 +295,7 @@ function initFieldsetsEdit(){
 		else{
 			jQuery('.taxonomy-terms-options').append('<p class="visible-notice">' + jcf_textdomain.no_term  + '</p>');
 		}
-		return false;
-	});
+	}
 }
 
 /**

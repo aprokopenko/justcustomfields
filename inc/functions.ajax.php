@@ -334,8 +334,8 @@
 						<input type="text" id="new-term" name="newterm" class="newterm form-input-tip" size="16" autocomplete="on" value="">
 						<input type="button" class="button termadd" value="Add">
 					</p>
-					<?php if(!empty($current_term)): ?>
-						<ul class="visibility-list-items">
+					<ul class="visibility-list-items">
+					<?php if(!empty($current_term)) : ?>
 						<?php $i=1; foreach( $terms as $term ): ?>
 							<?php if(in_array($term->term_id, $current_term)) :?>
 								<li>
@@ -346,8 +346,8 @@
 								</li>
 							<?php endif; ?>
 						<?php $i++; endforeach; ?>
-						</ul>
 					<?php endif;?>
+					</ul>
 				<?php endif; ?>
 				<br class="clear">
 			</p>
