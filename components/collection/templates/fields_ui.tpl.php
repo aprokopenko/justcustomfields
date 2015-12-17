@@ -1,4 +1,4 @@
-<table class="wp-list-table widefat fixed" cellspacing="0">
+<table class="wp-list-table widefat fixed collection-fields-table" cellspacing="0">
 	<thead><tr>
 		<th class="check-column">&nbsp;</th>
 		<th><?php _e('Title', JCF_TEXTDOMAIN); ?></th>

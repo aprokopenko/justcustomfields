@@ -108,7 +108,9 @@ form.jcform_add_field .ajax-feedback{
 	margin:0 0 5px;
 }
 #jcf_fieldsets .sortable_placeholder,
-#jcf_fieldsets .sortable_placeholder td{
+#jcf_fieldsets .sortable_placeholder td,
+#jcf_fieldsets .collection_sortable_placeholder,
+#jcf_fieldsets .collection_sortable_placeholder td{
 	background:#FFFFF0;
 }
 .jcf-export-list li{
@@ -352,4 +354,10 @@ ul.visibility-list-items li{
 	width: 24%;
 	float: left;
 	padding-right:1%;
+}
+.row-actions .delete_collection a{
+	color: #a00;
+}
+.row-actions .delete_collection a:hover{
+	color: red;
 }

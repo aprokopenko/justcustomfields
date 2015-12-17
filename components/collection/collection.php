@@ -47,6 +47,12 @@ class Just_Field_Collection extends Just_Field{
 		$entries = (array)$this->entry;
 		echo $before_widget;
 		echo $before_title . $this->instance['title'] . $after_title;
+		
+		if( empty($this->instance['fields']) ) {
+			echo '<p class="error">Collection element has no fields registered. Please check component settings</p>';
+			echo $after_widget;
+			return;
+		}
 ?>
 		<div class="collection_fields">
 <?php
@@ -57,10 +63,9 @@ class Just_Field_Collection extends Just_Field{
 						<span class="dashicons dashicons-editor-justify"></span>
 						<span class="collection_group_title">
 						<?php
-							$group_title = __('Collection Fields',JCF_TEXTDOMAIN);
+							$group_title = $this->instance['title'].' Item';
 							foreach($this->instance['fields'] as $field_id => $field){
 								if(isset($field['group_title'])){
-									$group_title = $this->instance['title'].' Item';
 									if(isset($fields[$field['slug']])) $group_title = $group_title.' : '.$fields[$field['slug']];
 									break;
 								}
@@ -259,7 +264,7 @@ class Just_Field_Collection extends Just_Field{
 			$collection = $jcf_settings['field_settings'][ $post_type ][$collection_id];
 		}
 		$registered_fields = self::register_fields();
-		include( JCF_ROOT . '/components/collection/tpl/fields_ui.tpl.php' );
+		include( JCF_ROOT . '/components/collection/templates/fields_ui.tpl.php' );
 	}
 	
 	/**

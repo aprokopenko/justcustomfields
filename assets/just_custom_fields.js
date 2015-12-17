@@ -352,25 +352,31 @@ function initFieldsetFields(){
 				html += '		<span class="edit"><a href="#" rel="' + response.id + '">'+ jcf_textdomain.edit +'</a></span> |';
 				html += '		<span class="delete"><a href="#" rel="' + response.id + '">'+ jcf_textdomain.delete +'</a></span>';
 				html += '	</div>';
+				if(response.collection_fields) {
+					html += '   <ul>';
+					html += '       <li><strong>' + jcf_textdomain.type + '</strong>: '+response.id_base+'</li>';
+					html += '       <li><strong>' + jcf_textdomain.slug + '</strong>: '+response.instance.slug+'</li>';
+					html += '       <li><strong>' + jcf_textdomain.enabled + '</strong>: '+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</li>';
+					html += '   </ul>';
+				}
 				html += '</td>';
-				html += '<td>'+response.instance.slug+'</td>';
-				html += '<td>'+response.id_base+'</td>';
-				html += '<td>'+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</td>';
-				if(response.collection_fields){
-					html +='<tr class="collection_list" >';
-					html += '<td colspan="2" data-collection_id="' + response.id + '"></td>';
-					html += '<td colspan="3">'+response.collection_fields+'</td>';
-					html += '</tr>';
+				if(response.collection_fields) {
+					html += '<td colspan="3" class="collection_list" data-collection_id="' + response.id + '">' + response.collection_fields + '</td>';
+				}
+				else {
+					html += '<td>'+response.instance.slug+'</td>';
+					html += '<td>'+response.id_base+'</td>';
+					html += '<td>'+( (response.instance.enabled)? jcf_textdomain.yes : jcf_textdomain.no )+'</td>';
 				}
 				fieldset.append(html);
 				if(response.collection_fields){
-						jQuery('tbody[id^=the-collection-list-collection-]').sortable({
+						jQuery('#jcf_fieldsets table.collection-fields-table > tbody').sortable({
 							handle: 'span.drag-handle',
 							opacity:0.7,
 							placeholder: 'collection_sortable_placeholder',
 							scroll: true,
 							start: function (event, ui) { 
-								ui.placeholder.html('<td colspan="4"><br>&nbsp;</td>');
+								ui.placeholder.html('<td colspan="5"><br>&nbsp;</td>');
 							},
 							stop: function(event, ui){ collectionFieldSortableStop(event, ui, this); }
 						});
@@ -402,7 +408,7 @@ function initFieldsetFields(){
 			};
 
 			jcf_ajax(data, 'json', null, function(response){
-				row.next('tr.collection_list:first').remove();
+				row.next('td.collection_list:first').remove();
 				row.remove();
 				// close edit box if exists
 				jcf_hide_ajax_container();
@@ -438,14 +444,13 @@ function initFieldsetFields(){
 	});
 
 	// init sortable
-	jQuery('#jcf_fieldsets tbody:first').sortable({
+	jQuery('#jcf_fieldsets table.fieldset-fields-table > tbody').sortable({
 		handle: 'span.drag-handle',
 		opacity:0.7,
 		placeholder: 'sortable_placeholder',
 		scroll: true,
-		start: function (event, ui) { 
-			jQuery('.collection_list').hide();
-			ui.placeholder.html('<td colspan="4"><br>&nbsp;</td>');
+		start: function (event, ui) {
+			ui.placeholder.html('<td colspan="5"><br>&nbsp;</td>');
 		},
 		stop: function(event, ui){
 			// ui.item - item in the list
