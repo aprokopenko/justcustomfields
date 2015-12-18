@@ -48,11 +48,6 @@
 			add_action('admin_print_styles', 'jcf_edit_post_styles');
 			add_action('admin_print_scripts', 'jcf_edit_post_scripts');
 
-			?>
-			<script>
-				var visibility_rules = {};
-			</script>
-			<?php
 			$visibility_rules = array();
 			foreach($fieldsets as $f_id => $fieldset){
 				if(!empty($fieldset['visibility_rules'])){
@@ -73,7 +68,7 @@
 			}
 			?>
 			<script>
-				fieldsets_visibility_rules = '<?php echo json_encode($visibility_rules);?>';
+				var fieldsets_visibility_rules = <?php echo json_encode($visibility_rules);?>;
 			</script>
 			<?php
 		}

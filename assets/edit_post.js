@@ -101,7 +101,7 @@ function jcf_get_selected_taxonomies(){
  * @param {Array} checked_taxonomies
  */
 function jcf_apply_visibility_rules(checked_taxonomies) {
-	var visibility_rules = jQuery.parseJSON(fieldsets_visibility_rules);
+	var visibility_rules = fieldsets_visibility_rules;
 
 	for (var fieldset_id in visibility_rules) {
 

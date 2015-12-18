@@ -455,7 +455,7 @@
 		}
 		$json = json_encode($response);
 		
-		header( "Content-Type: application/json" );
+		header( "Content-Type: application/json; charset=" . get_bloginfo('charset') );
 		echo $json;
 		exit();
 	}
@@ -631,7 +631,10 @@
 	function jcf_ajax_reposnse( $resp, $format = 'json' ){
 		if( $format == 'json' ){
 			$resp = json_encode($resp);
-			header( "Content-Type: application/json" );
+			header( "Content-Type: application/json; charset=" . get_bloginfo('charset') );
+		}
+		else{
+			header( "Content-Type: text/html; charset=" . get_bloginfo('charset') );
 		}
 		echo $resp;
 		exit();
@@ -655,7 +658,7 @@
 		$registered_fields = jcf_get_registered_fields();
 
 		// load template
-		header('Content-Type: text/html; charset=utf-8');
+		header('Content-Type: text/html; charset=' . get_bloginfo('charset'));
 		include( JCF_ROOT . '/templates/export.tpl.php' );
 		exit();
 	}
@@ -668,7 +671,7 @@
 			$export_data = $_POST['export_data'];
 			$export_data = json_encode($export_data);
 			$filename = 'jcf_export' . date('Ymd-his') . '.json';
-			header('Content-Type: text/json; charset=utf-8');
+			header('Content-Type: text/json; charset=' . get_bloginfo('charset'));
 			header("Content-Disposition: attachment;filename=" . $filename);
 			header("Content-Transfer-Encoding: binary ");
 			echo $export_data;
@@ -710,7 +713,7 @@
 		if( !empty($notice) )
 			jcf_add_admin_notice($notice[0], $notice[1]);
 		
-		header('Content-Type: text/html; charset=utf-8');
+		header('Content-Type: text/html; charset=' . get_bloginfo('charset'));
 		include( JCF_ROOT . '/templates/import.tpl.php' );
 		exit();
 	}
