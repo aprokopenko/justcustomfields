@@ -1,17 +1,17 @@
 === Just Custom Fields ===
 Contributors: aprokopenko
 Plugin Name: Just Custom Fields for Wordpress
-Plugin URI: http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/
+Plugin URI: http://justcoded.com/blog/just-custom-fields-for-wordpress-plugin/
+Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custom gallery
 Author: Alexander Prokopenko
 Author URI: http://justcoded.com/
-Tags: custom, fields, custom fields, meta, post meta, object meta, editor
-Requires at least: 3.0.0
+Requires at least: 4.5
 Tested up to: 4.5.2
-Donate link: http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/#donate
 Stable tag: trunk
 License: GNU General Public License v2
 
-This plugin add custom fields for standard and custom post types in WordPress.
+This plugin add ability to extend your Posts (and custom post types) with additional fields.
+Required PHP 5.3+ and WordPress 4.0+!
 
 == Description ==
 

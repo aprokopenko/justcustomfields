@@ -278,16 +278,16 @@ form.jcform_add_field .ajax-feedback{
 	float: left;
 }
 .jcf_tile .jcf_tile_icon:before{
-  content: "\f109";
+	content: "\f109";
 }
 .jcf_tile.post .jcf_tile_icon:before{
-  content: "\f109";
+	content: "\f109";
 }
 .jcf_tile.page .jcf_tile_icon:before{
-  content: "\f105";
+	content: "\f105";
 }
 .jcf_tile.attachment .jcf_tile_icon:before{
-  content: "\f104";
+	content: "\f104";
 }
 .jcf_tile .jcf_tile_icon:before{
 	display: inline-block;
@@ -335,6 +335,25 @@ form.jcform_add_field .ajax-feedback{
 }
 .jcf_tab-content input[type="file"]{
 	margin-bottom: 0;
+}
+fieldset#fieldset_visibility_rules{
+	border: 1px solid #ddd;
+	padding: 10px;
+}
+a.visibility_toggle{
+	text-decoration: none;
+	color: #000000;
+}
+a:focus{
+	outline:none;
+}
+ul.visibility-list-items{
+	width: 100%;
+}
+ul.visibility-list-items li{
+	width: 24%;
+	float: left;
+	padding-right:1%;
 }
 .row-actions .delete_collection a{
 	color: #a00;
