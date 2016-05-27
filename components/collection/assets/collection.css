@@ -83,7 +83,15 @@ div.jcf_edit_field .jcf_collection_33 div.checkboxes-set label{
 	border-radius: 0px;
 }
 .collection_field_group .ui-widget-content{
+	border: 1px solid #aaaaaa;
 	border-top: none;
+}
+.collection_field_group .ui-state-active{
+	border: 1px solid #aaaaaa!important;
+}
+.collection_field_group .ui-state-default{
+	border: 1px solid #d3d3d3;
+	color: #555555;
 }
 .collection_field_group  div.form-field{
 	padding-right: 15px;
