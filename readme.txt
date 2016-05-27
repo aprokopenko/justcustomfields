@@ -6,7 +6,7 @@ Author: Alexander Prokopenko
 Author URI: http://justcoded.com/
 Tags: custom, fields, custom fields, meta, post meta, object meta, editor
 Requires at least: 3.0.0
-Tested up to: 4.3.1
+Tested up to: 4.5.2
 Donate link: http://justcoded.com/just-labs/just-custom-fields-for-wordpress-plugin/#donate
 Stable tag: trunk
 License: GNU General Public License v2
@@ -84,6 +84,9 @@ get_post_custom()
 == Changelog ==
 * Next release plans
 	* make fieldsets related to categories (show/hide based on category select)
+* Version 2.3.2
+	* Bug fix: Collection styling fixes for Post edit screen for Wordpress 4.3+
+	* Bug fix: PHP 5.2 blank screen error resolved
 * Version 2.3
 	* Improvements: Collection field settings UI and field sorting fixed
 * Version 2.2
