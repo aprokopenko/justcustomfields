@@ -15,47 +15,40 @@ Required PHP 5.3+ and WordPress 4.0+!
 
 == Description ==
 
-This plugin add custom fields for standard and custom post types in WordPress. After installation you will see simple settings page which is self-explanatory to use.
+This plugin add ability to extend your Posts (and custom post types) with additional fields. After installation you will see simple settings page which is self-explanatory to use.
 
-For now plugin support such field types:
+**IMPORTANT** We do not recommend update your existing sites to version 3.0+ if you're using Field groups, Upload media components or your server does not meet WordPress recommended server configuration (https://wordpress.org/about/requirements/)
+
+Plugin support such field types:
 
 * Input text
 * Select Box
 * Multiple Select Box
 * Checkbox (single and multiple)
-* Textarea (you can use editor light for it)
-* Date Picker\*
+* Textarea (you can use wordpress editor too)
+* Date Picker
 * Simple Media (files and images upload)
 * Table
 * Fields Collection (several fields grouping)
-* Related Content (to set relation to another Post/Page or Custom Post Type)\*
+* Related Content (to set relation to another Post/Page or Custom Post Type)
 
-_\*NOTE: Available **from** WordPress 3.3+_
 
-Since version 2.2 such fields are **deprecated**, but they are still there because of backward compatibility:
-
-* Upload Media (for upload files and images)
-* Fields Group (for grouped textual data)
-
-**IMPORTANT** Starting from version 1.4 all fields machine names (slug) will be started from underscore ('_'). This update prevents appearing them in standard WordPress Custom fields meta box.
-
-Starting from v2.0 we have new features:
+Starting from v2.0 we have different options to save plugin configuration:
 
 * Ability to set Fields Settings global if you have MultiSite. So you can set them once, without copying all settings to every new site.
 * Ability to save Fields Settings to file system. Directly in the theme. We expect this option will be popular among the developers. It will be much easier to move your fields settings between site versions (dev/production).
-* Export Fields Settings
-* Import Fields Settings
 
-**EXPERIMENTAL FEATURES v2.2**
+Starting from v2.2:
 
-* Simple Media field is now single file only (before it was multiple). It use new media upload box from WordPress and save post thumbnail ID (before it was just file url). So now you can use get_the_post_thumbnail() function to work with attachments.
-* New "Fields Collection" has been promoted in v2.2.
+* Simple Media field is now single file only (before it was multiple). It uses new media upload box from WordPress and save post thumbnail ID (before it was just file url). So now you can use get_the_post_thumbnail() function to work with attachments.
 * All fields now have "Shortcodes" and hints how to use them inside the templates for non-professional developers.
+
+For easy migrations between different sites we have Export/Import options.
 
 FILL FREE TO CONTACT ME IF YOU FIND ANY BUGS/ISSUES!
 
 **ISSUES TRACKER**
-Main plugin development are done under github public repository. I listed known bugs and future features there. You can post new bugs or feature requests for me there.
+Plugin code is open source and placed under github public repository. I listed known bugs and future features there. You can post new bugs or feature requests for me there.
 https://github.com/aprokopenko/justcustomfields/issues
 
 == Installation ==
@@ -82,8 +75,9 @@ get_post_custom()
 2. The edit post page meta box with fields created on settings page
 
 == Changelog ==
-* Next release plans
-	* make fieldsets related to categories (show/hide based on category select)
+* Version 3.0
+	* NEW: Plugin code full refactoring, build all code based on classes and latest WordPress coding recommendations
+	* New feature: Ability to hide fieldsets based on some criterias (taxonomy relation or page template)
 * Version 2.3.2
 	* Bug fix: Collection styling fixes for Post edit screen for Wordpress 4.3+
 	* Bug fix: PHP 5.2 blank screen error resolved
