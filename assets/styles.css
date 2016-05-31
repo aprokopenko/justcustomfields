@@ -40,27 +40,20 @@ div.jcf_columns{
 }
 .jcf_inner_box{
 	margin:10px;
-	background:#fff;
-	border:1px solid #C6C6C6;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-}
-.admin-color-classic .jcf_inner_box{
-	border-color:#D1E5EE;
+	background: #fff;
+	border: 1px solid #e5e5e5;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
 .jcf_inner_box .header{
-	color:#333;
-	text-shadow:0 1px 0 rgba(255, 255, 255, 0.8);
-	line-height:30px;
-	padding:0 10px;
-	font-size:12px;
-	border-bottom:1px solid #C6C6C6;
-	margin:0;
+	font-size: 14px;
+	line-height: 1.4;
+	margin: 0;
+	padding: 8px 12px;
+	border-bottom: 1px solid #eee;
+	color:#23282d;
 }
-.admin-color-classic .jcf_inner_box .header{
-	background:#F5FAFD;
-	background-image:-moz-linear-gradient(center top , #F7FCFE, #EFF8FF);
+#jcf_fieldsets .jcf_inner_box h3.header {
+	font-weight: normal;
 }
 .jcf_inner_content{
 	padding:10px;
@@ -83,36 +76,37 @@ div.jcf_columns{
 select.jcf_add_field{
 	width:200px;
 }
-.jcf_inner_content .drag-handle, h3.header .drag-handle{
-	cursor: move;
-	background:url(icon-move.png) no-repeat 0 0;
-	display:block;
-	width:16px;
-	height:16px;
-	overflow:hidden;
-	text-indent:-9999px;
-	margin:6px 5px 0 7px;
+.jcf_inner_box .ui-sortable-handle{
+	cursor: move !important;
 }
-h3.header .drag-handle{
-	display: inline-block;
-	margin:6px 20px 0 7px;
+.jcf_inner_box .submitdelete{
+	color:#a00;
 }
+.jcf_inner_box .submitdelete:hover{
+	color:#f00;
+}
+
 #jcf_ajax_container{
 	display:none;
 }
-.jcf_inner_box .header .ajax-feedback{
-	margin:0 0 7px;
+
+body.jcf-loading,
+body.jcf-loading a,
+body.jcf-loading input
+body.jcf-loading select{
+	cursor: wait !important;
 }
-#jcform_add_fieldset .ajax-feedback,
-form.jcform_add_field .ajax-feedback{
-	margin:0 0 5px;
-}
+
 #jcf_fieldsets .sortable_placeholder,
 #jcf_fieldsets .sortable_placeholder td,
 #jcf_fieldsets .collection_sortable_placeholder,
 #jcf_fieldsets .collection_sortable_placeholder td{
 	background:#FFFFF0;
 }
+.widefat .jcf-check-column {
+	width:2.2em;
+}
+
 .jcf-export-list li{
 	padding-left: 20px;
 }

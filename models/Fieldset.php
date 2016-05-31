@@ -38,7 +38,10 @@ class Fieldset extends core\Model
 	public function findByPostType( $post_type )
 	{
 		$fieldsets = $this->_dL->getFieldsets();
-		return $fieldsets[$post_type];
+		if ( !empty($fieldsets[$post_type]) )
+			return $fieldsets[$post_type];
+
+		return array();
 	}
 
 	/**

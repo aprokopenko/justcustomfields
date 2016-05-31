@@ -38,7 +38,7 @@ class FieldsetController extends core\Controller
 	public function initRoutes()
 	{
 		$page_title = __('Fields', \JustCustomFields::TEXTDOMAIN);
-		add_submenu_page(null, $page_title, $page_title, 'manage_options', 'jcf_fields', array( $this, 'actionIndex' ));
+		add_submenu_page(null, $page_title, $page_title, 'manage_options', 'jcf_fieldset_index', array( $this, 'actionIndex' ));
 	}
 
 	/**
@@ -49,7 +49,7 @@ class FieldsetController extends core\Controller
 		$post_type = $_GET['pt'];
 		$post_types = jcf_get_post_types('object');
 
-		$jcf = \JustCustomFields::run();
+		$jcf = \JustCustomFields::getInstance();
 		$fieldset_model = new models\Fieldset();
 		$field_model = new models\Field();
 
@@ -127,11 +127,14 @@ class FieldsetController extends core\Controller
 	 */
 	public function ajaxSort()
 	{
+		// TODO: fix sorting, now it's not working
 		$model = new models\Fieldset();
 		$model->load($_POST) && $success = $model->sort();
 
 		return $this->_renderAjax(null, 'json', array( 'status' => !empty($success), 'error' => $model->getErrors() ));
 	}
+
+	// TODO: check fieldset visibility feature (all actions)
 
 	/**
 	 * add form for new rule functions callback

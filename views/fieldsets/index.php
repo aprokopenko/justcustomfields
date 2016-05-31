@@ -1,7 +1,8 @@
-<?php include(JCF_ROOT . '/views/_header.tpl.php'); ?>
+<?php include(JCF_ROOT . '/views/_header.php'); ?>
 
-	<h3><?php _e('Custom Post Type:', \JustCustomFields::TEXTDOMAIN); ?> <?php echo $post_type->label; ?>
-		<small><a href="?page=just_custom_fields" class="jcf_change_pt"><?php _e('change', \JustCustomFields::TEXTDOMAIN); ?></a></small></h3>
+	<h2><a href="?page=jcf_admin" class="jcf_change_pt"><?php _e('Post types', \JustCustomFields::TEXTDOMAIN); ?></a> &raquo;
+		<?php echo $post_type->label; ?> &raquo; <?php _e('Custom fields', \JustCustomFields::TEXTDOMAIN); ?>
+	</h2>
 	
 	<input type="hidden" id="jcf_post_type_hidden" value="<?php echo $post_type->name; ?>" />
 	
@@ -14,24 +15,27 @@
 			<?php foreach($fieldsets as $fieldset) : ?>
 			<div>
 			<div class="jcf_inner_box" id="jcf_fieldset_<?php echo $fieldset['id']; ?>">
-				<h3 class="header"><span class="drag-handle">move</span><?php _e('Fieldset:', \JustCustomFields::TEXTDOMAIN); ?> <span><?php echo $fieldset['title']; ?></span>
-					<small>
-						<a href="#" class="jcf_fieldset_change jcf_change_pt" rel="<?php echo $fieldset['id']; ?>"><?php _e('change', \JustCustomFields::TEXTDOMAIN); ?></a>
-						<a href="#" class="jcf_fieldset_delete jcf_change_pt" rel="<?php echo $fieldset['id']; ?>"><?php _e('delete', \JustCustomFields::TEXTDOMAIN); ?></a>
-					</small>
-					<?php echo jcf_print_loader_img(); ?>
+				<h3 class="header">
+					<span>
+						<span class="dashicons dashicons-menu drag-handle"></span>
+						<?php _e('Fieldset:', \JustCustomFields::TEXTDOMAIN); ?> <strong><?php echo $fieldset['title']; ?></strong>
+						<small>
+							<a href="#" class="jcf_fieldset_change jcf_change_pt" rel="<?php echo $fieldset['id']; ?>"><?php _e('Edit', \JustCustomFields::TEXTDOMAIN); ?></a>
+							<a href="#" class="jcf_fieldset_delete jcf_change_pt submitdelete" rel="<?php echo $fieldset['id']; ?>"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a>
+						</small>
+					</span>
 				</h3>
 				<div class="jcf_inner_content">
-					<table class="wp-list-table widefat fixed fieldset-fields-table" cellspacing="0">
+					<table class="wp-list-table widefat fixed striped fieldset-fields-table" cellspacing="0">
 						<thead><tr>
-							<th class="check-column">&nbsp;</th>
+							<th class="jcf-check-column">&nbsp;</th>
 							<th><?php _e('Field', \JustCustomFields::TEXTDOMAIN); ?></th>
 							<th><?php _e('Slug', \JustCustomFields::TEXTDOMAIN); ?></th>
 							<th><?php _e('Type', \JustCustomFields::TEXTDOMAIN); ?></th>
 							<th><?php _e('Enabled', \JustCustomFields::TEXTDOMAIN); ?></th>
 						</tr></thead>
 						<tfoot><tr>
-							<th class="check-column">&nbsp;</th>
+							<th class="jcf-check-column">&nbsp;</th>
 							<th><?php _e('Field', \JustCustomFields::TEXTDOMAIN); ?></th>
 							<th><?php _e('Slug', \JustCustomFields::TEXTDOMAIN); ?></th>
 							<th><?php _e('Type', \JustCustomFields::TEXTDOMAIN); ?></th>
@@ -41,8 +45,8 @@
 							<?php if( !empty($fieldset['fields']) && is_array($fieldset['fields']) ) : ?>
 								<?php foreach($fieldset['fields'] as $field_id => $enabled) : ?>
 									<tr id="field_row_<?php echo $field_id; ?>" class="field_row <?php echo $field_id; ?>">
-										<td class="check-column">
-											<span class="drag-handle">move</span>
+										<td class="check-column" align="center">
+											<span class="dashicons dashicons-menu drag-handle"></span>
 										</td>
 										<td>
 											<strong><a href="#" rel="<?php echo $field_id; ?>"><?php echo $field_settings[$field_id]['title']; ?></a></strong>
@@ -91,7 +95,7 @@
 								<option value="<?php echo $field['id_base']; ?>"><?php echo $field['title']; ?></option>
 								<?php endforeach; ?>
 							</select>
-							<input type="submit" name="add_field" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />
+							<input type="submit" class="button" name="add_field" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />
 							<?php echo jcf_print_loader_img(); ?>
 						</fieldset>
 					</form>
@@ -113,7 +117,7 @@
 						<fieldset>
 							<label for="jcf_fieldset_title"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?> </label>
 							<input type="text" class="text" name="jcf_fieldset_title" id="jcf_fieldset_title" value="" />
-							<input type="submit" name="jcf_add_fieldset" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />
+							<input type="submit" class="button" name="jcf_add_fieldset" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />
 							<?php echo jcf_print_loader_img(); ?>
 						</fieldset>
 					</form>
@@ -128,4 +132,4 @@
 	</div>
 	<div class="jcf_clear"></div>
 	
-<?php include(JCF_ROOT . '/views/_footer.tpl.php'); ?>
+<?php include(JCF_ROOT . '/views/_footer.php'); ?>

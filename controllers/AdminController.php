@@ -16,10 +16,10 @@ class AdminController extends core\Controller
 		parent::__construct();
 		add_action('admin_menu', array( $this, 'adminMenu' ));
 
-		if ( !( isset($_GET['post']) && isset($_GET['action']) ) ) {
+		if ( isset($_GET['page']) && strpos($_GET['page'], 'jcf_') !== FALSE ) {
 			add_action('admin_print_scripts', array( $this, 'addScripts' ));
 			add_action('admin_print_styles', array( $this, 'addStyles' ));
-			add_action('admin_print_scripts', array( $this, 'addCollectionJs' ));
+			//add_action('admin_print_scripts', array( $this, 'addCollectionJs' ));
 		}
 	}
 
@@ -31,7 +31,7 @@ class AdminController extends core\Controller
 		$page_title = \JustCustomFields::$pluginName;
 		$page_slug = \JustCustomFields::$pluginSlug;
 
-		add_options_page($page_title, $page_title, 'manage_options', $page_slug, array( $this, 'actionIndex' ));
+		add_options_page($page_title, $page_title, 'manage_options', 'jcf_admin', array( $this, 'actionIndex' ));
 	}
 
 	/**
@@ -80,6 +80,8 @@ class AdminController extends core\Controller
 	/**
 	 * 	Add collection script
 	 */
+	// TODO: move this to collections component?
+	/*
 	public function addCollectionJs()
 	{
 		wp_register_script(
@@ -87,4 +89,5 @@ class AdminController extends core\Controller
 		);
 		wp_enqueue_script('jcf_collections');
 	}
+	*/
 }

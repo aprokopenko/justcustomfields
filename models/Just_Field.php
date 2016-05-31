@@ -511,7 +511,7 @@ class Just_Field extends core\Model
 	 *
 	 * @param array $instance Current settings
 	 */
-	public function form( $instance )
+	public function form()
 	{
 		echo '<p class="no-options-field">' . __('There are no options for this field.', \JustCustomFields::TEXTDOMAIN) . '</p>';
 		return 'noform';

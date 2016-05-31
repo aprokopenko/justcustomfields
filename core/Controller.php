@@ -19,7 +19,9 @@ class Controller
 	protected function _render( $template, $params = array() )
 	{
 		extract($params);
-		include( JCF_ROOT . '/views/' . $template . '.tpl.php' );
+		include( JCF_ROOT . '/views/' . $template . '.php' );
+
+		return true;
 	}
 
 	/**

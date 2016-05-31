@@ -1,4 +1,4 @@
-<?php include(JCF_ROOT . '/views/_header.tpl.php'); ?>
+<?php include(JCF_ROOT . '/views/_header.php'); ?>
 
 <div class="jcf_tab-content">
 	<div class="jcf_inner-tab-content" >
@@ -24,7 +24,7 @@
 
 				<input type="radio" class="jcf_choose_settings" name="source" 
 					   value="<?php echo \jcf\models\Settings::CONF_SOURCE_DB; ?>" id="jcf_read_db" <?php  checked($source, \jcf\models\Settings::CONF_SOURCE_DB); ?>/>
-				<label for="jcf_read_db"><?php _e('<b>Database</b>. You can\'t edit or move settings without export/import features (default)' , \JustCustomFields::TEXTDOMAIN); ?></label><br />
+				<label for="jcf_read_db"><?php _e('<b>Database</b>. Useful when you have only 1 site installation', \JustCustomFields::TEXTDOMAIN); ?></label><br />
 
 				<input type="radio" rel="" class="jcf_choose_settings" name="source" 
 					   value="<?php echo \jcf\models\Settings::CONF_SOURCE_FS_THEME; ?>" id="jcf_read_file"  <?php checked($source, \jcf\models\Settings::CONF_SOURCE_FS_THEME); ?>/>
@@ -47,4 +47,4 @@
 	</div>
 </div>
 
-<?php include(JCF_ROOT . '/views/_footer.tpl.php'); ?>
+<?php include(JCF_ROOT . '/views/_footer.php'); ?>

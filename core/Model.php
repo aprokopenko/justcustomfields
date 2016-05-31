@@ -7,13 +7,44 @@ namespace jcf\core;
  */
 class Model
 {
+	/**
+	 * @var array
+	 */
 	protected $_errors;
+
+	/**
+	 * @var array
+	 */
 	protected $_messages;
+
+	/**
+	 * @var array
+	 */
+	protected $_msgTpls = null;
+
+	/**
+	 * @var \jcf\models\DataLayer
+	 */
 	protected $_dL;
 
+	/**
+	 * Model constructor.
+	 * generate DataLayer object (file system or DB settings storage)
+	 */
 	public function __construct()
 	{
 		$this->_dL = DataLayerFactory::create();
+	}
+
+	/**
+	 * Special method to return pre-defined error messages in specific model.
+	 * You can use keys to easily set errors by keys
+	 *
+	 * @return array
+	 */
+	public function messageTemplates()
+	{
+		return array();
 	}
 
 	/**
@@ -22,6 +53,9 @@ class Model
 	 */
 	public function addError( $error )
 	{
+		if ( is_null($this->_msgTpls) ) $this->_msgTpls = $this->messageTemplates();
+
+		if ( isset($this->_msgTpls[$error]) ) $error = $this->_msgTpls[$error];
 		$this->_errors[] = $error;
 
 		add_action('jcf_print_admin_notice', array( $this, 'printMessages' ));
@@ -33,6 +67,9 @@ class Model
 	 */
 	public function addMessage( $message )
 	{
+		if ( is_null($this->_msgTpls) ) $this->_msgTpls = $this->messageTemplates();
+
+		if ( isset($this->_msgTpls[$message]) ) $message = $this->_msgTpls[$message];
 		$this->_messages[] = $message;
 
 		add_action('jcf_print_admin_notice', array( $this, 'printMessages' ));
@@ -62,7 +99,7 @@ class Model
 			return;
 
 		global $wp_version;
-		include( JCF_ROOT . '/views/notices.tpl.php');
+		include( JCF_ROOT . '/views/_notices.php');
 	}
 
 	/**

@@ -31,7 +31,10 @@ class Field extends core\Model
 	public function findByPostType( $post_type )
 	{
 		$fields = $this->_dL->getFields();
-		return $fields[$post_type];
+		if ( !empty($fields[$post_type]) )
+			return $fields[$post_type];
+
+		return array();
 	}
 
 	/**

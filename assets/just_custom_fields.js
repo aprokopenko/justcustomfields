@@ -29,10 +29,8 @@ function initAddFieldsetBox() {
       'title': title
     };
 
-    var loader = jQuery(this).find('img.ajax-feedback');
-
     // ajax call
-    jcf_ajax(data, 'json', loader, function( response ) {
+    jcf_ajax(data, 'json', null, function( response ) {
       // all is ok: refresh page
       window.location.reload(true);
     });
@@ -47,7 +45,8 @@ function initAddFieldsetBox() {
 function initFieldsetsEdit() {
 
   // delete
-  jQuery('#jcf_fieldsets a.jcf_fieldset_delete').click(function() {
+  jQuery('#jcf_fieldsets a.jcf_fieldset_delete').click(function(e) {
+    e.preventDefault();
 
     if ( confirm(jcf_textdomain.confirm_fieldset_delete) )
     {
@@ -57,9 +56,7 @@ function initFieldsetsEdit() {
         'fieldset_id': f_id
       };
 
-      var loader = jQuery(this).parents('h3').find('img.ajax-feedback');
-
-      jcf_ajax(data, 'json', loader, function( response ) {
+      jcf_ajax(data, 'json', null, function( response ) {
         jQuery('#jcf_fieldset_' + f_id).remove();
         // clean ajax container
         jcf_hide_ajax_container();
@@ -68,8 +65,8 @@ function initFieldsetsEdit() {
   })
 
   // change
-  jQuery('#jcf_fieldsets a.jcf_fieldset_change').click(function() {
-    var loader = jQuery(this).parents('h3').find('img.ajax-feedback');
+  jQuery('#jcf_fieldsets a.jcf_fieldset_change').click(function(e) {
+    e.preventDefault();
 
     var f_id = jQuery(this).attr('rel');
     var data = {
@@ -77,7 +74,7 @@ function initFieldsetsEdit() {
       'fieldset_id': f_id
     };
 
-    jcf_ajax(data, 'html', loader, function( response ) {
+    jcf_ajax(data, 'html', null, function( response ) {
       jcf_show_ajax_container(response);
     });
   })
@@ -99,11 +96,9 @@ function initFieldsetsEdit() {
       'title': jQuery('#jcf_edit_fieldset_title').val()
     };
 
-    var loader = jQuery(this).find('img.ajax-feedback');
-
-    jcf_ajax(data, 'json', loader, function( response ) {
+    jcf_ajax(data, 'json', null, function( response ) {
       // update title
-      jQuery('#jcf_fieldset_' + f_id + ' h3 span').text(response.title);
+      jQuery('#jcf_fieldset_' + f_id + ' h3 strong').text(response.title);
 
       jcf_hide_ajax_container();
     });
@@ -136,9 +131,7 @@ function initFieldsetsEdit() {
       'action': 'jcf_get_rule_options',
     };
 
-    var loader = jQuery(this).find('img.ajax-feedback');
-
-    jcf_ajax(data, 'html', loader, function( response ) {
+    jcf_ajax(data, 'html', null, function( response ) {
       jQuery('.rules-options').html(response);
     });
   });
@@ -150,9 +143,7 @@ function initFieldsetsEdit() {
       'action': 'jcf_get_taxonomy_terms',
     };
 
-    var loader = jQuery(this).find('img.ajax-feedback');
-
-    jcf_ajax(data, 'html', loader, function( response ) {
+    jcf_ajax(data, 'html', null, function( response ) {
       jQuery('.taxonomy-terms-options').html(response);
       var input = jQuery('#new-term');
       jcf_attach_autocomplete_event(input);
@@ -173,9 +164,7 @@ function initFieldsetsEdit() {
 
     data.visibility_rules = jcf_form_serialize_object(jQuery(this).parent('fieldset'));
 
-    var loader = jQuery(this).find('img.ajax-feedback');
-
-    jcf_ajax(data, 'html', loader, function( response ) {
+    jcf_ajax(data, 'html', null, function( response ) {
       jQuery('div.rules').remove();
       jQuery('div#visibility').append(response);
       jQuery('fieldset#fieldset_visibility_rules').remove();
@@ -184,12 +173,11 @@ function initFieldsetsEdit() {
 
   // add form for new visibility rule
   jQuery('.add_rule_btn').live('click', function() {
-    var loader = jQuery(this).find('img.ajax-feedback');
     var data = {
       'action': 'jcf_add_visibility_rules_form',
       'scenario': 'create'
     }
-    jcf_ajax(data, 'html', loader, function( response ) {
+    jcf_ajax(data, 'html', null, function( response ) {
       jQuery('div#visibility').append(response);
       jQuery('.add_rule_btn').hide();
     });
@@ -198,14 +186,13 @@ function initFieldsetsEdit() {
   // delete visibility rule
   jQuery('a.remove-rule').live('click', function() {
     var rule_id = jQuery(this).data('rule_id');
-    var loader = jQuery(this).find('img.ajax-feedback');
     var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
     var data = {
       'action': 'jcf_delete_visibility_rule',
       'rule_id': rule_id,
       'fieldset_id': f_id
     }
-    jcf_ajax(data, 'html', loader, function( response ) {
+    jcf_ajax(data, 'html', null, function( response ) {
       jQuery('div.rules').remove();
       jQuery('div#visibility').append(response);
       jQuery('fieldset#fieldset_visibility_rules').remove();
@@ -215,7 +202,6 @@ function initFieldsetsEdit() {
   // edit visibility rule
   jQuery('a.edit-rule').live('click', function() {
     var rule_id = jQuery(this).data('rule_id');
-    var loader = jQuery(this).find('img.ajax-feedback');
     var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
     var data = {
       'action': 'jcf_add_visibility_rules_form',
@@ -223,7 +209,7 @@ function initFieldsetsEdit() {
       'fieldset_id': f_id,
       'scenario': 'update'
     }
-    jcf_ajax(data, 'html', loader, function( response ) {
+    jcf_ajax(data, 'html', null, function( response ) {
       jQuery('fieldset#fieldset_visibility_rules').remove();
       jQuery('div#visibility').append(response);
       jQuery('.add_rule_btn').hide();
@@ -577,7 +563,6 @@ function jcf_show_ajax_container( response ) {
 function jcf_ajax( data, respType, loader, callback ) {
   // save to local variables to have ability to call them inside ajax
   var _callback = callback;
-  var _loader = loader;
   var _respType = respType;
 
   //pa('wp-ajax call: ' + data.action);
@@ -592,16 +577,14 @@ function jcf_ajax( data, respType, loader, callback ) {
   }
 
   // if we have loader - show loader
-  if ( _loader && _loader.size )
-    _loader.css('visibility', 'visible');
+  jQuery('body').addClass('jcf-loading');
 
   // send ajax
   jQuery.post(ajaxurl, data, function( response ) {
     //pa(response);
 
     // if we have loader - hide loader
-    if ( _loader && _loader.size )
-      _loader.css('visibility', 'hidden');
+    jQuery('body').removeClass('jcf-loading');
 
     // if json - check for errors
     if ( _respType == 'json' && (response.status != '1' || response.status != true) ) {
