@@ -55,6 +55,8 @@ class Fieldset extends core\Model
 
 	/**
 	 * Get fieldset by ID
+	 * @param string $fieldset_id
+	 * @return array
 	 */
 	public function findById( $fieldset_id )
 	{
@@ -68,6 +70,7 @@ class Fieldset extends core\Model
 
 	/**
 	 * Create new fieldset with $this->_request params
+	 * @return boolean
 	 */
 	public function create()
 	{
@@ -106,7 +109,8 @@ class Fieldset extends core\Model
 		}
 
 		$fieldsets = $this->_dL->getFieldsets();
-		unset($fieldsets[$this->post_type][$this->fieldset_id]);
+		if ( isset($fieldsets[$this->post_type][$this->fieldset_id]) )
+			unset($fieldsets[$this->post_type][$this->fieldset_id]);
 
 		return $this->_save($fieldsets);
 	}
@@ -141,10 +145,12 @@ class Fieldset extends core\Model
 		$sort = explode(',', trim($this->fieldsets_order, ','));
 		$fieldsets = $this->_dL->getFieldsets();
 
+		$ordered_fieldsets = array();
 		foreach ( $sort as $key ) {
-			$new_fieldsets[$this->post_type][$key] = $fieldsets[$this->post_type][$key];
-			unset($fieldsets[$key]);
+			$ordered_fieldsets[$key] = $fieldsets[$this->post_type][$key];
 		}
+
+		$fieldsets[$this->post_type] = $ordered_fieldsets;
 
 		if ( !$this->_save($fieldsets) ) {
 			$this->addError(__('Sorting isn\'t changed.', \JustCustomFields::TEXTDOMAIN));
@@ -175,6 +181,7 @@ class Fieldset extends core\Model
 	/**
 	 * Save fieldsets
 	 * @param array $fieldsets
+	 * @return boolean
 	 */
 	protected function _save( $fieldsets )
 	{

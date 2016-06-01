@@ -76,7 +76,7 @@ div.jcf_columns{
 select.jcf_add_field{
 	width:200px;
 }
-.jcf_inner_box .ui-sortable-handle{
+.jcf_inner_box .drag-handle{
 	cursor: move !important;
 }
 .jcf_inner_box .submitdelete{

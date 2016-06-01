@@ -28,6 +28,10 @@ class Just_Field_Collection extends models\Just_Field
 		$field_ops = array( 'classname' => 'field_collection' );
 		parent::__construct('collection', __('Collection', \JustCustomFields::TEXTDOMAIN), $field_ops);
 		add_action('wp_ajax_jcf_collection_add_new_field_group', array( $this, 'ajaxReturnCollectionFieldGroup' ));
+
+		if ( isset($_GET['page']) && strpos($_GET['page'], 'jcf_') !== FALSE ) {
+			add_action('admin_print_scripts', array($this, 'addAdminPageJs'));
+		}
 	}
 
 	/**
@@ -203,6 +207,17 @@ class Just_Field_Collection extends models\Just_Field
 					$field_obj->addCss();
 			}
 		}
+	}
+
+	/**
+	 * Adds Javascript for fields settings admin page
+	 */
+	public function addAdminPageJs()
+	{
+		wp_register_script(
+			'jcf_collections', WP_PLUGIN_URL . '/just-custom-fields/components/collection/assets/collection.js', array( 'jquery' )
+		);
+		wp_enqueue_script('jcf_collections');
 	}
 
 	/**

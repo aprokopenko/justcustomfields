@@ -7,7 +7,6 @@ jQuery(document).ready(function() {
  *	init fieldset fields grid and add form
  */
 function initCollectionFields() {
-
   // init add form
   jQuery('form.jcform_add_collection_field').live('submit', function( e ) {
     e.preventDefault();
@@ -50,7 +49,7 @@ function initCollectionFields() {
         // add new row
         var html;
         html = '<tr id="collection_field_row_' + response.id + '">';
-        html += '	<td class="check-column"><span class="drag-handle">move</span></td>';
+        html += '	<td class="jcf-check-column"><span class="dashicons dashicons-menu drag-handle"></span></td>';
         html += '<td><strong><a href="#" rel="' + response.id + '">' + response.instance.title + '</a></strong>';
         html += '	<div class="row-actions">';
         html += '		<span class="edit_collection"><a href="#" rel="' + response.id + '" data-collection_id="' + response.collection_id + '">' + jcf_textdomain.edit + '</a></span> |';

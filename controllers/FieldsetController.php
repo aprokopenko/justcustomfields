@@ -127,7 +127,6 @@ class FieldsetController extends core\Controller
 	 */
 	public function ajaxSort()
 	{
-		// TODO: fix sorting, now it's not working
 		$model = new models\Fieldset();
 		$model->load($_POST) && $success = $model->sort();
 

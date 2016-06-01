@@ -19,7 +19,6 @@ class AdminController extends core\Controller
 		if ( isset($_GET['page']) && strpos($_GET['page'], 'jcf_') !== FALSE ) {
 			add_action('admin_print_scripts', array( $this, 'addScripts' ));
 			add_action('admin_print_styles', array( $this, 'addStyles' ));
-			//add_action('admin_print_scripts', array( $this, 'addCollectionJs' ));
 		}
 	}
 
@@ -76,18 +75,5 @@ class AdminController extends core\Controller
 		wp_register_style($slug, WP_PLUGIN_URL . '/just-custom-fields/assets/styles.css');
 		wp_enqueue_style($slug);
 	}
-
-	/**
-	 * 	Add collection script
-	 */
-	// TODO: move this to collections component?
-	/*
-	public function addCollectionJs()
-	{
-		wp_register_script(
-				'jcf_collections', WP_PLUGIN_URL . '/just-custom-fields/components/collection/assets/collection.js', array( 'jquery' )
-		);
-		wp_enqueue_script('jcf_collections');
-	}
-	*/
+	
 }

@@ -334,7 +334,7 @@ function initFieldsetFields() {
         // add new row
         var html;
         html = '<tr id="field_row_' + response.id + '" class="field_row ' + response.id + '">';
-        html += '	<td class="check-column"><span class="drag-handle">move</span></td>';
+        html += '	<td class="jcf-check-column"><span class="dashicons dashicons-menu drag-handle"></span></td>';
         html += '	<td><strong><a href="#" rel="' + response.id + '">' + response.instance.title + '</a></strong>';
         html += '	<div class="row-actions">';
         html += '		<span class="edit"><a href="#" rel="' + response.id + '">' + jcf_textdomain.edit + '</a></span> |';

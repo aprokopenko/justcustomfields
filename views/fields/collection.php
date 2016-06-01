@@ -19,7 +19,7 @@
 							<option value="<?php echo $field['id_base']; ?>"><?php echo $field['title']; ?></option>
 							<?php endforeach; ?>
 						</select>
-						<input type="submit" name="add_field" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />
+						<input type="submit" class="button" name="add_field" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />
 						<?php echo jcf_print_loader_img(); ?>
 					</fieldset>
 				</form>
@@ -30,8 +30,8 @@
 		<?php if( !empty($collection['fields']) && is_array($collection['fields']) ) : ?>
 			<?php foreach($collection['fields'] as $field_id => $field) : ?>
 				<tr id="collection_field_row_<?php echo $field_id; ?>">
-					<td class="check-column">
-						<span class="drag-handle">move</span>
+					<td class="jcf-check-column" align="center">
+						<span class="dashicons dashicons-menu drag-handle"></span>
 					</td>
 					<td>
 						<strong><a href="#" rel="<?php echo $field_id; ?>"><?php echo $field['title']; ?></a></strong>
@@ -49,7 +49,7 @@
 				</tr>
 			<?php endforeach; ?>
 		<?php else : ?>
-		<tr><td colspan="4" align="center"><?php _e('Please create fields for this collection', \JustCustomFields::TEXTDOMAIN); ?></td></tr>
+		<tr><td colspan="5" align="center"><?php _e('Please create fields for this collection', \JustCustomFields::TEXTDOMAIN); ?></td></tr>
 		<?php endif; ?>
 	</tbody>
 </table>

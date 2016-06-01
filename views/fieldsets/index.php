@@ -45,7 +45,7 @@
 							<?php if( !empty($fieldset['fields']) && is_array($fieldset['fields']) ) : ?>
 								<?php foreach($fieldset['fields'] as $field_id => $enabled) : ?>
 									<tr id="field_row_<?php echo $field_id; ?>" class="field_row <?php echo $field_id; ?>">
-										<td class="check-column" align="center">
+										<td class="jcf-check-column" align="center">
 											<span class="dashicons dashicons-menu drag-handle"></span>
 										</td>
 										<td>
@@ -70,7 +70,7 @@
 											<?php ?>
 											<td colspan="3" class="collection_list" data-collection_id="<?php echo $field_id; ?>">
 												<?php $this->_render( 'fields/collection', array(
-													'collection' => $collections[$field_id],
+													'collection' => isset($collections[$field_id])? $collections[$field_id] : array(),
 													'collection_id' => $field_id,
 													'fieldset_id' => $fieldset['id'],
 													'registered_fields' => $collections['registered_fields']
@@ -79,7 +79,7 @@
 									</tr>
 								<?php endforeach; ?>
 							<?php else : ?>
-							<tr><td colspan="4" align="center"><?php _e('Please create fields for this fieldset', \JustCustomFields::TEXTDOMAIN); ?></td></tr>
+							<tr><td colspan="5" align="center"><?php _e('Please create fields for this fieldset', \JustCustomFields::TEXTDOMAIN); ?></td></tr>
 							<?php endif; ?>
 						</tbody>
 					</table>

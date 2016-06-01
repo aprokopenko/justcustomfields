@@ -44,7 +44,7 @@ class FieldController extends core\Controller
 	{
 		$model = new models\Field();
 
-		if ( !($model->load($_POST) && $success = $model->save()) ) {
+		if ( $model->load($_POST) && $success = $model->save() ) {
 			if ( isset($success['id_base']) && $success['id_base'] == 'collection' ) {
 				$jcf = \JustCustomFields::run();
 				$registered_fields = $jcf->getFields('collection');
