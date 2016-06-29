@@ -3,9 +3,23 @@
 namespace jcf\models;
 
 use jcf\core;
+use jcf\models;
 
 class DBDataLayer extends core\DataLayer
 {
+	protected $_networkMode;
+
+	/**
+	 * DBDataLayer constructor.
+	 *
+	 * Init network mode settings to be used in get/update methods
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->_networkMode = models\Settings::getNetworkMode();
+	}
 
 	/**
 	 * Set $this->_fields property
@@ -18,7 +32,7 @@ class DBDataLayer extends core\DataLayer
 			return;
 		}
 
-		$option_name = 'jsf-fields';
+		$option_name = 'jcf-fields';
 		$this->_fields = $this->_getOptions($option_name);
 	}
 
@@ -27,7 +41,7 @@ class DBDataLayer extends core\DataLayer
 	 */
 	public function saveFieldsData()
 	{
-		return $this->_updateOptions('jsf-fields', $this->_fields);
+		return $this->_updateOptions('jcf-fields', $this->_fields);
 	}
 
 	/**
@@ -54,26 +68,34 @@ class DBDataLayer extends core\DataLayer
 	}
 
 	/**
+	 * Check NetworkMode to be set to global
+	 *
+	 * @return bool
+	 */
+	protected function isSettingsGlobal()
+	{
+		return $this->_networkMode == models\Settings::CONF_MS_NETWORK;
+	}
+
+	/**
 	 * Get options with wp-options
 	 * @param string $key
 	 * @return array
 	 */
 	protected function _getOptions( $key )
 	{
-		$multisite_settings = \jcf\models\Settings::getNetworkMode();
-		return $multisite_settings == \jcf\models\Settings::CONF_MS_NETWORK ? get_site_option($key, array()) : get_option($key, array());
+		return $this->isSettingsGlobal() ? get_site_option($key, array()) : get_option($key, array());
 	}
 
 	/**
 	 * 	Update options with wp-options
 	 * 	@param string $key Option name
 	 * 	@param array $value Values with option name
-	 * 	@return bollean
+	 * 	@return boolean
 	 */
 	protected function _updateOptions( $key, $value )
 	{
-		$multisite_settings = \jcf\models\Settings::getNetworkMode();
-		$multisite_settings == \jcf\models\Settings::CONF_MS_NETWORK ? update_site_option($key, $value) : update_option($key, $value);
+		$this->isSettingsGlobal() ? update_site_option($key, $value) : update_option($key, $value);
 		return true;
 	}
 

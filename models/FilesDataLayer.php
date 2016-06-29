@@ -3,9 +3,24 @@
 namespace jcf\models;
 
 use jcf\core;
+use jcf\models;
 
+// TODO: check files data layer work! (changes were made without testing it)
 class FilesDataLayer extends core\DataLayer
 {
+	protected $_sourceSettings;
+
+	/**
+	 * FilesDataLayer constructor.
+	 *
+	 * Init directory source setting to be used in get/update methods
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->_sourceSettings = models\Settings::getDataSourceType();
+	}
 
 	/**
 	 * Set $this->_fields property
@@ -59,15 +74,13 @@ class FilesDataLayer extends core\DataLayer
 
 	/**
 	 * 	Get fields and fieldsets from file
-	 * 	@param string $uploadfile File name
+	 * 	@param string $file File name
 	 * 	@return boolean/array Array with fields settings from file
 	 */
-	public function getDataFromFile( $file = false )
+	public function getDataFromFile( $file = null )
 	{
-		$source = \jcf\models\Settings::getDataSourceType();
-
 		if ( !$file )
-			$file = $this->_getConfigFilePath($source);
+			$file = $this->_getConfigFilePath();
 
 		if ( file_exists($file) ) {
 			$content = file_get_contents($file);
@@ -83,12 +96,27 @@ class FilesDataLayer extends core\DataLayer
 	 * @param string $source_settings
 	 * @return string/boolean
 	 */
-	protected function _getConfigFilePath( $source_settings )
+	protected function _getConfigFilePath( $source_settings = null )
 	{
-		if ( !empty($source_settings) && ($source_settings == \jcf\models\Settings::CONF_SOURCE_FS_THEME || $source_settings == \jcf\models\Settings::CONF_SOURCE_FS_GLOBAL) ) {
-			return ($source_settings == \jcf\models\Settings::CONF_SOURCE_FS_THEME) ? get_stylesheet_directory() . '/jcf-settings/jcf_settings.json' : get_home_path() . 'wp-content/jcf-settings/jcf_settings.json';
+		if ( is_null($source_settings) ) {
+			$source_settings = $this->_sourceSettings;
 		}
-		return false;
+
+		switch ($source_settings) {
+
+			case models\Settings::CONF_SOURCE_FS_THEME:
+				$path = get_stylesheet_directory() . '/jcf-settings/jcf_settings.json';
+				break;
+
+			case models\Settings::CONF_SOURCE_FS_GLOBAL:
+				$path = get_home_path() . 'wp-content/jcf-settings/jcf_settings.json';
+				break;
+
+			default:
+				return false;
+		}
+
+		return $path;
 	}
 
 	/**
@@ -97,12 +125,10 @@ class FilesDataLayer extends core\DataLayer
 	 * @param string $file
 	 * @return boolean
 	 */
-	protected function _save( $data, $file = false )
+	protected function _save( $data, $file = null )
 	{
-		$source = \jcf\models\Settings::getDataSourceType();
-
 		if ( !$file ) {
-			$file = $this->_getConfigFilePath($source);
+			$file = $this->_getConfigFilePath();
 		}
 
 		$data = jcf_format_json(json_encode($data));
@@ -114,9 +140,8 @@ class FilesDataLayer extends core\DataLayer
 		}
 
 		if ( !empty($dir) ) {
-			$content = $data . "\r\n";
 			if ( $fp = fopen($file, 'w') ) {
-				fwrite($fp, $content);
+				fwrite($fp, $data . "\r\n");
 				fclose($fp);
 				jcf_set_chmod($file);
 				return true;

@@ -44,6 +44,9 @@ class JustFieldFactory
 	 * get next index for save new instance
 	 * because of ability to import fields now, we can't use DB to save AI. 
 	 * we will use timestamp for this
+	 *
+	 * @param string $id_base  DEPRECATED!
+	 * @return integer
 	 */
 	public static function createFieldIndex( $id_base )
 	{

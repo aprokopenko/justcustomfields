@@ -23,6 +23,8 @@ class Fieldset extends core\Model
 		$post_types = jcf_get_post_types();
 
 		foreach ( $post_types as $key => $post_type ) {
+			if ( empty($fieldsets[$post_type->name]) || empty($fields[$post_type->name]) )
+				continue;
 			$count[$post_type->name]['fieldsets'] = count($fieldsets[$post_type->name]);
 			$count[$post_type->name]['fields'] = count($fields[$post_type->name]);
 		}

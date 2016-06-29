@@ -8,13 +8,18 @@ namespace jcf\core;
 class Controller
 {
 
+	/**
+	 * Controller constructor.
+	 */
 	public function __construct()
 	{
 		
 	}
 
 	/**
-	 * 	Function for render views
+	 * Function for render views
+	 * @param string $template   file name to be rendered
+	 * @param array $params     array of variables to be passed to the view file
 	 */
 	protected function _render( $template, $params = array() )
 	{
@@ -25,7 +30,12 @@ class Controller
 	}
 
 	/**
-	 * 	Function for render views by AJAX
+	 * Function for render views inside AJAX request
+	 * Echo rendered content directly in output buffer
+	 *
+	 * @param string $template   file name to be rendered
+	 * @param string $format    json|html   control which header content type should be sent
+	 * @param array $params     array of variables to be passed to the view file
 	 */
 	protected function _renderAjax( $template = null, $format, $params = array() )
 	{
