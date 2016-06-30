@@ -1,4 +1,4 @@
-<?php include(JCF_ROOT . '/views/_header.tpl.php'); ?>
+<?php include(JCF_ROOT . '/views/_header.php'); ?>
 
 <div class="jcf_tab-content">
 	<div class="jcf_inner-tab-content" >
@@ -7,12 +7,12 @@
 				<h3 class="header"><?php _e('Import', \JustCustomFields::TEXTDOMAIN); ?></h3>
 				<div class="jcf_inner_content offset0">
 					<p>
-						<?php _e('If you have Just Custom Fields configuration file you can import some specific settings from it to your current WordPress installation.<br/><br/>Please choose your configuration file and press "Import Wizard" button' , \JustCustomFields::TEXTDOMAIN); ?>
+						<?php _e('If you have Just Custom Fields configuration file you can import some specific settings from it to your current WordPress installation.<br/><br/>Please choose your configuration file and press "Import" button' , \JustCustomFields::TEXTDOMAIN); ?>
 					</p>
 					<div>
 						<div class="icon32 icon32-posts-page" id="icon-edit"><br></div>
 						<form action="<?php get_permalink(); ?>" method="post" id="jcf_import_fields" enctype="multipart/form-data" >
-							<input type="hidden" name ="action" value="jcf_import_fields" />
+							<input type="hidden" name ="action" value="jcf_import_fields_form" />
 							<p><?php _e('Add file to import:', \JustCustomFields::TEXTDOMAIN); ?>
 								<input type="file" id="import_data_file" name="import_data" /><br />
 								<small><?php _e('file extention: .json', \JustCustomFields::TEXTDOMAIN); ?></small>
@@ -40,6 +40,6 @@
 	</div>
 </div>
 
-<?php include(JCF_ROOT . '/views/_footer.tpl.php'); ?>
+<?php include(JCF_ROOT . '/views/_footer.php'); ?>
 
 

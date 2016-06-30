@@ -1,10 +1,12 @@
 jQuery(document).ready(function() {
   //JSON.parse('{"jsontest":"1"}');
 
-  initAddFieldsetBox();
-  initFieldsetsEdit();
-  initAjaxBoxClose();
-  initFieldsetFields();
+  if ( jQuery('#jcf_fieldsets').size() ) {
+    initAddFieldsetBox();
+    initFieldsetsEdit();
+    initAjaxBoxClose();
+    initFieldsetFields();
+  }
   initImport();
   initExport();
   initImportExportCheckboxes();
@@ -511,32 +513,25 @@ function initExport() {
 function initImportExportCheckboxes() {
   // checked fields
   jQuery('#jcf_save_import_fields input[type="checkbox"], #jcf_export_fields input[type="checkbox"]').live('change', function() {
-    var data_val = jQuery(this).val();
-    var data_id = jQuery(this).attr('id');
-    var data_checked = jQuery(this).is(':checked');
-    if ( jQuery(this).hasClass('choose_field') ) {
-      var fieldset_id = data_val;
-      jQuery('input[data-field="' + data_id + '"]').attr({'disabled': !data_checked});
-      jQuery(this).parent().parent().find('input[type="checkbox"]').attr({'checked': data_checked});
-      jQuery(this).parent().parent().find('input[type="hidden"]').attr({'disabled': !data_checked});
+    var $this = jQuery(this);
+    var data_checked = $this.is(':checked');
+
+    var descendants_container = null;
+    if ( $this.hasClass('jcf_field_select') ) {
+      if ( $this.data('is_collection') == 1 ) {
+        descendants_container = $this.data('collection_container');
+      }
     }
-    else if ( jQuery(this).hasClass('jcf-choose_fieldset') ) {
-      jQuery(this).parent().parent().parent().find('input[type="checkbox"]').attr({'checked': data_checked});
-      jQuery('input[data-fieldset="' + data_val + '"]').attr({'disabled': !data_checked});
+    else if ( $this.hasClass('jcf_fieldset_select_all') ) {
+      descendants_container = $this.data('fields_container');
     }
-    else if ( jQuery(this).hasClass('jcf-select_content_type') ) {
-      jQuery(this).parent().parent().parent().find('input[type="checkbox"]').attr({'checked': data_checked});
-      jQuery(this).parent().parent().parent().find('input[type="hidden"]').attr({'disabled': !data_checked});
+    else if ( $this.hasClass('jcf_content_type_select_all') ) {
+      descendants_container = $this.data('cpt_container');
     }
-    else if ( jQuery(this).hasClass('choose_collection_field') ) {
-      var fieldset_id = jQuery(this).data('fieldset_id');
-      var collection_activate = jQuery(this).parents('table').find('input[type="checkbox"].choose_collection_field:checked').length;
-      jQuery('input[data-collection="' + data_val + '"].jcf_collection_settings').attr({'disabled': !collection_activate});
-      jQuery('input[data-collection="' + data_id + '"]').attr({'disabled': !data_checked});
-    }
-    if ( fieldset_id ) {
-      var fieldset_activate = jQuery(this).parents('table').find('input[type="checkbox"].choose_field:checked').length || jQuery(this).parents('table').find('input[type="checkbox"].choose_collection_field:checked').length;
-      jQuery('input[data-fieldset="' + fieldset_id + '"].jcf_hidden_fieldset').attr({'disabled': !fieldset_activate});
+
+    // mark all descendant checkboxes with the same status
+    if ( descendants_container ) {
+      jQuery(descendants_container).find('input[type="checkbox"]').attr({'checked': data_checked});
     }
   });
 }
@@ -610,10 +605,19 @@ function pa( mixed ) {
 }
 
 function modalWindow( content ) {
-  jQuery('body').append('<div class="media-modal wp-core-ui jcf_modalWindow"><div class="media-modal-content">' + content + '</div><a href="#" class="media-modal-close"><span class="media-modal-icon"></span></a></div>');
+  jQuery('body').append(
+      '<div class="media-modal wp-core-ui jcf_modalWindow">' +
+        '<button class="button-link media-modal-close" type="button"><span class="media-modal-icon"></span></button>' +
+        '<div class="media-modal-content">' +
+            content +
+        '</div>' +
+      '</div>' +
+      '<div class="media-modal-backdrop"></div>'
+  );
 
   jQuery('.media-modal-close').click(function() {
     jQuery('.jcf_modalWindow').remove();
+    jQuery('.media-modal-backdrop').remove();
   });
 }
 
@@ -642,6 +646,8 @@ function initSettings() {
  * Position for edit form
  */
 function initEditFormPosition() {
+  if ( !jQuery('#jcf_fieldsets').size() ) return;
+
   var scrolling = jQuery(document).scrollTop();
   var edit_form = jQuery('#jcf_ajax_container');
   var wrap_position = jQuery('.wrap').offset().left;

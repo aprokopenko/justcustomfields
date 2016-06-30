@@ -317,6 +317,7 @@ class Just_Field extends core\Model
 		if ( empty($instance['_version']) ) {
 			$instance['_version'] = 1.34;
 		}
+		$instance['_type'] = $this->idBase;
 
 		// new from version 1.4: validation/normalization
 		$this->validateInstance($instance);

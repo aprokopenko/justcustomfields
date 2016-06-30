@@ -8,7 +8,8 @@ use jcf\models;
 class ImportExport extends core\Model
 {
 	public $action;
-	public $import_data;
+	public $selected_data;
+	public $import_source;
 	public $file_name;
 
 	/**
@@ -16,31 +17,13 @@ class ImportExport extends core\Model
 	 */
 	public function getImportFields()
 	{
-		if ( $this->action == 'jcf_import_fields' ) return;
+		if ( $this->action != 'jcf_import_fields_form' || !$this->validateImportFile() ) return;
 
-		if ( empty($_FILES['import_data']['name']) ) {
-			$error = __('<strong>Import FAILED!</strong> Import file is missing.', \JustCustomFields::TEXTDOMAIN);
-			$this->addError($error);
-			return;
-		}
-
-		if ( !is_readable($_FILES['import_data']['tmp_name']) ) {
-			$error = __('<strong>Import FAILED!</strong> Can\'t read uploaded file.', \JustCustomFields::TEXTDOMAIN);
-			$this->addError($error);
-			return;
-		}
-
-		$path_info = pathinfo($_FILES['import_data']['name']);
-
-		if ( $path_info['extension'] !== 'json' ) {
-			$error = __('<strong>Import FAILED!</strong> Please upload correct file format.', \JustCustomFields::TEXTDOMAIN);
-			$this->addError($error);
-			return;
-		}
-
-		$file_Layer = core\DataLayerFactory::create('file');
-		$data['post_types'] = $file_Layer->getDataFromFile($_FILES['import_data']['tmp_name']);
-		unlink($_FILES['import_data']['tmp_name']);
+		/* @var $files_dL FilesDataLayer */
+		$import_file = $_FILES['import_data']['tmp_name'];
+		$files_dL = core\DataLayerFactory::create('file');
+		$data = $files_dL->getDataFromFile( $import_file );
+		unlink($import_file);
 
 		if ( empty($data['post_types']) ) {
 			$error = __('<strong>Import FAILED!</strong> File do not contain fields settings data..', \JustCustomFields::TEXTDOMAIN);
@@ -52,71 +35,97 @@ class ImportExport extends core\Model
 
 	}
 
+	/**
+	 * Check that uploaded file has correct format to be imported
+	 *
+	 * @return bool
+	 */
+	public function validateImportFile()
+	{
+		if ( empty($_FILES['import_data']['name']) ) {
+			$error = __('<strong>Import FAILED!</strong> Import file is missing.', \JustCustomFields::TEXTDOMAIN);
+			$this->addError($error);
+			return false;
+		}
+
+		if ( !is_readable($_FILES['import_data']['tmp_name']) ) {
+			$error = __('<strong>Import FAILED!</strong> Can\'t read uploaded file.', \JustCustomFields::TEXTDOMAIN);
+			$this->addError($error);
+			return false;
+		}
+
+		$path_info = pathinfo($_FILES['import_data']['name']);
+
+		if ( $path_info['extension'] !== 'json' ) {
+			$error = __('<strong>Import FAILED!</strong> Please upload correct file format.', \JustCustomFields::TEXTDOMAIN);
+			$this->addError($error);
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Process selected import fields and save them to data layer
+	 *
+	 * @return bool|void
+	 */
 	public function import()
 	{
-		$data = $this->import_data;
-		$old_fields = $this->_dL->getFields();
-		$old_fieldsets = $this->_dL->getFieldsets();
-		$fieldset_model = new models\Fieldset();
+		if ( $this->action != 'jcf_import_fields' || empty($this->selected_data) || empty($this->import_source) ) return;
 
-		foreach ( $data as $pt_name => $post_type ) {
-			if ( !is_array($post_type) || empty($post_type['fieldsets']) ) continue;
+		$dl_fields = $this->_dL->getFields();
+		$dl_fieldsets = $this->_dL->getFieldsets();
 
-			foreach ( $post_type['fieldsets'] as $fieldset_id => $fieldset ) {
+		// we take origin import source and remove elements which are not selected
+		$import_source = json_decode(stripslashes($this->import_source), true);
+		$import_data = $this->_processSelectedData($import_source['fieldsets'], $import_source['fields'], $import_source['post_types']);
 
-				//Closing import because data of file is bad
-				if ( empty($fieldset_id) ) {
-					$this->addError(__('Error! Please check <strong>import file</strong>', \JustCustomFields::TEXTDOMAIN));
-					break;
+		// update fieldsets
+		foreach ($import_data['fieldsets'] as $cpt_id => $fieldsets) {
+			foreach ($fieldsets as $fieldset_id => $fieldset) {
+				// if fieldset not exists - just copy it from import data
+				if ( !isset($dl_fieldsets[$cpt_id][$fieldset_id]) ) {
+					$dl_fieldsets[$cpt_id][$fieldset_id] = $fieldset;
+					continue;
 				}
 
-				$fieldset_model->title = $fieldset['title'];
-				$fieldset_id = !empty($old_fieldsets[$pt_name][$fieldset_id]) ? $fieldset_id : $fieldset_model->createSlug();
-				$old_fieldsets[$pt_name][$fieldset_id]['id'] = $fieldset_id;
-				$old_fieldsets[$pt_name][$fieldset_id]['title'] = $fieldset['title'];
-
-				//Continue if fieldset doesn't have fields
-				if ( empty($fieldset['fields']) ) continue;
-
-				//Check old fields for fieldset
-				if ( !empty($old_fields[$pt_name]) ) {
-					foreach ( $old_fields[$pt_name] as $old_field_id => $old_field ) {
-						$old_slugs[] = $old_field['slug'];
-						$old_field_ids[$old_field['slug']] = $old_field_id;
-					}
-				}
-
-				foreach ( $fieldset['fields'] as $field_id => $field ) {
-					$id_base = preg_replace('/\-([0-9]+)/', '', $field_id);
-					$slug_checking = !empty($old_slugs) ? in_array($field['slug'], $old_slugs) : false;
-					$new_field_id = !$slug_checking ? $field_id : $old_field_ids[$field['slug']];
-					$old_fields[$pt_name][$new_field_id] = $field;
-					$old_fieldsets[$pt_name][$fieldset_id]['fields'][$new_field_id] = $field['enabled'];
-
-					if ( $id_base !== 'collection' )  continue;
-
-					//Continue if collection doesn't have fields
-					if ( empty($field['fields']) || !is_array($field['fields']) ) continue;
-
-					//Check old fields for collection
-					if ( !empty($old_fields[$pt_name][$new_field_id]['fields']) ) {
-						foreach ( $old_fields[$pt_name][$new_field_id]['fields'] as $old_collection_field_id => $old_collection_field ) {
-							$old_collection_slugs[] = $old_collection_field['slug'];
-							$old_collection_field_ids[$old_collection_field['slug']] = $old_collection_field_id;
-						}
-					}
-
-					foreach ( $field['fields'] as $field_key => $field_values ) {
-						$collection_field_slug_checking = !empty($old_collection_slugs) ? in_array($field_values['slug'], $old_collection_slugs) : false;
-						$new_collection_field_id = !$collection_field_slug_checking ? $field_key : $old_collection_field_ids[$field_values['slug']];
-						$old_fields[$pt_name][$new_field_id]['fields'][$new_collection_field_id] = $field_values;
-					}
-				}
+				// for existed fieldset we merge fields list inside the template. All new will be added at the end
+				$dl_fieldsets[$cpt_id][$fieldset_id]['fields'] = array_merge(
+					$dl_fieldsets[$cpt_id][$fieldset_id]['fields'],
+					$fieldset['fields']
+				);
 			}
 		}
 
-		$this->_dL->setFields($old_fields);
-		$this->_dL->setFieldsets($old_fieldsets);
+		// update fields
+		foreach ($import_data['fields'] as $cpt_id => $fields) {
+			foreach ($fields as $field_id => $field) {
+				// if field not exists - just copy it from import data
+				if ( !isset($dl_fields[$cpt_id][$field_id]) ) {
+					$dl_fields[$cpt_id][$field_id] = $field;
+					continue;
+				}
+
+				// for existed field we merge collection fields first
+				if ( preg_match('/^collection/', $field_id) ) {
+					$field['fields'] = array_merge(
+						$dl_fields[$cpt_id][$field_id]['fields'],
+						$field['fields']
+					);
+				}
+
+				// not merge all settings
+				$dl_fields[$cpt_id][$field_id] = array_merge(
+					$dl_fields[$cpt_id][$field_id],
+					$field
+				);
+			}
+		}
+
+		// save to data layer
+		$this->_dL->setFields($dl_fields);
+		$this->_dL->setFieldsets($dl_fieldsets);
 		$import_status = $this->_dL->saveFieldsData() && $this->_dL->saveFieldsetsData();
 
 		if ( $import_status ) {
@@ -129,4 +138,78 @@ class ImportExport extends core\Model
 		return $import_status;
 	}
 
+	/**
+	 * Generate final array to be exported based on input
+	 *
+	 * @return array
+	 */
+	public function export()
+	{
+		if ( empty($this->selected_data) || !is_array($this->selected_data) )
+			return array();
+
+		$fieldsets_model = new models\Fieldset();
+		$fieldsets_data = $fieldsets_model->findAll();
+
+		$fields_model = new models\Field();
+		$fields_data = $fields_model->findAll();
+
+		$post_types = jcf_get_post_types();
+
+		$data = $this->_processSelectedData($fieldsets_data, $fields_data, $post_types);
+
+		//pa($data,1);
+		return $data;
+	}
+
+	/**
+	 * Build clean settings arrays based on selected params
+	 *
+	 * @param array $fieldsets_data
+	 * @param array $fields_data
+	 * @param array $post_types
+	 * @return array
+	 */
+	protected function _processSelectedData(array $fieldsets_data, array $fields_data, array $post_types)
+	{
+		$data = array(
+			'fieldsets' => array(),
+			'fields' => array(),
+			'post_types' => array(),
+		);
+		foreach ($this->selected_data as $cpt_id => $fieldsets) {
+			$data['post_types'][$cpt_id] = $post_types[$cpt_id];
+
+			foreach ($fieldsets as $fieldset_id => $fieldset) {
+				$fieldset = array_merge($fieldsets_data[$cpt_id][$fieldset_id], $fieldset);
+
+				foreach ( $fieldset['fields'] as $field_id => $field_params ) {
+					// if not collection - simple copy field settings
+					if ( !preg_match('/^collection/', $field_id) ) {
+						$field = $fields_data[$cpt_id][$field_id];
+					}
+					// for collection we define which one fields we should disable
+					else {
+						$collection = $fields_data[$cpt_id][$field_id];
+						$collection_fields = array();
+						if ( !empty($field_params['collection_fields']) ) {
+							foreach ($field_params['collection_fields'] as $collection_field_id => $is_exported) {
+								$collection_fields[$collection_field_id] = $collection['fields'][$collection_field_id];
+							}
+						}
+
+						$field = array_merge($collection, array('fields' => $collection_fields));
+					}
+
+					$fieldset['fields'][$field_id] = 1;
+					$data['fields'][$cpt_id][$field_id] = $field;
+				}
+
+				$data['fieldsets'][$cpt_id][$fieldset_id] = $fieldset;
+			}
+		}
+
+		//pa($data,1);
+		return $data;
+	}
 }

@@ -18,10 +18,10 @@
 				<h3 class="header">
 					<span>
 						<span class="dashicons dashicons-menu drag-handle"></span>
-						<?php _e('Fieldset:', \JustCustomFields::TEXTDOMAIN); ?> <strong><?php echo $fieldset['title']; ?></strong>
+						<?php _e('Fieldset:', \JustCustomFields::TEXTDOMAIN); ?> <strong><?php echo esc_html($fieldset['title']); ?></strong>
 						<small>
-							<a href="#" class="jcf_fieldset_change jcf_change_pt" rel="<?php echo $fieldset['id']; ?>"><?php _e('Edit', \JustCustomFields::TEXTDOMAIN); ?></a>
-							<a href="#" class="jcf_fieldset_delete jcf_change_pt submitdelete" rel="<?php echo $fieldset['id']; ?>"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a>
+							<a href="#" class="jcf_fieldset_change jcf_change_pt" rel="<?php echo esc_attr($fieldset['id']); ?>"><?php _e('Edit', \JustCustomFields::TEXTDOMAIN); ?></a>
+							<a href="#" class="jcf_fieldset_delete jcf_change_pt submitdelete" rel="<?php echo esc_attr($fieldset['id']); ?>"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a>
 						</small>
 					</span>
 				</h3>
@@ -49,25 +49,24 @@
 											<span class="dashicons dashicons-menu drag-handle"></span>
 										</td>
 										<td>
-											<strong><a href="#" rel="<?php echo $field_id; ?>"><?php echo $field_settings[$field_id]['title']; ?></a></strong>
+											<strong><a href="#" rel="<?php echo $field_id; ?>"><?php echo esc_html($field_settings[$field_id]['title']); ?></a></strong>
 											<div class="row-actions">
 												<span class="edit"><a href="#" rel="<?php echo $field_id; ?>"><?php _e('Edit', \JustCustomFields::TEXTDOMAIN); ?></a></span> |
 												<span class="delete"><a href="#" rel="<?php echo $field_id; ?>"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a></span>
 											</div>
-											<?php if ( isset($field_settings[$field_id]['custom_row']) ) : ?>
+											<?php if ( 'collection' == @$field_settings[$field_id]['_type'] ) : ?>
 												<ul>
 													<li><strong><?php _e('Type', \JustCustomFields::TEXTDOMAIN); ?></strong>: <?php echo preg_replace('/\-[0-9]+$/', '', $field_id); ?></li>
-													<li><strong><?php _e('Slug', \JustCustomFields::TEXTDOMAIN); ?></strong>: <?php echo $field_settings[$field_id]['slug']; ?></li>
+													<li><strong><?php _e('Slug', \JustCustomFields::TEXTDOMAIN); ?></strong>: <?php echo esc_html($field_settings[$field_id]['slug']); ?></li>
 													<li><strong><?php _e('Enabled', \JustCustomFields::TEXTDOMAIN); ?></strong>: <?php if($enabled) _e('Yes', \JustCustomFields::TEXTDOMAIN); else  _e('No', \JustCustomFields::TEXTDOMAIN);?></li>
 												</ul>
 											<?php endif; ?>
 										</td>
-										<?php if ( !isset($field_settings[$field_id]['custom_row']) ) : ?>
-											<td><?php echo $field_settings[$field_id]['slug']; ?></td>
+										<?php if ( 'collection' != @$field_settings[$field_id]['_type'] ) : ?>
+											<td><?php echo esc_html($field_settings[$field_id]['slug']); ?></td>
 											<td><?php echo preg_replace('/\-[0-9]+$/', '', $field_id); ?></td>
 											<td><?php if ( $enabled ) _e('Yes', \JustCustomFields::TEXTDOMAIN); else  _e('No', \JustCustomFields::TEXTDOMAIN);?></td>
 										<?php else: ?>
-											<?php ?>
 											<td colspan="3" class="collection_list" data-collection_id="<?php echo $field_id; ?>">
 												<?php $this->_render( 'fields/collection', array(
 													'collection' => isset($collections[$field_id])? $collections[$field_id] : array(),
@@ -92,7 +91,7 @@
 							<label class="nowrap"><?php _e('Add new Field:', \JustCustomFields::TEXTDOMAIN); ?> </label>
 							<select name="field_type" class="jcf_add_field">
 								<?php foreach($registered_fields as $field) : ?>
-								<option value="<?php echo $field['id_base']; ?>"><?php echo $field['title']; ?></option>
+								<option value="<?php echo $field['id_base']; ?>"><?php echo esc_html($field['title']); ?></option>
 								<?php endforeach; ?>
 							</select>
 							<input type="submit" class="button" name="add_field" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />

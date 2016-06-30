@@ -12,9 +12,9 @@ class ImportExportController extends core\Controller
 	{
 		parent::__construct();
 		add_action('admin_menu', array( $this, 'initRoutes' ));
-		add_action('wp_ajax_jcf_export_fields', array( $this, 'ajaxExport' ));
 		add_action('wp_ajax_jcf_export_fields_form', array( $this, 'ajaxExportForm' ));
-		add_action('wp_ajax_jcf_import_fields', array( $this, 'ajaxImportForm' ));
+		add_action('wp_ajax_jcf_export_fields', array( $this, 'ajaxExport' ));
+		add_action('wp_ajax_jcf_import_fields_form', array( $this, 'ajaxImportForm' ));
 	}
 
 	/**
@@ -33,7 +33,7 @@ class ImportExportController extends core\Controller
 	{
 		$model = new models\ImportExport();
 		$model->load($_POST) && $model->import();
-
+		
 		//load template
 		return $this->_render('import_export/index', array( 'tab' => 'import_export' ));
 	}
@@ -42,28 +42,11 @@ class ImportExportController extends core\Controller
 	{
 		$model = new models\ImportExport();
 
-		if ( $model->load($_POST) && $all_fields = $model->getImportFields() ) {
-			return $this->_renderAjax('import_export/import', 'html', $all_fields);
+		if ( $model->load($_POST) && $import_data = $model->getImportFields() ) {
+			return $this->_renderAjax('import_export/import', 'html', array('import_data' => $import_data));
 		}
 
 		return $this->_renderAjax(array( 'status' => !empty($all_fields), 'error' => $model->getErrors() ), 'json');
-	}
-
-	/**
-	 * Ajax export fields
-	 */
-	public function ajaxExport()
-	{
-		$model = new models\ImportExport();
-
-		if ( $model->load($_POST) && $data = json_encode($model->export_data) ) {
-			$filename = 'jcf_export' . date('Ymd-his') . '.json';
-			header("Content-Disposition: attachment;filename=" . $filename);
-			header("Content-Transfer-Encoding: binary ");
-			return $this->_renderAjax(null, 'json', $data);
-		}
-
-		return $this->_renderAjax(null, 'json', array( 'status' => !empty($data), 'error' => $model->getErrors() ));
 	}
 
 	/**
@@ -81,7 +64,25 @@ class ImportExportController extends core\Controller
 		return $this->_renderAjax('import_export/export', 'html', array(
 			'field_settings' => $fields,
 			'fieldsets' => $fieldsets,
-			'post_types' => !empty($fieldsets['post_types']) ? $fieldsets['post_types'] : jcf_get_post_types()
+			'post_types' => jcf_get_post_types()
 		));
 	}
+
+	/**
+	 * Ajax export fields
+	 */
+	public function ajaxExport()
+	{
+		$model = new models\ImportExport();
+
+		if ( $model->load($_POST) && $data = $model->export() ) {
+			$filename = 'jcf_export' . date('Ymd-his') . '.json';
+			header("Content-Disposition: attachment;filename=" . $filename);
+			header("Content-Transfer-Encoding: binary ");
+			return $this->_renderAjax(null, 'json', $data);
+		}
+
+		return $this->_renderAjax(null, 'json', array( 'status' => !empty($data), 'error' => $model->getErrors() ));
+	}
+
 }

@@ -16,7 +16,7 @@
 						<label class="nowrap"><?php _e('Add new Field:', \JustCustomFields::TEXTDOMAIN); ?> </label>
 						<select name="field_type" class="jcf_add_collection_field">
 							<?php foreach($registered_fields as $field) : ?>
-							<option value="<?php echo $field['id_base']; ?>"><?php echo $field['title']; ?></option>
+							<option value="<?php echo $field['id_base']; ?>"><?php echo esc_html($field['title']); ?></option>
 							<?php endforeach; ?>
 						</select>
 						<input type="submit" class="button" name="add_field" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />
@@ -34,7 +34,7 @@
 						<span class="dashicons dashicons-menu drag-handle"></span>
 					</td>
 					<td>
-						<strong><a href="#" rel="<?php echo $field_id; ?>"><?php echo $field['title']; ?></a></strong>
+						<strong><a href="#" rel="<?php echo $field_id; ?>"><?php echo esc_html($field['title']); ?></a></strong>
 						<div class="row-actions">
 							<span class="edit_collection">
 								<a href="#" rel="<?php echo $field_id; ?>" data-collection_id="<?php echo $collection_id; ?>"><?php _e('Edit', \JustCustomFields::TEXTDOMAIN); ?></a>

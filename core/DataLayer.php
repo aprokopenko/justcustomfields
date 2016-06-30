@@ -7,8 +7,8 @@ namespace jcf\core;
  */
 abstract class DataLayer
 {
-	protected $_fields;
-	protected $_fieldsets;
+	protected $_fields = array();
+	protected $_fieldsets = array();
 
 	public function __construct()
 	{

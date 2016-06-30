@@ -16,9 +16,9 @@ class DBDataLayer extends core\DataLayer
 	 */
 	public function __construct()
 	{
-		parent::__construct();
-
 		$this->_networkMode = models\Settings::getNetworkMode();
+
+		parent::__construct();
 	}
 
 	/**

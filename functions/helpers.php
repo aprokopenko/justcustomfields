@@ -126,8 +126,77 @@ function jcf_set_chmod( $filename ) {
 	}
 }
 
-// print image with loader
+/**
+ * print image with loader
+ * @deprecated
+ */
 function jcf_print_loader_img() {
 	return '';
 	//return '<img class="ajax-feedback " alt="" title="" src="' . get_bloginfo('wpurl') . '/wp-admin/images/wpspin_light.gif" style="visibility: hidden;">';
+}
+
+/**
+ * safety print html tag attributes
+ *
+ * @param array $attributes
+ */
+function jcf_html_attributes( array $attributes = array(), $echo = true ) {
+	if( empty($attributes) ) return '';
+
+	$html = array();
+	foreach ( $attributes as $attr => $value ) {
+		$html[] = $attr . '="' . esc_attr($value) . '"';
+	}
+	$html = ' ' . implode(' ', $html);
+
+	if ( $echo )
+		echo $html;
+	else
+		return $html;
+}
+
+/**
+ * Generate starting HTML tag
+ *
+ * @param string $tag
+ * @param array $attributes
+ * @return string
+ */
+function jcf_html_tag( $tag, array $attributes = array() ) {
+	$html_attributes = jcf_html_attributes($attributes, false);
+	$html = "<{$tag}{$html_attributes}>";
+	return $html;
+}
+
+/**
+ * Generate input type hidden
+ *
+ * @param array $attributes
+ * @return string
+ */
+function jcf_html_hidden_input( array $attributes = array() ) {
+	$attributes['type'] = 'hidden';
+	return jcf_html_tag('input', $attributes);
+}
+
+/**
+ * Generate input type checkbox
+ *
+ * @param array $attributes
+ * @return string
+ */
+function jcf_html_checkbox( array $attributes = array() ) {
+	$attributes['type'] = 'checkbox';
+	return jcf_html_tag('input', $attributes);
+}
+
+/**
+ * Special function which wraps HTML special characters inside the textarea
+ *
+ * @param string $value
+ * @return string
+ */
+function jcf_esc_textarea( $value ) {
+	$safe_text = htmlspecialchars( $value, ENT_NOQUOTES, get_option( 'blog_charset' ) );
+	return $safe_text;
 }

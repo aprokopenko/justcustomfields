@@ -184,40 +184,22 @@ body.jcf-loading select{
 	display: inline-block;
 }
 .jcf_modalWindow{
-	position: fixed;
-	top: 150px;
-	left: 200px;
-	right: 50px;
-	bottom: 50px;
-	z-index: 160000;
-}
-.jcf_modalWindow .media-modal-content{
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	overflow: auto;
-	min-height: 300px;
-	-webkit-box-shadow: 0 5px 15px rgba(0,0,0,.7);
-	box-shadow: 0 5px 15px rgba(0,0,0,.7);
-	background: #f1f1f1;
-	-webkit-font-smoothing: subpixel-antialiased;
-	padding: 20px;
+	left: 100px;
+	right: 100px;
 }
 .jcf_modalWindow #jcf_save_import_fields_content,
 .jcf_modalWindow #jcf_save_export_fields_content{
 	position: absolute;
-	top: 100px;
+	top: -1px;
 	left: 0;
 	right: 0;
-	bottom: 80px;
+	bottom: 55px;
 	overflow: auto;
 	min-height: 300px;
 	background: #fff;
 	border-top: 1px solid #ccc;
 	border-bottom: 1px solid #ccc;
-	padding: 0 0 0 30px;
+	padding: 0 0 0 15px;
 }
 .jcf_modalWindow .jcf-modal-button{
 	position: absolute;
@@ -225,37 +207,26 @@ body.jcf-loading select{
 	right: 0;
 	bottom: 0px;
 	overflow: auto;
-	min-height: 40px;
+	height: 25px;
 	background: #f1f1f1;
-	text-align: right;
-	padding:20px;
-}
-.jcf_modalWindow .media-modal-close{
-	position: absolute;
-	text-decoration: none;
-	top: 10px;
-	right: 10px;
-	width: 20px;
-	height: 20px;
-	z-index: 1000;
-	-webkit-transition: color .1s ease-in-out,background .1s ease-in-out;
-	transition: color .1s ease-in-out,background .1s ease-in-out;
-}
-.jcf_modalWindow .media-modal-close:before{
-	content: '\f158';
-	font: 400 20px/1 dashicons;
-	speak: none;
-	vertical-align: middle;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	color: #666;
-}
-#jcf_save_import_fields .check-column,
-#jcf_export_fields .check-column{
-	text-align: center;
+	text-align: left;
+	padding:15px;
 }
 .jcf_export-content-type{
 	margin-bottom: 50px;
+}
+.jcf_checkbox_block{
+	display: inline-block;
+	margin-right: 10px;
+	text-align: center;
+}
+.jcf_modalWindow .jcf_inner_box {
+	margin-left: 34px;
+}
+.jcf_modalWindow .widefat th { font-weight: bold; font-style: italic; padding: 4px 10px; }
+.jcf_modalWindow .widefat td { font-weight: normal; }
+.jcf_modalWindow .check-column {
+	text-align: center;
 }
 .jcf_tile{
 	display: block;
@@ -320,12 +291,6 @@ body.jcf-loading select{
 	display: block;
 	float:left;
 	margin: 0 10px 0 0;
-}
-.jcf_checkbox_block{
-	display: inline-block;
-	width: 33px;
-	margin-right: 10px;
-	text-align: center;
 }
 .jcf_tab-content input[type="file"]{
 	margin-bottom: 0;

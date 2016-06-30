@@ -174,7 +174,6 @@ class Just_Field_Collection extends models\Just_Field
 	{
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['custom_row'] = true;
 		return $instance;
 	}
 

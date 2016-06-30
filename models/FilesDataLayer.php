@@ -5,7 +5,6 @@ namespace jcf\models;
 use jcf\core;
 use jcf\models;
 
-// TODO: check files data layer work! (changes were made without testing it)
 class FilesDataLayer extends core\DataLayer
 {
 	protected $_sourceSettings;
@@ -17,9 +16,9 @@ class FilesDataLayer extends core\DataLayer
 	 */
 	public function __construct()
 	{
-		parent::__construct();
-
 		$this->_sourceSettings = models\Settings::getDataSourceType();
+
+		parent::__construct();
 	}
 
 	/**
@@ -34,7 +33,9 @@ class FilesDataLayer extends core\DataLayer
 		}
 
 		$data = $this->getDataFromFile();
-		$this->_fields = $data['field_settings'];
+		if ( isset($data['fields']) ) {
+			$this->_fields = $data['fields'];
+		}
 	}
 
 	/**
@@ -43,7 +44,7 @@ class FilesDataLayer extends core\DataLayer
 	public function saveFieldsData()
 	{
 		$data = $this->getDataFromFile();
-		$data['field_settings'] = $this->_fields;
+		$data['fields'] = $this->_fields;
 		return $this->_save($data);
 	}
 
@@ -59,7 +60,9 @@ class FilesDataLayer extends core\DataLayer
 		}
 
 		$data = $this->getDataFromFile();
-		$this->_fieldsets = $data['fieldsets'];
+		if ( isset($data['fieldsets']) ) {
+			$this->_fieldsets = $data['fieldsets'];
+		}
 	}
 
 	/**
@@ -84,6 +87,7 @@ class FilesDataLayer extends core\DataLayer
 
 		if ( file_exists($file) ) {
 			$content = file_get_contents($file);
+
 			$data = json_decode($content, true);
 			return gettype($data) == 'string' ? json_decode($data, true) : $data;
 		}
