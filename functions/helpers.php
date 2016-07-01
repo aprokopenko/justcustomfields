@@ -33,6 +33,33 @@ function jcf_get_post_types( $format = 'single' ) {
 }
 
 /**
+ * Find the correct post type icon name
+ *
+ * @param array|object $post_type  object
+ * @return string
+ */
+function jcf_get_post_type_icon( $post_type ) {
+	$post_type = (array)$post_type;
+	$icon = $post_type['menu_icon'];
+
+	$standard_post_types = array(
+		'post' => 'dashicons-admin-post',
+		'page' => 'dashicons-admin-page',
+		'attachment' => 'dashicons-admin-media',
+	);
+
+	if ( empty($icon) && isset($standard_post_types[$post_type['name']]) ) {
+		$icon = $standard_post_types[ $post_type['name'] ];
+	}
+
+	if ( empty($icon) ) {
+		$icon = 'dashicons-admin-post';
+	}
+
+	return $icon;
+}
+
+/**
  * 	javascript localization
  */
 function jcf_get_language_strings() {

@@ -9,7 +9,7 @@
 				<?php foreach ( $post_types as $key => $obj ) : ?>
 					<li>
 						<a class="jcf_tile jcf_tile_<?php echo $key; ?>" href="?page=jcf_fieldset_index&amp;pt=<?php echo $key; ?>">
-							<span class="jcf_tile_icon"></span>
+							<span class="jcf_tile_icon"><span class="dashicons <?php echo jcf_get_post_type_icon($obj); ?>"></span></span>
 							<span class="jcf_tile_title"><?php echo $obj->label; ?>
 								<span class="jcf_tile_info">
 									<?php _e('Added Fieldsets: ', \JustCustomFields::TEXTDOMAIN); ?><?php echo $count_fields[$key]['fieldsets']; ?>

@@ -242,31 +242,6 @@ body.jcf-loading select{
 	box-shadow: 0 0 1px  #a0a5aa;
 	float: left;
 }
-.jcf_tile .jcf_tile_icon:before{
-	content: "\f109";
-}
-.jcf_tile.post .jcf_tile_icon:before{
-	content: "\f109";
-}
-.jcf_tile.page .jcf_tile_icon:before{
-	content: "\f105";
-}
-.jcf_tile.attachment .jcf_tile_icon:before{
-	content: "\f104";
-}
-.jcf_tile .jcf_tile_icon:before{
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	font-size: 20px;
-	line-height: 1;
-	font-family: dashicons;
-	text-decoration: inherit;
-	font-weight: 400;
-	font-style: normal;
-	vertical-align: top;
-	text-align: center;
-}
 .jcf_tile .jcf_tile_icon{
 	width: 36px;
 	height: 34px;

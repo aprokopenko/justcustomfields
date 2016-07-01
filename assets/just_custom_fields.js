@@ -497,13 +497,17 @@ function initImport() {
  *	init export
  */
 function initExport() {
-  jQuery('a#export-button').click(function() {
+  jQuery('a#export-button').click(function(e) {
+    e.preventDefault();
+
     var data = {
       'action': 'jcf_export_fields_form'
     }
     jcf_ajax(data, 'html', null, function( response ) {
       modalWindow(response);
     });
+
+    return false;
   });
 }
 
