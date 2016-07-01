@@ -15,7 +15,7 @@ class PostTypeController extends core\Controller
 	{
 		parent::__construct();
 
-		if ( isset($_GET['post']) && isset($_GET['action']) && $_GET['action'] == 'edit' ) {
+		if ( $this->_isPostEdit() ) {
 			add_action('admin_print_scripts', array( $this, 'addScripts' ));
 			add_action('admin_print_styles', array( $this, 'addStyles' ));
 			add_action('admin_head', array( $this, 'addMediaUploaderJs' ));
@@ -24,6 +24,26 @@ class PostTypeController extends core\Controller
 		add_action('add_meta_boxes', array( $this, 'actionRender' ), 10, 1);
 		add_action('save_post', array( $this, 'actionSave' ), 10, 2);
 		add_shortcode('jcf-value', array( $this, 'actionGetShortcodeValue' ));
+	}
+
+	/**
+	 * Check if we are on Post edit screen (add or update)
+	 */
+	protected function _isPostEdit()
+	{
+		$is_edit_post = isset($_GET['post']) && isset($_GET['action']) && $_GET['action'] == 'edit';
+
+		$current_script = '';
+		if ( !empty($_SERVER['REQUEST_URI']) ) {
+			$current_script = $_SERVER['REQUEST_URI'];
+		}
+		if ( !empty($_SERVER['SCRIPT_NAME']) ) {
+			$current_script = $_SERVER['SCRIPT_NAME'];
+		}
+
+		$is_add_post = strpos($current_script, 'post-new.php') !== FALSE;
+
+		return $is_edit_post || $is_add_post;
 	}
 
 	/**

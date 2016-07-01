@@ -53,7 +53,7 @@
 								<select class="widefat" 
 										id="<?php echo $field->getFieldId('field_width'); ?>"
 										name="<?php echo $field->getFieldName('field_width'); ?>">
-									<?php foreach( \jcf\components\collection\Just_Field_Collection::$fieldWidth as $key => $width) : ?>
+									<?php foreach( \jcf\components\collection\JustField_Collection::$fieldWidth as $key => $width) : ?>
 										<option value="<?php echo $key; ?>"<?php echo (@$field->instance['field_width']==$key?' selected':''); ?>>
 											<?php echo $width; ?></option>
 									<?php endforeach; ?>

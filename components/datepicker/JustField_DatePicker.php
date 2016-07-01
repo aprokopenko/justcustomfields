@@ -2,9 +2,9 @@
 
 namespace jcf\components\datepicker;
 
-use jcf\models;
+use jcf\core;
 
-class Just_Field_DatePicker extends models\Just_Field
+class JustField_DatePicker extends core\JustField
 {
 	public static $compatibility = '3.3+';
 
@@ -26,7 +26,8 @@ class Just_Field_DatePicker extends models\Just_Field
 				<?php echo $this->fieldOptions['before_title'] . $this->instance['title'] . $this->fieldOptions['after_title']; ?>
 				
 				<div>
-					<input id="<?php echo $this->getFieldId('val'); ?>" name="<?php echo $this->getFieldName('val'); ?>" type="text" value="<?php echo esc_attr($this->entry); ?>" size="20" style="width:25%;" />
+					<input id="<?php echo $this->getFieldId('val'); ?>" name="<?php echo $this->getFieldName('val'); ?>" type="text" value="<?php echo esc_attr($this->entry); ?>" size="14" style="width:150px;" />
+					<span class="dashicons dashicons-calendar-alt"></span>
 				</div>
 
 				<script type="text/javascript"><!--

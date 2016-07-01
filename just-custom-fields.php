@@ -90,16 +90,16 @@ class JustCustomFields extends core\Singleton
 	 */
 	public function initFields()
 	{
-		$this->registerField( 'jcf\components\inputtext\Just_Field_InputText', true );
-		$this->registerField( 'jcf\components\select\Just_Field_Select', true );
-		$this->registerField( 'jcf\components\selectmultiple\Just_Field_SelectMultiple', true );
-		$this->registerField( 'jcf\components\checkbox\Just_Field_Checkbox', true );
-		$this->registerField( 'jcf\components\textarea\Just_Field_Textarea', true );
-		$this->registerField( 'jcf\components\datepicker\Just_Field_DatePicker', true );
-		$this->registerField( 'jcf\components\simplemedia\Just_Field_SimpleMedia', true );
-		$this->registerField( 'jcf\components\table\Just_Field_Table', true );
-		$this->registerField( 'jcf\components\collection\Just_Field_Collection' );
-		$this->registerField( 'jcf\components\relatedcontent\Just_Field_RelatedContent' );
+		$this->registerField( 'jcf\components\inputtext\JustField_InputText', true );
+		$this->registerField( 'jcf\components\textarea\JustField_Textarea', true );
+		$this->registerField( 'jcf\components\select\JustField_Select', true );
+		$this->registerField( 'jcf\components\selectmultiple\JustField_SelectMultiple', true );
+		$this->registerField( 'jcf\components\checkbox\JustField_Checkbox', true );
+		$this->registerField( 'jcf\components\datepicker\JustField_DatePicker', true );
+		$this->registerField( 'jcf\components\simplemedia\JustField_SimpleMedia', true );
+		$this->registerField( 'jcf\components\collection\JustField_Collection' );
+		$this->registerField( 'jcf\components\table\JustField_Table', true );
+		$this->registerField( 'jcf\components\relatedcontent\JustField_RelatedContent' );
 		
 		/**
 		 *	to add more fields with your custom plugin:

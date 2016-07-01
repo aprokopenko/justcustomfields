@@ -2,7 +2,7 @@
 
 namespace jcf\components\select;
 
-use jcf\models;
+use jcf\core;
 
 /**
  * Class for select list type
@@ -10,7 +10,7 @@ use jcf\models;
  * @package default
  * @author Alexander Prokopenko
  */
-class Just_Field_Select extends models\Just_Field
+class JustField_Select extends core\JustField
 {
 
 	public function __construct()
@@ -32,7 +32,9 @@ class Just_Field_Select extends models\Just_Field
 				<?php echo $this->fieldOptions['before_title'] . $this->instance['title'] . $this->fieldOptions['after_title']; ?>
 				<div class="select-field">
 					<select name="<?php echo $this->getFieldName('val'); ?>" id="<?php echo $this->getFieldId('val'); ?>" style="width: 47%;">
-						<option value="<?php echo esc_attr($this->instance['empty_option']); ?>" <?php echo selected($this->instance['empty_option'], $this->entry, false); ?>><?php echo esc_attr($this->instance['empty_option']); ?></option>
+						<?php if (!empty($this->instance['empty_option'])) : ?>
+							<option value="" <?php echo selected($this->instance['empty_option'], $this->entry, false); ?>><?php echo esc_attr($this->instance['empty_option']); ?></option>
+						<?php endif; ?>
 						<?php foreach ( (array) $values as $key => $val ) : ?>
 							<option value="<?php echo esc_attr($val); ?>" <?php echo selected($val, $this->entry, false); ?>><?php echo esc_html(ucfirst($key)); ?></option>
 						<?php endforeach; ?>
@@ -54,7 +56,7 @@ class Just_Field_Select extends models\Just_Field
 		//Defaults
 		$instance = wp_parse_args((array) $this->instance, array( 'title' => '', 'description' => '', 'options' => '', 'empty_option' => '' ));
 		$title = esc_attr($instance['title']);
-		$options = esc_attr($this->getInstanceSelectOptions($instance));
+		$options = esc_attr($instance['options']);
 		$description = esc_html($instance['description']);
 		$empty_option = esc_attr($instance['empty_option']);
 		?>
@@ -92,22 +94,6 @@ class Just_Field_Select extends models\Just_Field
 	}
 
 	/**
-	 * get current options settings based on plugin version
-	 * 
-	 * @param array $instance	current instance
-	 */
-	public function getInstanceSelectOptions( $instance )
-	{
-		// from version 1.4 key for storing select options changed to match it's meaning
-		if ( $this->getInstanceVersion($instance) < 1.4 && empty($instance['options']) && !empty($instance['settings']) ) {
-			return $instance['settings'];
-		}
-		else {
-			return $instance['options'];
-		}
-	}
-
-	/**
 	 * prepare list of options
 	 * 
 	 * @param array $instance	current instance
@@ -115,11 +101,12 @@ class Just_Field_Select extends models\Just_Field
 	public function parsedSelectOptions( $instance )
 	{
 		$values = array();
-		$settings = $this->getInstanceSelectOptions($instance);
+		$settings = $instance['options'];
 
 		$v = explode("\n", $settings);
 		foreach ( $v as $val ) {
 			$val = trim($val);
+			if ( empty($val) ) continue;
 			if ( strpos($val, '|') !== FALSE ) {
 				$a = explode('|', $val);
 				$values[$a[0]] = $a[1];

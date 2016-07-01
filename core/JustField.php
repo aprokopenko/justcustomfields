@@ -1,11 +1,11 @@
 <?php
 
-namespace jcf\models;
+namespace jcf\core;
 
 use jcf\models;
 use jcf\core;
 
-class Just_Field extends core\Model
+class JustField
 {
 	/**
 	 * Root id for all fields of this type (field type)
@@ -62,14 +62,23 @@ class Just_Field extends core\Model
 	public $fieldErrors = array();
 
 	/**
+	 * DataLayer to save instances to
+	 *
+	 * @var \jcf\models\DataLayer
+	 */
+	protected $_dL;
+
+	/**
 	 * 	Constructor
 	 */
 	public function __construct( $id_base, $title, $field_options = array() )
 	{
-		parent::__construct();
 		$this->idBase = $id_base;
 		$this->title = $title;
 		$this->fieldOptions = array_merge($this->fieldOptions, $field_options);
+
+		// init data layer
+		$this->_dL = DataLayerFactory::create();
 	}
 
 	/**
@@ -141,7 +150,8 @@ class Just_Field extends core\Model
 
 			// load instance data
 			$fields = $this->_dL->getFields();
-			$this->instance = (array) $fields[$this->postType][$this->id];
+			if ( isset($fields[$this->postType][$this->id]) )
+				$this->instance = (array) $fields[$this->postType][$this->id];
 
 			if ( !empty($this->instance) ) {
 				$this->slug = $this->instance['slug'];
@@ -214,7 +224,7 @@ class Just_Field extends core\Model
 		if ( $this->isCollectionField() && $this->isPostEdit ) {
 			$collection = core\JustFieldFactory::create($field_model);
 			return str_replace('-', $delimeter, 'field' . $delimeter . $collection->idBase . $delimeter . $collection->number . $delimeter
-					. \jcf\components\collection\Just_Field_Collection::$currentCollectionFieldKey . $delimeter . $this->id . $delimeter . $str);
+					. \jcf\components\collection\JustField_Collection::$currentCollectionFieldKey . $delimeter . $this->id . $delimeter . $str);
 		}
 		return 'field' . $delimeter . $this->idBase . $delimeter . $this->number . $delimeter . $str;
 	}
@@ -238,7 +248,7 @@ class Just_Field extends core\Model
 
 		if ( $this->isCollectionField() && $this->isPostEdit ) {
 			$collection = core\JustFieldFactory::create($field_model);
-			return 'field-' . $collection->idBase . '[' . $collection->number . '][' . \jcf\components\collection\Just_Field_Collection::$currentCollectionFieldKey . '][' . $this->id . '][' . $str . ']';
+			return 'field-' . $collection->idBase . '[' . $collection->number . '][' . \jcf\components\collection\JustField_Collection::$currentCollectionFieldKey . '][' . $this->id . '][' . $str . ']';
 		}
 		return 'field-' . $this->idBase . '[' . $this->number . '][' . $str . ']';
 	}
@@ -361,8 +371,10 @@ class Just_Field extends core\Model
 
 		$this->_dL->setFields($fields);
 		if ( !$this->_dL->saveFieldsData() ) {
-			$this->addError(__('Field not saved', \JustCustomFields::TEXTDOMAIN));
-			return false;
+			return array(
+				'status' => 0,
+				'error' => __('Unable to write changes to storage.', \JustCustomFields::TEXTDOMAIN)
+			);
 		}
 
 		// return status
@@ -398,9 +410,7 @@ class Just_Field extends core\Model
 		}
 
 		$this->_dL->setFields($fields);
-
 		if ( !$this->_dL->saveFieldsData() ) {
-			$this->addError(__('Field not daleted', \JustCustomFields::TEXTDOMAIN));
 			return false;
 		}
 
@@ -526,7 +536,7 @@ class Just_Field extends core\Model
 	 */
 	public function doShortcode( $args )
 	{
-		$args = shortcode_atts(array(
+		$args = array_merge(array(
 			'id' => '',
 			'class' => '',
 			'field' => '',

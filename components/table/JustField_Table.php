@@ -2,7 +2,7 @@
 
 namespace jcf\components\table;
 
-use jcf\models;
+use jcf\core;
 
 /**
  * Class for select multiple list type
@@ -10,7 +10,7 @@ use jcf\models;
  * @package default
  * @author Sergey Samoylov
  */
-class Just_Field_Table extends models\Just_Field
+class JustField_Table extends core\JustField
 {
 
 	public function __construct()
@@ -46,14 +46,14 @@ class Just_Field_Table extends models\Just_Field
 			if ( $key == 0 ) {
 				$table_head .= '<tr ' . ($key == 0 ? 'class="table-header"' : '') . '><th class="jcf_option_column">Options</th>';
 				$first_row = '<tr class="hide"><td>
-						<span class="drag-handle" >' . __('move', \JustCustomFields::TEXTDOMAIN) . '</span>
-						<span class="jcf_delete_row" >' . __('delete', \JustCustomFields::TEXTDOMAIN) . '</span>
+						<span class="drag-handle" ><span class="dashicons dashicons-menu"></span></span>
+						<span class="jcf_delete_row" ><span class="dashicons dashicons-trash"></span></span>
 					</td>';
 			}
 
 			$rows .= '<tr><td>
-						<span class="drag-handle" >' . __('move', \JustCustomFields::TEXTDOMAIN) . '</span>
-						<span class="jcf_delete_row" >' . __('delete', \JustCustomFields::TEXTDOMAIN) . '</span>
+						<span class="drag-handle" ><span class="dashicons dashicons-menu"></span></span>
+						<span class="jcf_delete_row" ><span class="dashicons dashicons-trash"></span></span>
 					</td>';
 
 			foreach ( $columns as $col_name => $col_title ) {
@@ -82,13 +82,13 @@ class Just_Field_Table extends models\Just_Field
 				<?php echo $this->fieldOptions['before_title'] . $this->instance['title'] . $this->fieldOptions['after_title']; ?>
 				
 				<?php if ( !empty($columns) ) : ?>
-					<div class="jcf-table jcf-field-container">
+					<div class="jcf-table">
 						<table class="sortable wp-list-table widefat fixed">
 							<?php echo $table_head; ?>
 							<?php echo $rows; ?>
 							<?php echo $first_row; ?>
 						</table>
-						<p><a href="#" class="button button-large jcf_add_row"><?php _e('+ Add row', \JustCustomFields::TEXTDOMAIN); ?></a></p>
+						<p><a href="#" class="button button-small jcf_add_row"><?php _e('+ Add row', \JustCustomFields::TEXTDOMAIN); ?></a></p>
 					</div>
 				<?php endif; ?>
 
@@ -98,7 +98,6 @@ class Just_Field_Table extends models\Just_Field
 			<?php echo $this->fieldOptions['after_widget']; ?>
 		</div>
 		<?php
-		return true;
 	}
 
 	/**
@@ -231,7 +230,7 @@ class Just_Field_Table extends models\Just_Field
 	/**
 	 * 	print fields values from shortcode
 	 */
-	public function shortcode_value( $args )
+	public function shortcodeValue( $args )
 	{
 		$columns = $this->parseColumnsOptions();
 		if ( empty($columns) || empty($this->entry) )

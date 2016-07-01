@@ -2,13 +2,13 @@
 
 namespace jcf\components\relatedcontent;
 
-use jcf\models;
+use jcf\core;
 
 /**
  * 	Fields group field.
  * 	allow you to add "table" of fields
  */
-class Just_Field_RelatedContent extends models\Just_Field
+class JustField_RelatedContent extends core\JustField
 {
 	public static $compatibility = '3.3+';
 
@@ -25,7 +25,6 @@ class Just_Field_RelatedContent extends models\Just_Field
 	 */
 	public function field()
 	{
-		$del_image = WP_PLUGIN_URL . '/just-custom-fields/components/uploadmedia/assets/jcf-delimage.png';
 		$delete_class = ' jcf-hide';
 
 		if ( empty($this->entry) )
@@ -85,12 +84,12 @@ class Just_Field_RelatedContent extends models\Just_Field
 			<?php echo $this->fieldOptions['before_widget']; ?>
 				<?php echo $this->fieldOptions['before_title'] . $this->instance['title'] . $this->fieldOptions['after_title']; ?>
 
-				<div class="jcf-relatedcontent-field jcf-field-container">
+				<div class="jcf-relatedcontent-field">
 				<?php foreach ( $entries as $key => $entry ) : ?>
 					<div class="jcf-relatedcontent-row<?php if ( '00' === $key ) echo ' jcf-hide'; ?>">
 						<div class="jcf-relatedcontent-container">
 							<p>
-								<span class="drag-handle" >move</span>
+								<span class="drag-handle"><span class="dashicons dashicons-menu"></span></span>
 
 								<?php if ( $type == 'select' ) : ?>
 									<select id="<?php echo $this->getFieldIdL2('related_id', $key); ?>" 
@@ -113,22 +112,24 @@ class Just_Field_RelatedContent extends models\Just_Field
 										name="<?php echo $this->getFieldNameL2('related_id', $key); ?>" />
 								<?php endif; ?>
 
-								<a href="#" class="jcf-btn jcf_delete"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a>
+								<a href="#" class="jcf_delete"><span class="dashicons dashicons-trash"></span></a>
 							</p>
 						</div>
 						<div class="jcf-delete-layer">
-							<img src="<?php echo $del_image; ?>" alt="" />
 							<input type="hidden" id="<?php echo $this->getFieldIdL2('__delete__', $key); ?>" name="<?php echo $this->getFieldNameL2('__delete__', $key); ?>" value="" />
-							<a href="#" class="jcf-btn jcf_cancel"><?php _e('Cancel', \JustCustomFields::TEXTDOMAIN); ?></a><br/>
+							<span class="jcf_tobe_removed"><?php _e('To be deleted', \JustCustomFields::TEXTDOMAIN); ?></span>
+							<a href="#" class="jcf_cancel"><?php _e('UNDO', \JustCustomFields::TEXTDOMAIN); ?></a><br/>
 						</div>
 					</div>
 				<?php endforeach; ?>
-				<a href="#" class="jcf-btn jcf_add_more"><?php _e('+ Add another', \JustCustomFields::TEXTDOMAIN); ?></a>
-				</div>
 
 				<?php if ( $this->instance['description'] != '' ): ?>
 					<p class="description"><?php echo $this->instance['description']; ?></p>
 				<?php endif; ?>
+
+				<a href="#" class="button button-small jcf_add_more"><?php _e('+ Add another', \JustCustomFields::TEXTDOMAIN); ?></a>
+			</div>
+
 			<?php echo $this->fieldOptions['after_widget']; ?>
 		</div>
 		<?php

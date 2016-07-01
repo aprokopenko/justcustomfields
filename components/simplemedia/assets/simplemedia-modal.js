@@ -92,11 +92,19 @@ jQuery(document).ready(function() {
   node.find('div.jcf-simple-row a.jcf_simple_delete').live('click', function( e ) {
     var value_id = jQuery(this).data('field_id');
     var row = jQuery(this).parents('div.jcf-simple-row');
-    jQuery('#' + value_id).prop('disabled', true);
+    // reset value
+    row.find('#' + value_id).val('');
+    // remove filename
+    row.find('p:first').html('').hide();
+    // hide delete
     row.find('.jcf_simple_delete').hide();
-    row.find('#simplemedia-' + value_id).hide();
-    row.find('div.jcf-simple-container').css({'opacity': 0.3});
-    row.find('div.jcf-delete-layer').show();
+    // rename upload control
+    row.find('#simplemedia-' + value_id).text( jcf_textdomain.select_image );
+    // reset image
+    row.find('.jcf-simple-image a').attr('href', '#')
+    var img = row.find('.jcf-simple-image img');
+    img.attr('src', img.data('noimage'));
+
     return false;
   });
 
@@ -107,7 +115,6 @@ jQuery(document).ready(function() {
     row.find('div.jcf-simple-container').css({'opacity': 1});
     row.find('.jcf_simple_delete').show();
     row.find('#simplemedia-' + value_id).show();
-    row.find('div.jcf-delete-layer').hide();
     return false;
   });
 })

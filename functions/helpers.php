@@ -71,6 +71,7 @@ function jcf_get_language_strings() {
 		'delete' => __('Delete', \JustCustomFields::TEXTDOMAIN),
 		'confirm_field_delete' => __('Are you sure you want to delete selected field?', \JustCustomFields::TEXTDOMAIN),
 		'confirm_fieldset_delete' => __("Are you sure you want to delete the fieldset?\nAll fields will be also deleted!", \JustCustomFields::TEXTDOMAIN),
+		'select_image' => __('Select', \JustCustomFields::TEXTDOMAIN),
 		'update_image' => __('Update Image', \JustCustomFields::TEXTDOMAIN),
 		'update_file' => __('Update File', \JustCustomFields::TEXTDOMAIN),
 		'yes' => __('Yes', \JustCustomFields::TEXTDOMAIN),

@@ -20,6 +20,8 @@ class AdminController extends core\Controller
 			add_action('admin_print_scripts', array( $this, 'addScripts' ));
 			add_action('admin_print_styles', array( $this, 'addStyles' ));
 		}
+
+		add_action('admin_print_scripts', array( $this, 'localizeScripts' ));
 	}
 
 	/**
@@ -61,9 +63,18 @@ class AdminController extends core\Controller
 		);
 		wp_enqueue_script($slug);
 		wp_enqueue_script('jquery-ui-autocomplete');
+	}
 
+	/**
+	 * JS localization text strings
+	 */
+	public function localizeScripts()
+	{
 		// add text domain
-		wp_localize_script($slug, 'jcf_textdomain', jcf_get_language_strings());
+		$i18n_slug = 'just-custom-fields-i18n';
+		wp_register_script($i18n_slug, WP_PLUGIN_URL . '/just-custom-fields/assets/jcf_i18n.js');
+		wp_localize_script($i18n_slug, 'jcf_textdomain', jcf_get_language_strings());
+		wp_enqueue_script($i18n_slug);
 	}
 
 	/**

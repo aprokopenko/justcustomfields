@@ -9,7 +9,7 @@ class JustFieldFactory
 	 * Create Just_Field object of the required type
 	 * 
 	 * @param \jcf\models\Field $field
-	 * @return \jcf\models\Just_Field
+	 * @return \jcf\core\JustField
 	 */
 	public static function create( \jcf\models\Field $field )
 	{
@@ -26,8 +26,8 @@ class JustFieldFactory
 		$model->setCollection($field->collection_id);
 		$model->setId($field_mixed);
 
-		if ( !$model->is_new && $field->collection_id ) {
-			$collection = new \jcf\components\collection\Just_Field_Collection();
+		if ( !$model->isNew && $field->collection_id ) {
+			$collection = new \jcf\components\collection\JustField_Collection();
 			$collection->setPostType($field->post_type);
 			$collection->setFieldset($field->fieldset_id);
 			$collection->setId($field->collection_id);

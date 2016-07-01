@@ -1,4 +1,4 @@
-<div class="jcf_shortcodes_tooltip" >
+<div class="jcf_shortcodes_tooltip">
 	<div class="jcf_inner_box">
 		<h3 class="header"><?php _e('Usage guidelines for field ', \JustCustomFields::TEXTDOMAIN); ?>
 			<span class="field-name"></span> 

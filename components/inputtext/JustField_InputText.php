@@ -2,9 +2,9 @@
 
 namespace jcf\components\inputtext;
 
-use jcf\models;
+use jcf\core;
 
-class Just_Field_InputText extends models\Just_Field
+class JustField_InputText extends core\JustField
 {
 
 	public function __construct()

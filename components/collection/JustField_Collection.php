@@ -11,7 +11,7 @@ use jcf\core;
  * @package default
  * @author Kirill samojlenko
  */
-class Just_Field_Collection extends models\Just_Field
+class JustField_Collection extends core\JustField
 {
 	public static $compatibility = "4.0+";
 	public static $currentCollectionFieldKey = 0;
@@ -86,7 +86,9 @@ class Just_Field_Collection extends models\Just_Field
 									<span class="dashicons dashicons-trash"></span>
 								</h3>
 								<div class="collection_field_group_entry">
-									<?php foreach ( $this->instance['fields'] as $field_id => $field ) : ?>
+									<?php foreach ( $this->instance['fields'] as $field_id => $field ) :
+										if ( !$field['enabled'] ) continue;
+										?>
 										<div class="collection_field_border jcf_collection_<?php echo (intval($field['field_width']) ? $field['field_width'] : '100'); ?>">
 											<?php
 											$field_model->field_id = $field_id;
@@ -287,16 +289,17 @@ class Just_Field_Collection extends models\Just_Field
 			<h3>
 				<span class="dashicons dashicons-editor-justify"></span>
 				<span class="collection_group_title">
-		<?php echo $collection->instance['title'] . ' Item'; ?>
+					<?php echo $collection->instance['title'] . ' Item'; ?>
 				</span>
 				<span class="dashicons dashicons-trash"></span>
-
 			</h3>
 			<div class="collection_field_group_entry">
 				<?php
 				foreach ( $collection->instance['fields'] as $field_id => $field ) :
+					if ( !$field['enabled'] ) continue;
+
 					$model->field_id = $field_id;
-					$model->collection_id = $this->id;
+					$model->collection_id = $collection->id;
 					$model->fieldset_id = $this->fieldsetId;
 					$field_obj = core\JustFieldFactory::create($model);
 					$field_obj->setSlug($field['slug']);
@@ -304,7 +307,7 @@ class Just_Field_Collection extends models\Just_Field
 					$field_obj->isPostEdit = true;
 					?>
 					<div class="collection_field_border jcf_collection_<?php echo ( intval($field['field_width']) ? $field['field_width'] : '100' ); ?>">
-					<?php echo $field_obj->field(); ?>
+						<?php echo $field_obj->field(); ?>
 					</div>
 				<?php endforeach; ?>
 				<div class="clr"></div>

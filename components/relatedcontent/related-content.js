@@ -16,6 +16,7 @@ jQuery(document).ready(function() {
   node.find('div.jcf-relatedcontent-field a.jcf_delete').live('click', function() {
     var row = jQuery(this).parents('div.jcf-relatedcontent-row:first');
     row.find('div.jcf-relatedcontent-container').css({'opacity': 0.3});
+    row.find('div.jcf-relatedcontent-container .jcf_delete').hide();
     row.find('div.jcf-delete-layer')
         .show()
         .find('input:hidden').val('1');
@@ -25,6 +26,7 @@ jQuery(document).ready(function() {
   node.find('div.jcf-relatedcontent-field a.jcf_cancel').live('click', function() {
     var row = jQuery(this).parents('div.jcf-relatedcontent-row:first');
     row.find('div.jcf-relatedcontent-container').css({'opacity': 1});
+    row.find('div.jcf-relatedcontent-container .jcf_delete').show();
     row.find('div.jcf-delete-layer')
         .hide()
         .find('input:hidden').val('0');
@@ -68,12 +70,7 @@ jQuery(document).ready(function() {
       select: function( event, ui ) {
         input_id.val(ui.item.id);
       },
-      search: function( event, ui ) {
-        input_id.parent().append('<span class="loading">loading...</span>');
-      },
       open: function( event, ui ) {
-        input_id.parent().find('span.loading').remove();
-
         // mark in dropdown list query
         var term = jQuery(input).val();
         var term_re = term.replace(/\s/g, '\\s').replace(/\(/g, '\\(').replace(/\)/g, '\\)').replace(/\./g, '\\.').replace(/\*/g, '\\*');

@@ -2,12 +2,12 @@
 
 namespace jcf\components\simplemedia;
 
-use jcf\models;
+use jcf\core;
 
 /**
  * 	Simple Upload media field
  */
-class Just_Field_SimpleMedia extends models\Just_Field
+class JustField_SimpleMedia extends core\JustField
 {
 	public static $compatibility = "4.0+";
 
@@ -23,7 +23,6 @@ class Just_Field_SimpleMedia extends models\Just_Field
 	 */
 	public function field()
 	{
-		$del_image = WP_PLUGIN_URL . '/just-custom-fields/components/simplemedia/assets/jcf-delimage.png';
 		$noimage = $image = WP_PLUGIN_URL . '/just-custom-fields/components/simplemedia/assets/jcf-noimage100x77.jpg';
 		$delete_class = ' jcf-hide';
 		$upload_type = $this->instance['type'];
@@ -49,7 +48,9 @@ class Just_Field_SimpleMedia extends models\Just_Field
 						<div class="jcf-simple-container">
 						<?php if ( $upload_type == 'image' ) : ?>
 							<div class="jcf-simple-image">
-								<a href="<?php echo $link; ?>" class="" target="_blank"><img src="<?php echo ((!empty($link) && $link != '#') ? $link : $noimage); ?>" height="77" alt="" /></a>
+								<a href="<?php echo $link; ?>" class="" target="_blank">
+									<img src="<?php echo ((!empty($link) && $link != '#') ? $link : $noimage); ?>" data-noimage="<?php echo $noimage; ?>" height="77" alt="" />
+								</a>
 							</div>
 						<?php endif; ?>
 							<div class="jcf-simple-file-info">
@@ -63,7 +64,7 @@ class Just_Field_SimpleMedia extends models\Just_Field
 								   data-selected_id="<?php echo $this->getFieldId('uploaded_file'); ?>" 
 								   data-uploader_title="<?php echo $upload_text; ?>" 
 								   data-media_type="<?php echo ($upload_type == 'image' ? $upload_type : ''); ?>"
-								   data-uploader_button_text="<?php echo $upload_text; ?>"><?php echo $upload_text; ?></a>
+								   data-uploader_button_text="<?php echo esc_attr($upload_text); ?>"><?php echo $upload_text; ?></a>
 								<script type="text/javascript">
 									//create modal upload pop-up to select Media Files
 									jQuery(document).ready(function() {
@@ -80,10 +81,6 @@ class Just_Field_SimpleMedia extends models\Just_Field
 								<a href="#" class="button button-large jcf_simple_delete<?php echo $delete_class; ?>" data-field_id="<?php echo $this->getFieldId('uploaded_file'); ?>"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a>
 							</div>
 						</div>
-						<div class="jcf-delete-layer">
-							<img src="<?php echo $del_image; ?>" alt="" />
-							<a href="#" class="button button-large jcf_simple_cancel" data-field_id="<?php echo $this->getFieldId('uploaded_file'); ?>"><?php _e('Undo delete', \JustCustomFields::TEXTDOMAIN); ?></a><br/>
-						</div>
 					</div>
 				</div>
 
@@ -93,7 +90,6 @@ class Just_Field_SimpleMedia extends models\Just_Field
 			<?php echo $this->fieldOptions['after_widget']; ?>
 		</div>
 		<?php
-		return true;
 	}
 
 	/**
@@ -101,14 +97,12 @@ class Just_Field_SimpleMedia extends models\Just_Field
 	 */
 	public function form()
 	{
-
 		//Defaults
 		$instance = wp_parse_args((array) $this->instance, array( 'title' => '', 'type' => 'file', 'autoresize' => '',
 			'description' => '' ));
 		$instance['type'] = (isset($this->instance['type'])) ? $this->instance['type'] : 'file';
 		$title = esc_attr($instance['title']);
 		$type = $instance['type'];
-		$autoresize = esc_attr($instance['autoresize']);
 		$description = esc_html($instance['description']);
 		?>
 		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> 
@@ -172,6 +166,21 @@ class Just_Field_SimpleMedia extends models\Just_Field
 	{
 		wp_register_style('jcf_simplemedia', WP_PLUGIN_URL . '/just-custom-fields/components/simplemedia/assets/simplemedia.css', array( 'thickbox' ));
 		wp_enqueue_style('jcf_simplemedia');
+	}
+
+	/**
+	 * print field values inside the shortcode
+	 *
+	 * @params array $args	shortcode args
+	 */
+	public function shortcodeValue( $args )
+	{
+		if ( empty($this->entry) ) return '';
+
+		$size = isset($args['size'])? $args['size'] : 'thumbnail';
+		$value = wp_get_attachment_image($this->entry, $size);
+
+		return $args['before_value'] . $value . $args['after_value'];
 	}
 
 }

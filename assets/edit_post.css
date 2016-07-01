@@ -77,10 +77,10 @@ div.jcf_edit_field a:hover{
 	color:#D54E21;
 }
 .postbox div.form-field .jcf-field-container {
-	-moz-border-radius:4px 4px 4px 4px;
-	border-radius:11px 11px 11px 11px;
+	-moz-border-radius:5px 5px 5px 5px;
+	border-radius:5px 5px 5px 5px;
 	border:1px solid #DFDFDF;
-	padding:5px 5px 40px;
+	padding:5px 5px 0px;
 	background:#fff;
 }
 div.jcf_edit_field .wp-editor-wrap{
@@ -197,3 +197,5 @@ span.jcf_copied_to_clip{
 	font-weight: normal;
 	color: #212121;
 }
+.jcf_edit_field .wp-editor-tools { left:25%; }
+.jcf_edit_field.field_datepicker .dashicons { line-height: 28px; }
