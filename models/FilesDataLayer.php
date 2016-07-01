@@ -113,7 +113,7 @@ class FilesDataLayer extends core\DataLayer
 				break;
 
 			case models\Settings::CONF_SOURCE_FS_GLOBAL:
-				$path = get_home_path() . 'wp-content/jcf-settings/jcf_settings.json';
+				$path = WP_CONTENT_DIR . '/jcf-settings/jcf_settings.json';
 				break;
 
 			default:

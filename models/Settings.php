@@ -94,7 +94,6 @@ class Settings extends core\Model
 			'empty_source' => __('<strong>Settings storage update FAILED!</strong>. Choose an option for the data storage', \JustCustomFields::TEXTDOMAIN),
 			'fs_theme_not_writable' => __('<strong>Settings storage update FAILED!</strong>. Check writable permissions of directory ' . get_stylesheet_directory() . '/jcf-settings/', \JustCustomFields::TEXTDOMAIN),
 			'fs_global_not_writable' => __('<strong>Settings storage update FAILED!</strong>. Check writable permissions of directory ' . get_home_path() . 'wp-content/jcf-settings/', \JustCustomFields::TEXTDOMAIN),
-			'ms_settings_conflict' => __('<strong>Settings storage update FAILED!</strong>. Your MultiSite Settings do not allow to set global storage in FileSystem', \JustCustomFields::TEXTDOMAIN),
 
 			'empty_ms' => __('<strong>MultiSite settings update FAILED!</strong> Choose an option for the multisite.', \JustCustomFields::TEXTDOMAIN),
 
@@ -123,10 +122,6 @@ class Settings extends core\Model
 			$this->addError('fs_global_not_writable');
 		}
 
-		if ( MULTISITE && ($this->network != self::CONF_MS_NETWORK && $this->source == self::CONF_SOURCE_FS_GLOBAL) ) {
-			$this->addError('ms_settings_conflict');
-		}
-
 		return ! $this->hasErrors();
 	}
 
@@ -140,7 +135,7 @@ class Settings extends core\Model
 			return false;
 
 		if ( empty($this->network) ) {
-			$this->addError('empty_ms');
+			$this->network = self::CONF_MS_SITE;
 		}
 
 		return ! $this->hasErrors();
