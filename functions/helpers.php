@@ -60,6 +60,31 @@ function jcf_get_post_type_icon( $post_type ) {
 }
 
 /**
+ * Similar to WP get_page_templates(), but searches more folder levels
+ * Required to support _jmvt theme boilerplate
+ *
+ * @return array  updated page templates array
+ */
+function jcf_get_page_templates( $page_templates = array() ) {
+	$deep_templates = wp_cache_get( 'jcf_page_deep2_templates', 'themes' );
+	if ( ! is_array( $deep_templates ) ) {
+		$wp_theme = wp_get_theme();
+		$files = $wp_theme->get_files('php', 2);
+
+		foreach ( $files as $file => $full_path ) {
+			if ( ! preg_match( '|Template\sName:(.*)$|mi', file_get_contents( $full_path ), $header ) )
+				continue;
+			$deep_templates[ $file ] = _cleanup_header_comment( $header[1] );
+		}
+
+		wp_cache_add( 'jcf_page_deep2_templates', $deep_templates, 'themes' );
+	}
+
+	$page_templates = array_merge($page_templates, $deep_templates);
+	return $page_templates;
+}
+
+/**
  * 	javascript localization
  */
 function jcf_get_language_strings() {
@@ -71,6 +96,8 @@ function jcf_get_language_strings() {
 		'delete' => __('Delete', \JustCustomFields::TEXTDOMAIN),
 		'confirm_field_delete' => __('Are you sure you want to delete selected field?', \JustCustomFields::TEXTDOMAIN),
 		'confirm_fieldset_delete' => __("Are you sure you want to delete the fieldset?\nAll fields will be also deleted!", \JustCustomFields::TEXTDOMAIN),
+		'err_fieldset_visibility_invalid' => __('You should select Taxonomy term to continue.', \JustCustomFields::TEXTDOMAIN),
+		'err_fieldset_visibility_invalid_page' => __('You should select Taxonomy term or Page template to continue.', \JustCustomFields::TEXTDOMAIN),
 		'select_image' => __('Select', \JustCustomFields::TEXTDOMAIN),
 		'update_image' => __('Update Image', \JustCustomFields::TEXTDOMAIN),
 		'update_file' => __('Update File', \JustCustomFields::TEXTDOMAIN),

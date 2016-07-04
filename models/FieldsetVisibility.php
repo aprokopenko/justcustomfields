@@ -9,15 +9,23 @@ class FieldsetVisibility extends core\Model
 {
 	const SCENARIO_CREATE = 'create';
 	const SCENARIO_UPDATE = 'update';
+
 	const BASEDON_PAGE_TPL = 'page_template';
 	const BASEDON_TAXONOMY = 'taxonomy';
 
+	const VISIBILITY_SHOW = 'show';
+	const VISIBILITY_HIDE = 'hide';
+
+	const JOIN_AND = 'and';
+	const JOIN_OR = 'or';
+
 	public $scenario = false;
 	public $post_type;
+	public $based_on;
 	public $fieldset_id;
 	public $rule_id;
 	public $rule;
-	public $visibility_rules;
+	public $rule_data;
 	public $taxonomy;
 	public $term;
 
@@ -41,12 +49,29 @@ class FieldsetVisibility extends core\Model
 			foreach ( $visibility_rules[$f_id] as $key => $rule ) {
 				if ( $rule['based_on'] !== self::BASEDON_TAXONOMY ) continue;
 
-				$taxonomy_terms = array();
+				$taxonomy = get_taxonomy( $rule['rule_taxonomy'] );
+				if ( empty($taxonomy) ) {
+					unset($visibility_rules[$f_id][$key]);
+					continue;
+				}
+
+				$taxo_terms = array();
+				$taxo_term_ids = array();
+				$taxo_term_names = array();
 
 				foreach ( $rule['rule_taxonomy_terms'] as $term_id ) {
-					$taxonomy_terms[] = get_term_by('id', $term_id, $rule['rule_taxonomy']);
+					/* @var $term \WP_Term */
+					$term = get_term_by('id', $term_id, $rule['rule_taxonomy']);
+					if ( empty($term) ) continue;
+					
+					$taxo_terms[] = $term;
+					$taxo_term_ids[] = $term_id;
+					$taxo_term_names[] = $term->name;
 				}
-				$visibility_rules[$f_id][$key]['rule_taxonomy_terms'] = $taxonomy_terms;
+				$visibility_rules[$f_id][$key]['taxonomy'] = $taxonomy;
+				$visibility_rules[$f_id][$key]['terms'] = $taxo_terms;
+				$visibility_rules[$f_id][$key]['term_ids'] = $taxo_term_ids;
+				$visibility_rules[$f_id][$key]['term_names'] = $taxo_term_names;
 			}
 		}
 		return $visibility_rules;
@@ -66,8 +91,8 @@ class FieldsetVisibility extends core\Model
 		$output['scenario'] = $this->scenario;
 
 		if ( !empty($this->scenario) && $this->scenario == self::SCENARIO_UPDATE ) {
-			$fieldsets = $this->_dL->getFieldsets();
-			$visibility_rule = $fieldsets[$this->post_type][$this->fieldset_id]['visibility_rules'][$this->rule_id - 1];
+
+			$visibility_rule = $this->_getFieldsetVisibility($this->fieldset_id, $this->rule_id);
 
 			if ( empty($visibility_rule) ) {
 				$this->addError(__('Visibility rule not found.', \JustCustomFields::TEXTDOMAIN));
@@ -79,11 +104,11 @@ class FieldsetVisibility extends core\Model
 				$output['terms'] = $terms;
 			}
 			else {
-				$templates = get_page_templates();
+				$templates = jcf_get_page_templates();
 				$output['templates'] = $templates;
 			}
 
-			$output['rule_id'] = $this->rule_id - 1;
+			$output['rule_id'] = $this->rule_id;
 			$output['fieldset_id'] = $this->fieldset_id;
 			$output['visibility_rule'] = $visibility_rule;
 		}
@@ -94,10 +119,10 @@ class FieldsetVisibility extends core\Model
 	/**
 	 * Get visibility rules for fieldset with $this->_request
 	 */
-	public function getOptions()
+	public function getBasedOnOptions()
 	{
 		if ( $this->based_on == self::BASEDON_PAGE_TPL ) {
-			$options = get_page_templates();
+			$options = jcf_get_page_templates();
 		}
 		else {
 			$options = get_object_taxonomies($this->post_type, 'objects');
@@ -112,19 +137,15 @@ class FieldsetVisibility extends core\Model
 	 */
 	public function update()
 	{
-		$fieldsets = $this->_dL->getFieldsets();
-		$visibility_rules = $fieldsets[$this->post_type][$this->fieldset_id]['visibility_rules'];
+		$visibility_rules = $this->_getFieldsetVisibility($this->fieldset_id);
 
-		if ( !empty($this->rule_id) ) {
-			$visibility_rules[$this->rule_id - 1] = $this->visibility_rules;
-		}
-		else {
-			$visibility_rules[] = $this->visibility_rules;
-		}
+		if ( empty($this->rule_id) ) $this->rule_id = time();
 
-		$fieldsets[$this->post_type][$this->fieldset_id]['visibility_rules'] = $visibility_rules;
+		$this->rule_data['rule_id'] = $this->rule_id;
+		$visibility_rules[$this->rule_id] = $this->rule_data;
 
-		if ( !$this->_save($fieldsets) ) {
+		$saved = $this->_saveFieldsetVisibility($this->fieldset_id, $visibility_rules);
+		if ( !$saved ) {
 			$this->addError(__('Visibility rule not updated.', \JustCustomFields::TEXTDOMAIN));
 			return false;
 		}
@@ -138,17 +159,17 @@ class FieldsetVisibility extends core\Model
 	 */
 	public function delete()
 	{
-		$fieldsets = $this->_dL->getFieldsets();
-		unset($fieldsets[$this->post_type][$this->fieldset_id]['visibility_rules'][$this->rule_id - 1]);
-		sort($fieldsets[$this->post_type][$this->fieldset_id]['visibility_rules']);
+		$visibility_rules = $this->_getFieldsetVisibility($this->fieldset_id);
+		if ( isset($visibility_rules[$this->rule_id]) )
+			unset($visibility_rules[$this->rule_id]);
 
-		if ( !$this->_save($fieldsets) ) {
+		$saved = $this->_saveFieldsetVisibility($this->fieldset_id, $visibility_rules);
+		if ( !$saved ) {
 			$this->addError(__('Visibility rule not deleted.', \JustCustomFields::TEXTDOMAIN));
 			return false;
 		}
 
-		$rules = $fieldsets[$this->post_type][$this->fieldset_id]['visibility_rules'];
-		return !empty($rules) ? $rules : true;
+		return !empty($visibility_rules) ? $visibility_rules : true;
 	}
 
 	/**
@@ -178,8 +199,52 @@ class FieldsetVisibility extends core\Model
 	}
 
 	/**
+	 * Get visibility rules for fieldset $fieldset_id
+	 * Use current model post_type
+	 *
+	 * @param string $fieldset_id
+	 * @param integer|null $rule_id
+	 * @return mixed
+	 */
+	protected function _getFieldsetVisibility( $fieldset_id, $rule_id = null )
+	{
+		$fieldsets = $this->_dL->getFieldsets();
+
+		// if we take only fieldset settings - return it
+		if ( is_null($rule_id) ) {
+			if ( isset($fieldsets[$this->post_type][$fieldset_id]['visibility_rules']) )
+				return $fieldsets[$this->post_type][$fieldset_id]['visibility_rules'];
+		}
+
+		// if we search for some specific rule
+		if ( !is_null($rule_id)
+			&& isset($fieldsets[$this->post_type][$fieldset_id]['visibility_rules'][$rule_id])
+		) {
+			return $fieldsets[$this->post_type][$fieldset_id]['visibility_rules'][$rule_id];
+		}
+
+		return array();
+	}
+
+	/**
+	 * Save visibility rules for fieldset $fieldset_id
+	 * Use current model post_type
+	 *
+	 * @param string $fieldset_id
+	 * @return boolean
+	 */
+	protected function _saveFieldsetVisibility( $fieldset_id, $rules )
+	{
+		$fieldsets = $this->_dL->getFieldsets();
+		$fieldsets[$this->post_type][$fieldset_id]['visibility_rules'] = $rules;
+		return $this->_save($fieldsets);
+	}
+
+
+	/**
 	 * Save visibility settings
 	 * @param array $fieldsets
+	 * @return boolean
 	 */
 	protected function _save( $fieldsets )
 	{

@@ -126,7 +126,7 @@ function initFieldsetsEdit() {
     }
   });
 
-  // choose base for visibility rule
+  // choose base for visibility rule (page template/taxonomy)
   jQuery('#rule-based-on').live('change', function() {
     var data = {
       'based_on': jQuery(this).val(),
@@ -153,7 +153,9 @@ function initFieldsetsEdit() {
   });
 
   //parse rule block for saving
-  jQuery('.save_rule_btn, .update_rule_btn').live('click', function() {
+  jQuery('.save_rule_btn, .update_rule_btn').live('click', function(e) {
+    e.preventDefault();
+
     var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
     var rule_id = jQuery(this).data('rule_id');
 
@@ -161,20 +163,36 @@ function initFieldsetsEdit() {
       'action': 'jcf_save_visibility_rules',
       'fieldset_id': f_id,
       'rule_id': rule_id,
-      'visibility_rules': {}
+      'rule_data': {}
     };
 
-    data.visibility_rules = jcf_form_serialize_object(jQuery(this).parent('fieldset'));
+    data.rule_data = jcf_form_serialize_object(jQuery(this).parent('fieldset'));
 
-    jcf_ajax(data, 'html', null, function( response ) {
-      jQuery('div.rules').remove();
-      jQuery('div#visibility').append(response);
-      jQuery('fieldset#fieldset_visibility_rules').remove();
-    });
+    // check the data is valid
+    if ( (data.rule_data.rule_taxonomy_terms && data.rule_data.rule_taxonomy_terms.length)
+            || (data.rule_data.rule_templates && data.rule_data.rule_templates.length)
+    ) {
+      jcf_ajax(data, 'html', null, function( response ) {
+        jQuery('div.rules').remove();
+        jQuery('div#visibility').append(response);
+        jQuery('fieldset#fieldset_visibility_rules').remove();
+      });
+      return;
+    }
+
+    // data is not valid - show error
+    var msg_invalid_input = jcf_textdomain.err_fieldset_visibility_invalid;
+    if ( jQuery('.jcf_edit_fieldset select[name=based_on]').size() ) {
+      msg_invalid_input = jcf_textdomain.err_fieldset_visibility_invalid_page;
+    }
+    alert( msg_invalid_input );
+    return;
   });
 
   // add form for new visibility rule
-  jQuery('.add_rule_btn').live('click', function() {
+  jQuery('.add_rule_btn').live('click', function(e) {
+    e.preventDefault();
+
     var data = {
       'action': 'jcf_add_visibility_rules_form',
       'scenario': 'create'
@@ -186,7 +204,8 @@ function initFieldsetsEdit() {
   });
 
   // delete visibility rule
-  jQuery('a.remove-rule').live('click', function() {
+  jQuery('a.remove-rule').live('click', function(e) {
+    e.preventDefault();
     var rule_id = jQuery(this).data('rule_id');
     var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
     var data = {
@@ -202,7 +221,8 @@ function initFieldsetsEdit() {
   });
 
   // edit visibility rule
-  jQuery('a.edit-rule').live('click', function() {
+  jQuery('a.edit-rule').live('click', function(e) {
+    e.preventDefault();
     var rule_id = jQuery(this).data('rule_id');
     var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
     var data = {
@@ -221,19 +241,23 @@ function initFieldsetsEdit() {
   });
 
   // show/hide visibility options for fieldset
-  jQuery('a.visibility_toggle').live('click', function() {
+  jQuery('a.visibility_toggle').live('click', function(e) {
+    e.preventDefault();
     jQuery('#visibility').toggle();
     jQuery(this).find('span').toggleClass('dashicons-arrow-down-alt2');
     jQuery(this).find('span').toggleClass('dashicons-arrow-up-alt2');
   });
 
   // cancel form for add or edit visibility rule
-  jQuery('.cancel_rule_btn').live('click', function() {
+  jQuery('.cancel_rule_btn').live('click', function(e) {
+    e.preventDefault();
     jQuery(this).parents('fieldset#fieldset_visibility_rules').remove();
     jQuery('.add_rule_btn').show();
   });
 
-  jQuery('.termadd').live('click', function() {
+  // adding new term for visility
+  jQuery('.termadd').live('click', function(e) {
+    e.preventDefault();
     if ( !jQuery('#new-term').attr('data-term_id') && !jQuery('#new-term').attr('data-term_label') ) {
       var taxonomy = jQuery('.taxonomy-options #rule-taxonomy').val();
       var data = {

@@ -23,6 +23,8 @@ class PostTypeController extends core\Controller
 
 		add_action('add_meta_boxes', array( $this, 'actionRender' ), 10, 1);
 		add_action('save_post', array( $this, 'actionSave' ), 10, 2);
+
+		// init shortcode
 		add_shortcode('jcf-value', array( $this, 'actionGetShortcodeValue' ));
 	}
 
@@ -82,7 +84,7 @@ class PostTypeController extends core\Controller
 			}
 			?>
 			<script>
-				var fieldsets_visibility_rules = <?php echo json_encode($visibility_rules); ?>;
+				var jcf_fieldsets_visibility_rules = <?php echo json_encode($visibility_rules); ?>;
 			</script>
 			<?php
 		}
@@ -182,7 +184,7 @@ class PostTypeController extends core\Controller
 	public function addScripts()
 	{
 		wp_register_script(
-				'jcf_edit_post', WP_PLUGIN_URL . '/just-custom-fields/assets/edit_post.js', array( 'jquery' )
+				'jcf_edit_post', WP_PLUGIN_URL . '/just-custom-fields/assets/edit_post.js', array( 'jquery', 'tags-box' )
 		);
 		wp_enqueue_script('jcf_edit_post');
 

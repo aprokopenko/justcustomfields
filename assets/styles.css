@@ -274,6 +274,12 @@ fieldset#fieldset_visibility_rules{
 	border: 1px solid #ddd;
 	padding: 10px;
 }
+#fieldset_visibility_rules select{
+	width:40%;
+}
+.visibility-terms-ai-wrapper .ui-autocomplete-input {
+	width:40%;
+}
 a.visibility_toggle{
 	text-decoration: none;
 	color: #000000;
@@ -281,14 +287,22 @@ a.visibility_toggle{
 a:focus{
 	outline:none;
 }
+.visibility-terms-ai-wrapper{
+	margin:-10px 0 0px;
+	padding: 0 0 15px;
+}
+
 ul.visibility-list-items{
 	width: 100%;
+	overflow: hidden;
+	margin:-10px 0 0;
 }
 ul.visibility-list-items li{
-	width: 24%;
+	width: 32%;
 	float: left;
 	padding-right:1%;
 }
+ul.visibility-list-items.visibility-list-items-tpl li { width:49%; }
 .row-actions .delete_collection a{
 	color: #a00;
 }

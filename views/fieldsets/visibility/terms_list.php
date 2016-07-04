@@ -1,6 +1,5 @@
 <?php $taxonomy = get_taxonomy($terms[0]->taxonomy); ?>
 <?php if ( !empty($terms) ): ?>
-	<p>
 	<p><?php _e('Choose ' . $taxonomy->labels->name . ':', \JustCustomFields::TEXTDOMAIN); ?></p>
 	<?php if ( count($terms) <= 20 ) : ?>
 		<ul class="visibility-list-items">
@@ -16,10 +15,10 @@
 		endforeach; ?>
 		</ul>
 	<?php else: ?>
-		<p>
+		<div class="visibility-terms-ai-wrapper">
 			<input type="text" id="new-term" name="newterm" class="newterm form-input-tip" size="16" autocomplete="on" value="">
 			<input type="button" class="button termadd" value="Add">
-		</p>
+		</div>
 		<ul class="visibility-list-items">
 			<?php if ( !empty($current_term) ) : ?>
 			<?php $i = 1;
@@ -38,7 +37,6 @@
 		</ul>
 	<?php endif; ?>
 	<br class="clear">
-	</p>
 <?php else: ?>
 	<p><?php _e('No available terms', \JustCustomFields::TEXTDOMAIN); ?></p>
 <?php endif; ?>

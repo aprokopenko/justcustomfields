@@ -133,8 +133,6 @@ class FieldsetController extends core\Controller
 		return $this->_renderAjax(null, 'json', array( 'status' => !empty($success), 'error' => $model->getErrors() ));
 	}
 
-	// TODO: check fieldset visibility feature (all actions)
-
 	/**
 	 * add form for new rule functions callback
 	 */
@@ -160,7 +158,7 @@ class FieldsetController extends core\Controller
 	{
 		$model = new models\FieldsetVisibility();
 
-		if ( $model->load($_POST) && $result = $model->getOptions() ) {
+		if ( $model->load($_POST) && $result = $model->getBasedOnOptions() ) {
 			$template = 'taxonomies_list';
 			$options = array( 'taxonomies' => $result );
 
