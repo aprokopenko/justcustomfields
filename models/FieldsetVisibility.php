@@ -44,7 +44,7 @@ class FieldsetVisibility extends core\Model
 
 			if ( empty($fieldset['visibility_rules']) ) continue;
 
-			$visibility_rules[$f_id] = $fieldset['visibility_rules'];
+			$visibility_rules[$f_id] = array_values($fieldset['visibility_rules']);
 
 			foreach ( $visibility_rules[$f_id] as $key => $rule ) {
 				if ( $rule['based_on'] !== self::BASEDON_TAXONOMY ) continue;
@@ -63,7 +63,7 @@ class FieldsetVisibility extends core\Model
 					/* @var $term \WP_Term */
 					$term = get_term_by('id', $term_id, $rule['rule_taxonomy']);
 					if ( empty($term) ) continue;
-					
+
 					$taxo_terms[] = $term;
 					$taxo_term_ids[] = $term_id;
 					$taxo_term_names[] = $term->name;
