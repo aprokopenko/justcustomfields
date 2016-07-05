@@ -77,6 +77,7 @@ var jcf_visibility_rules_taxonomies = {
    */
 
   function jcf_init_visibility_rules() {
+    if ( typeof(jcf_fieldsets_visibility_rules) == 'undefined' ) return;
 
     // prepare object with taxonomy information,
     // to know which taxonomies are involved in visibility settings
