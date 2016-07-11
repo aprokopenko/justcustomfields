@@ -83,7 +83,7 @@ class AdminController extends core\Controller
 	public function addStyles()
 	{
 		$slug = \JustCustomFields::$pluginName;
-		wp_register_style($slug, WP_PLUGIN_URL . '/just-custom-fields/assets/styles.css', ['media-views']);
+		wp_register_style($slug, WP_PLUGIN_URL . '/just-custom-fields/assets/styles.css', array( 'media-views' ));
 		wp_enqueue_style($slug);
 	}
 	
