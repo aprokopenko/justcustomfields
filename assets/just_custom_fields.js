@@ -511,7 +511,11 @@ function initImport() {
       processData: false,
       data: query,
       success: function( responce ) {
-        modalWindow(responce);
+        if ( 'object' == typeof(responce) && responce.error ) {
+          alert(responce.error[0]);
+        } else {
+          modalWindow(responce);
+        }
       }
     });
   });

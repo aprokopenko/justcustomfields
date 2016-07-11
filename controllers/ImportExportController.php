@@ -46,7 +46,7 @@ class ImportExportController extends core\Controller
 			return $this->_renderAjax('import_export/import', 'html', array('import_data' => $import_data));
 		}
 
-		return $this->_renderAjax(array( 'status' => !empty($all_fields), 'error' => $model->getErrors() ), 'json');
+		return $this->_renderAjax(null, 'json', array( 'status' => !empty($import_data), 'error' => $model->getErrors() ));
 	}
 
 	/**
@@ -82,7 +82,8 @@ class ImportExportController extends core\Controller
 			return $this->_renderAjax(null, 'json', $data);
 		}
 
-		return $this->_renderAjax(null, 'json', array( 'status' => !empty($data), 'error' => $model->getErrors() ));
+		// export failed - all we can is to redirect back to our page
+		wp_redirect( get_admin_url(null, 'options-general.php?page=jcf_import_export') );
 	}
 
 }

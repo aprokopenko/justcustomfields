@@ -26,7 +26,7 @@ class ImportExport extends core\Model
 		unlink($import_file);
 
 		if ( empty($data['post_types']) ) {
-			$error = __('<strong>Import FAILED!</strong> File do not contain fields settings data..', \JustCustomFields::TEXTDOMAIN);
+			$error = __('IMPORT FAILED! File do not contain fields settings data..', \JustCustomFields::TEXTDOMAIN);
 			$this->addError($error);
 			return;
 		}
@@ -43,13 +43,13 @@ class ImportExport extends core\Model
 	public function validateImportFile()
 	{
 		if ( empty($_FILES['import_data']['name']) ) {
-			$error = __('<strong>Import FAILED!</strong> Import file is missing.', \JustCustomFields::TEXTDOMAIN);
+			$error = __('IMPORT FAILED! Import file is missing.', \JustCustomFields::TEXTDOMAIN);
 			$this->addError($error);
 			return false;
 		}
 
 		if ( !is_readable($_FILES['import_data']['tmp_name']) ) {
-			$error = __('<strong>Import FAILED!</strong> Can\'t read uploaded file.', \JustCustomFields::TEXTDOMAIN);
+			$error = __('IMPORT FAILED! Can\'t read uploaded file.', \JustCustomFields::TEXTDOMAIN);
 			$this->addError($error);
 			return false;
 		}
@@ -57,7 +57,7 @@ class ImportExport extends core\Model
 		$path_info = pathinfo($_FILES['import_data']['name']);
 
 		if ( $path_info['extension'] !== 'json' ) {
-			$error = __('<strong>Import FAILED!</strong> Please upload correct file format.', \JustCustomFields::TEXTDOMAIN);
+			$error = __('IMPORT FAILED! Please upload correct file format.', \JustCustomFields::TEXTDOMAIN);
 			$this->addError($error);
 			return false;
 		}
@@ -145,8 +145,10 @@ class ImportExport extends core\Model
 	 */
 	public function export()
 	{
-		if ( empty($this->selected_data) || !is_array($this->selected_data) )
+		if ( empty($this->selected_data) || !is_array($this->selected_data) ) {
+			$this->addError(__('<strong>Export failed!</strong> Please select fields to export.', \JustCustomFields::TEXTDOMAIN));
 			return array();
+		}
 
 		$fieldsets_model = new models\Fieldset();
 		$fieldsets_data = $fieldsets_model->findAll();
