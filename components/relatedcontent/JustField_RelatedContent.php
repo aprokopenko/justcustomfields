@@ -60,7 +60,7 @@ class JustField_RelatedContent extends core\JustField
 			foreach ( $posts as $p ) {
 				$draft = ( $p->post_status == 'draft' ) ? ' (DRAFT)' : '';
 				$type_label = ( $post_type == 'any' ) ? ' / ' . $post_types[$p->post_type]->labels->singular_name : '';
-				$options["" . $p->ID . ""] = $p->post_title . $draft . $type_label;
+				$options["" . $p->ID . ""] = esc_attr($p->post_title . $draft . $type_label);
 			}
 		}
 		elseif ( $type == 'autocomplete' && !empty($this->entry[0]) ) {
