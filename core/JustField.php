@@ -582,7 +582,7 @@ class JustField
 	 */
 	public function shortcodeLabel( $args )
 	{
-		return $args['before_label'] . $this->instance['title'] . $args['after_label'];
+		return $args['before_label'] . esc_html($this->instance['title']) . $args['after_label'];
 	}
 
 	/**
@@ -592,6 +592,6 @@ class JustField
 	 */
 	public function shortcodeValue( $args )
 	{
-		return $args['before_value'] . $this->entry . $args['after_value'];
+		return $args['before_value'] . esc_html($this->entry) . $args['after_value'];
 	}
 }

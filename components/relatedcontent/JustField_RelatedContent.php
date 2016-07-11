@@ -82,7 +82,7 @@ class JustField_RelatedContent extends core\JustField
 		?>
 		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
 			<?php echo $this->fieldOptions['before_widget']; ?>
-				<?php echo $this->fieldOptions['before_title'] . $this->instance['title'] . $this->fieldOptions['after_title']; ?>
+				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
 
 				<div class="jcf-relatedcontent-field">
 				<?php foreach ( $entries as $key => $entry ) : ?>
@@ -124,7 +124,7 @@ class JustField_RelatedContent extends core\JustField
 				<?php endforeach; ?>
 
 				<?php if ( $this->instance['description'] != '' ): ?>
-					<p class="description"><?php echo $this->instance['description']; ?></p>
+					<p class="description"><?php echo esc_html($this->instance['description']); ?></p>
 				<?php endif; ?>
 
 				<a href="#" class="button button-small jcf_add_more"><?php _e('+ Add another', \JustCustomFields::TEXTDOMAIN); ?></a>

@@ -32,7 +32,7 @@ class JustField_SelectMultiple extends core\JustField
 		?>
 		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
 			<?php echo $this->fieldOptions['before_widget']; ?>
-				<?php echo $this->fieldOptions['before_title'] . $this->instance['title'] . $this->fieldOptions['after_title']; ?>
+				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
 				<div class="select_multiple_field">
 					<select name="<?php echo $this->getFieldName('val'); ?>[]" id="<?php echo $this->getFieldId('val'); ?>" multiple="multiple" style="height:200px; width:47%;">
 					<?php foreach ( $values as $key => $val ): ?>
@@ -41,7 +41,7 @@ class JustField_SelectMultiple extends core\JustField
 					</select>
 				</div>
 				<?php if ( $this->instance['description'] != '' ) : ?>
-					<p class="description"><?php echo $this->instance['description']; ?></p>
+					<p class="description"><?php echo esc_html($this->instance['description']); ?></p>
 				<?php endif; ?>
 			<?php echo $this->fieldOptions['after_widget']; ?>
 		</div>
@@ -132,6 +132,9 @@ class JustField_SelectMultiple extends core\JustField
 			if ( isset($options[$value]) ) {
 				$value = $options[$value];
 			}
+
+			$key = esc_attr($key);
+			$value = esc_html($value);
 			$html .= "<li class=\"jcf-item jcf-item-$key\">$value</li>\r\n";
 		}
 		$html .= '</ul>';

@@ -399,7 +399,7 @@ function initFieldsetFields() {
         }
       }
       var row = jQuery('#field_row_' + response.id);
-      row.find('strong a').text(response.instance.title);
+      row.find('td:eq(1) strong a').text(response.instance.title);
       if ( !response.collection_fields ) {
         // update fieldset row
         row.find('td:eq(2)').text(response.instance.slug);

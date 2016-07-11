@@ -34,7 +34,7 @@ class JustField_SimpleMedia extends core\JustField
 		?>
 		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
 			<?php echo $this->fieldOptions['before_widget']; ?>
-				<?php echo $this->fieldOptions['before_title'] . $this->instance['title'] . $this->fieldOptions['after_title']; ?>
+				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
 				<div class="jcf-simple-field jcf-simple-type-<?php echo $upload_type; ?> ">
 					<?php
 					if ( !empty($this->entry) ) {
@@ -85,7 +85,7 @@ class JustField_SimpleMedia extends core\JustField
 				</div>
 
 				<?php if ( $this->instance['description'] != '' ) : ?>
-					<p class="description"><?php echo $this->instance['description']; ?></p>
+					<p class="description"><?php echo esc_html($this->instance['description']); ?></p>
 				<?php endif; ?>
 			<?php echo $this->fieldOptions['after_widget']; ?>
 		</div>

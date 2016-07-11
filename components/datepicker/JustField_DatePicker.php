@@ -23,7 +23,7 @@ class JustField_DatePicker extends core\JustField
 		?>
 		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
 			<?php echo $this->fieldOptions['before_widget']; ?>
-				<?php echo $this->fieldOptions['before_title'] . $this->instance['title'] . $this->fieldOptions['after_title']; ?>
+				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
 				
 				<div>
 					<input id="<?php echo $this->getFieldId('val'); ?>" name="<?php echo $this->getFieldName('val'); ?>" type="text" value="<?php echo esc_attr($this->entry); ?>" size="14" style="width:150px;" />
@@ -33,7 +33,7 @@ class JustField_DatePicker extends core\JustField
 				<script type="text/javascript"><!--
 					jQuery(document).ready(function() {
 						jQuery("#<?php echo $this->getFieldId('val'); ?>").datepicker({
-							dateFormat: "<?php echo!empty($this->instance['date_format']) ? $this->instance['date_format'] : 'yy-mm-dd'; ?>"
+							dateFormat: "<?php echo!empty($this->instance['date_format']) ? esc_attr($this->instance['date_format']) : 'yy-mm-dd'; ?>"
 				<?php if ( !empty($this->instance['show_monthes']) ) echo ', changeMonth: true, changeYear: true'; ?>
 						});
 					});
@@ -54,7 +54,7 @@ class JustField_DatePicker extends core\JustField
 
 		$title = esc_attr($instance['title']);
 		$show_monthes = !empty($instance['show_monthes']) ? ' checked="checked" ' : '';
-		$date_format = !empty($instance['date_format']) ? $instance['date_format'] : 'yy-mm-dd';
+		$date_format = !empty($instance['date_format']) ? esc_attr($instance['date_format']) : 'yy-mm-dd';
 		?>
 		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 		<p><label for="<?php echo $this->getFieldId('show_monthes'); ?>"><input class="checkbox" id="<?php echo $this->getFieldId('show_monthes'); ?>" name="<?php echo $this->getFieldName('show_monthes'); ?>" type="checkbox" value="1" <?php echo $show_monthes; ?> /> <?php _e('Show month/year select boxes', \JustCustomFields::TEXTDOMAIN); ?></label></p>

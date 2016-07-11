@@ -22,12 +22,15 @@ class JustField_InputText extends core\JustField
 		?>
 		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
 			<?php echo $this->fieldOptions['before_widget']; ?>
-				<?php echo $this->fieldOptions['before_title'] . $this->instance['title'] . $this->fieldOptions['after_title']; ?>
+				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
 				
 				<br />
-				<input type="text" name="<?php echo $this->getFieldName('val'); ?>" id="<?php echo $this->getFieldId('val'); ?>" value="<?php echo esc_attr($this->entry); ?>"/>
+				<input type="text"
+					   name="<?php echo $this->getFieldName('val'); ?>"
+					   id="<?php echo $this->getFieldId('val'); ?>"
+					   value="<?php echo esc_attr($this->entry); ?>"/>
 				<?php if ( $this->instance['description'] != '' ) : ?>
-					<p class="description"><?php echo $this->instance['description']; ?></p>
+					<p class="description"><?php echo esc_html($this->instance['description']); ?></p>
 				<?php endif; ?>
 
 			<?php echo $this->fieldOptions['after_widget']; ?>

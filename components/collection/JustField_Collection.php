@@ -57,7 +57,7 @@ class JustField_Collection extends core\JustField
 		?>
 		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
 			<?php echo $this->fieldOptions['before_widget']; ?>
-				<?php echo $this->fieldOptions['before_title'] . $this->instance['title'] . $this->fieldOptions['after_title']; ?>
+				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
 
 				<?php if ( empty($this->instance['fields']) ) : ?>
 					<p class="error">Collection element has no fields registered. Please check component settings</p>
@@ -74,7 +74,7 @@ class JustField_Collection extends core\JustField
 										foreach ( $this->instance['fields'] as $field_id => $field ) {
 											if ( isset($field['group_title']) ) {
 												if ( isset($fields[$field['slug']]) )
-													$group_title = $group_title . ' : ' . $fields[$field['slug']];
+													$group_title = $group_title . ' : ' . esc_html($fields[$field['slug']]);
 												break;
 											}
 										}

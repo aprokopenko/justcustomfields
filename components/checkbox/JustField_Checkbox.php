@@ -37,7 +37,7 @@ class JustField_Checkbox extends core\JustField
 		?>
 		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
 			<?php echo $this->fieldOptions['before_widget']; ?>
-				<?php echo $this->fieldOptions['before_title'] . $this->instance['title'] . $this->fieldOptions['after_title']; ?>
+				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
 				
 				<div class="checkboxes-set">
 					<div class="checkbox-row">
@@ -56,7 +56,7 @@ class JustField_Checkbox extends core\JustField
 				</div>
 
 				<?php if ( !empty($this->instance['description']) ) : ?>
-					<p class="description"><?php echo $this->instance['description']; ?></p>
+					<p class="description"><?php echo esc_html($this->instance['description']); ?></p>
 				<?php endif; ?>
 			<?php echo $this->fieldOptions['after_widget']; ?>
 		</div>
@@ -154,6 +154,8 @@ class JustField_Checkbox extends core\JustField
 			if ( isset($options[$value]) ) {
 				$value = $options[$value];
 			}
+			$key = esc_attr($key);
+			$value = esc_html($value);
 			$html .= "<li class=\"jcf-item jcf-item-$key\">$value</li>\r\n";
 		}
 		$html .= '</ul>';

@@ -29,7 +29,7 @@ class JustField_Select extends core\JustField
 		?>
 		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
 			<?php echo $this->fieldOptions['before_widget']; ?>
-				<?php echo $this->fieldOptions['before_title'] . $this->instance['title'] . $this->fieldOptions['after_title']; ?>
+				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
 				<div class="select-field">
 					<select name="<?php echo $this->getFieldName('val'); ?>" id="<?php echo $this->getFieldId('val'); ?>" style="width: 47%;">
 						<?php if (!empty($this->instance['empty_option'])) : ?>
@@ -41,7 +41,7 @@ class JustField_Select extends core\JustField
 					</select>
 				</div>
 			<?php if ( !empty($this->instance['description']) ) : ?>
-				<p class="description"><?php echo $this->instance['description']; ?></p>
+				<p class="description"><?php echo esc_html($this->instance['description']); ?></p>
 			<?php endif; ?>
 			<?php echo $this->fieldOptions['after_widget']; ?>
 		</div>
@@ -133,7 +133,7 @@ class JustField_Select extends core\JustField
 		if ( isset($options[$this->entry]) ) {
 			$value = $options[$this->entry];
 		}
-		return $args['before_value'] . $value . $args['after_value'];
+		return $args['before_value'] . esc_html($value) . $args['after_value'];
 	}
 
 }

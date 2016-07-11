@@ -82,11 +82,8 @@ class PostTypeController extends core\Controller
 				}
 				add_meta_box('jcf_fieldset-' . $f_id, $fieldset['title'], array( $this, 'renderCustomField' ), $post_type, 'advanced', 'default', array( $fieldset ));
 			}
-			?>
-			<script>
-				var jcf_fieldsets_visibility_rules = <?php echo json_encode($visibility_rules); ?>;
-			</script>
-			<?php
+
+			wp_add_inline_script('jquery-core', 'var jcf_fieldsets_visibility_rules = ' . json_encode($visibility_rules) . ';', 'before');
 		}
 
 		return false;
