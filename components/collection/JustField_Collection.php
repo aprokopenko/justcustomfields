@@ -251,12 +251,18 @@ class JustField_Collection extends core\JustField
 	 */
 	public function shortcodeValue( $args )
 	{
+		$fields = $this->getCollectionFieldsSettings();
+		if ( empty($fields) ) return '';
+
+		$shortcode_value = array();
 		foreach ( $this->entry as $key => $entry_values ) {
-			foreach ( $entry_values as $field_slug => $field_value ) {
-				$field_mixed = str_replace('__', '-', str_replace('_field_', '', $field_slug));
+			foreach ( $fields as $field_slug => $field_settings ) {
+				if ( empty($field_settings['enabled']) ) continue;
+
 				$params = array(
 					'post_type' => $this->postType,
-					'field_type' => $field_mixed,
+					'field_id' => $field_settings['_id'],
+					'field_type' => isset($field_settings['field_type'])? $field_settings['field_type'] : '',
 					'fieldset_id' => '',
 					'collection_id' => $this->id,
 				);
@@ -264,11 +270,29 @@ class JustField_Collection extends core\JustField
 				$field_model->load($params) && $field_obj = core\JustFieldFactory::create($field_model);
 
 				$field_obj->setPostID($this->postID, $key);
-				$shortcode_value .= $field_obj->doShortcode($args);
+				$shortcode_value[] = $field_obj->doShortcode($args);
 				unset($field_obj);
 			}
 		}
-		return $args['before_value'] . $shortcode_value . $args['after_value'];
+		return $args['before_value'] . implode("\n", $shortcode_value) . $args['after_value'];
+	}
+
+	/**
+	 * Prepare the array of fields with "slug" as key
+	 *
+	 * @return array
+	 */
+	protected function getCollectionFieldsSettings()
+	{
+		if ( empty($this->instance['fields']) || !is_array($this->instance['fields']) ) return array();
+
+		$collection_fields = array();
+		foreach( $this->instance['fields'] as $field_id => $field ) {
+			$field['_id'] = $field_id;
+			$collection_fields[ $field['slug'] ] = $field;
+		}
+
+		return $collection_fields;
 	}
 
 	/**
