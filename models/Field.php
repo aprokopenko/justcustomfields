@@ -59,6 +59,7 @@ class Field extends core\Model
 
 	/**
 	 * Save new field
+	 * @return boolean
 	 */
 	public function save( $import = null )
 	{
@@ -70,6 +71,7 @@ class Field extends core\Model
 
 	/**
 	 * Delete field with $this->_request params
+	 * @return boolean
 	 */
 	public function delete()
 	{
@@ -80,6 +82,7 @@ class Field extends core\Model
 
 	/**
 	 * Sort fields with $this->_request params
+	 * @return boolean
 	 */
 	public function sort()
 	{
@@ -104,6 +107,7 @@ class Field extends core\Model
 
 	/**
 	 * Sort sollection fields with $this->_request params
+	 * @return boolean
 	 */
 	public function sortCollection()
 	{

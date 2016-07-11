@@ -3,7 +3,7 @@
 namespace jcf\core;
 
 /**
- * 	Main Model
+ * Main Model
  */
 class Model
 {

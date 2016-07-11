@@ -28,6 +28,8 @@ class ImportExportController extends core\Controller
 
 	/**
 	 * Render import/export page
+	 *
+	 * Also process Import if Import form submitted
 	 */
 	public function actionIndex()
 	{
@@ -38,6 +40,10 @@ class ImportExportController extends core\Controller
 		return $this->_render('import_export/index', array( 'tab' => 'import_export' ));
 	}
 
+	/**
+	 * Shows import form popup with import options
+	 * (json file required)
+	 */
 	public function ajaxImportForm()
 	{
 		$model = new models\ImportExport();
@@ -50,7 +56,7 @@ class ImportExportController extends core\Controller
 	}
 
 	/**
-	 * Ajax render form with fields for export 
+	 * Shows Export form with fields settings for export
 	 */
 	public function ajaxExportForm()
 	{
@@ -69,7 +75,7 @@ class ImportExportController extends core\Controller
 	}
 
 	/**
-	 * Ajax export fields
+	 * Export fields callback
 	 */
 	public function ajaxExport()
 	{

@@ -110,6 +110,7 @@ class Fieldset extends core\Model
 
 	/**
 	 * Delete fieldset with $this->_request params
+	 * @return boolean
 	 */
 	public function delete()
 	{
@@ -127,6 +128,7 @@ class Fieldset extends core\Model
 
 	/**
 	 * Update fieldset with $this->_request params
+	 * @return boolean
 	 */
 	public function update()
 	{
@@ -149,6 +151,7 @@ class Fieldset extends core\Model
 
 	/**
 	 * Sort fieldsets with $this->_request params
+	 * @return boolean
 	 */
 	public function sort()
 	{

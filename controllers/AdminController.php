@@ -53,7 +53,7 @@ class AdminController extends core\Controller
 	}
 
 	/**
-	 * 	Include scripts
+	 * Include scripts
 	 */
 	public function addScripts()
 	{

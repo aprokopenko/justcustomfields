@@ -5,8 +5,18 @@ namespace jcf\models;
 use jcf\core;
 use jcf\models;
 
+/**
+ * Class DBDataLayer
+ *
+ * Define DataLayer for Database storage. Can save in single or Multisite modes
+ */
 class DBDataLayer extends core\DataLayer
 {
+	/**
+	 * Setting chosen by site administrator
+	 *
+	 * @var string
+	 */
 	protected $_networkMode;
 
 	/**
@@ -22,7 +32,7 @@ class DBDataLayer extends core\DataLayer
 	}
 
 	/**
-	 * Set $this->_fields property
+	 * Setter/Init for $this->_fields property
 	 * @param array $fields
 	 */
 	public function setFields( $fields = null )
@@ -37,7 +47,7 @@ class DBDataLayer extends core\DataLayer
 	}
 
 	/**
-	 * 	Update fields in wp-options
+	 * Update fields in wp-options or wp-site-options table
 	 */
 	public function saveFieldsData()
 	{
@@ -45,7 +55,7 @@ class DBDataLayer extends core\DataLayer
 	}
 
 	/**
-	 * Get Fieldsets
+	 * Setter/Init for Fieldsets
 	 * @param array $fieldsets
 	 */
 	public function setFieldsets( $fieldsets = null )
@@ -68,7 +78,7 @@ class DBDataLayer extends core\DataLayer
 	}
 
 	/**
-	 * Check NetworkMode to be set to global
+	 * Check NetworkMode to be set to global (multisite)
 	 *
 	 * @return bool
 	 */

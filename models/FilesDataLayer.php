@@ -39,7 +39,8 @@ class FilesDataLayer extends core\DataLayer
 	}
 
 	/**
-	 * 	Update fields
+	 * Update fields
+	 * @return boolean
 	 */
 	public function saveFieldsData()
 	{
@@ -67,6 +68,7 @@ class FilesDataLayer extends core\DataLayer
 
 	/**
 	 * Save fieldsets
+	 * @return boolean
 	 */
 	public function saveFieldsetsData()
 	{

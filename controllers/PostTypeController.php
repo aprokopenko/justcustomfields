@@ -22,10 +22,10 @@ class PostTypeController extends core\Controller
 		}
 
 		add_action('add_meta_boxes', array( $this, 'actionRender' ), 10, 1);
-		add_action('save_post', array( $this, 'actionSave' ), 10, 2);
+		add_action('save_post', array( $this, 'savePostExt' ), 10, 2);
 
 		// init shortcode
-		add_shortcode('jcf-value', array( $this, 'actionGetShortcodeValue' ));
+		add_shortcode('jcf-value', array( $this, 'jcfShortcode' ));
 	}
 
 	/**
@@ -85,8 +85,6 @@ class PostTypeController extends core\Controller
 
 			wp_add_inline_script('jquery-core', 'var jcf_fieldsets_visibility_rules = ' . json_encode($visibility_rules) . ';', 'before');
 		}
-
-		return false;
 	}
 
 	/**
@@ -128,7 +126,7 @@ class PostTypeController extends core\Controller
 	 * @param int $post_ID
 	 * @param array $post
 	 */
-	public function actionSave( $post_ID = 0, $post = null )
+	public function savePostExt( $post_ID = 0, $post = null )
 	{
 		$fieldsets_model = new models\Fieldset();
 		$field_model = new models\Field();
@@ -169,7 +167,7 @@ class PostTypeController extends core\Controller
 	/**
 	 * Set value of shortcode
 	 */
-	public function actionGetShortcodeValue( $args )
+	public function jcfShortcode( $args )
 	{
 		$model = new models\Shortcodes();
 		return $model->getFieldValue($args);

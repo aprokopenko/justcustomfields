@@ -32,6 +32,7 @@ class FieldsetVisibility extends core\Model
 	/**
 	 * Get visibility rules by post type
 	 * @param string $post_type
+	 * @return array
 	 */
 	public function findByPostType($post_type) 
 	{
@@ -118,6 +119,7 @@ class FieldsetVisibility extends core\Model
 
 	/**
 	 * Get visibility rules for fieldset with $this->_request
+	 * @return array
 	 */
 	public function getBasedOnOptions()
 	{
@@ -133,7 +135,7 @@ class FieldsetVisibility extends core\Model
 
 	/**
 	 * Save visibility rule
-	 * @return array
+	 * @return array|boolean
 	 */
 	public function update()
 	{
@@ -155,7 +157,7 @@ class FieldsetVisibility extends core\Model
 
 	/**
 	 * Delete visibility rule
-	 * @return array
+	 * @return array|boolean
 	 */
 	public function delete()
 	{
@@ -174,6 +176,7 @@ class FieldsetVisibility extends core\Model
 
 	/**
 	 * Autocomplete for visibility rule
+	 * @return array
 	 */
 	public static function findTaxonomyTerms($taxonomy, $term)
 	{

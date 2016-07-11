@@ -72,7 +72,7 @@ class FieldsetController extends core\Controller
 	}
 
 	/**
-	 *  Add fieldset form process callback
+	 * Save NEW fieldset to the data storage (callback)
 	 */
 	public function ajaxCreate()
 	{
@@ -83,7 +83,7 @@ class FieldsetController extends core\Controller
 	}
 
 	/**
-	 *  Delete fieldset link process callback
+	 * Delete fieldset link callback
 	 */
 	public function ajaxDelete()
 	{
@@ -94,7 +94,7 @@ class FieldsetController extends core\Controller
 	}
 
 	/**
-	 * Change fieldset link process callback
+	 * Form html on fieldset Update request
 	 */
 	public function ajaxGetForm()
 	{
@@ -108,7 +108,7 @@ class FieldsetController extends core\Controller
 	}
 
 	/**
-	 * Update fieldset functions callback
+	 * Update fieldset on form submit
 	 */
 	public function ajaxUpdate()
 	{

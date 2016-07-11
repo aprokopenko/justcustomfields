@@ -85,7 +85,8 @@ function jcf_get_page_templates( $page_templates = array() ) {
 }
 
 /**
- * 	javascript localization
+ * javascript localization
+ * @return array
  */
 function jcf_get_language_strings() {
 	global $wp_version;
@@ -167,9 +168,10 @@ function jcf_format_json( $json ) {
 }
 
 /**
- * 	Set permisiions for file
- * 	@param string $dir Parent directory path
- * 	@param string $filename File path
+ * Set permisiions for file
+ * @param string $dir Parent directory path
+ * @param string $filename File path
+ * @return boolean
  */
 function jcf_set_chmod( $filename ) {
 	$dir_perms = fileperms(dirname($filename));
@@ -187,13 +189,13 @@ function jcf_set_chmod( $filename ) {
  */
 function jcf_print_loader_img() {
 	return '';
-	//return '<img class="ajax-feedback " alt="" title="" src="' . get_bloginfo('wpurl') . '/wp-admin/images/wpspin_light.gif" style="visibility: hidden;">';
 }
 
 /**
  * safety print html tag attributes
  *
  * @param array $attributes
+ * @return string|boolean
  */
 function jcf_html_attributes( array $attributes = array(), $echo = true ) {
 	if( empty($attributes) ) return '';

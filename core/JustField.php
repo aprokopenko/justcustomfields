@@ -69,7 +69,7 @@ class JustField
 	protected $_dL;
 
 	/**
-	 * 	Constructor
+	 * Constructor
 	 */
 	public function __construct( $id_base, $title, $field_options = array() )
 	{
@@ -83,6 +83,7 @@ class JustField
 
 	/**
 	 * check field compatibility with WP version
+	 * @deprecated
 	 */
 	public static function checkCompatibility( $compatibility )
 	{
@@ -113,8 +114,8 @@ class JustField
 	}
 
 	/**
-	 * 	set class property $this->fieldsetId
-	 * 	@param   string  $fieldset_id  fieldset string ID
+	 * set class property $this->fieldsetId
+	 * @param   string  $fieldset_id  fieldset string ID
 	 */
 	public function setFieldset( $fieldset_id )
 	{
@@ -122,8 +123,8 @@ class JustField
 	}
 
 	/**
-	 * 	set class property $this->collectionId
-	 * 	@param   string  $fieldset_id  fieldset string ID
+	 * set class property $this->collectionId
+	 * @param   string  $fieldset_id  fieldset string ID
 	 */
 	public function setCollection( $collection_id )
 	{
@@ -131,9 +132,9 @@ class JustField
 	}
 
 	/**
-	 * 	set class propreties "id", "number"
-	 * 	load instance and entries for this field
-	 * 	@param  string  $id  field id (cosist of id_base + number)
+	 * set class propreties "id", "number"
+	 * load instance and entries for this field
+	 * @param  string  $id  field id (cosist of id_base + number)
 	 */
 	public function setId( $id )
 	{
@@ -163,8 +164,8 @@ class JustField
 	}
 
 	/**
-	 * 	setter for slug
-	 * 	@param  string  $slug  field slug
+	 * setter for slug
+	 * @param  string  $slug  field slug
 	 */
 	public function setSlug( $slug )
 	{
@@ -172,8 +173,8 @@ class JustField
 	}
 
 	/**
-	 * 	set post ID and load entry from wp-postmeta
-	 * 	@param  int  $post_ID  post ID variable
+	 * set post ID and load entry from wp-postmeta
+	 * @param  int  $post_ID  post ID variable
 	 */
 	public function setPostID( $post_ID, $key_from_collection = FALSE )
 	{
@@ -205,8 +206,9 @@ class JustField
 	}
 
 	/**
-	 * 	generate unique id attribute based on id_base and number
-	 * 	@param  string  $str  string to be converted
+	 * generate unique id attribute based on id_base and number
+	 * @param  string  $str  string to be converted
+	 * @return string
 	 */
 	public function getFieldId( $str, $delimeter = '-' )
 	{
@@ -230,8 +232,9 @@ class JustField
 	}
 
 	/**
-	 * 	generate unique name attribute based on id_base and number
-	 * 	@param  string  $str  string to be converted
+	 * generate unique name attribute based on id_base and number
+	 * @param  string  $str  string to be converted
+	 * @return string
 	 */
 	public function getFieldName( $str )
 	{
@@ -267,6 +270,7 @@ class JustField
 	/**
 	 * validate that slug has first underscore
 	 * @param string $slug
+	 * @return string
 	 */
 	public function validateInstanceSlug( $slug )
 	{
@@ -292,9 +296,10 @@ class JustField
 	}
 
 	/**
-	 * 	function to save field instance to the database
-	 * 	call $this->update inside
-	 * 	@param array $params for update field
+	 * method to save field instance to the storage
+	 * call $this->update inside
+	 * @param array $params for update field
+	 * @return boolean
 	 */
 	public function doUpdate( $field_index, $params = null )
 	{
@@ -391,7 +396,8 @@ class JustField
 	}
 
 	/**
-	 * 	function to delete field from the database
+	 * method to delete field from the storage
+	 * @return boolean
 	 */
 	public function doDelete()
 	{
@@ -418,8 +424,10 @@ class JustField
 	}
 
 	/**
-	 * 	function to save data from edit post page to postmeta
-	 * 	call $this->save()
+	 * method to save data from edit post page to postmeta
+	 * call $this->save()
+	 *
+	 * @return boolean;
 	 */
 	public function doSave()
 	{
@@ -446,9 +454,9 @@ class JustField
 	}
 
 	/**
-	 * 	function that call $this->add_js to enqueue scripts in head section
-	 * 	do this only on post edit page and if at least one field is exists.
-	 * 	do this only once
+	 * method that call $this->add_js to enqueue scripts in head section
+	 * do this only on post edit page and if at least one field is exists.
+	 * do this only once
 	 */
 	public function doAddJs()
 	{
@@ -464,9 +472,9 @@ class JustField
 	}
 
 	/**
-	 * 	function that call $this->add_css to enqueue styles in head section
-	 * 	do this only on post edit page and if at least one field is exists.
-	 * 	do this only once
+	 * method that call $this->add_css to enqueue styles in head section
+	 * do this only on post edit page and if at least one field is exists.
+	 * do this only once
 	 */
 	public function doAddCss()
 	{
@@ -481,7 +489,8 @@ class JustField
 		$jcf_included_assets['styles'][get_class($this)] = 1;
 	}
 
-	/** Echo the field post edit form.
+	/**
+	 * Echo the field post edit form.
 	 *
 	 * Subclasses should over-ride this function to generate their field code.
 	 *
@@ -492,7 +501,8 @@ class JustField
 		die('function cf_Field::field() must be over-ridden in a sub-class.');
 	}
 
-	/** Pre-process submitted form values
+	/**
+	 * Pre-process submitted form values
 	 *
 	 * Subclasses should over-ride this function to generate their field code.
 	 *
@@ -503,7 +513,8 @@ class JustField
 		die('function cf_Field::save() must be over-ridden in a sub-class.');
 	}
 
-	/** Update a particular instance.
+	/**
+	 * Update a particular instance.
 	 *
 	 * This function should check that $new_instance is set correctly.
 	 * The newly calculated value of $instance should be returned.
@@ -518,9 +529,11 @@ class JustField
 		return $new_instance;
 	}
 
-	/** Echo the settings update form
+	/**
+	 * Echo the settings update form
 	 *
 	 * @param array $instance Current settings
+	 * @return string
 	 */
 	public function form()
 	{
@@ -529,7 +542,7 @@ class JustField
 	}
 
 	/**
-	 * print shortcode
+	 * Print shortcode
 	 * 
 	 * @param array $args shortcode attributes
 	 * @return string
@@ -576,9 +589,10 @@ class JustField
 	}
 
 	/**
-	 * print field label inside shortcode call
+	 * Print field label inside shortcode call
 	 * 
 	 * @param array $args	shortcode args
+	 * @return string
 	 */
 	public function shortcodeLabel( $args )
 	{
@@ -586,9 +600,10 @@ class JustField
 	}
 
 	/**
-	 * print fields values from shortcode
+	 * Print fields values from shortcode
 	 * 
 	 * @param array $args	shortcode args
+	 * @return string
 	 */
 	public function shortcodeValue( $args )
 	{

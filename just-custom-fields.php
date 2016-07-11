@@ -23,7 +23,7 @@ class JustCustomFields extends core\Singleton
 	 * Plugin text domain for translations
 	 */
 	const TEXTDOMAIN = 'just-custom-fields';
-	const VERSION = '2.300';
+	const VERSION = '3.000';
 
 	/**
 	 * Textual plugin name
@@ -106,7 +106,7 @@ class JustCustomFields extends core\Singleton
 		 *	- add_action  'jcf_register_fields'
 		 *	- include your components files
 		 *	- run 
-		 *  $jcf = new JustCustomFields();
+		 *  $jcf = new \JustCustomFields();
 		 *  $jcf->registerField('namespace\className', $collection_field = true|false);
 		 */
 		do_action( 'jcf_register_fields' );

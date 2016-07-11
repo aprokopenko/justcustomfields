@@ -4,6 +4,10 @@ namespace jcf\core;
 
 use jcf\models;
 
+/**
+ * Class DataLayerFactory
+ * Factory to create DataLater object based on plugin settings
+ */
 class DataLayerFactory
 {
 

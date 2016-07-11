@@ -2,6 +2,11 @@
 
 namespace jcf\core;
 
+/**
+ * Class JustFieldFactory
+ *
+ * Creates JustField child object based on loaded Field model
+ */
 class JustFieldFactory
 {
 

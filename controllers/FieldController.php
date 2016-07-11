@@ -15,18 +15,18 @@ class FieldController extends core\Controller
 	{
 		parent::__construct();
 		//Fields actions
-		add_action('wp_ajax_jcf_add_field', array( $this, 'ajaxEdit' ));
+		add_action('wp_ajax_jcf_add_field', array( $this, 'ajaxForm' ));
 		add_action('wp_ajax_jcf_save_field', array( $this, 'ajaxSave' ));
 		add_action('wp_ajax_jcf_delete_field', array( $this, 'ajaxDelete' ));
-		add_action('wp_ajax_jcf_edit_field', array( $this, 'ajaxEdit' ));
+		add_action('wp_ajax_jcf_edit_field', array( $this, 'ajaxForm' ));
 		add_action('wp_ajax_jcf_fields_order', array( $this, 'ajaxSort' ));
 		add_action('wp_ajax_jcf_collection_order', array( $this, 'ajaxCollectionSort' ));
 	}
 
 	/**
-	 *  Get field form show callback
+	 * Renders field form callback
 	 */
-	public function ajaxEdit()
+	public function ajaxForm()
 	{
 		$model = new models\Field();
 
@@ -38,7 +38,7 @@ class FieldController extends core\Controller
 	}
 
 	/**
-	 * save field from the form callback
+	 * Save field data on form submit
 	 */
 	public function ajaxSave()
 	{
@@ -66,7 +66,7 @@ class FieldController extends core\Controller
 	}
 
 	/**
-	 * delete field processor callback
+	 * Delete field link callback
 	 */
 	public function ajaxDelete()
 	{
@@ -77,7 +77,7 @@ class FieldController extends core\Controller
 	}
 
 	/**
-	 * fields sort change callback
+	 * Sortable Drop event callback to save changes
 	 */
 	public function ajaxSort()
 	{
@@ -88,7 +88,7 @@ class FieldController extends core\Controller
 	}
 
 	/**
-	 * sort collection fields callback
+	 * Sortable Drop event callback to save Collection fields order
 	 */
 	public function ajaxCollectionSort()
 	{
