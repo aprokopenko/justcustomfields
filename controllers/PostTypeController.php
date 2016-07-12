@@ -77,6 +77,8 @@ class PostTypeController extends core\Controller
 						'fieldset_id' => $fieldset['id']
 					);
 					$field_model->load($params) && $field_obj = core\JustFieldFactory::create($field_model);
+					if ( !$field_obj ) continue;
+
 					$field_obj->doAddJs();
 					$field_obj->doAddCss();
 				}
@@ -107,6 +109,8 @@ class PostTypeController extends core\Controller
 				'fieldset_id' => $fieldset['id'],
 			);
 			$model->load($params) && $field_obj = core\JustFieldFactory::create($model);
+			if ( !$field_obj ) continue;
+			
 			$field_obj->setPostID($post->ID);
 			$field_obj->field();
 		}

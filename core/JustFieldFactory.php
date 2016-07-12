@@ -25,6 +25,10 @@ class JustFieldFactory
 		$jcf = \JustCustomFields::run();
 		$field_info = $jcf->getFieldInfo($id_base);
 
+		if ( empty($field_info['class']) || !class_exists($field_info['class']) ) {
+			return null;
+		}
+
 		$model = new $field_info['class']();
 		$model->setPostType($field->post_type);
 		$model->setFieldset($field->fieldset_id);

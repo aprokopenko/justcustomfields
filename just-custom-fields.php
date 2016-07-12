@@ -66,7 +66,9 @@ class JustCustomFields extends core\Singleton
 
 		// init features, which this plugin is created for
 		$this->initControllers();
+
 		$this->initFields();
+		add_action('plugins_loaded', array($this, 'registerCustomComponents'));
 	}
 
 	/**
@@ -100,15 +102,21 @@ class JustCustomFields extends core\Singleton
 		$this->registerField( 'jcf\components\collection\JustField_Collection' );
 		$this->registerField( 'jcf\components\table\JustField_Table', true );
 		$this->registerField( 'jcf\components\relatedcontent\JustField_RelatedContent' );
-		
-		/**
-		 *	to add more fields with your custom plugin:
-		 *	- add_action  'jcf_register_fields'
-		 *	- include your components files
-		 *	- run 
-		 *  $jcf = new \JustCustomFields();
-		 *  $jcf->registerField('namespace\className', $collection_field = true|false);
-		 */
+	}
+
+	/**
+	 * Launch hook to be able to register mode components from themes and other plugins
+	 *
+	 *	to add more field components with your custom code:
+	 *	- add_action  'jcf_register_fields'
+	 *	- include your components files
+	 *	- run
+	 *  $jcf = new \JustCustomFields();
+	 *  $jcf->registerField('namespace\className', $collection_field = true|false);
+	 *
+	 */
+	public function registerCustomComponents()
+	{
 		do_action( 'jcf_register_fields' );
 	}
 

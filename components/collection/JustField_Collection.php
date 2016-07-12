@@ -93,6 +93,7 @@ class JustField_Collection extends core\JustField
 											<?php
 											$field_model->field_id = $field_id;
 											$field_obj = core\JustFieldFactory::create($field_model);
+											if ( ! $field_obj ) continue;
 
 											if ( isset($fields[$field['slug']]) ) {
 												$field_obj->entry = $fields[$field['slug']];
@@ -156,6 +157,7 @@ class JustField_Collection extends core\JustField
 				);
 				$field_model = new models\Field();
 				$field_model->load($params) && $field_obj = core\JustFieldFactory::create($field_model);
+				if ( !$field_obj ) continue;
 
 				if ( isset($_value[$field_id]) ) {
 					$item[$field['slug']] = $field_obj->save($_value[$field_id]);
@@ -201,6 +203,7 @@ class JustField_Collection extends core\JustField
 				);
 				$field_model = new models\Field();
 				$field_model->load($params) && $field_obj = core\JustFieldFactory::create($field_model);
+				if ( !$field_obj ) continue;
 
 				if ( method_exists($field_obj, 'addJs') )
 					$field_obj->addJs();
@@ -268,6 +271,7 @@ class JustField_Collection extends core\JustField
 				);
 				$field_model = new models\Field();
 				$field_model->load($params) && $field_obj = core\JustFieldFactory::create($field_model);
+				if ( !$field_obj ) continue;
 
 				$field_obj->setPostID($this->postID, $key);
 				$shortcode_value[] = $field_obj->doShortcode($args);
@@ -326,6 +330,8 @@ class JustField_Collection extends core\JustField
 					$model->collection_id = $collection->id;
 					$model->fieldset_id = $this->fieldsetId;
 					$field_obj = core\JustFieldFactory::create($model);
+					if ( !$field_obj ) continue;
+					
 					$field_obj->setSlug($field['slug']);
 					$field_obj->instance = $field;
 					$field_obj->isPostEdit = true;
