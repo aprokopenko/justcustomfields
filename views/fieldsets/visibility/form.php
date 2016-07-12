@@ -97,7 +97,7 @@ if ( empty($visibility_rule) ) {
 				<?php 
 					$this->_render('fieldsets/visibility/templates_list', array(
 						'templates' => $templates, 
-						'curent' => $visibility_rule['rule_templates']
+						'current' => $visibility_rule['rule_templates']
 					)); 
 				?>
 			<?php endif;?>

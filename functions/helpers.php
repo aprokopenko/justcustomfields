@@ -80,7 +80,7 @@ function jcf_get_page_templates( $page_templates = array() ) {
 		wp_cache_add( 'jcf_page_deep2_templates', $deep_templates, 'themes' );
 	}
 
-	$page_templates = array_merge($page_templates, $deep_templates);
+	$page_templates = array_merge(array('default' => 'Default'), $page_templates, $deep_templates);
 	return $page_templates;
 }
 

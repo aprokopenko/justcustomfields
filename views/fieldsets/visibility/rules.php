@@ -18,7 +18,7 @@ $row_index = 1;
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ( $visibility_rules as $rule ) :
+				<?php foreach ( $visibility_rules as $rule_key => $rule ) :
 
 					if ( $rule['based_on'] == 'taxonomy' ) {
 						$tax = get_taxonomy($rule['rule_taxonomy']);
