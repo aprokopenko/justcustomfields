@@ -33,11 +33,13 @@ class Shortcodes extends core\Model
 			}
 		}
 		// init field object and do shortcode
-		if ( $field_id ) {
+		if ( !empty($field_id) ) {
 			$field_model = new Field();
 			$field_model->post_type = $post_type;
 			$field_model->field_id = $field_id;
 			$field_obj = core\JustFieldFactory::create($field_model);
+			if ( !$field_obj ) return false;
+
 			$field_obj->setPostID($post_id);
 
 			unset($args['field']);
