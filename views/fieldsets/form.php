@@ -22,19 +22,17 @@
 						<?php endif; ?>
 					</div>
 					<br class="clear"/>
-
 				</div>
 			</fieldset>
-			<div>
+			<div class="field-control-actions">
 				<div class="alignleft">
-						<a href="#remove" class="field-control-remove submitdelete"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a> |
-						<a href="#close" class="field-control-close"><?php _e('Close', \JustCustomFields::TEXTDOMAIN); ?></a>
-					</div>
-					<div class="alignright">
-						<?php echo jcf_print_loader_img(); ?>
-						<input type="submit" value="<?php _e('Save', \JustCustomFields::TEXTDOMAIN); ?>" class="button-primary" name="savefield">
-					</div>
-					<br class="clear"/>
+					<a href="#remove" class="field-control-remove submitdelete"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a> |
+					<a href="#close" class="field-control-close"><?php _e('Close', \JustCustomFields::TEXTDOMAIN); ?></a>
+				</div>
+				<div class="alignright">
+					<input type="submit" value="<?php _e('Save', \JustCustomFields::TEXTDOMAIN); ?>" class="button-primary" name="savefield">
+				</div>
+				<br class="clear"/>
 			</div>
 		</form>
 	</div>

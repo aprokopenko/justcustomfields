@@ -58,19 +58,17 @@
 											<?php echo $width; ?></option>
 									<?php endforeach; ?>
 								</select>
-
 							</p>
 						<?php endif; ?>
 					</fieldset>
 					<div class="field-control-actions">
 						<div class="alignleft">
 							<?php if( $op != __('Add', \JustCustomFields::TEXTDOMAIN) ) : ?>
-							<a href="#remove" class="field-control-remove"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a> |
+								<a href="#remove" class="field-control-remove submitdelete"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a> |
 							<?php endif; ?>
 							<a href="#close" class="field-control-close"><?php _e('Close', \JustCustomFields::TEXTDOMAIN); ?></a>
 						</div>
 						<div class="alignright">
-							<?php echo jcf_print_loader_img(); ?>
 							<input type="submit" value="<?php _e('Save', \JustCustomFields::TEXTDOMAIN); ?>" class="button-primary" name="savefield">
 						</div>
 						<br class="clear"/>
