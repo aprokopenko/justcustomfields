@@ -64,7 +64,7 @@ class JustField
 	/**
 	 * DataLayer to save instances to
 	 *
-	 * @var \jcf\models\DataLayer
+	 * @var \jcf\core\DataLayer
 	 */
 	protected $_dL;
 
@@ -183,10 +183,16 @@ class JustField
 		if ( !empty($this->collectionId) ) {
 			// load entry
 			if ( !empty($this->slug) ) {
-				$slug = str_replace('collection-', '_field_collection__', $this->collectionId);
-				$data = get_post_meta($this->postID, $slug, true);
-				if ( isset($data[$key_from_collection][$this->slug]) )
+				$fields = $this->_dL->getFields();
+				if ( empty($fields[$this->postType][$this->collectionId]) )
+					return;
+
+				$collection_slug = $fields[$this->postType][$this->collectionId]['slug'];
+
+				$data = get_post_meta($this->postID, $collection_slug, true);
+				if ( isset($data[$key_from_collection][$this->slug]) ) {
 					$this->entry = $data[$key_from_collection][$this->slug];
+				}
 			}
 		}
 		else {
