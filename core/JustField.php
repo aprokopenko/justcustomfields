@@ -185,7 +185,8 @@ class JustField
 			if ( !empty($this->slug) ) {
 				$slug = str_replace('collection-', '_field_collection__', $this->collectionId);
 				$data = get_post_meta($this->postID, $slug, true);
-				$this->entry = $data[$key_from_collection][$this->slug];
+				if ( isset($data[$key_from_collection][$this->slug]) )
+					$this->entry = $data[$key_from_collection][$this->slug];
 			}
 		}
 		else {
