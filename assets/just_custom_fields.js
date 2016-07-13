@@ -17,6 +17,7 @@ jQuery(document).scroll(function() {
   initEditFormPosition();
 });
 
+
 /**
  *	init fieldset add box
  */
@@ -687,12 +688,38 @@ function initEditFormPosition() {
   var left_bar_width = jQuery('#jcf_fieldsets').css('width').replace('px', '') * 1;
   var pos_left = wrap_position + left_bar_width;
   var edit_form_width = wrap_width / 100 * 30 + 'px';
-  if ( scrolling >= 250 ) {
+  if ( scrolling >= 140 ) {
     edit_form.css({'position': 'fixed', 'top': '40px', 'width': edit_form_width, 'left': pos_left + 'px'});
-  }
-  else {
+    setScrollOnEditForm();
+  }else {
     edit_form.css({'position': 'relative', 'top': '', 'width': '30%', 'left': ''});
+    removeScrollOnEditForm();
   }
+}
+
+
+function setScrollOnEditForm (){
+  var $editForm = jQuery('#jcf_ajax_container');
+    $editFormContent = $editForm.find('fieldset'),
+    editFormHeight = $editForm.height(),
+    wpAdminBarHeight = jQuery('#wpadminbar').height(),
+    contentWrapHeight = 92,
+    editFormBottomMargin = 20,
+    windowHeight = jQuery(window).height() - wpAdminBarHeight - 50;
+
+  if (editFormHeight >=  windowHeight ) {
+    $editFormContent.css({});
+    $editForm.css({'height': windowHeight  });
+    $editFormContent.css({'height': windowHeight - contentWrapHeight, 'overflow-y': 'auto', 'margin-bottom': editFormBottomMargin});
+  }
+}
+
+
+function removeScrollOnEditForm(){
+  var $editForm = jQuery('#jcf_ajax_container'),
+    $editFormContent = $editForm.find('fieldset');
+  $editForm.css({'height': 'auto'});
+  $editFormContent.css({'height': 'auto', 'overflow-y': 'auto', 'margin-bottom': 0});
 }
 
 /**

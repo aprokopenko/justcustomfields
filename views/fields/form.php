@@ -29,7 +29,7 @@
 						?>
 						<p>
 							<label for="<?php echo $field->getFieldId('enabled'); ?>">
-								<input class="checkbox" type="checkbox" 
+								<input class="checkbox" type="checkbox"
 										id="<?php echo $field->getFieldId('enabled'); ?>"
 										name="<?php echo $field->getFieldName('enabled'); ?>"
 										value="1" <?php checked(true, @$field->instance['enabled']); ?> />
@@ -39,42 +39,42 @@
 							<?php if($field->idBase == 'inputtext') : ?>
 								<p>
 									<label for="<?php echo $field->getFieldId('group_title'); ?>">
-										<input class="checkbox" type="checkbox" 
+										<input class="checkbox" type="checkbox"
 											id="<?php echo $field->getFieldId('group_title'); ?>"
 											name="<?php echo $field->getFieldName('group_title'); ?>"
 											value="1" <?php checked(true, @$field->instance['group_title']); ?> />
 										<?php _e('Use this field as collection item title?', \JustCustomFields::TEXTDOMAIN); ?>
 									</label>
 								</p>
-						
+
 							<?php endif; ?>
 							<p>
 								<label for="<?php echo $field->getFieldId('field_width'); ?>"><?php _e('Select Field Width', \JustCustomFields::TEXTDOMAIN); ?></label>
-								<select class="widefat" 
+								<select class="widefat"
 										id="<?php echo $field->getFieldId('field_width'); ?>"
 										name="<?php echo $field->getFieldName('field_width'); ?>">
 									<?php foreach( \jcf\components\collection\JustField_Collection::$fieldWidth as $key => $width) : ?>
 										<option value="<?php echo $key; ?>"<?php echo (@$field->instance['field_width']==$key?' selected':''); ?>>
 											<?php echo $width; ?></option>
 									<?php endforeach; ?>
-								</select> 
-									
+								</select>
+
 							</p>
 						<?php endif; ?>
-						<div class="field-control-actions">
-							<div class="alignleft">
-								<?php if( $op != __('Add', \JustCustomFields::TEXTDOMAIN) ) : ?>
-								<a href="#remove" class="field-control-remove"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a> |
-								<?php endif; ?>
-								<a href="#close" class="field-control-close"><?php _e('Close', \JustCustomFields::TEXTDOMAIN); ?></a>
-							</div>
-							<div class="alignright">
-								<?php echo jcf_print_loader_img(); ?>
-								<input type="submit" value="<?php _e('Save', \JustCustomFields::TEXTDOMAIN); ?>" class="button-primary" name="savefield">
-							</div>
-							<br class="clear"/>
-						</div>
 					</fieldset>
+					<div class="field-control-actions">
+						<div class="alignleft">
+							<?php if( $op != __('Add', \JustCustomFields::TEXTDOMAIN) ) : ?>
+							<a href="#remove" class="field-control-remove"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a> |
+							<?php endif; ?>
+							<a href="#close" class="field-control-close"><?php _e('Close', \JustCustomFields::TEXTDOMAIN); ?></a>
+						</div>
+						<div class="alignright">
+							<?php echo jcf_print_loader_img(); ?>
+							<input type="submit" value="<?php _e('Save', \JustCustomFields::TEXTDOMAIN); ?>" class="button-primary" name="savefield">
+						</div>
+						<br class="clear"/>
+					</div>
 				</form>
 			</div>
 		</div>

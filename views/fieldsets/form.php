@@ -22,7 +22,11 @@
 						<?php endif; ?>
 					</div>
 					<br class="clear"/>
-					<div class="alignleft">
+
+				</div>
+			</fieldset>
+			<div>
+				<div class="alignleft">
 						<a href="#remove" class="field-control-remove submitdelete"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a> |
 						<a href="#close" class="field-control-close"><?php _e('Close', \JustCustomFields::TEXTDOMAIN); ?></a>
 					</div>
@@ -31,8 +35,7 @@
 						<input type="submit" value="<?php _e('Save', \JustCustomFields::TEXTDOMAIN); ?>" class="button-primary" name="savefield">
 					</div>
 					<br class="clear"/>
-				</div>
-			</fieldset>
+			</div>
 		</form>
 	</div>
 </div>
