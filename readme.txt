@@ -6,20 +6,21 @@ Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custo
 Author: Alexander Prokopenko
 Author URI: http://justcoded.com/
 Requires at least: 4.5
-Tested up to: 4.5.2
+Tested up to: 4.5.3
 Stable tag: trunk
 License: GNU General Public License v2
 
-This plugin add ability to extend your Posts (and custom post types) with additional fields.
-Required PHP 5.3+ and WordPress 4.0+!
+This plugin adds ability to extend your Posts, Pages (and other custom post types) with additional fields.
 
 == Description ==
 
-This plugin add ability to extend your Posts (and custom post types) with additional fields. After installation you will see simple settings page which is self-explanatory to use.
+This plugin adds ability to extend your Posts, Pages (and other custom post types) with additional fields. After installation you will see simple settings page which is self-explanatory to use.
+We use standard WordPress PostMeta API to save fields data, so you can use standard WordPress functions in your themes/plugins to get data.
 
-**IMPORTANT** We do not recommend update your existing sites to version 3.0+ if you're using Field groups, Upload media components or your server does not meet WordPress recommended server configuration (https://wordpress.org/about/requirements/)
+**IMPORTANT** We do not recommend update plugins on your existing sites from version 2.* to version 3.0+.
+JCF v3.0+ is not compatible with versions 2.*, so some field settings can be lost (and as the results - wrong values on post edit pages).
 
-Plugin support such field types:
+Plugin supports such field types:
 
 * Input text
 * Select Box
@@ -29,14 +30,14 @@ Plugin support such field types:
 * Date Picker
 * Simple Media (files and images upload)
 * Table
-* Fields Collection (several fields grouping)
+* Fields Collection (repeatable fields groups)
 * Related Content (to set relation to another Post/Page or Custom Post Type)
 
 
 Starting from v2.0 we have different options to save plugin configuration:
 
 * Ability to set Fields Settings global if you have MultiSite. So you can set them once, without copying all settings to every new site.
-* Ability to save Fields Settings to file system. Directly in the theme. We expect this option will be popular among the developers. It will be much easier to move your fields settings between site versions (dev/production).
+* Ability to save Fields Settings to file system (inside theme or wp-content folder). We expect this option will be popular among the developers. It will be much easier to move your fields settings between site versions (dev/production).
 
 Starting from v2.2:
 
@@ -76,8 +77,9 @@ get_post_custom()
 
 == Changelog ==
 * Version 3.0
-	* NEW: Plugin code full refactoring, build all code based on classes and latest WordPress coding recommendations
+	* NEW: Plugin code full refactoring, build all code based on OOP classes and latest WordPress coding recommendations
 	* New feature: Ability to hide fieldsets based on some criterias (taxonomy relation or page template)
+	* Numerous security patches (XSS)
 * Version 2.3.2
 	* Bug fix: Collection styling fixes for Post edit screen for Wordpress 4.3+
 	* Bug fix: PHP 5.2 blank screen error resolved
