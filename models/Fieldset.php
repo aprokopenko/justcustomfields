@@ -30,11 +30,19 @@ class Fieldset extends core\Model
 				'fields' => 0,
 			);
 
-			if ( !empty($fieldsets[$pt]) )
+			if ( empty($fields[$pt]) ) continue;
+
+			$field_keys = array_keys($fields[$pt]);
+
+			if ( !empty($fieldsets[$pt]) ) {
 				$count[$pt]['fieldsets'] = count($fieldsets[$pt]);
 
-			if ( !empty($fields[$pt]) )
-				$count[$pt]['fields'] = count($fields[$pt]);
+				foreach ($fieldsets[$pt] as $fieldset) {
+					$fieldset_fields = array_keys($fieldset['fields']);
+					$live_fields = array_intersect($fieldset_fields, $field_keys);
+					$count[$pt]['fields'] += count($live_fields);
+				}
+			}
 		}
 
 		return $count;
