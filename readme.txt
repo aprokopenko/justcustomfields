@@ -79,6 +79,7 @@ get_post_custom()
 * Version 3.0
 	* NEW: Plugin code full refactoring, build all code based on OOP classes and latest WordPress coding recommendations
 	* New feature: Ability to hide fieldsets based on some criterias (taxonomy relation or page template)
+	* New feature: Ability to show fieldset in right column on post edit screen
 	* Numerous security patches (XSS)
 * Version 2.3.2
 	* Bug fix: Collection styling fixes for Post edit screen for Wordpress 4.3+

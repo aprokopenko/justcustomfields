@@ -96,7 +96,9 @@ function initFieldsetsEdit() {
     var data = {
       'action': 'jcf_update_fieldset',
       'fieldset_id': f_id,
-      'title': jQuery('#jcf_edit_fieldset_title').val()
+      'title': jQuery('#jcf_edit_fieldset_title').val(),
+      'position': jQuery('#jcf_edit_fieldset_position').val(),
+      'priority': jQuery('#jcf_edit_fieldset_priority').val()
     };
 
     jcf_ajax(data, 'json', null, function( response ) {

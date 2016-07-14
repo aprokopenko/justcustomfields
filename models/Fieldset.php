@@ -7,10 +7,20 @@ use jcf\models;
 
 class Fieldset extends core\Model
 {
+	const POSITION_ADVANCED = 'advanced';
+	const POSITION_SIDE = 'side';
+	const POSITION_NORMAL = 'normal';
+
+	const PRIO_DEFAULT = 'default';
+	const PRIO_HIGH = 'high';
+	const PRIO_LOW = 'low';
+
 	public $title;
 	public $post_type;
 	public $fieldset_id;
 	public $fieldsets_order;
+	public $position;
+	public $priority;
 
 	/**
 	 * Return number of registered fields and fieldsets for specific post type
@@ -110,6 +120,8 @@ class Fieldset extends core\Model
 		$fieldsets[$this->post_type][$slug] = array(
 			'id' => $slug,
 			'title' => $this->title,
+			'position' => $this->position,
+			'priority' => $this->priority,
 			'fields' => array()
 		);
 
@@ -153,6 +165,8 @@ class Fieldset extends core\Model
 		}
 
 		$fieldsets[$this->post_type][$this->fieldset_id]['title'] = $this->title;
+		$fieldsets[$this->post_type][$this->fieldset_id]['position'] = $this->position;
+		$fieldsets[$this->post_type][$this->fieldset_id]['priority'] = $this->priority;
 
 		return $this->_save($fieldsets);
 	}

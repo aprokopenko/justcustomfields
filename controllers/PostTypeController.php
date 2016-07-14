@@ -82,7 +82,11 @@ class PostTypeController extends core\Controller
 					$field_obj->doAddJs();
 					$field_obj->doAddCss();
 				}
-				add_meta_box('jcf_fieldset-' . $f_id, $fieldset['title'], array( $this, 'renderCustomField' ), $post_type, 'advanced', 'default', array( $fieldset ));
+
+				$pos = isset($fieldset['position'])? $fieldset['position'] : models\Fieldset::POSITION_ADVANCED;
+				$prio = isset($fieldset['priority'])? $fieldset['priority'] : models\Fieldset::PRIO_DEFAULT;
+
+				add_meta_box('jcf_fieldset-' . $f_id, $fieldset['title'], array( $this, 'renderCustomField' ), $post_type, $pos, $prio, array( $fieldset ));
 			}
 
 			wp_add_inline_script('jquery-core', 'var jcf_fieldsets_visibility_rules = ' . json_encode($visibility_rules) . ';', 'before');
