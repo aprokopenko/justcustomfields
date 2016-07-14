@@ -39,6 +39,10 @@ class JustField_DatePicker extends core\JustField
 					});
 				--></script>
 
+				<?php if ( !empty($this->instance['description']) ) : ?>
+					<p class="howto"><?php echo esc_html($this->instance['description']); ?></p>
+				<?php endif; ?>
+
 			<?php echo $this->fieldOptions['after_widget']; ?>
 		</div>
 		<?php

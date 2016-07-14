@@ -9,9 +9,9 @@ div.jcf_edit_field label{
 	border:none;
     color: #333333;
     display: inline-block;
-    margin: 5px 5px 0 10px;
+    margin: 5px 5px 0 0px;
     padding: 4px 20px 5px 0;
-	font-size:12px;
+	font-size:13px;
 	font-weight:bold;
 	text-shadow:0 1px 0 #FFFFFF;
 }
@@ -21,11 +21,11 @@ div.jcf_edit_field select,
 div.jcf_edit_field textarea{
 	margin-top:0;
 }
-#poststuff .inside div.jcf_edit_field p.description{
-	margin:0;
-	padding:0 0 0 60px;
-	font-style:italic;
-	font-size:11px;
+div.jcf_edit_field select { width:50%; }
+div.jcf_edit_field select.jcf-multiple { height:auto; max-height: 200px; }
+#poststuff .inside div.jcf_edit_field p.howto{
+	margin:5px 0 0;
+	font-size:12px;
 }
 .jcf-hide{
 	display:none !important;
@@ -199,3 +199,7 @@ span.jcf_copied_to_clip{
 }
 .jcf_edit_field .wp-editor-tools { left:25%; }
 .jcf_edit_field.field_datepicker .dashicons { line-height: 28px; }
+
+/* right column styles */
+#post-body.columns-2 #postbox-container-1 div.jcf_edit_field select { width: 95% }
+#post-body.columns-2 #postbox-container-1 div.jcf_edit_field div.checkboxes-set label {	font-size: 12px; width: 95%; float:none; }

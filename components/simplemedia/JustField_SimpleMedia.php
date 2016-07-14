@@ -85,7 +85,7 @@ class JustField_SimpleMedia extends core\JustField
 				</div>
 
 				<?php if ( $this->instance['description'] != '' ) : ?>
-					<p class="description"><?php echo esc_html($this->instance['description']); ?></p>
+					<p class="howto"><?php echo esc_html($this->instance['description']); ?></p>
 				<?php endif; ?>
 			<?php echo $this->fieldOptions['after_widget']; ?>
 		</div>

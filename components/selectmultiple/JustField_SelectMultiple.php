@@ -34,14 +34,14 @@ class JustField_SelectMultiple extends core\JustField
 			<?php echo $this->fieldOptions['before_widget']; ?>
 				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
 				<div class="select_multiple_field">
-					<select name="<?php echo $this->getFieldName('val'); ?>[]" id="<?php echo $this->getFieldId('val'); ?>" multiple="multiple" style="height:200px; width:47%;">
+					<select name="<?php echo $this->getFieldName('val'); ?>[]" id="<?php echo $this->getFieldId('val'); ?>" class="jcf-multiple" multiple="multiple">
 					<?php foreach ( $values as $key => $val ): ?>
 						<option value="<?php echo esc_attr($val); ?>" <?php echo selected(true, in_array($val, $this->entry), false); ?>><?php echo esc_html(ucfirst($key)); ?></option>
 					<?php endforeach; ?>
 					</select>
 				</div>
 				<?php if ( $this->instance['description'] != '' ) : ?>
-					<p class="description"><?php echo esc_html($this->instance['description']); ?></p>
+					<p class="howto"><?php echo esc_html($this->instance['description']); ?></p>
 				<?php endif; ?>
 			<?php echo $this->fieldOptions['after_widget']; ?>
 		</div>

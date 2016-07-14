@@ -30,7 +30,7 @@ class JustField_InputText extends core\JustField
 					   id="<?php echo $this->getFieldId('val'); ?>"
 					   value="<?php echo esc_attr($this->entry); ?>"/>
 				<?php if ( $this->instance['description'] != '' ) : ?>
-					<p class="description"><?php echo esc_html($this->instance['description']); ?></p>
+					<p class="howto"><?php echo esc_html($this->instance['description']); ?></p>
 				<?php endif; ?>
 
 			<?php echo $this->fieldOptions['after_widget']; ?>

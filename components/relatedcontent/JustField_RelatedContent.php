@@ -124,7 +124,7 @@ class JustField_RelatedContent extends core\JustField
 				<?php endforeach; ?>
 
 				<?php if ( $this->instance['description'] != '' ): ?>
-					<p class="description"><?php echo esc_html($this->instance['description']); ?></p>
+					<p class="howto"><?php echo esc_html($this->instance['description']); ?></p>
 				<?php endif; ?>
 
 				<a href="#" class="button button-small jcf_add_more"><?php _e('+ Add another', \JustCustomFields::TEXTDOMAIN); ?></a>

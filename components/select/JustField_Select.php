@@ -31,7 +31,7 @@ class JustField_Select extends core\JustField
 			<?php echo $this->fieldOptions['before_widget']; ?>
 				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
 				<div class="select-field">
-					<select name="<?php echo $this->getFieldName('val'); ?>" id="<?php echo $this->getFieldId('val'); ?>" style="width: 47%;">
+					<select name="<?php echo $this->getFieldName('val'); ?>" id="<?php echo $this->getFieldId('val'); ?>">
 						<?php if (!empty($this->instance['empty_option'])) : ?>
 							<option value="" <?php echo selected($this->instance['empty_option'], $this->entry, false); ?>><?php echo esc_attr($this->instance['empty_option']); ?></option>
 						<?php endif; ?>
@@ -41,7 +41,7 @@ class JustField_Select extends core\JustField
 					</select>
 				</div>
 			<?php if ( !empty($this->instance['description']) ) : ?>
-				<p class="description"><?php echo esc_html($this->instance['description']); ?></p>
+				<p class="howto"><?php echo esc_html($this->instance['description']); ?></p>
 			<?php endif; ?>
 			<?php echo $this->fieldOptions['after_widget']; ?>
 		</div>

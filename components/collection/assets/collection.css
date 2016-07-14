@@ -16,18 +16,10 @@
 .hidden_collection{
 	display: none;
 }
-.collection_field_group .jcf_collection_25{
-	width: 25%;	
-}
-.collection_field_group .jcf_collection_33{
-	width: 33%;	
-}
-.collection_field_group .jcf_collection_50{
-	width: 50%;	
-}
-.collection_field_group .jcf_collection_75{
-	width: 75%;	
-}
+.collection_field_group .jcf_collection_25{ width: 25%; }
+.collection_field_group .jcf_collection_33{ width: 33%; }
+.collection_field_group .jcf_collection_50{	width: 50%; }
+.collection_field_group .jcf_collection_75{ width: 75%; }
 .collection_field_group .jcf_collection_100{
 	width: 100%;	
 	margin: 0;
@@ -115,3 +107,9 @@ div.jcf_edit_field .jcf_collection_33 div.checkboxes-set label{
 	clear: both;
 	height: 0;
 }
+
+/* right column */
+#post-body.columns-2 #postbox-container-1 .collection_field_group .jcf_collection_25{ width: 100%; float:none; }
+#post-body.columns-2 #postbox-container-1 .collection_field_group .jcf_collection_33{ width: 100%; float:none; }
+#post-body.columns-2 #postbox-container-1 .collection_field_group .jcf_collection_50{ width: 100%; float:none; }
+#post-body.columns-2 #postbox-container-1 .collection_field_group .jcf_collection_75{ width: 100%; float:none; }
