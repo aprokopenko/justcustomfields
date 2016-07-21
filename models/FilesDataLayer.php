@@ -137,7 +137,12 @@ class FilesDataLayer extends core\DataLayer
 			$file = $this->_getConfigFilePath();
 		}
 
-		$data = jcf_format_json(json_encode($data));
+		if ( defined('JSON_PRETTY_PRINT') ) {
+			$data = json_encode($data, JSON_PRETTY_PRINT);
+		}
+		else {
+			$data = jcf_format_json(json_encode($data));
+		}
 		$dir = dirname($file);
 
 		// trying to create dir
