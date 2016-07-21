@@ -47,24 +47,24 @@ class JustField_Table extends core\JustField
 				$table_head .= '<tr ' . ($key == 0 ? 'class="table-header"' : '') . '><th class="jcf_option_column">Options</th>';
 				$first_row = '<tr class="hide"><td>
 						<span class="drag-handle" ><span class="dashicons dashicons-menu"></span></span>
-						<span class="jcf_delete_row" ><span class="dashicons dashicons-trash"></span></span>
+						<span class="jcf_delete_row jcf_delete_table_row" ><span class="dashicons dashicons-trash"></span></span>
 					</td>';
 			}
 
 			$rows .= '<tr><td>
 						<span class="drag-handle" ><span class="dashicons dashicons-menu"></span></span>
-						<span class="jcf_delete_row" ><span class="dashicons dashicons-trash"></span></span>
+						<span class="jcf_delete_row jcf_delete_table_row" ><span class="dashicons dashicons-trash"></span></span>
 					</td>';
 
 			foreach ( $columns as $col_name => $col_title ) {
 				if ( $key == 0 ) {
-					$table_head .= '<th>' . $col_name . '</th>';
+					$table_head .= '<th>' . $col_title . '</th>';
 					$first_row .= '<td><input type="text" value=""
 									id="' . $this->getFieldIdL2($col_name, '00') . '"
 									name="' . $this->getFieldNameL2($col_name, '00') . '"></td>';
 				}
 
-				$rows .= '<td><input type="text" value="' . (!empty($entry) ? esc_attr($entry[$col_name]) : '' ) . '"
+				$rows .= '<td><input type="text" value="' . (!empty($entry[$col_name]) ? esc_attr($entry[$col_name]) : '' ) . '"
 					id="' . $this->getFieldIdL2($col_name, $key) . '"
 					name="' . $this->getFieldNameL2($col_name, $key) . '">
 				</td>';
@@ -88,7 +88,7 @@ class JustField_Table extends core\JustField
 							<?php echo $rows; ?>
 							<?php echo $first_row; ?>
 						</table>
-						<p><a href="#" class="button button-small jcf_add_row"><?php _e('+ Add row', \JustCustomFields::TEXTDOMAIN); ?></a></p>
+						<p><a href="#" class="button button-small jcf_add_row jcf_add_table_row"><?php _e('+ Add row', \JustCustomFields::TEXTDOMAIN); ?></a></p>
 					</div>
 				<?php endif; ?>
 

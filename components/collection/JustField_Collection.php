@@ -319,6 +319,7 @@ class JustField_Collection extends core\JustField
 				<span class="collection_group_title">
 					<?php echo $collection->instance['title'] . ' Item'; ?>
 				</span>
+				<a href="#" class="collection_undo_remove_group"><?php _e('UNDO', \JustCustomFields::TEXTDOMAIN); ?></a>
 				<span class="dashicons dashicons-trash"></span>
 			</h3>
 			<div class="collection_field_group_entry">

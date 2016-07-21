@@ -1,8 +1,5 @@
-var add_row_btn = '.jcf_add_row';
-var delete_row_btn = '.jcf_delete_row';
 jQuery(document).ready(function() {
-
-  jQuery(add_row_btn).click(function() {
+  jQuery('.jcf-table .jcf_add_row').live('click', function() {
     var container = jQuery(this).parent().parent().find('table');
     var jcf_table_row_max_index = container.find('tr').size();
     jcf_table_row_max_index--;
@@ -14,7 +11,8 @@ jQuery(document).ready(function() {
     return false;
   });
 
-  jQuery(delete_row_btn).live('click', function() {
+  jQuery('.jcf-table .jcf_delete_row').live('click', function() {
+    console.log('clicked');
     jQuery(this).parent().parent().remove();
   })
 
