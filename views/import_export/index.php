@@ -2,7 +2,7 @@
 
 <div class="jcf_tab-content">
 	<div class="jcf_inner-tab-content" >
-		<div class="jcf_columns jcf_width40p mrgr20">
+		<div class="jcf_columns jcf_width40p jcf_mrgr20">
 			<div class="card pressthis">
 				<h3 class="header"><?php _e('Import', \JustCustomFields::TEXTDOMAIN); ?></h3>
 				<div class="jcf_inner_content offset0">

@@ -79,4 +79,3 @@
 		</div>
 	</div>
 </div>
-		<!-- <div class="jcf_edit_modal_shadow"></div> -->

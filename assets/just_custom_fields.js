@@ -1,7 +1,5 @@
-jQuery(document).ready(function() {
-  //JSON.parse('{"jsontest":"1"}');
-
-  if ( jQuery('#jcf_fieldsets').size() ) {
+jQuery(document).ready(function () {
+  if (jQuery('#jcf_fieldsets').size()) {
     initAddFieldsetBox();
     initFieldsetsEdit();
     initAjaxBoxClose();
@@ -11,28 +9,22 @@ jQuery(document).ready(function() {
   initExport();
   initImportExportCheckboxes();
   initSettings();
-  removeScrollBody();
+  initMobileCompatibility();
 });
 
-jQuery(document).scroll(function() {
+jQuery(document).scroll(function () {
   initEditFormPosition();
 });
 
-function removeScrollBody(){
-  // jQuery(window).resize(addClassBody);
-  addClassBody();
-}
-function addClassBody(){
-  // if (jQuery(window).width() < 1201) {
-    jQuery('.show_modal, .edit').on('click', function(){
-      jQuery('body').addClass('jcf_show_modal');
-    });
-    jQuery(document).on('click', '#jcf_ajax_container .jcf_close, .field-control-close, .field-control-remove',function(){
-      if (jQuery('body').hasClass('jcf_show_modal')) {
-        jQuery('body').removeClass('jcf_show_modal');
-      };
-    });
-  // };
+function initMobileCompatibility() {
+  jQuery('.show_modal, .edit').on('click', function () {
+    jQuery('body').addClass('jcf_show_modal');
+  });
+  jQuery(document).on('click', '#jcf_ajax_container .jcf_close, .field-control-close, .field-control-remove', function () {
+    if ( jQuery('body').hasClass('jcf_show_modal') ) {
+      jQuery('body').removeClass('jcf_show_modal');
+    }
+  });
 }
 
 /**
@@ -706,12 +698,12 @@ function initEditFormPosition() {
   var wrap_width = jQuery('.wrap').css('width').replace('px', '') * 1;
   var left_bar_width = jQuery('#jcf_fieldsets').css('width').replace('px', '') * 1;
   var pos_left = wrap_position + left_bar_width;
-  var edit_form_width = wrap_width / 100 * 30 + 'px';
+  var edit_form_width = edit_form.width();
   if ( scrolling >= 140 ) {
     edit_form.css({'position': 'fixed', 'top': '40px', 'width': edit_form_width, 'left': pos_left + 'px'});
     setScrollOnEditForm();
   }else {
-    edit_form.css({'position': 'relative', 'top': '', 'width': '30%', 'left': ''});
+    edit_form.css({'position': 'relative', 'top': '', 'width': '36%', 'left': ''});
     removeScrollOnEditForm();
   }
 }
