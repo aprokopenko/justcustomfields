@@ -20,6 +20,7 @@ class Controller
 	 * Function for render views
 	 * @param string $template   file name to be rendered
 	 * @param array $params     array of variables to be passed to the view file
+	 * @return boolean
 	 */
 	protected function _render( $template, $params = array() )
 	{
