@@ -20,7 +20,7 @@
 						<span class="dashicons dashicons-menu drag-handle"></span>
 						<?php _e('Fieldset:', \JustCustomFields::TEXTDOMAIN); ?> <strong><?php echo esc_html($fieldset['title']); ?></strong>
 						<small>
-							<a href="#" class="jcf_fieldset_change jcf_change_pt" rel="<?php echo esc_attr($fieldset['id']); ?>"><?php _e('Edit', \JustCustomFields::TEXTDOMAIN); ?></a>
+							<a href="#" class="jcf_fieldset_change jcf_change_pt show_modal" rel="<?php echo esc_attr($fieldset['id']); ?>"><?php _e('Edit', \JustCustomFields::TEXTDOMAIN); ?></a>
 							<a href="#" class="jcf_fieldset_delete jcf_change_pt submitdelete" rel="<?php echo esc_attr($fieldset['id']); ?>"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a>
 						</small>
 					</span>
@@ -94,7 +94,7 @@
 								<option value="<?php echo $field['id_base']; ?>"><?php echo esc_html($field['title']); ?></option>
 								<?php endforeach; ?>
 							</select>
-							<input type="submit" class="button" name="add_field" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />
+							<input type="submit" class="button show_modal" name="add_field" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />
 							<?php echo jcf_print_loader_img(); ?>
 						</fieldset>
 					</form>

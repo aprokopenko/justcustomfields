@@ -19,7 +19,7 @@
 							<option value="<?php echo $field['id_base']; ?>"><?php echo esc_html($field['title']); ?></option>
 							<?php endforeach; ?>
 						</select>
-						<input type="submit" class="button" name="add_field" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />
+						<input type="submit" class="button show_modal" name="add_field" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />
 						<?php echo jcf_print_loader_img(); ?>
 					</fieldset>
 				</form>
