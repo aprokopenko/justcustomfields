@@ -218,7 +218,6 @@ body.jcf-loading input body.jcf-loading select {
 }
 .jcf_inner-tab-content {
 	padding: 20px;
-	/*overflow: auto;*/
 }
 .jcf_inner-tab-content .card {
 	max-width: 980px;
@@ -229,7 +228,6 @@ body.jcf-loading input body.jcf-loading select {
 	margin-bottom: 10px;
 }
 .jcf_tab-content label {
-	/*display: inline-block;*/
 	display: block;
 	margin-bottom: 5px;
 }
@@ -414,8 +412,11 @@ ul.visibility-list-items.visibility-list-items-tpl li {
 		margin: 50px auto;
 	}
 	.jcf_show_modal {
-		overflow-y: hidden;
+            overflow-y: hidden;
 	}
+        .jcf_show_modal #wpbody {
+            z-index: 999999;
+        }
 	.jcf_width40p,
 	.jcf_width66p,
 	.jcf_width50p {

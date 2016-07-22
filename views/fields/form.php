@@ -71,7 +71,7 @@
 						<a href="#close" class="field-control-close"><?php _e('Close', \JustCustomFields::TEXTDOMAIN); ?></a>
 					</div>
 					<div class="alignright">
-						<input type="submit" value="<?php _e('Save', \JustCustomFields::TEXTDOMAIN); ?>" class="button-primary" name="savefield">
+						<input type="submit" value="<?php _e('Save', \JustCustomFields::TEXTDOMAIN); ?>" class="jcf-btn-save button-primary" name="savefield">
 					</div>
 					<br class="clear"/>
 				</div>

@@ -20,7 +20,7 @@ function initMobileCompatibility() {
   jQuery('.show_modal, .edit').on('click', function () {
     jQuery('body').addClass('jcf_show_modal');
   });
-  jQuery(document).on('click', '#jcf_ajax_container .jcf_close, .field-control-close, .field-control-remove', function () {
+  jQuery(document).on('click', '#jcf_ajax_container .jcf_close, .field-control-close, .field-control-remove, .jcf-btn-save', function () {
     if ( jQuery('body').hasClass('jcf_show_modal') ) {
       jQuery('body').removeClass('jcf_show_modal');
     }

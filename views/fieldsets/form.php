@@ -56,7 +56,7 @@ use jcf\models\Fieldset;
 						<a href="#close" class="field-control-close"><?php _e('Close', \JustCustomFields::TEXTDOMAIN); ?></a>
 					</div>
 					<div class="alignright">
-						<input type="submit" value="<?php _e('Save', \JustCustomFields::TEXTDOMAIN); ?>" class="button-primary" name="savefield">
+						<input type="submit" value="<?php _e('Save', \JustCustomFields::TEXTDOMAIN); ?>" class="button-primary jcf-btn-save" name="savefield">
 					</div>
 					<br class="clear"/>
 				</div>
