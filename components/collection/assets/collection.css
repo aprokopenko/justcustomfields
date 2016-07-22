@@ -85,9 +85,7 @@ div.jcf_edit_field .jcf_collection_33 div.checkboxes-set label{
 	border: 1px solid #d3d3d3;
 	color: #555555;
 }
-.collection_field_group  div.form-field{
-	padding-right: 15px;
-}
+
 .collection_field_group  div.form-field .jcf-field-container{
 	background: none;
 	border: none;
@@ -113,3 +111,9 @@ div.jcf_edit_field .jcf_collection_33 div.checkboxes-set label{
 #post-body.columns-2 #postbox-container-1 .collection_field_group .jcf_collection_33{ width: 100%; float:none; }
 #post-body.columns-2 #postbox-container-1 .collection_field_group .jcf_collection_50{ width: 100%; float:none; }
 #post-body.columns-2 #postbox-container-1 .collection_field_group .jcf_collection_75{ width: 100%; float:none; }
+
+@media screen and (min-width: 851px) {
+	.collection_field_group  div.form-field{
+		padding-right: 15px;
+	}
+}
