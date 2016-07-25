@@ -23,7 +23,7 @@ class JustField_RelatedContent extends core\JustField
 	 */
 	public function field()
 	{
-		if ( empty($this->entry) && empty($this->isCollectionField()) )
+		if ( empty($this->entry) && !$this->isCollectionField() )
 			$this->entry = array( '0' => 0 );
 		// add null element for etalon copy
 		$entries = array( '00' => '' ) + (array) $this->entry;
