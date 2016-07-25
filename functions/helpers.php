@@ -29,6 +29,10 @@ function jcf_get_post_types( $format = 'single' ) {
 		$post_types[$key] = $val;
 	}
 
+	if ( isset($post_types['attachment']) ) {
+		unset($post_types['attachment']);
+	}
+
 	return $post_types;
 }
 
