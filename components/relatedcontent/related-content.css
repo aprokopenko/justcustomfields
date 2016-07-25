@@ -55,6 +55,8 @@ div.jcf_edit_field .jcf-relatedcontent-container .dashicons{
 	left:75%;
 	text-decoration: none;
 	font-weight: bold;
+	color: #1e8cbe;
+	opacity: 0.8;
 }
 .jcf-relatedcontent-field .jcf-delete-layer .jcf_tobe_removed{
 	opacity:0.7;

@@ -10,8 +10,6 @@ use jcf\core;
  */
 class JustField_RelatedContent extends core\JustField
 {
-	public static $compatibility = '3.3+';
-
 	public function __construct()
 	{
 		$field_ops = array( 'classname' => 'field_relatedcontent' );
@@ -25,9 +23,7 @@ class JustField_RelatedContent extends core\JustField
 	 */
 	public function field()
 	{
-		$delete_class = ' jcf-hide';
-
-		if ( empty($this->entry) )
+		if ( empty($this->entry) && empty($this->isCollectionField()) )
 			$this->entry = array( '0' => 0 );
 		// add null element for etalon copy
 		$entries = array( '00' => '' ) + (array) $this->entry;
@@ -124,16 +120,15 @@ class JustField_RelatedContent extends core\JustField
 				<?php endforeach; ?>
 
 				<?php if ( $this->instance['description'] != '' ): ?>
-					<p class="howto"><?php echo esc_html($this->instance['description']); ?></p>
+					<p class="howto<?php if(count($entries) == 1) echo ' jcf-hide';?>"><?php echo esc_html($this->instance['description']); ?></p>
 				<?php endif; ?>
 
-				<a href="#" class="button button-small jcf_add_more"><?php _e('+ Add another', \JustCustomFields::TEXTDOMAIN); ?></a>
+				<a href="#" class="button button-small jcf_add_more"><?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?></a>
 			</div>
 
 			<?php echo $this->fieldOptions['after_widget']; ?>
 		</div>
 		<?php
-		return true;
 	}
 
 	/**
@@ -231,34 +226,10 @@ class JustField_RelatedContent extends core\JustField
 	 */
 	public function addJs()
 	{
-		/**
-		 * WP version 3.2 and below does not have autocomplete in ui-core
-		 */
-		global $wp_version;
-		if ( $wp_version <= 3.2 ) {
-			// ui core
-			wp_register_script(
-					'jcf-jquery-ui-core', WP_PLUGIN_URL . '/just-custom-fields/assets/jquery-ui.min.js', array( 'jquery' )
-			);
-			wp_enqueue_script('jcf-jquery-ui-core');
-			// ui autocomplete
-			wp_register_script(
-					'ui-autocomplete', WP_PLUGIN_URL . '/just-custom-fields/components/relatedcontent/assets/jquery-ui-1.8.14.autocomplete.min.js', array( 'jcf-jquery-ui-core' )
-			);
-			wp_enqueue_script('ui-autocomplete');
-
-			// multi script
-			wp_register_script(
-					'jcf_related_content', WP_PLUGIN_URL . '/just-custom-fields/components/relatedcontent/related-content.js', array( 'ui-autocomplete' )
-			);
-			wp_enqueue_script('jcf_related_content');
-		}
-		else {
-			wp_register_script(
-					'jcf_related_content', WP_PLUGIN_URL . '/just-custom-fields/components/relatedcontent/related-content.js', array( 'jquery', 'jquery-ui-autocomplete' )
-			);
-			wp_enqueue_script('jcf_related_content');
-		}
+		wp_register_script(
+			'jcf_related_content', plugins_url( '/related-content.js', __FILE__ ), array( 'jquery', 'jquery-ui-autocomplete' )
+		);
+		wp_enqueue_script('jcf_related_content');
 
 		// add text domain if not registered with another component
 		global $wp_scripts;
@@ -270,10 +241,10 @@ class JustField_RelatedContent extends core\JustField
 
 	public function addCss()
 	{
-		wp_register_style('ui-autocomplete', WP_PLUGIN_URL . '/just-custom-fields/components/relatedcontent/assets/jquery-ui-1.8.14.autocomplete.css');
+		wp_register_style('ui-autocomplete', plugins_url( '/assets/jquery-ui-1.8.14.autocomplete.css', __FILE__ ));
 		wp_enqueue_style('ui-autocomplete');
 
-		wp_register_style('jcf_related_content', WP_PLUGIN_URL . '/just-custom-fields/components/relatedcontent/related-content.css');
+		wp_register_style('jcf_related_content', plugins_url( '/related-content.css', __FILE__ ) );
 		wp_enqueue_style('jcf_related_content');
 	}
 

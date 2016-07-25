@@ -1,11 +1,6 @@
 var jcf_relatedcontent_max_index = 0;
-var jcf_post_body_content_container = '#post-body-content';
+var jcf_post_body_content_container = '#post-body';
 jQuery(document).ready(function() {
-
-  // 2012-06-15: check WP version. 3.4+ has new class in body
-  if ( parseFloat(jcf_textdomain.wp_version) >= 3.4 ) {
-    jcf_post_body_content_container = '#post-body';
-  }
 
   var node = jQuery(jcf_post_body_content_container);
   if ( node.find('div.jcf-relatedcontent-field').size() == 0 )
@@ -34,7 +29,7 @@ jQuery(document).ready(function() {
   });
 
   // add more button
-  node.find('div.jcf-relatedcontent-field a.jcf_add_more').click(function() {
+  node.find('div.jcf-relatedcontent-field a.jcf_add_more').live('click', function() {
     var container = jQuery(this).parent();
 
     jcf_relatedcontent_max_index++;
@@ -46,10 +41,12 @@ jQuery(document).ready(function() {
 
     // add new html row
     container.find('div.jcf-relatedcontent-row:last').after(new_html);
+    container.find('p.howto').removeClass('jcf-hide');
 
     // attach new autocomplete event
     var input = container.find('div.jcf-relatedcontent-row:last p input:text').get(0);
     jcf_attach_autocomplete_event(input);
+    jcf_relatedcontent_init_sortable(container);
 
     return false;
   })
@@ -91,7 +88,11 @@ jQuery(document).ready(function() {
   });
 
   // init sortable
-  node.find('.jcf-relatedcontent-field').sortable({
+  jcf_relatedcontent_init_sortable( node.find('.jcf-relatedcontent-field') );
+});
+
+function jcf_relatedcontent_init_sortable(node) {
+  node.sortable({
     handle: 'span.drag-handle',
     opacity: 0.7,
     placeholder: 'sortable-placeholder',
@@ -99,4 +100,4 @@ jQuery(document).ready(function() {
       ui.placeholder.html('<div class="sort-placheholder"></div>');
     },
   });
-});
+}
