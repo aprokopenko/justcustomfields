@@ -34,44 +34,42 @@ class JustField_Table extends core\JustField
 		// get fields
 		$columns = $this->parseColumnsOptions();
 
-		if ( empty($columns) ) {
-			echo '<p>' . __('Wrong columns configuration. Please check widget settings.', \JustCustomFields::TEXTDOMAIN) . '</p>';
-		}
-
-		// generate th headings and row to be cloned
-		$count_cols = count($columns);
-		$table_headers = '<th class="jcf_option_column">Options</th>';
-		$clone_row = '<td>
-						<span class="drag-handle" ><span class="dashicons dashicons-menu"></span></span>
-						<span class="jcf_delete_row jcf_delete_table_row" ><span class="dashicons dashicons-trash"></span></span>
-					</td>';
-		foreach ( $columns as $col_name => $col_title ) {
-			$table_headers .= '<th>' . $col_title . '</th>';
-			$clone_row .= '<td><input type="text" value=""
-								id="' . $this->getFieldIdL2($col_name, '00') . '"
-								name="' . $this->getFieldNameL2($col_name, '00') . '"></td>';
-		}
-
-		// generate rows html
-		$rows = '';
-		$rows .= '<tr class="no-rows'.( !empty($entries)? ' hide' : '' ).'"><td colspan="'.($count_cols+1).'" align="center"><i>'
-			. __('No data yet.', \JustCustomFields::TEXTDOMAIN)
-			. '</i></td></tr>';
-
-		foreach ( $entries as $key => $entry ) {
-			$rows .= '<tr><td>
-						<span class="drag-handle" ><span class="dashicons dashicons-menu"></span></span>
-						<span class="jcf_delete_row jcf_delete_table_row" ><span class="dashicons dashicons-trash"></span></span>
-					</td>';
-
-			foreach ( $columns as $col_name => $col_title ) {
-				$rows .= '<td><input type="text" value="' . (!empty($entry[$col_name]) ? esc_attr($entry[$col_name]) : '' ) . '"
-					id="' . $this->getFieldIdL2($col_name, $key) . '"
-					name="' . $this->getFieldNameL2($col_name, $key) . '">
-				</td>';
+		if ( !empty($columns) ) {
+			// generate th headings and row to be cloned
+			$count_cols = count($columns);
+			$table_headers = '<th class="jcf_option_column">Options</th>';
+			$clone_row = '<td>
+							<span class="drag-handle" ><span class="dashicons dashicons-menu"></span></span>
+							<span class="jcf_delete_row jcf_delete_table_row" ><span class="dashicons dashicons-trash"></span></span>
+						</td>';
+			foreach ($columns as $col_name => $col_title) {
+				$table_headers .= '<th>' . $col_title . '</th>';
+				$clone_row .= '<td><input type="text" value=""
+									id="' . $this->getFieldIdL2($col_name, '00') . '"
+									name="' . $this->getFieldNameL2($col_name, '00') . '"></td>';
 			}
 
-			$rows .= '</tr>';
+			// generate rows html
+			$rows = '';
+			$rows .= '<tr class="no-rows' . (!empty($entries) ? ' hide' : '') . '"><td colspan="' . ($count_cols + 1) . '" align="center"><i>'
+				. __('No data yet.', \JustCustomFields::TEXTDOMAIN)
+				. '</i></td></tr>';
+
+			foreach ($entries as $key => $entry) {
+				$rows .= '<tr><td>
+							<span class="drag-handle" ><span class="dashicons dashicons-menu"></span></span>
+							<span class="jcf_delete_row jcf_delete_table_row" ><span class="dashicons dashicons-trash"></span></span>
+						</td>';
+
+				foreach ($columns as $col_name => $col_title) {
+					$rows .= '<td><input type="text" value="' . (!empty($entry[$col_name]) ? esc_attr($entry[$col_name]) : '') . '"
+						id="' . $this->getFieldIdL2($col_name, $key) . '"
+						name="' . $this->getFieldNameL2($col_name, $key) . '">
+					</td>';
+				}
+
+				$rows .= '</tr>';
+			}
 		}
 		?>
 		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
@@ -93,6 +91,8 @@ class JustField_Table extends core\JustField
 						</table>
 						<p><a href="#" class="button button-small jcf_add_row jcf_add_table_row"><?php _e('Add row', \JustCustomFields::TEXTDOMAIN); ?></a></p>
 					</div>
+				<?php else : ?>
+					<p><?php _e('Wrong columns configuration. Please check widget settings.', \JustCustomFields::TEXTDOMAIN); ?></p>
 				<?php endif; ?>
 
 				<?php if ( $this->instance['description'] != '' ): ?>
