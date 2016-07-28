@@ -377,6 +377,7 @@ ul.visibility-list-items.visibility-list-items-tpl li {
 .collection-fields-table td {
 	width: inherit !important;
 }
+.collection_list .check-column{ width:2.2em !important; }
 
 @media only screen and (max-width: 1200px) {
 	.jcf_edit_modal_shadow {

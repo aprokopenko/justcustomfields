@@ -2,6 +2,7 @@
 	padding:0;
 	margin-bottom: 15px;
 }
+.collection_field_group.empty{ margin: 0; }
 .collection_field_group .collection_field_group_entry{
 	padding: 0 15px 15px;
 }

@@ -51,7 +51,7 @@ class JustField_Collection extends core\JustField
 		self::$currentCollectionFieldKey = 0;
 
 		if ( empty($this->entry) )
-			$this->entry = array( '0' => '' );
+			$this->entry = array();
 
 		$entries = (array) $this->entry;
 		?>
@@ -62,7 +62,9 @@ class JustField_Collection extends core\JustField
 				<?php if ( empty($this->instance['fields']) ) : ?>
 					<p class="error">Collection element has no fields registered. Please check component settings</p>
 				<?php else: ?>
+					<input type="hidden" name="<?php echo $this->getFieldName('empty'); ?>" value="1">
 					<div class="collection_fields">
+						<div class="collection_field_group empty"></div>
 						<?php foreach ( $entries as $key => $fields ) : ?>
 							<div class="collection_field_group">
 								<h3>
@@ -145,6 +147,9 @@ class JustField_Collection extends core\JustField
 	{
 		$values = array();
 
+		// hidden input to prevent skiping this field if all entries deleted
+		unset($_values['empty']);
+
 		foreach ( $_values as $_value ) {
 			$item = array();
 
@@ -186,7 +191,6 @@ class JustField_Collection extends core\JustField
 	 */
 	public function addJs()
 	{
-
 		wp_register_script(
 				'jcf_collection_post_edit', WP_PLUGIN_URL . '/just-custom-fields/components/collection/assets/collection_post_edit.js', array( 'jquery' )
 		);

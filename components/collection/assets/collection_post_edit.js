@@ -11,6 +11,7 @@ jQuery(document).ready(function() {
     icons: false,
     heightStyle: "content",
     collapsible: true,
+    active: false,
     beforeActivate: function( event, ui ) {
       if ( jQuery(ui.newHeader).hasClass('jcf_field_removed') ) {
         return false;
@@ -51,6 +52,7 @@ function jcf_collection_fields_control() {
     jQuery.post(ajaxurl, data, function( response ) {
       container.find('div.collection_field_group:last').after(response);
       jQuery('.collection_fields').accordion('refresh');
+      // open last section
       container.find('div.collection_field_group:last').find('h3').click();
     });
 

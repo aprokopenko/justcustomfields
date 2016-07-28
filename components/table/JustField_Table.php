@@ -26,7 +26,7 @@ class JustField_Table extends core\JustField
 	public function field()
 	{
 		if ( empty($this->entry) )
-			$this->entry = array( '0' => '' );
+			$this->entry = array();
 
 		// add null element for etalon copy
 		$entries = (array) $this->entry;
@@ -38,42 +38,39 @@ class JustField_Table extends core\JustField
 			echo '<p>' . __('Wrong columns configuration. Please check widget settings.', \JustCustomFields::TEXTDOMAIN) . '</p>';
 		}
 
+		// generate th headings and row to be cloned
 		$count_cols = count($columns);
-		$table_head = '<thead>';
-		$rows = '';
-
-		foreach ( $entries as $key => $entry ) {
-			if ( $key == 0 ) {
-				$table_head .= '<tr ' . ($key == 0 ? 'class="table-header"' : '') . '><th class="jcf_option_column">Options</th>';
-				$first_row = '<tr class="hide"><td>
+		$table_headers = '<th class="jcf_option_column">Options</th>';
+		$clone_row = '<td>
 						<span class="drag-handle" ><span class="dashicons dashicons-menu"></span></span>
 						<span class="jcf_delete_row jcf_delete_table_row" ><span class="dashicons dashicons-trash"></span></span>
 					</td>';
-			}
+		foreach ( $columns as $col_name => $col_title ) {
+			$table_headers .= '<th>' . $col_title . '</th>';
+			$clone_row .= '<td><input type="text" value=""
+								id="' . $this->getFieldIdL2($col_name, '00') . '"
+								name="' . $this->getFieldNameL2($col_name, '00') . '"></td>';
+		}
 
+		// generate rows html
+		$rows = '';
+		$rows .= '<tr class="no-rows'.( !empty($entries)? ' hide' : '' ).'"><td colspan="'.($count_cols+1).'" align="center"><i>'
+			. __('No data yet.', \JustCustomFields::TEXTDOMAIN)
+			. '</i></td></tr>';
+
+		foreach ( $entries as $key => $entry ) {
 			$rows .= '<tr><td>
 						<span class="drag-handle" ><span class="dashicons dashicons-menu"></span></span>
 						<span class="jcf_delete_row jcf_delete_table_row" ><span class="dashicons dashicons-trash"></span></span>
 					</td>';
 
 			foreach ( $columns as $col_name => $col_title ) {
-				if ( $key == 0 ) {
-					$table_head .= '<th>' . $col_title . '</th>';
-					$first_row .= '<td><input type="text" value=""
-									id="' . $this->getFieldIdL2($col_name, '00') . '"
-									name="' . $this->getFieldNameL2($col_name, '00') . '"></td>';
-				}
-
 				$rows .= '<td><input type="text" value="' . (!empty($entry[$col_name]) ? esc_attr($entry[$col_name]) : '' ) . '"
 					id="' . $this->getFieldIdL2($col_name, $key) . '"
 					name="' . $this->getFieldNameL2($col_name, $key) . '">
 				</td>';
 			}
 
-			if ( $key == 0 ) {
-				$table_head .= '</tr></thead>';
-				$first_row .= '</tr>';
-			}
 			$rows .= '</tr>';
 		}
 		?>
@@ -84,11 +81,17 @@ class JustField_Table extends core\JustField
 				<?php if ( !empty($columns) ) : ?>
 					<div class="jcf-table">
 						<table class="sortable wp-list-table widefat fixed">
-							<?php echo $table_head; ?>
+							<thead>
+								<tr class="table-header">
+									<?php echo $table_headers; ?>
+								</tr>
+							</thead>
+
 							<?php echo $rows; ?>
-							<?php echo $first_row; ?>
+
+							<tr class="clone hide"><?php echo $clone_row; ?></tr>
 						</table>
-						<p><a href="#" class="button button-small jcf_add_row jcf_add_table_row"><?php _e('+ Add row', \JustCustomFields::TEXTDOMAIN); ?></a></p>
+						<p><a href="#" class="button button-small jcf_add_row jcf_add_table_row"><?php _e('Add row', \JustCustomFields::TEXTDOMAIN); ?></a></p>
 					</div>
 				<?php endif; ?>
 
