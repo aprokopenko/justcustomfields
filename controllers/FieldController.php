@@ -48,7 +48,7 @@ class FieldController extends core\Controller
 			if ( isset($success['id_base']) && $success['id_base'] == 'collection' ) {
 				$jcf = \JustCustomFields::run();
 				$registered_fields = $jcf->getFields('collection');
-				$prefix = strpos($model->post_type, 'tax_') !== false ? 'tax_' : false;
+				$prefix = strpos($model->post_type, models\Fieldset::TAXONOMY_PREFIX) !== false ? models\Fieldset::TAXONOMY_PREFIX : false;
 
 				ob_start();
 				$this->_render('fields/collection', array(

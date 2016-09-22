@@ -48,8 +48,8 @@ class FieldsetController extends core\Controller
 	{
 		$post_type = $_GET['pt'];
 
-		if ( strpos($post_type, 'tax_') !== false ) {
-			$prefix = 'tax_';
+		if ( strpos($post_type, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
+			$prefix = models\Fieldset::TAXONOMY_PREFIX;
 			$post_types = jcf_get_taxonomies('objects');
 		}
 		else {
@@ -111,8 +111,8 @@ class FieldsetController extends core\Controller
 		$prefix = '';
 
 		if ( $model->load($_POST) && $fieldset = $model->findById($model->fieldset_id) ) {
-			if ( strpos($model->post_type,'tax_') !== false ) {
-				$prefix = 'tax_';
+			if ( strpos($model->post_type, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
+				$prefix = models\Fieldset::TAXONOMY_PREFIX;
 			}
 
 			return $this->_renderAjax('fieldsets/form', 'html', array( 'fieldset' => $fieldset, 'prefix' => $prefix ));

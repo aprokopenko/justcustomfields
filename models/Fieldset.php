@@ -14,6 +14,8 @@ class Fieldset extends core\Model
 	const PRIO_DEFAULT = 'default';
 	const PRIO_HIGH = 'high';
 	const PRIO_LOW = 'low';
+	
+	const TAXONOMY_PREFIX = 'tax_';
 
 	public $title;
 	public $post_type;

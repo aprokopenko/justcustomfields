@@ -59,7 +59,7 @@ class TaxonomyController extends core\Controller
 		$htmlFields = '';
 		if ( !empty($term->term_id) ) $is_edit = true;
 
-		$taxonomy = 'tax_' . $this->_taxonomy;
+		$taxonomy = models\Fieldset::TAXONOMY_PREFIX . $this->_taxonomy;
 		$model = new models\Fieldset();
 		$fieldsets = $model->findByPostType($taxonomy);
 
@@ -110,7 +110,7 @@ class TaxonomyController extends core\Controller
 	
 	public function saveTaxonomyExt( $term_id, $tt_id, $taxonomy = null  )
 	{
-		$taxonomy = empty($taxonomy) ? 'tax_' . $tt_id : 'tax_' . $taxonomy;
+		$taxonomy = empty($taxonomy) ? models\Fieldset::TAXONOMY_PREFIX . $tt_id : models\Fieldset::TAXONOMY_PREFIX . $taxonomy;
 		
 		$fieldsets_model = new models\Fieldset();
 		$field_model = new models\Field();

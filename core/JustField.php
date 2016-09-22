@@ -189,7 +189,7 @@ class JustField
 
 				$collection_slug = $fields[$this->postType][$this->collectionId]['slug'];
 
-				if ( strpos($this->postType, 'tax_') !== false ) {
+				if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
 					$data = get_term_meta($this->postID, $collection_slug, true);
 				}
 				else {
@@ -204,7 +204,7 @@ class JustField
 		else {
 			// load entry
 			if ( !empty($this->slug) ) {
-				if ( strpos($this->postType, 'tax_') !== false ) {
+				if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
 					$this->entry = get_term_meta($this->postID, $this->slug, true);
 				}
 				else {
@@ -468,7 +468,7 @@ class JustField
 		$values = $this->save($input);
 		// save to post meta
 		
-		if ( strpos($this->postType, 'tax_') !== false ) {
+		if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
 			update_term_meta($this->postID, $this->slug, $values);
 		}
 		else {
@@ -492,7 +492,7 @@ class JustField
 
 		
 		if ( method_exists($this, 'addJs') ) {
-			if ( strpos($this->postType, 'tax_') !== FALSE ) {
+			if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== FALSE ) {
 				$this->addJs();
 			}
 			else {
@@ -515,7 +515,7 @@ class JustField
 			return false;
 
 		if ( method_exists($this, 'addCss') ) {
-			if ( strpos($this->postType, 'tax_') !== FALSE ) {
+			if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== FALSE ) {
 				$this->addCss();
 			}
 			else {
