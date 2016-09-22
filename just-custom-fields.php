@@ -77,6 +77,7 @@ class JustCustomFields extends core\Singleton
 	public function initControllers()
 	{
 		new controllers\PostTypeController();
+		new controllers\TaxonomyController();
 
 		if ( !is_admin() ) return;
 

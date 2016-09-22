@@ -16,39 +16,41 @@ use jcf\models\Fieldset;
 						<label for="jcf_edit_fieldset_title"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label>
 						<input class="widefat" id="jcf_edit_fieldset_title" type="text" name="title" value="<?php echo esc_attr($fieldset['title']); ?>" />
 					</p>
-					<p>
-						<label for="jcf_edit_fieldset_position"><?php _e('Position:', \JustCustomFields::TEXTDOMAIN); ?></label><br>
-						<select id="jcf_edit_fieldset_position" name="position" style="width:100%;">
-							<option value="<?php echo Fieldset::POSITION_ADVANCED; ?>" <?php echo selected(Fieldset::POSITION_ADVANCED, @$fieldset['position']); ?>>Advanced</option>
-							<option value="<?php echo Fieldset::POSITION_SIDE; ?>" <?php echo selected(Fieldset::POSITION_SIDE, @$fieldset['position']); ?>>Sidebar</option>
-							<option value="<?php echo Fieldset::POSITION_NORMAL; ?>" <?php echo selected(Fieldset::POSITION_NORMAL, @$fieldset['position']); ?>>Normal</option>
-						</select>
-					</p>
-					<p>
-						<label for="jcf_edit_fieldset_priority"><?php _e('Priority:', \JustCustomFields::TEXTDOMAIN); ?></label><br>
-						<select id="jcf_edit_fieldset_priority" name="priority" style="width:100%;">
-							<option value="<?php echo Fieldset::PRIO_DEFAULT; ?>" <?php echo selected(Fieldset::PRIO_DEFAULT, @$fieldset['priority']); ?>>Default</option>
-							<option value="<?php echo Fieldset::PRIO_HIGH; ?>" <?php echo selected(Fieldset::PRIO_HIGH, @$fieldset['priority']); ?>>High</option>
-							<option value="<?php echo Fieldset::PRIO_LOW; ?>" <?php echo selected(Fieldset::PRIO_LOW, @$fieldset['priority']); ?>>Low</option>
-						</select>
-					</p>
+					<?php if ( empty($prefix) ) : ?>
+						<p>
+							<label for="jcf_edit_fieldset_position"><?php _e('Position:', \JustCustomFields::TEXTDOMAIN); ?></label><br>
+							<select id="jcf_edit_fieldset_position" name="position" style="width:100%;">
+								<option value="<?php echo Fieldset::POSITION_ADVANCED; ?>" <?php echo selected(Fieldset::POSITION_ADVANCED, @$fieldset['position']); ?>>Advanced</option>
+								<option value="<?php echo Fieldset::POSITION_SIDE; ?>" <?php echo selected(Fieldset::POSITION_SIDE, @$fieldset['position']); ?>>Sidebar</option>
+								<option value="<?php echo Fieldset::POSITION_NORMAL; ?>" <?php echo selected(Fieldset::POSITION_NORMAL, @$fieldset['position']); ?>>Normal</option>
+							</select>
+						</p>
+						<p>
+							<label for="jcf_edit_fieldset_priority"><?php _e('Priority:', \JustCustomFields::TEXTDOMAIN); ?></label><br>
+							<select id="jcf_edit_fieldset_priority" name="priority" style="width:100%;">
+								<option value="<?php echo Fieldset::PRIO_DEFAULT; ?>" <?php echo selected(Fieldset::PRIO_DEFAULT, @$fieldset['priority']); ?>>Default</option>
+								<option value="<?php echo Fieldset::PRIO_HIGH; ?>" <?php echo selected(Fieldset::PRIO_HIGH, @$fieldset['priority']); ?>>High</option>
+								<option value="<?php echo Fieldset::PRIO_LOW; ?>" <?php echo selected(Fieldset::PRIO_LOW, @$fieldset['priority']); ?>>Low</option>
+							</select>
+						</p>
 
-					<div class="field-control-actions">
-						<h4>
-							<a href="#" class="visibility_toggle" >
-								<?php _e('Visibility rules', \JustCustomFields::TEXTDOMAIN); ?>
-								<span class="<?php echo !empty($fieldset['visibility_rules']) ? 'dashicons-arrow-up-alt2' : 'dashicons-arrow-down-alt2' ?> dashicons-before"></span>
-							</a>
-						</h4>
-						<div id="visibility" class="<?php echo !empty($fieldset['visibility_rules']) ? '' : 'hidden' ?>">
-							<?php if( !empty($fieldset['visibility_rules']) ): ?>
-								<?php $this->_render('fieldsets/visibility/rules', array('visibility_rules' => $fieldset['visibility_rules'])); ?>
-							<?php else: ?>
-								<?php $this->ajaxGetVisibilityForm(); ?>
-							<?php endif; ?>
+						<div class="field-control-actions">
+							<h4>
+								<a href="#" class="visibility_toggle" >
+									<?php _e('Visibility rules', \JustCustomFields::TEXTDOMAIN); ?>
+									<span class="<?php echo !empty($fieldset['visibility_rules']) ? 'dashicons-arrow-up-alt2' : 'dashicons-arrow-down-alt2' ?> dashicons-before"></span>
+								</a>
+							</h4>
+							<div id="visibility" class="<?php echo !empty($fieldset['visibility_rules']) ? '' : 'hidden' ?>">
+								<?php if( !empty($fieldset['visibility_rules']) ): ?>
+									<?php $this->_render('fieldsets/visibility/rules', array('visibility_rules' => $fieldset['visibility_rules'])); ?>
+								<?php else: ?>
+									<?php $this->ajaxGetVisibilityForm(); ?>
+								<?php endif; ?>
+							</div>
+							<br class="clear"/>
 						</div>
-						<br class="clear"/>
-					</div>
+					<?php endif; ?>
 				</fieldset>
 				<div class="field-control-actions">
 					<div class="alignleft">

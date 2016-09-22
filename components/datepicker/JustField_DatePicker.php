@@ -33,7 +33,7 @@ class JustField_DatePicker extends core\JustField
 				<script type="text/javascript"><!--
 					jQuery(document).ready(function() {
 						jQuery("#<?php echo $this->getFieldId('val'); ?>").datepicker({
-							dateFormat: "<?php echo!empty($this->instance['date_format']) ? esc_attr($this->instance['date_format']) : 'yy-mm-dd'; ?>"
+							dateFormat: "<?php echo !empty($this->instance['date_format']) ? esc_attr($this->instance['date_format']) : 'yy-mm-dd'; ?>"
 				<?php if ( !empty($this->instance['show_monthes']) ) echo ', changeMonth: true, changeYear: true'; ?>
 						});
 					});

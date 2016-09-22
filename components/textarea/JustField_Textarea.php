@@ -57,7 +57,15 @@ class JustField_Textarea extends core\JustField
 								tinymce.execCommand('mceAddEditor', false, '<?php echo $this->getFieldId('val'); ?>');
 							})
 						</script>
-					<?php endif; ?>
+					<?php  endif;  ?>
+
+					<script>
+						jQuery(document).ready(function() {
+							jQuery( '#addtag' ).on( 'mousedown', '#submit', function() {
+								tinymce.triggerSave();
+							});
+						});
+					</script>
 
 				<?php else: // no editor - print textarea  ?>
 					<?php $entry = esc_html($this->entry); ?>

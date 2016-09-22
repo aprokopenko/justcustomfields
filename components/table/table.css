@@ -11,6 +11,9 @@ table.sortable .hide{
 .jcf_option_column{
 	width: 60px;
 }
+#addtag .collection_field_group th, #addtag .collection_field_group td {
+	padding: 2px;
+}
 .form-field .jcf-table input[type="text"]{ width:100%; }
 
 /* right column */
