@@ -42,7 +42,7 @@ class JustField_GoogleMap extends core\JustField
 								value="<?php echo esc_attr($this->entry['lng']); ?>"/>
 						<script>
 							var <?php echo $markers; ?> = [];
-							
+						
 							function <?= $function_prefix; ?>addMarker(location, map)
 							{
 								for (var i = 0; i < <?php echo $markers; ?>.length; i++) {
@@ -134,7 +134,8 @@ class JustField_GoogleMap extends core\JustField
 		$instance = wp_parse_args((array) $this->instance, array( 'title' => '', 'description' => '', 'api_key' => '' ));
 		$api_key = esc_attr($instance['api_key']);
 		
-		wp_enqueue_script('google-map', '//maps.googleapis.com/maps/api/js?key=' . $api_key, array('jquery'), '3', false);
+		wp_register_script('jcf-google-map', '//maps.googleapis.com/maps/api/js?key=' . $api_key, array('jquery'), '3', false);
+		wp_enqueue_script('jcf-google-map');
 	}
 
 	/**
@@ -166,49 +167,24 @@ class JustField_GoogleMap extends core\JustField
 	public function shortcodeValue( $args )
 	{
 		if ( empty($this->entry) ) return '';
-
 		$markers = str_replace('-', '_', $this->getFieldId('markers'));
 		$function_prefix = str_replace('-', '', $this->id);
 		$instance = wp_parse_args((array) $this->instance, array( 'title' => '', 'description' => '', 'api_key' => '' ));
 		$api_key = esc_attr($instance['api_key']);
-
+		
 		ob_start();
 		?>
+		<script>
+			(function ($){
+				if ( $('script[id="jcf-google-map"]').length < 1 ) {
+					document.write('<script id="jcf-google-map" src="http://maps.googleapis.com/maps/api/js?key=<?= $api_key; ?>&ver=3"><\/script>');
+				}
+			})(jQuery);
+		</script>
+		
 		<div id="jcf-map-<?php echo $this->id; ?>" style="width: 100%; height: 400px;"></div>
 		
 		<script>
-			var <?php echo $markers; ?> = [];
-
-			function <?= $function_prefix; ?>addMarker(location, map)
-			{
-				for (var i = 0; i < <?php echo $markers; ?>.length; i++) {
-					<?php echo $markers; ?>[i].setMap(null);
-				}
-
-				map.setCenter(location);
-				var marker = new google.maps.Marker({
-					position: location,
-					map: map
-				});
-
-				<?php echo $markers; ?>.push(marker);
-				jQuery('#<?php echo $this->getFieldId('lng'); ?>').val(marker.position.lng());
-				jQuery('#<?php echo $this->getFieldId('lat'); ?>').val(marker.position.lat());
-			}
-
-			function <?= $function_prefix; ?>geocodeAddress(geocoder, resultsMap)
-			{
-				var address = document.getElementById('jcf-geocode-address-<?php echo $this->id; ?>').value;
-				geocoder.geocode({'address': address}, function(results, status) {
-					if (status === google.maps.GeocoderStatus.OK) {
-						resultsMap.setCenter(results[0].geometry.location);
-						<?= $function_prefix; ?>addMarker(results[0].geometry.location, resultsMap);
-					} else {
-						alert('Geocode was not successful for the following reason: ' + status);
-					}
-				});
-			}
-
 			google.maps.event.addDomListener(window, 'load', function() {
 				var map = new google.maps.Map(document.getElementById('jcf-map-<?php echo $this->id; ?>'), {
 					zoom: 2,
@@ -216,21 +192,12 @@ class JustField_GoogleMap extends core\JustField
 				});
 
 				<?php if ( !( empty($this->entry['lng']) || empty($this->entry['lat']) ) ) : ?>
-					var lat = <?php echo $this->entry['lat']; ?>;
-					var lng = <?php echo $this->entry['lng']; ?>;
-					var mlocation = {lat: lat, lng: lng};
-					<?= $function_prefix; ?>addMarker(mlocation, map);
+					map.setCenter({lat: <?php echo $this->entry['lat']; ?>, lng: <?php echo $this->entry['lng']; ?>});
+					var marker = new google.maps.Marker({
+						position: {lat: <?php echo $this->entry['lat']; ?>, lng: <?php echo $this->entry['lng']; ?>},
+						map: map
+					});
 				<?php endif; ?>
-
-				var geocoder = new google.maps.Geocoder();
-				document.getElementById('jcf-geocode-submit-<?php echo $this->id; ?>').addEventListener('click', function() {
-					<?= $function_prefix; ?>geocodeAddress(geocoder, map);
-				});
-
-				// This event listener calls addMarker() when the map is clicked.
-				google.maps.event.addListener(map, 'click', function(event) {
-					<?= $function_prefix; ?>addMarker(event.latLng, map);
-				});
 			});
 		</script>
 		<?php
