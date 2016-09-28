@@ -12,8 +12,8 @@
 							<span class="jcf_tile_icon"><span class="dashicons <?php echo jcf_get_post_type_icon($obj); ?>"></span></span>
 							<span class="jcf_tile_title"><?php echo $obj->label; ?>
 								<span class="jcf_tile_info">
-									<?php _e('Added Fieldsets: ', \JustCustomFields::TEXTDOMAIN); ?><?php echo $count_fields[$key]['fieldsets']; ?>
-									<?php _e('Total Fields:  ', \JustCustomFields::TEXTDOMAIN); ?><?php echo $count_fields[$key]['fields']; ?>
+									<?php _e('Added Fieldsets', \JustCustomFields::TEXTDOMAIN); ?>: <?php echo $count_fields[$key]['fieldsets']; ?>
+									<?php _e('Total Fields', \JustCustomFields::TEXTDOMAIN); ?>:  <?php echo $count_fields[$key]['fields']; ?>
 								</span>
 							</span>
 						</a>

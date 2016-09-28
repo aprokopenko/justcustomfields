@@ -13,7 +13,7 @@
 						<div class="icon32 icon32-posts-page" id="icon-edit"><br></div>
 						<form action="<?php get_permalink(); ?>" method="post" id="jcf_import_fields" enctype="multipart/form-data" >
 							<input type="hidden" name ="action" value="jcf_import_fields_form" />
-							<p><?php _e('Add file to import:', \JustCustomFields::TEXTDOMAIN); ?>
+							<p><?php _e('Add file to import', \JustCustomFields::TEXTDOMAIN); ?>:
 								<input type="file"
 									   id="import_data_file" name="import_data"
 									   accept=".json"

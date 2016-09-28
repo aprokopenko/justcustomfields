@@ -1,6 +1,6 @@
 <?php if ( !empty($templates) ): ?>
 	<div class="templates-options">
-		<p><?php _e('Choose templates:', \JustCustomFields::TEXTDOMAIN); ?></p>
+		<p><?php _e('Choose templates', \JustCustomFields::TEXTDOMAIN); ?>:</p>
 		<ul class="visibility-list-items visibility-list-items-tpl">
 			<?php $i = 1;
 			foreach ( $templates as $path => $name ): ?>

@@ -1,7 +1,7 @@
 <?php if ( !empty($taxonomies) ): ?>
 	<div class="taxonomy-options">
 		<p>
-			<label for="rule-taxonomy"><?php _e('Choose taxonomy:', \JustCustomFields::TEXTDOMAIN); ?></label>
+			<label for="rule-taxonomy"><?php _e('Choose taxonomy', \JustCustomFields::TEXTDOMAIN); ?>:</label>
 			<br class="clear"/>
 			<select name="rule_taxonomy" id="rule-taxonomy">
 				<option value="" disabled="disabled" <?php selected(empty($current_tax)); ?> ><?php _e('Choose taxonomy', \JustCustomFields::TEXTDOMAIN); ?></option>

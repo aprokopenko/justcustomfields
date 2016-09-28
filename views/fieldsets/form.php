@@ -5,7 +5,7 @@ use jcf\models\Fieldset;
 ?>
 <div class="jcf_edit_modal_shadow">
 	<div class="jcf_edit_fieldset">
-		<h3 class="header"><?php echo __('Edit Fieldset:', \JustCustomFields::TEXTDOMAIN) . ' ' . esc_html($fieldset['title']); ?></h3>
+		<h3 class="header"><?php echo __('Edit Fieldset', \JustCustomFields::TEXTDOMAIN) . ': ' . esc_html($fieldset['title']); ?></h3>
 		<a href="#close" class="button-link jcf_close field-control-close" type="button"><span class="media-modal-icon"></span></a>
 		<div class="jcf_inner_content">
 			<form action="#" method="post" id="jcform_edit_fieldset">
@@ -13,11 +13,11 @@ use jcf\models\Fieldset;
 					<input type="hidden" name="fieldset_id" value="<?php echo $fieldset['id']; ?>" />
 
 					<p>
-						<label for="jcf_edit_fieldset_title"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label>
+						<label for="jcf_edit_fieldset_title"><?php _e('Title', \JustCustomFields::TEXTDOMAIN); ?>:</label>
 						<input class="widefat" id="jcf_edit_fieldset_title" type="text" name="title" value="<?php echo esc_attr($fieldset['title']); ?>" />
 					</p>
 					<p>
-						<label for="jcf_edit_fieldset_position"><?php _e('Position:', \JustCustomFields::TEXTDOMAIN); ?></label><br>
+						<label for="jcf_edit_fieldset_position"><?php _e('Position', \JustCustomFields::TEXTDOMAIN); ?>:</label><br>
 						<select id="jcf_edit_fieldset_position" name="position" style="width:100%;">
 							<option value="<?php echo Fieldset::POSITION_ADVANCED; ?>" <?php echo selected(Fieldset::POSITION_ADVANCED, @$fieldset['position']); ?>>Advanced</option>
 							<option value="<?php echo Fieldset::POSITION_SIDE; ?>" <?php echo selected(Fieldset::POSITION_SIDE, @$fieldset['position']); ?>>Sidebar</option>
@@ -25,7 +25,7 @@ use jcf\models\Fieldset;
 						</select>
 					</p>
 					<p>
-						<label for="jcf_edit_fieldset_priority"><?php _e('Priority:', \JustCustomFields::TEXTDOMAIN); ?></label><br>
+						<label for="jcf_edit_fieldset_priority"><?php _e('Priority', \JustCustomFields::TEXTDOMAIN); ?>:</label><br>
 						<select id="jcf_edit_fieldset_priority" name="priority" style="width:100%;">
 							<option value="<?php echo Fieldset::PRIO_DEFAULT; ?>" <?php echo selected(Fieldset::PRIO_DEFAULT, @$fieldset['priority']); ?>>Default</option>
 							<option value="<?php echo Fieldset::PRIO_HIGH; ?>" <?php echo selected(Fieldset::PRIO_HIGH, @$fieldset['priority']); ?>>High</option>

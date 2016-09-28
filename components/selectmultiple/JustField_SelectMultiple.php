@@ -60,12 +60,12 @@ class JustField_SelectMultiple extends core\JustField
 		$options = esc_attr($instance['options']);
 		$description = esc_html($instance['description']);
 		?>
-		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title', \JustCustomFields::TEXTDOMAIN); ?>:</label> <input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 
-		<p><label for="<?php echo $this->getFieldId('options'); ?>"><?php _e('Settings:', \JustCustomFields::TEXTDOMAIN); ?></label>
+		<p><label for="<?php echo $this->getFieldId('options'); ?>"><?php _e('Settings', \JustCustomFields::TEXTDOMAIN); ?>:</label>
 			<textarea class="widefat" id="<?php echo $this->getFieldId('options'); ?>" name="<?php echo $this->getFieldName('options'); ?>" ><?php echo $options; ?></textarea>
 			<br/><small><?php _e('Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', \JustCustomFields::TEXTDOMAIN); ?></small></p>
-		<p><label for="<?php echo $this->getFieldId('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->getFieldName('description'); ?>" id="<?php echo $this->getFieldId('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
+		<p><label for="<?php echo $this->getFieldId('description'); ?>"><?php _e('Description', \JustCustomFields::TEXTDOMAIN); ?>:</label> <textarea name="<?php echo $this->getFieldName('description'); ?>" id="<?php echo $this->getFieldId('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
 		<?php
 	}
 

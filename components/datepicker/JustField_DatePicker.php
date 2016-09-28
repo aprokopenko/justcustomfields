@@ -60,13 +60,13 @@ class JustField_DatePicker extends core\JustField
 		$show_monthes = !empty($instance['show_monthes']) ? ' checked="checked" ' : '';
 		$date_format = !empty($instance['date_format']) ? esc_attr($instance['date_format']) : 'yy-mm-dd';
 		?>
-		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title', \JustCustomFields::TEXTDOMAIN); ?>:</label> <input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 		<p><label for="<?php echo $this->getFieldId('show_monthes'); ?>"><input class="checkbox" id="<?php echo $this->getFieldId('show_monthes'); ?>" name="<?php echo $this->getFieldName('show_monthes'); ?>" type="checkbox" value="1" <?php echo $show_monthes; ?> /> <?php _e('Show month/year select boxes', \JustCustomFields::TEXTDOMAIN); ?></label></p>
-		<p><label for="<?php echo $this->getFieldId('date_format'); ?>"><?php _e('Date format:', \JustCustomFields::TEXTDOMAIN); ?></label>
+		<p><label for="<?php echo $this->getFieldId('date_format'); ?>"><?php _e('Date format', \JustCustomFields::TEXTDOMAIN); ?>:</label>
 			<input class="widefat" id="<?php echo $this->getFieldId('date_format'); ?>"
 				   name="<?php echo $this->getFieldName('date_format'); ?>" type="text"
 				   value="<?php echo $date_format; ?>" /><br />
-			<small><?php _e('Example:', \JustCustomFields::TEXTDOMAIN); ?> yy-mm-dd <a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank"><?php _e('look more about date formats', \JustCustomFields::TEXTDOMAIN); ?></a></small>
+			<small><?php _e('Example', \JustCustomFields::TEXTDOMAIN); ?>: yy-mm-dd <a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank"><?php _e('look more about date formats', \JustCustomFields::TEXTDOMAIN); ?></a></small>
 		</p>
 		<?php
 	}
