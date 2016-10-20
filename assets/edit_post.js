@@ -117,10 +117,18 @@ var jcf_visibility_rules_taxonomies = {
     }
 
     // init page template update
-    $('select[name=_wp_page_template]').change( jcf_check_visibility_rules );
-
+    var page_select = jcf_get_page_template_select();
+    page_select.change( jcf_check_visibility_rules );
+    
     // run initial check
     jcf_check_visibility_rules();
+  }
+  
+  /* get page template */
+  function jcf_get_page_template_select()
+  {
+    var control = $('select[name=_wp_page_template], select[name=page_template]').first();
+    if (control.length) return $(control);
   }
 
   /**
@@ -131,7 +139,8 @@ var jcf_visibility_rules_taxonomies = {
     var selected_tags = jcf_get_post_selected_tags();
     var selected_cats = jcf_get_post_selected_categories();
     if (post_type == 'page') {
-      var selected_page_template = $('select[name=_wp_page_template]').val();
+       var page_select = jcf_get_page_template_select();
+       var selected_page_template = page_select.val();
     }
 
     for ( fieldset_id in jcf_fieldsets_visibility_rules ) {
