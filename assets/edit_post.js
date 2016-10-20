@@ -127,14 +127,8 @@ var jcf_visibility_rules_taxonomies = {
   /* get page template */
   function jcf_get_page_template_select()
   {
-    var page_select = $('select[name=_wp_page_template]');
-    if(page_select.length){
-        return page_select;
-    }
-    else {
-        var page_select = $('select[name=page_template]');
-        return page_select;
-    }
+    var control = $('select[name=_wp_page_template], select[name=page_template]').first();
+    if (control.length) return $(control);
   }
 
   /**
@@ -146,9 +140,7 @@ var jcf_visibility_rules_taxonomies = {
     var selected_cats = jcf_get_post_selected_categories();
     if (post_type == 'page') {
        var page_select = jcf_get_page_template_select();
-       if(page_select.length){
-           var selected_page_template = page_select.val();
-       }
+       var selected_page_template = page_select.val();
     }
 
     for ( fieldset_id in jcf_fieldsets_visibility_rules ) {
