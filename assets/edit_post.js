@@ -127,14 +127,14 @@ var jcf_visibility_rules_taxonomies = {
   /* get page template */
   function get_page_select()
   {
-      var page_select = $('select[name=_wp_page_template]');
-        if(page_select.length){
-            return page_select;
-        }
-        else {
-            var page_select = $('select[name=page_template]');
-            return page_select;
-        }
+    var page_select = $('select[name=_wp_page_template]');
+    if(page_select.length){
+        return page_select;
+    }
+    else {
+        var page_select = $('select[name=page_template]');
+        return page_select;
+    }
   }
 
   /**
