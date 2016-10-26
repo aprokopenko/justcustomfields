@@ -118,7 +118,10 @@ var jcf_visibility_rules_taxonomies = {
 
     // init page template update
     var page_select = jcf_get_page_template_select();
-    page_select.change( jcf_check_visibility_rules );
+
+    if ( page_select !== undefined ) {
+       page_select.change( jcf_check_visibility_rules );
+    }
     
     // run initial check
     jcf_check_visibility_rules();
