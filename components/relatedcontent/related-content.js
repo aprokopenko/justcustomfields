@@ -1,9 +1,22 @@
 var jcf_relatedcontent_max_index = 0;
+var jcf_relatedcontent_inited = false;
 var jcf_post_body_content_container = '#post-body';
 jQuery(document).ready(function() {
 
+  jcf_relatedcontent_init();
+
+  // add collection hook integration
+  jcf_add_action('collection_row_added', 'init_relatedcontent', jcf_relatedcontent_collection_init);
+
+});
+
+function jcf_relatedcontent_collection_init() {
+  jcf_relatedcontent_init();
+}
+
+function jcf_relatedcontent_init() {
   var node = jQuery(jcf_post_body_content_container);
-  if ( node.find('div.jcf-relatedcontent-field').size() == 0 )
+  if ( node.find('div.jcf-relatedcontent-field').size() == 0 || jcf_relatedcontent_inited )
     return;
 
   jcf_relatedcontent_max_index = jQuery(jcf_post_body_content_container).find('div.jcf-relatedcontent-row').size();
@@ -89,7 +102,9 @@ jQuery(document).ready(function() {
 
   // init sortable
   jcf_relatedcontent_init_sortable( node.find('.jcf-relatedcontent-field') );
-});
+
+  jcf_relatedcontent_inited++;
+}
 
 function jcf_relatedcontent_init_sortable(node) {
   node.sortable({

@@ -3,6 +3,52 @@ var jcf_visibility_rules_taxonomies = {
   hirerachical: {},
   linear: {}
 };
+// init global hooks storage
+window.jcfActions = {};
+
+/**
+ * Analog of wordpress php add_action function
+ * Adds callback to stack
+ *
+ * @param string action
+ * @param string id
+ * @param function callback
+ */
+function jcf_add_action(action, id, callback) {
+  if ( 'undefined' == typeof(window.jcfActions[action]) ) {
+    window.jcfActions[action] = {};
+  }
+  if ( 'undefined' == typeof(window.jcfActions[action][id]) ) {
+    window.jcfActions[action][id] = callback;
+  }
+  else {
+    window.jcfActions[action][id] = callback;
+  }
+}
+
+/**
+ * Analog of wordpress php do_action function
+ * Runs callbacks from stack
+ *
+ * @param string action
+ * @param mixed _this   the context where do_action is called
+ * @returns {boolean}|object
+ */
+function jcf_do_action(action, _this) {
+  if ( 'undefined' == typeof(window.jcfActions[action]) ) {
+    return false;
+  }
+
+  var results = {};
+  var args = [].slice.apply(arguments).slice(1);
+  for (var k in window.jcfActions[action]) {
+    var callback = window.jcfActions[action][k];
+    if ( 'function' == typeof(callback) ) {
+      results[k] = callback.call(args);
+    }
+  }
+  return results;
+}
 
 ( function( $ ) {
 

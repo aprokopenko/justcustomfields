@@ -54,6 +54,9 @@ function jcf_collection_fields_control() {
       jQuery('.collection_fields').accordion('refresh');
       // open last section
       container.find('div.collection_field_group:last').find('h3').click();
+
+      // run hook to be able to patch this with other components or plugins
+      jcf_do_action('collection_row_added', this, container.find('div.collection_field_group:last'));
     });
 
     return false;
