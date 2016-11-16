@@ -6,7 +6,7 @@ Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custo
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
 Requires at least: 4.5
-Tested up to: 4.5.3
+Tested up to: 4.6.1
 Stable tag: trunk
 License: GNU General Public License v2
 
@@ -76,6 +76,8 @@ To upgrade remove the old plugin folder. After than follow the installation step
 2. The edit post page meta box with fields created on the settings page
 
 == Changelog ==
+* Version 3.0.1
+	* Bug fix: Related content init in empty Collection on new content page
 * Version 3.0
 	* NEW: Plugin code full refactoring, build all code based on OOP classes and latest WordPress coding recommendations
 	* New feature: Ability to hide fieldsets based on some criterias (taxonomy relation or page template)
