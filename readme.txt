@@ -78,6 +78,7 @@ To upgrade remove the old plugin folder. After than follow the installation step
 == Changelog ==
 * Version 3.0.1
 	* Bug fix: Related content init in empty Collection on new content page
+	* Bug fix: Field usage help popup code updated. (Added 'echo' to manual call)
 * Version 3.0
 	* NEW: Plugin code full refactoring, build all code based on OOP classes and latest WordPress coding recommendations
 	* New feature: Ability to hide fieldsets based on some criterias (taxonomy relation or page template)

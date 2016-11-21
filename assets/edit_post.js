@@ -75,7 +75,7 @@ function jcf_do_action(action, _this) {
 
       var shortcode = '[jcf-value field="' + field_id + '"]';
       popup.find('input.jcf-shortcode-value').val(shortcode);
-      popup.find('input.jcf-template-value').val('<?php do_shortcode(\'' + shortcode + '\'); ?>');
+      popup.find('input.jcf-template-value').val('<?php echo do_shortcode(\'' + shortcode + '\'); ?>');
 
       popup.find('h3.header span.field-name').text(field_label);
       // hide all other popups;
