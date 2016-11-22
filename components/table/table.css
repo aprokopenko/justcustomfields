@@ -1,28 +1,22 @@
 table.sortable .drag-handle{
 	cursor: move;
-	background:url(icon-move.png) no-repeat 0 0;
-	float:left;
-	width:16px;
-	height:16px;
-	overflow:hidden;
-	text-indent:-9999px;
-	margin:5px 3px;
 }
-
 table.sortable  .jcf_delete_row{
 	cursor: pointer;
-	background:url(icon-delete.png) no-repeat 0 0;
-	float:left;
-	width:16px;
-	height:16px;
-	overflow:hidden;
-	text-indent:-9999px;
-	margin:5px 3px;
+	color: #a00;
 }
-
 table.sortable .hide{
 	display:none;
 }
 .jcf_option_column{
 	width: 60px;
 }
+.form-field .jcf-table input[type="text"]{ width:100%; }
+
+/* right column */
+#post-body.columns-2 #postbox-container-1 th.jcf_option_column{ width: 44px; }
+#post-body.columns-2 #postbox-container-1 th.jcf_option_column{ text-indent: -9999px; vertical-align: middle; }
+#post-body.columns-2 #postbox-container-1 .jcf-table .widefat td,
+#post-body.columns-2 #postbox-container-1 .jcf-table .widefat th{ padding: 2px 3px; }
+#post-body.columns-2 #postbox-container-1 .jcf-table .dashicons{ font-size: 16px; line-height: 20px; }
+#post-body.columns-2 #postbox-container-1 .ui-sortable-helper .dashicons-trash{ display: none; }
