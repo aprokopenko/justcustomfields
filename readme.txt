@@ -5,7 +5,7 @@ Plugin URI: http://justcoded.com/blog/just-custom-fields-for-wordpress-plugin/
 Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custom gallery
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
-Requires at least: 4.5
+Requires at least: 4.6
 Tested up to: 4.6.1
 Stable tag: trunk
 License: GNU General Public License v2
