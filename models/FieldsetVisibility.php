@@ -176,6 +176,9 @@ class FieldsetVisibility extends core\Model
 
 	/**
 	 * Autocomplete for visibility rule
+	 * @param string $taxonomy
+	 * @param string $term
+	 * @global \WPDB $wpdb
 	 * @return array
 	 */
 	public static function findTaxonomyTerms($taxonomy, $term)
@@ -183,8 +186,8 @@ class FieldsetVisibility extends core\Model
 		global $wpdb;
 
 		$query = "SELECT t.term_id, t.name
-			FROM wp_terms AS t
-			LEFT JOIN wp_term_taxonomy AS tt ON t.term_id = tt.term_id
+			FROM $wpdb->terms AS t
+			LEFT JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
 			WHERE t.name LIKE '%$term%' AND tt.taxonomy = '$taxonomy'";
 		$terms = $wpdb->get_results($query);
 		$response = array();
