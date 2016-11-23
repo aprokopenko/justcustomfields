@@ -10,6 +10,17 @@ if ( !function_exists('pa') ) {
 }
 
 /**
+ * Alias for plugins_url with pre-defined second parameter
+ * Mostly used to set paths for assets
+ *
+ * @param string $path  asset or callback path
+ * @return string
+ */
+function jcf_plugin_url( $path ) {
+	return plugins_url($path, dirname(__FILE__));
+}
+
+/**
  * get registered post types
  * @param string $format
  * @return string 

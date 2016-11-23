@@ -102,7 +102,7 @@ class JustField_DatePicker extends core\JustField
 
 	public function addCss()
 	{
-		wp_register_style('jcf_ui_datepicker', WP_PLUGIN_URL . '/just-custom-fields/components/datepicker/ui-theme-smoothness/jquery-ui-1.8.13.custom.css');
+		wp_register_style('jcf_ui_datepicker', jcf_plugin_url('components/datepicker/ui-theme-smoothness/jquery-ui-1.8.13.custom.css'));
 		wp_enqueue_style('jcf_ui_datepicker');
 	}
 

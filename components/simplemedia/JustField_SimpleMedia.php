@@ -23,7 +23,7 @@ class JustField_SimpleMedia extends core\JustField
 	 */
 	public function field()
 	{
-		$noimage = $image = WP_PLUGIN_URL . '/just-custom-fields/components/simplemedia/assets/jcf-noimage100x77.jpg';
+		$noimage = $image = jcf_plugin_url('components/simplemedia/assets/jcf-noimage100x77.jpg');
 		$delete_class = ' jcf-hide';
 		$upload_type = $this->instance['type'];
 		$upload_text = ($upload_type == 'image') ? __('Select image', \JustCustomFields::TEXTDOMAIN) : __('Select file', \JustCustomFields::TEXTDOMAIN);
@@ -153,7 +153,7 @@ class JustField_SimpleMedia extends core\JustField
 		if ( !in_array($pagenow, array( 'post-new.php', 'post.php', 'media-upload-popup' )) )
 			return;
 		wp_enqueue_media(array( 'post' => ( $post_ID ? $post_ID : null ) ));
-		wp_enqueue_script("jcf-simpleupload-modal", WP_PLUGIN_URL . '/just-custom-fields/components/simplemedia/assets/simplemedia-modal.js', array( 'jquery', 'media-models' ));
+		wp_enqueue_script("jcf-simpleupload-modal", jcf_plugin_url('components/simplemedia/assets/simplemedia-modal.js'), array( 'jquery', 'media-models' ));
 
 		// add text domain if not registered with another component
 		global $wp_scripts;
@@ -164,7 +164,7 @@ class JustField_SimpleMedia extends core\JustField
 
 	public function addCss()
 	{
-		wp_register_style('jcf_simplemedia', WP_PLUGIN_URL . '/just-custom-fields/components/simplemedia/assets/simplemedia.css', array( 'thickbox' ));
+		wp_register_style('jcf_simplemedia', jcf_plugin_url('components/simplemedia/assets/simplemedia.css'), array( 'thickbox' ));
 		wp_enqueue_style('jcf_simplemedia');
 	}
 

@@ -59,7 +59,9 @@ class AdminController extends core\Controller
 	{
 		$slug = \JustCustomFields::$pluginSlug;
 		wp_register_script(
-				$slug, WP_PLUGIN_URL . '/just-custom-fields/assets/just_custom_fields.js', array( 'jquery', 'json2', 'jquery-form', 'jquery-ui-sortable' )
+			$slug,
+			jcf_plugin_url('assets/just_custom_fields.js'),
+			array( 'jquery', 'json2', 'jquery-form', 'jquery-ui-sortable' )
 		);
 		wp_enqueue_script($slug);
 		wp_enqueue_script('jquery-ui-autocomplete');
@@ -72,7 +74,7 @@ class AdminController extends core\Controller
 	{
 		// add text domain
 		$i18n_slug = 'just-custom-fields-i18n';
-		wp_register_script($i18n_slug, WP_PLUGIN_URL . '/just-custom-fields/assets/jcf_i18n.js');
+		wp_register_script($i18n_slug, jcf_plugin_url('assets/jcf_i18n.js'));
 		wp_localize_script($i18n_slug, 'jcf_textdomain', jcf_get_language_strings());
 		wp_enqueue_script($i18n_slug);
 	}
@@ -83,7 +85,7 @@ class AdminController extends core\Controller
 	public function addStyles()
 	{
 		$slug = \JustCustomFields::$pluginName;
-		wp_register_style($slug, WP_PLUGIN_URL . '/just-custom-fields/assets/styles.css', array( 'media-views' ));
+		wp_register_style($slug, jcf_plugin_url('assets/styles.css'), array( 'media-views' ));
 		wp_enqueue_style($slug);
 	}
 	

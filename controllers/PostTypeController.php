@@ -187,7 +187,7 @@ class PostTypeController extends core\Controller
 	public function addScripts()
 	{
 		wp_register_script(
-				'jcf_edit_post', WP_PLUGIN_URL . '/just-custom-fields/assets/edit_post.js', array( 'jquery', 'tags-box' )
+				'jcf_edit_post', jcf_plugin_url('assets/edit_post.js'), array( 'jquery', 'tags-box' )
 		);
 		wp_enqueue_script('jcf_edit_post');
 
@@ -199,7 +199,7 @@ class PostTypeController extends core\Controller
 	 */
 	public function addStyles()
 	{
-		wp_register_style('jcf_edit_post', WP_PLUGIN_URL . '/just-custom-fields/assets/edit_post.css');
+		wp_register_style('jcf_edit_post', jcf_plugin_url('assets/edit_post.css'));
 		wp_enqueue_style('jcf_edit_post');
 
 		do_action('jcf_admin_edit_post_styles');

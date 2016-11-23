@@ -180,23 +180,8 @@ class JustField_Table extends core\JustField
 	{
 		global $wp_version;
 
-		if ( $wp_version <= 3.2 ) {
-			// ui core
-			wp_register_script(
-					'jcf-jquery-ui-core', WP_PLUGIN_URL . '/just-custom-fields/assets/jquery-ui.min.js', array( 'jquery' )
-			);
-			wp_enqueue_script('jcf-jquery-ui-core');
-			wp_register_script(
-					'jcf_table', WP_PLUGIN_URL . '/just-custom-fields/components/table/table.js', array( 'jcf-jquery-ui-core' )
-			);
-			wp_enqueue_script('jcf_table');
-		}
-		else {
-			wp_register_script(
-					'jcf_table', WP_PLUGIN_URL . '/just-custom-fields/components/table/table.js', array( 'jquery' )
-			);
-			wp_enqueue_script('jcf_table');
-		}
+		wp_register_script('jcf_table', jcf_plugin_url('components/table/table.js'), array( 'jquery' ));
+		wp_enqueue_script('jcf_table');
 
 		// add text domain if not registered with another component
 		global $wp_scripts;
@@ -205,7 +190,7 @@ class JustField_Table extends core\JustField
 
 	public function addCss()
 	{
-		wp_register_style('jcf_table', WP_PLUGIN_URL . '/just-custom-fields/components/table/table.css');
+		wp_register_style('jcf_table', jcf_plugin_url('components/table/table.css'));
 		wp_enqueue_style('jcf_table');
 	}
 

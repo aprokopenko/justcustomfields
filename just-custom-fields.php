@@ -6,7 +6,7 @@ Description: This plugin adds ability to extend your Posts, Pages (and other cus
 Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custom gallery, collection, field group, metabox, fieldsets
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
-Version: 3.0.1
+Version: 3.0.2
 */
 
 define('JCF_ROOT', dirname(__FILE__));
@@ -23,7 +23,7 @@ class JustCustomFields extends core\Singleton
 	 * Plugin text domain for translations
 	 */
 	const TEXTDOMAIN = 'just-custom-fields';
-	const VERSION = '3.001';
+	const VERSION = '3.002';
 
 	/**
 	 * Textual plugin name

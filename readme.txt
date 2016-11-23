@@ -80,6 +80,8 @@ To upgrade remove the old plugin folder. After than follow the installation step
 2. The edit post page meta box with fields created on the settings page
 
 == Changelog ==
+* Version 3.0.2
+	* Bug fix: SSL support for backend scripts and styles includes according to: https://wordpress.org/support/topic/support-for-admin-ssl-conection/
 * Version 3.0.1
 	* Bug fix: Related content init in empty Collection on new content page
 	* Bug fix: Field usage help popup code updated. (Added 'echo' to manual call)
