@@ -33,6 +33,10 @@ Plugin supports such field types:
 * Fields Collection (repeatable fields groups)
 * Related Content (to set a relation to another Post/Page or Custom Post Type)
 
+You can read full documentation on our site: http://justcustomfields.com.
+
+For quick demo you can watch our presentation video:
+https://www.youtube.com/watch?v=7KJeH2d_v48
 
 Starting from v2.0 we have different options to save plugin configuration:
 
