@@ -8,6 +8,7 @@ use jcf\models;
 class FilesDataLayer extends core\DataLayer
 {
 	protected $_sourceSettings;
+	static private $_cache;
 
 	/**
 	 * FilesDataLayer constructor.
@@ -89,8 +90,13 @@ class FilesDataLayer extends core\DataLayer
 
 		if ( file_exists($file) ) {
 			$content = file_get_contents($file);
+			$cache_hash = md5($content);
 
-			$data = json_decode($content, true);
+			if ( !isset(static::$_cache[$cache_hash]) ) {
+				static::$_cache[$cache_hash] = json_decode($content, true);
+			}
+
+			$data = static::$_cache[$cache_hash];
 			return gettype($data) == 'string' ? json_decode($data, true) : $data;
 		}
 
