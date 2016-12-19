@@ -105,7 +105,7 @@ class FieldsetVisibility extends core\Model
 				$output['terms'] = $terms;
 			}
 			else {
-				$templates = jcf_get_page_templates();
+				$templates = jcf_get_page_templates($this->post_type);
 				$output['templates'] = $templates;
 			}
 
@@ -124,7 +124,7 @@ class FieldsetVisibility extends core\Model
 	public function getBasedOnOptions()
 	{
 		if ( $this->based_on == self::BASEDON_PAGE_TPL ) {
-			$options = jcf_get_page_templates();
+			$options = jcf_get_page_templates($this->post_type);
 		}
 		else {
 			$options = get_object_taxonomies($this->post_type, 'objects');

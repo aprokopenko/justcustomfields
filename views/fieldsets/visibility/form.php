@@ -50,59 +50,44 @@ if ( empty($visibility_rule) ) {
 		</p>
 	</div>
 
-	<?php if ( $post_type != 'page' ) : // Form for post types wich are not page ?>
-		<p><?php _e('Based on', \JustCustomFields::TEXTDOMAIN); ?> <strong><?php _e('Taxonomy terms', \JustCustomFields::TEXTDOMAIN); ?></strong></p>
-		<input type="hidden" name="based_on" value="taxonomy" />
+	<p>
+		<label for="rule-based-on"><?php _e('Based on:', \JustCustomFields::TEXTDOMAIN); ?></label><br />
+		<select name="based_on" id="rule-based-on">
+			<option value="" disabled="disabled" <?php echo (!empty($scenario) && $scenario == FieldsetVisibility::SCENARIO_UPDATE) ? '' : 'selected'; ?> >
+				<?php _e('Choose option', \JustCustomFields::TEXTDOMAIN); ?>
+			</option>
+			<option value="page_template" <?php selected( $visibility_rule['based_on'], FieldsetVisibility::BASEDON_PAGE_TPL ); ?> >
+				<?php _e('Page template', \JustCustomFields::TEXTDOMAIN); ?>
+			</option>
 
-		<?php
-			$this->_render('fieldsets/visibility/taxonomies_list', array(
-				'taxonomies' => $taxonomies, 
-				'current_tax' => $visibility_rule['rule_taxonomy'], 
-				'terms' => $terms, 
-				'current_term' => $visibility_rule['rule_taxonomy_terms']
-			));
-		?>
-
-	<?php else: // Form for "Page" post type ?>
-		<p>
-			<label for="rule-based-on"><?php _e('Based on:', \JustCustomFields::TEXTDOMAIN); ?></label><br />
-			<select name="based_on" id="rule-based-on">
-				<option value="" disabled="disabled" <?php echo (!empty($scenario) && $scenario == FieldsetVisibility::SCENARIO_UPDATE) ? '' : 'selected'; ?> >
-					<?php _e('Choose option', \JustCustomFields::TEXTDOMAIN); ?>
+			<?php if(!empty($taxonomies)):?>
+				<option value="taxonomy" <?php selected( $visibility_rule['based_on'], FieldsetVisibility::BASEDON_TAXONOMY ); ?> >
+					<?php _e('Taxonomy', \JustCustomFields::TEXTDOMAIN); ?>
 				</option>
-				<option value="page_template" <?php selected( $visibility_rule['based_on'], FieldsetVisibility::BASEDON_PAGE_TPL ); ?> >
-					<?php _e('Page template', \JustCustomFields::TEXTDOMAIN); ?>
-				</option>
+			<?php endif; ?>
+		</select>
+	</p>
 
-				<?php if(!empty($taxonomies)):?>
-					<option value="taxonomy" <?php selected( $visibility_rule['based_on'], FieldsetVisibility::BASEDON_TAXONOMY ); ?> >
-						<?php _e('Taxonomy', \JustCustomFields::TEXTDOMAIN); ?>
-					</option>
-				<?php endif; ?>
-			</select>
-		</p>
+	<div class="rules-options">
 
-		<div class="rules-options">
-
-			<?php if ( $visibility_rule['based_on'] == FieldsetVisibility::BASEDON_TAXONOMY ) : //Taxonomy options for post type page based on taxonomy ?>
-				<?php
-					$this->_render('fieldsets/visibility/terms_list', array(
-						'taxonomies' => $taxonomies, 
-						'current_tax' => $visibility_rule['rule_taxonomy'], 
-						'terms' => $terms, 
-						'current_term' => $visibility_rule['rule_taxonomy_terms']
-					)); 
-				?>
-			<?php elseif ( $visibility_rule['based_on'] == FieldsetVisibility::BASEDON_PAGE_TPL ) : //Page template options ?>
-				<?php 
-					$this->_render('fieldsets/visibility/templates_list', array(
-						'templates' => $templates, 
-						'current' => $visibility_rule['rule_templates']
-					)); 
-				?>
-			<?php endif;?>
-		</div>
-	<?php endif; ?>
+		<?php if ( $visibility_rule['based_on'] == FieldsetVisibility::BASEDON_TAXONOMY ) : //Taxonomy options for post type page based on taxonomy ?>
+			<?php
+				$this->_render('fieldsets/visibility/terms_list', array(
+					'taxonomies' => $taxonomies,
+					'current_tax' => $visibility_rule['rule_taxonomy'],
+					'terms' => $terms,
+					'current_term' => $visibility_rule['rule_taxonomy_terms']
+				));
+			?>
+		<?php elseif ( $visibility_rule['based_on'] == FieldsetVisibility::BASEDON_PAGE_TPL ) : //Page template options ?>
+			<?php
+				$this->_render('fieldsets/visibility/templates_list', array(
+					'templates' => $templates,
+					'current' => $visibility_rule['rule_templates']
+				));
+			?>
+		<?php endif;?>
+	</div>
 
 	<?php // Rule ID ?>
 	<input type="hidden" name="rule_id" value="<?php echo $visibility_rule['rule_id']; ?>">

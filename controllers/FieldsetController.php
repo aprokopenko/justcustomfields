@@ -101,7 +101,10 @@ class FieldsetController extends core\Controller
 		$model = new models\Fieldset();
 
 		if ( $model->load($_POST) && $fieldset = $model->findById($model->fieldset_id) ) {
-			return $this->_renderAjax('fieldsets/form', 'html', array( 'fieldset' => $fieldset ));
+			return $this->_renderAjax('fieldsets/form', 'html', array(
+				'fieldset' => $fieldset,
+				'post_type' => $model->post_type
+			));
 		}
 
 		return $this->_renderAjax(null, 'json', array( 'status' => !empty($fieldset), 'error' => $model->getErrors() ));
@@ -196,7 +199,10 @@ class FieldsetController extends core\Controller
 		$model = new models\FieldsetVisibility();
 
 		if ( $model->load($_POST) && $rules = $model->update() ) {
-			return $this->_renderAjax('fieldsets/visibility/rules', 'html', array( 'visibility_rules' => $rules ));
+			return $this->_renderAjax('fieldsets/visibility/rules', 'html', array(
+				'visibility_rules' => $rules,
+				'post_type' => $model->post_type
+			));
 		}
 
 		return $this->_renderAjax(null, 'json', array( 'status' => !empty($rules), 'error' => $model->getErrors() ));
@@ -210,7 +216,10 @@ class FieldsetController extends core\Controller
 		$model = new models\FieldsetVisibility();
 
 		if ( $model->load($_POST) && $rules = $model->delete() ) {
-			return $this->_renderAjax('fieldsets/visibility/rules', 'html', array( 'visibility_rules' => $rules ));
+			return $this->_renderAjax('fieldsets/visibility/rules', 'html', array(
+				'visibility_rules' => $rules,
+				'post_type' => $model->post_type
+			));
 		}
 
 		return $this->_renderAjax(array( 'status' => !empty($rules), 'error' => $model->getErrors() ), 'json');
