@@ -86,10 +86,12 @@ class FieldsetVisibility extends core\Model
 	{
 		$output = array();
 		$taxonomies = get_object_taxonomies($this->post_type, 'objects');
+		$templates = jcf_get_page_templates($this->post_type);
 
 		$output['post_type'] = $this->post_type;
 		$output['taxonomies'] = $taxonomies;
 		$output['scenario'] = $this->scenario;
+		$output['templates'] = $templates;
 
 		if ( !empty($this->scenario) && $this->scenario == self::SCENARIO_UPDATE ) {
 
@@ -103,10 +105,6 @@ class FieldsetVisibility extends core\Model
 			if ( $visibility_rule['based_on'] == self::BASEDON_TAXONOMY ) {
 				$terms = get_terms($visibility_rule['rule_taxonomy'], array( 'hide_empty' => false ));
 				$output['terms'] = $terms;
-			}
-			else {
-				$templates = jcf_get_page_templates($this->post_type);
-				$output['templates'] = $templates;
 			}
 
 			$output['rule_id'] = $this->rule_id;

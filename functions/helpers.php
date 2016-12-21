@@ -81,9 +81,9 @@ function jcf_get_post_type_icon( $post_type ) {
  * @return array  updated page templates array
  */
 function jcf_get_page_templates( $post_type = 'page', $page_templates = array() ) {
-	$deep_templates = wp_cache_get( 'jcf_page_deep2_templates', 'themes' );
+	$post_templates = wp_cache_get( 'jcf_post_templates_depth2', 'themes' );
 
-	if ( ! is_array( $deep_templates ) ) {
+	if ( ! is_array( $post_templates ) ) {
 		$wp_theme = wp_get_theme();
 		$files = $wp_theme->get_files('php', 2);
 
@@ -101,20 +101,23 @@ function jcf_get_page_templates( $post_type = 'page', $page_templates = array() 
 
 			foreach ($types as $type) {
 				$type = sanitize_key($type);
-				if (!isset($deep_templates[$type])) {
-					$deep_templates[$type] = array();
+				if ( !isset($post_templates[$type]) ) {
+					$post_templates[$type] = array();
 				}
 
 				if ( $post_type == $type ) {
-					$deep_templates[$type][$file] = _cleanup_header_comment($header[1]);
+					$post_templates[$type][$file] = _cleanup_header_comment($header[1]);
 				}
 			}
 		}
 
-		wp_cache_add( 'jcf_page_deep2_templates', $deep_templates, 'themes', 1800 );
+		wp_cache_add( 'jcf_post_templates_depth2', $deep_templates, 'themes', 1800 );
 	}
 
-	$page_templates = array_merge(array('default' => 'Default'), $page_templates, $deep_templates[$post_type]);
+	if ( !empty($post_templates[$post_type]) ) {
+		$page_templates = array_merge(array('default' => 'Default'), $page_templates, $post_templates[$post_type]);
+	}
+
 	return $page_templates;
 }
 

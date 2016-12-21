@@ -56,11 +56,14 @@ if ( empty($visibility_rule) ) {
 			<option value="" disabled="disabled" <?php echo (!empty($scenario) && $scenario == FieldsetVisibility::SCENARIO_UPDATE) ? '' : 'selected'; ?> >
 				<?php _e('Choose option', \JustCustomFields::TEXTDOMAIN); ?>
 			</option>
-			<option value="page_template" <?php selected( $visibility_rule['based_on'], FieldsetVisibility::BASEDON_PAGE_TPL ); ?> >
-				<?php _e('Page template', \JustCustomFields::TEXTDOMAIN); ?>
-			</option>
 
-			<?php if(!empty($taxonomies)):?>
+			<?php if ( !empty($templates) ): ?>
+				<option value="page_template" <?php selected( $visibility_rule['based_on'], FieldsetVisibility::BASEDON_PAGE_TPL ); ?> >
+					<?php _e('Page template', \JustCustomFields::TEXTDOMAIN); ?>
+				</option>
+			<?php endif; ?>
+
+			<?php if ( !empty($taxonomies) ):?>
 				<option value="taxonomy" <?php selected( $visibility_rule['based_on'], FieldsetVisibility::BASEDON_TAXONOMY ); ?> >
 					<?php _e('Taxonomy', \JustCustomFields::TEXTDOMAIN); ?>
 				</option>

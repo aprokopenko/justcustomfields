@@ -101,9 +101,13 @@ class FieldsetController extends core\Controller
 		$model = new models\Fieldset();
 
 		if ( $model->load($_POST) && $fieldset = $model->findById($model->fieldset_id) ) {
+			$taxonomies = get_object_taxonomies($model->post_type, 'objects');
+			$templates = jcf_get_page_templates($model->post_type);
 			return $this->_renderAjax('fieldsets/form', 'html', array(
 				'fieldset' => $fieldset,
-				'post_type' => $model->post_type
+				'post_type' => $model->post_type,
+				'taxonomies' => $taxonomies,
+				'templates' => $templates
 			));
 		}
 
