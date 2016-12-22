@@ -77,6 +77,16 @@ class DBDataLayer extends core\DataLayer
 		return $this->_updateOptions('jcf-fieldsets', $this->_fieldsets);
 	}
 
+	public function getStorageVersion()
+	{
+		return $this->_getOptions('jcf_storage_version');
+	}
+	
+	public function updateStorageVersion()
+	{
+		return $this->_updateOptions('jcf_storage_version', \JustCustomFields::VERSION);
+	}
+	
 	/**
 	 * Check NetworkMode to be set to global (multisite)
 	 *

@@ -80,6 +80,7 @@ class JustCustomFields extends core\Singleton
 
 		if ( !is_admin() ) return;
 
+		new controllers\MigrateController();
  		new controllers\AdminController();
 		new controllers\SettingsController();
 		new controllers\ImportExportController();
