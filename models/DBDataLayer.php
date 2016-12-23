@@ -77,14 +77,26 @@ class DBDataLayer extends core\DataLayer
 		return $this->_updateOptions('jcf-fieldsets', $this->_fieldsets);
 	}
 
+	/**
+	 * Get storage version
+	 * @return array
+	 */
 	public function getStorageVersion()
 	{
 		return $this->_getOptions('jcf_storage_version');
 	}
 	
-	public function updateStorageVersion()
+	/**
+	 * Update storage version
+	 * @return boolean
+	 */
+	public function updateStorageVersion($version = null)
 	{
-		return $this->_updateOptions('jcf_storage_version', \JustCustomFields::VERSION);
+		if ( empty($version) ) {
+			$version = \JustCustomFields::VERSION;
+		}
+
+		return $this->_updateOptions('jcf_storage_version', $version);
 	}
 	
 	/**

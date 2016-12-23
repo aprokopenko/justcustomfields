@@ -10,7 +10,7 @@ class Storage extends core\Model
 	
 	public function __construct()
 	{
-		$this->_dL = new DBDataLayer();
+		parent::__construct();
 		$this->_version = $this->_setVersion();
 	}
 	
@@ -35,8 +35,11 @@ class Storage extends core\Model
 			$m = new $migration_class();
 
 			if ( !$m->up() ) {
-				$this->addError('Filed migration ' . $migration);
+				$this->addError('Failed migration ' . $migration);
+				break;
 			}
+			
+			$this->_dL->updateStorageVersion($m->version);
 		}
 		
 		if ( empty($this->getErrors()) ) {
@@ -53,7 +56,7 @@ class Storage extends core\Model
 
 		foreach ( $migrations as $key => $migration ) {
 			if ( $migration == '.' || $migration == '..' ||
-				 ((int)str_replace('m', '', $migration) <= (int)str_replace('.', '', $this->_version)) ) {
+				 version_compare(preg_replace('/[^0-9]+/', '', $migration), preg_replace('/[^0-9]+/', '', $this->_version), '<=')) {
 				unset($migrations[$key]);
 				continue;
 			}
@@ -76,6 +79,10 @@ class Storage extends core\Model
 					break;
 				}
 			}
+		}
+
+		if ( empty($version) ) {
+			$version = '2.3';
 		}
 
 		return $version;

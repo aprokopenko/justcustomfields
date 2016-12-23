@@ -2,11 +2,8 @@
 
 namespace jcf\core;
 
-class Migration
+abstract class Migration
 {
-	public function up()
-	{
-		
-	}
+	abstract public function up();
 }
 
