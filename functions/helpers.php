@@ -281,3 +281,21 @@ function jcf_esc_textarea( $value ) {
 	$safe_text = htmlspecialchars( $value, ENT_NOQUOTES, get_option( 'blog_charset' ) );
 	return $safe_text;
 }
+
+/**
+ * get registered taxonomies
+ * @param string $format
+ * @return string 
+ */
+function jcf_get_taxonomies( $format = 'names' ) {
+
+	$all_taxonomies = get_taxonomies(array( 'show_ui' => true, 'public' => true ), $format);
+
+	$taxonomies = array();
+
+	foreach ( $all_taxonomies as $key => $val ) {
+		$taxonomies['tax_' . $key] = $val;
+	}
+
+	return $taxonomies;
+}

@@ -189,7 +189,13 @@ class JustField
 
 				$collection_slug = $fields[$this->postType][$this->collectionId]['slug'];
 
-				$data = get_post_meta($this->postID, $collection_slug, true);
+				if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
+					$data = get_term_meta($this->postID, $collection_slug, true);
+				}
+				else {
+					$data = get_post_meta($this->postID, $collection_slug, true);
+				}
+
 				if ( isset($data[$key_from_collection][$this->slug]) ) {
 					$this->entry = $data[$key_from_collection][$this->slug];
 				}
@@ -198,11 +204,16 @@ class JustField
 		else {
 			// load entry
 			if ( !empty($this->slug) ) {
-				$this->entry = get_post_meta($this->postID, $this->slug, true);
+				if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
+					$this->entry = get_term_meta($this->postID, $this->slug, true);
+				}
+				else {
+					$this->entry = get_post_meta($this->postID, $this->slug, true);
+				}
 			}
 		}
 	}
-
+	
 	/**
 	 * Set post type
 	 * @param string $post_type
@@ -456,10 +467,17 @@ class JustField
 		// get real values
 		$values = $this->save($input);
 		// save to post meta
-		update_post_meta($this->postID, $this->slug, $values);
+		
+		if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
+			update_term_meta($this->postID, $this->slug, $values);
+		}
+		else {
+			update_post_meta($this->postID, $this->slug, $values);
+		}
+
 		return true;
 	}
-
+	
 	/**
 	 * method that call $this->add_js to enqueue scripts in head section
 	 * do this only on post edit page and if at least one field is exists.
@@ -472,8 +490,14 @@ class JustField
 		if ( !empty($jcf_included_assets['scripts'][get_class($this)]) )
 			return false;
 
+		
 		if ( method_exists($this, 'addJs') ) {
-			add_action('jcf_admin_edit_post_scripts', array( $this, 'addJs' ), 10);
+			if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== FALSE ) {
+				$this->addJs();
+			}
+			else {
+				add_action('jcf_admin_edit_post_scripts', array( $this, 'addJs' ), 10);
+			}
 		}
 		$jcf_included_assets['scripts'][get_class($this)] = 1;
 	}
@@ -491,7 +515,12 @@ class JustField
 			return false;
 
 		if ( method_exists($this, 'addCss') ) {
-			add_action('jcf_admin_edit_post_styles', array( $this, 'addCss' ), 10);
+			if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== FALSE ) {
+				$this->addCss();
+			}
+			else {
+				add_action('jcf_admin_edit_post_styles', array( $this, 'addCss' ), 10);
+			}
 		}
 		$jcf_included_assets['styles'][get_class($this)] = 1;
 	}

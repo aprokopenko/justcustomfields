@@ -43,11 +43,13 @@ class AdminController extends core\Controller
 		$model = new models\Fieldset();
 		$count_fields = $model->getFieldsCounter();
 		$post_types = jcf_get_post_types('object');
+		$taxonomies = jcf_get_taxonomies('objects');
 
 		// load template
 		return $this->_render('admin/index', array(
 					'tab' => 'fields',
 					'post_types' => $post_types,
+					'taxonomies' => $taxonomies,
 					'count_fields' => $count_fields
 		));
 	}
