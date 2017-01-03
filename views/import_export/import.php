@@ -15,7 +15,7 @@ $post_types = $import_data['post_types'];
 	<div class="media-frame-content jcf-import-fields" id="jcf-import-fields">
 		<form action="<?php get_permalink(); ?>" method="post" id="jcf_save_import_fields">
 			<div id="jcf_save_import_fields_content">
-				<p><?php _e('You should choose Fields to import:', \JustCustomFields::TEXTDOMAIN); ?></p>
+				<p><?php _e('You should choose Fields to import', \JustCustomFields::TEXTDOMAIN); ?>:</p>
 				<ul class="dotted-list jcf-bold jcf_width66p">
 				<?php foreach( $post_types as $pt_key => $post_type ):
 					if ( empty($fieldsets[$pt_key]) ) continue;
@@ -30,7 +30,7 @@ $post_types = $import_data['post_types'];
 									   data-cpt_container="#<?php echo "jcf_posttype_{$pt_key}"; ?>"
 								/>
 							</span>
-							<?php _e('Content type: ', \JustCustomFields::TEXTDOMAIN); ?><?php echo esc_html($post_type['labels']['name']); ?>
+							<?php _e('Content type', \JustCustomFields::TEXTDOMAIN); ?>: <?php echo esc_html($post_type['labels']['name']); ?>
 						</h3>
 
 						<?php
@@ -46,7 +46,7 @@ $post_types = $import_data['post_types'];
 				<textarea name="import_source" class="hidden" style="display: none"><?php echo jcf_esc_textarea( json_encode($import_data) ); ?></textarea>
 			</div>
 			<div class="jcf-modal-button">
-				<input type="submit" class="button-primary" name="save_import" value="<?php _e('Save Fields ', \JustCustomFields::TEXTDOMAIN); ?>" />
+				<input type="submit" class="button-primary" name="save_import" value="<?php _e('Save Fields', \JustCustomFields::TEXTDOMAIN); ?>" />
 			</div>
 		</form>
 	</div>

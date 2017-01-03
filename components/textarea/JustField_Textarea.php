@@ -83,9 +83,9 @@ class JustField_Textarea extends core\JustField
 		$description = esc_html($instance['description']);
 		$checked = !empty($instance['editor']) ? ' checked="checked" ' : '';
 		?>
-		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title', \JustCustomFields::TEXTDOMAIN); ?>:</label> <input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 		<p><label for="<?php echo $this->getFieldId('editor'); ?>"><input class="checkbox" id="<?php echo $this->getFieldId('editor'); ?>" name="<?php echo $this->getFieldName('editor'); ?>" type="checkbox" value="1" <?php echo $checked; ?> /> <?php _e('Use Editor for this textarea:', \JustCustomFields::TEXTDOMAIN); ?></label></p>
-		<p><label for="<?php echo $this->getFieldId('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->getFieldName('description'); ?>" id="<?php echo $this->getFieldId('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
+		<p><label for="<?php echo $this->getFieldId('description'); ?>"><?php _e('Description', \JustCustomFields::TEXTDOMAIN); ?>:</label> <textarea name="<?php echo $this->getFieldName('description'); ?>" id="<?php echo $this->getFieldId('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
 		<?php
 	}
 

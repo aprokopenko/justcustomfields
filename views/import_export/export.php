@@ -9,7 +9,7 @@
 					<input type="hidden" name ="action" value="jcf_export_fields" />
 
 					<div id="jcf_save_export_fields_content">
-						<p><?php _e('You should choose Fields to export:', \JustCustomFields::TEXTDOMAIN); ?></p>
+						<p><?php _e('You should choose Fields to export', \JustCustomFields::TEXTDOMAIN); ?>:</p>
 
 						<ul class="dotted-list jcf-bold jcf_width66p">
 							<?php foreach ( $post_types as $key => $post_type ):
@@ -25,7 +25,7 @@
 												   data-cpt_container="#<?php echo "jcf_posttype_{$key}"; ?>"
 											/>
 										</span>
-										<?php _e('Content type: ', \JustCustomFields::TEXTDOMAIN); ?><?php echo $key; ?>
+										<?php _e('Content type', \JustCustomFields::TEXTDOMAIN); ?>: <?php echo $key; ?>
 									</h3>
 
 									<?php

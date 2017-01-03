@@ -19,7 +19,7 @@
 						$slug = esc_attr($field->slug);
 					?>
 					<p>
-						<label for="<?php echo $field->getFieldId('slug'); ?>"><?php _e('Slug:', \JustCustomFields::TEXTDOMAIN); ?></label>
+						<label for="<?php echo $field->getFieldId('slug'); ?>"><?php _e('Slug', \JustCustomFields::TEXTDOMAIN); ?>:</label>
 						<input class="widefat" id="<?php echo $field->getFieldId('slug'); ?>" name="<?php echo $field->getFieldName('slug'); ?>" type="text" value="<?php echo $slug; ?>" />
 						<br/><small><?php _e('Machine name, will be used for postmeta field name. (should start from underscore)', \JustCustomFields::TEXTDOMAIN); ?></small>
 					</p>

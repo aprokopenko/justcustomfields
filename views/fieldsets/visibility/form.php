@@ -41,7 +41,7 @@ if ( empty($visibility_rule) ) {
 	<?php // Condition fields for rule ?>
 	<div class="join-condition <?php echo ( ((!empty($scenario) && $scenario == FieldsetVisibility::SCENARIO_CREATE) || $rule_id != 0) ? '' : 'hidden' ); ?>" >
 		<p>
-			<label for="rule-join-condition"><?php _e('Join condition with previous rules with operator:', \JustCustomFields::TEXTDOMAIN); ?></label>
+			<label for="rule-join-condition"><?php _e('Join condition with previous rules with operator', \JustCustomFields::TEXTDOMAIN); ?>:</label>
 			<br />
 			<select name="join_condition" id="rule-join-condition">
 				<option value="and" <?php selected($visibility_rule['join_condition'], FieldsetVisibility::JOIN_AND); ?> ><?php _e('AND', \JustCustomFields::TEXTDOMAIN); ?></option>
@@ -65,7 +65,7 @@ if ( empty($visibility_rule) ) {
 
 	<?php else: // Form for "Page" post type ?>
 		<p>
-			<label for="rule-based-on"><?php _e('Based on:', \JustCustomFields::TEXTDOMAIN); ?></label><br />
+			<label for="rule-based-on"><?php _e('Based on', \JustCustomFields::TEXTDOMAIN); ?>:</label><br />
 			<select name="based_on" id="rule-based-on">
 				<option value="" disabled="disabled" <?php echo (!empty($scenario) && $scenario == FieldsetVisibility::SCENARIO_UPDATE) ? '' : 'selected'; ?> >
 					<?php _e('Choose option', \JustCustomFields::TEXTDOMAIN); ?>

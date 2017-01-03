@@ -18,7 +18,7 @@
 				<h3 class="header">
 					<span>
 						<span class="dashicons dashicons-menu drag-handle"></span>
-						<?php _e('Fieldset:', \JustCustomFields::TEXTDOMAIN); ?> <strong><?php echo esc_html($fieldset['title']); ?></strong>
+						<?php _e('Fieldset', \JustCustomFields::TEXTDOMAIN); ?>: <strong><?php echo esc_html($fieldset['title']); ?></strong>
 						<small>
 							<a href="#" class="jcf_fieldset_change jcf_change_pt show_modal" rel="<?php echo esc_attr($fieldset['id']); ?>"><?php _e('Edit', \JustCustomFields::TEXTDOMAIN); ?></a>
 							<a href="#" class="jcf_fieldset_delete jcf_change_pt submitdelete" rel="<?php echo esc_attr($fieldset['id']); ?>"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a>
@@ -88,7 +88,7 @@
 					<form action="#" method="post" class="jcform_add_field">
 						<fieldset>
 							<input type="hidden" name="fieldset_id" value="<?php echo $fieldset['id']; ?>" />
-							<label class="nowrap"><?php _e('Add new Field:', \JustCustomFields::TEXTDOMAIN); ?> </label>
+							<label class="nowrap"><?php _e('Add new Field', \JustCustomFields::TEXTDOMAIN); ?>: </label>
 							<select name="field_type" class="jcf_add_field">
 								<?php foreach($registered_fields as $field) : ?>
 								<option value="<?php echo $field['id_base']; ?>"><?php echo esc_html($field['title']); ?></option>
@@ -114,7 +114,7 @@
 				<div class="jcf_inner_content">
 					<form action="#" id="jcform_add_fieldset" method="post" class="jcf_form_horiz">
 						<fieldset>
-							<label for="jcf_fieldset_title"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?> </label>
+							<label for="jcf_fieldset_title"><?php _e('Title', \JustCustomFields::TEXTDOMAIN); ?>: </label>
 							<input type="text" class="text" name="jcf_fieldset_title" id="jcf_fieldset_title" value="" />
 							<input type="submit" class="button" name="jcf_add_fieldset" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />
 							<?php echo jcf_print_loader_img(); ?>

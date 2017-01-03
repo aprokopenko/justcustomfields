@@ -105,16 +105,16 @@ class JustField_SimpleMedia extends core\JustField
 		$type = $instance['type'];
 		$description = esc_html($instance['description']);
 		?>
-		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> 
+		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title', \JustCustomFields::TEXTDOMAIN); ?>:</label> 
 			<input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 		<p>
-			<label for="<?php echo $this->getFieldId('type'); ?>"><?php _e('Type of files:', \JustCustomFields::TEXTDOMAIN); ?></label>
+			<label for="<?php echo $this->getFieldId('type'); ?>"><?php _e('Type of files', \JustCustomFields::TEXTDOMAIN); ?>:</label>
 			<select class="widefat" id="<?php echo $this->getFieldId('type'); ?>" name="<?php echo $this->getFieldName('type'); ?>">
 				<option value="file" <?php selected('file', $type); ?>><?php _e('All', \JustCustomFields::TEXTDOMAIN); ?></option>
 				<option value="image" <?php selected('image', $type); ?>><?php _e('Only Images', \JustCustomFields::TEXTDOMAIN); ?></option>
 			</select>
 		</p>
-		<p><label for="<?php echo $this->getFieldId('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->getFieldName('description'); ?>" id="<?php echo $this->getFieldId('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
+		<p><label for="<?php echo $this->getFieldId('description'); ?>"><?php _e('Description', \JustCustomFields::TEXTDOMAIN); ?>:</label> <textarea name="<?php echo $this->getFieldName('description'); ?>" id="<?php echo $this->getFieldId('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
 		<?php
 	}
 

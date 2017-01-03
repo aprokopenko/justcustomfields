@@ -1,0 +1,745 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-27 13:42+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco - https://localise.biz/"
+
+#. Name of the plugin
+msgctxt "Just Custom Fields for Wordpress"
+msgid "Just Custom Fields for Wordpress"
+msgstr ""
+
+#. Description of the plugin
+msgctxt ""
+"Этот плагин добавляет возможность расширять ваши статьи, страницы (и другие "
+"типы контента) легко редактируемыми дополнительными полями и группами полей."
+msgid ""
+"This plugin adds ability to extend your Posts, Pages (and other custom post "
+"types) with easy-to-edit additional fields and fields groups."
+msgstr ""
+
+#. URI of the plugin
+msgctxt "http://justcoded.com/blog/just-custom-fields-for-wordpress-plugin/"
+msgid "http://justcoded.com/blog/just-custom-fields-for-wordpress-plugin/"
+msgstr ""
+
+#. Author of the plugin
+msgctxt "JustCoded / Alex Prokopenko"
+msgid "JustCoded / Alex Prokopenko"
+msgstr ""
+
+#. Author URI of the plugin
+msgctxt "http://justcoded.com/"
+msgid "http://justcoded.com/"
+msgstr ""
+
+msgctxt "Чекбокc"
+msgid "Checkbox"
+msgstr ""
+
+msgctxt "Пожалуйста, проверьте параметры настройки. Значения пусты"
+msgid "Please check settings. Values are empty"
+msgstr ""
+
+msgctxt "Заголовок"
+msgid "Title"
+msgstr ""
+
+msgctxt "Настройки"
+msgid "Settings"
+msgstr ""
+
+msgctxt "Описание"
+msgid "Description"
+msgstr ""
+
+msgctxt ""
+"Параметры как (вы можете использовать \"label\" если \"id\" такой же):<br>"
+"label1|id1<br>label2|id2<br>label3"
+msgid ""
+"Parameters like (you can use just \"label\" if \"id\" is the same):<br>"
+"label1|id1<br>label2|id2<br>label3"
+msgstr ""
+
+msgctxt "ОТМЕНА"
+msgid "UNDO"
+msgstr ""
+
+msgctxt "Формат даты"
+msgid "Date format"
+msgstr ""
+
+msgctxt "Пример"
+msgid "Example"
+msgstr ""
+
+msgctxt "детальнее о форматах даты"
+msgid "look more about date formats"
+msgstr ""
+
+msgctxt "Показать месяц/год выбраных секций"
+msgid "Show month/year select boxes"
+msgstr ""
+
+msgctxt "Нужно удалить"
+msgid "To be deleted"
+msgstr ""
+
+msgctxt "Добавить"
+msgid "Add"
+msgstr ""
+
+msgctxt "Тип контента"
+msgid "Post type"
+msgstr ""
+
+msgctxt "Все"
+msgid "All"
+msgstr ""
+
+msgctxt "Тип ввода"
+msgid "Input type"
+msgstr ""
+
+msgctxt "Автозаполнение"
+msgid "Autocomplete"
+msgstr ""
+
+msgctxt "Выпадающий список"
+msgid "Dropdown list"
+msgstr ""
+
+msgctxt "Опции"
+msgid "Error, duplicate 1: Options"
+msgstr ""
+
+msgctxt "Пустая опция"
+msgid "Empty option"
+msgstr ""
+
+msgctxt "Оставить пустым, чтоб отключить пустое значение"
+msgid "Leave blank to disable empty option"
+msgstr ""
+
+msgctxt "Удалить"
+msgid "Delete"
+msgstr ""
+
+msgctxt "Тип файлов"
+msgid "Type of files"
+msgstr ""
+
+msgctxt "Только изображения"
+msgid "Only Images"
+msgstr ""
+
+msgctxt "Добавить строку"
+msgid "Add row"
+msgstr ""
+
+msgctxt "Неверная настройка колонок. Пожалуйста проверьте настройки виджета."
+msgid "Wrong columns configuration. Please check widget settings."
+msgstr ""
+
+msgctxt "Колонки"
+msgid "Columns"
+msgstr ""
+
+msgctxt "Формат: %colname|%coltitle<br/><i>Пример: username|User name"
+msgid "Format: %colname|%coltitle<br/><i>Example: username|User name"
+msgstr ""
+
+msgctxt "Использовать редактор для текстового поля"
+msgid "Use Editor for this textarea:"
+msgstr ""
+
+msgctxt "Ошибка! отсутствует параметр \"field\""
+msgid "Error! \"field\" parameter is missing"
+msgstr ""
+
+msgctxt "Just Custom Fields"
+msgid "Just Custom Fields"
+msgstr ""
+
+msgctxt "Поля"
+msgid "Fields"
+msgstr ""
+
+msgctxt "Импорт/Экспорт"
+msgid "Import/Export"
+msgstr ""
+
+msgctxt "Выберите Созданный Тип Контента для начала настройки полей:"
+msgid "You should choose Custom Post Type first to configure fields for it:"
+msgstr ""
+
+msgctxt "Добавленные наборы полей"
+msgid "Added Fieldsets"
+msgstr ""
+
+msgctxt "Все Поля"
+msgid "Total Fields"
+msgstr ""
+
+msgctxt "Тип"
+msgid "Type"
+msgstr ""
+
+msgctxt "Ширина"
+msgid "Width"
+msgstr ""
+
+msgctxt "Включенный"
+msgid "Enabled"
+msgstr ""
+
+msgctxt "Добавить новое Поле"
+msgid "Add new Field"
+msgstr ""
+
+msgctxt "Редактировать"
+msgid "Edit"
+msgstr ""
+
+msgctxt "Да"
+msgid "Yes"
+msgstr ""
+
+msgctxt "Нет"
+msgid "No"
+msgstr ""
+
+msgctxt "Пожалуйста создайте поля для данной коллекции"
+msgid "Please create fields for this collection"
+msgstr ""
+
+msgctxt "Машинное имя"
+msgid "Slug"
+msgstr ""
+
+msgctxt ""
+"Машинное имя будет использоваться для название postmeta. (должно начинаться "
+"с подчеркивания)"
+msgid ""
+"Machine name, will be used for postmeta field name. (should start from "
+"underscore)"
+msgstr ""
+
+msgctxt "Использовать это поле, как заголовок единицы коллекции?"
+msgid "Use this field as collection item title?"
+msgstr ""
+
+msgctxt "Выберите Ширину Поля"
+msgid "Select Field Width"
+msgstr ""
+
+msgctxt "Закрыть"
+msgid "Close"
+msgstr ""
+
+msgctxt "Сохранить"
+msgid "Save"
+msgstr ""
+
+msgctxt "Позиция"
+msgid "Position"
+msgstr ""
+
+msgctxt "Приоритет"
+msgid "Priority"
+msgstr ""
+
+msgctxt "Правила отображения"
+msgid "Visibility rules"
+msgstr ""
+
+msgctxt "Контент типы"
+msgid "Post types"
+msgstr ""
+
+msgctxt "Созданные поля"
+msgid "Custom fields"
+msgstr ""
+
+msgctxt "Набор полей"
+msgid "Fieldset"
+msgstr ""
+
+msgctxt "Поле"
+msgid "Field"
+msgstr ""
+
+msgctxt "Пожалуйста создайте поля для данного набора"
+msgid "Please create fields for this fieldset"
+msgstr ""
+
+msgctxt "Добавить набор полей"
+msgid "Add Fieldset"
+msgstr ""
+
+msgctxt "Редактировать правило"
+msgid "Edit rule"
+msgstr ""
+
+msgctxt "Добавить правило"
+msgid "Add rule"
+msgstr ""
+
+msgctxt "Вы собираетесь установить опцию отображения для данного набора полей"
+msgid "You are about to set the visibility option for this fieldset"
+msgstr ""
+
+msgctxt "Скрыть набор полей"
+msgid "Hide fieldset"
+msgstr ""
+
+msgctxt "Отобразить набор полей"
+msgid "Show fieldset"
+msgstr ""
+
+msgctxt "Условие соединения с предыдущими правилами с оператором"
+msgid "Join condition with previous rules with operator"
+msgstr ""
+
+msgctxt "И"
+msgid "AND"
+msgstr ""
+
+msgctxt "ИЛИ"
+msgid "OR"
+msgstr ""
+
+msgctxt "Основываясь на"
+msgid "Based on"
+msgstr ""
+
+msgctxt "Термины таксономии"
+msgid "Taxonomy terms"
+msgstr ""
+
+msgctxt "Выбрать опцию"
+msgid "Choose option"
+msgstr ""
+
+msgctxt "Шаблон страницы"
+msgid "Page template"
+msgstr ""
+
+msgctxt "Таксономия"
+msgid "Taxonomy"
+msgstr ""
+
+msgctxt "Обновить правило"
+msgid "Update rule"
+msgstr ""
+
+msgctxt "Сохранить правило"
+msgid "Save rule"
+msgstr ""
+
+msgctxt "Закрыть"
+msgid "Cancel"
+msgstr ""
+
+msgctxt "Правило"
+msgid "Rule"
+msgstr ""
+
+msgctxt "Опции"
+msgid "Options"
+msgstr ""
+
+msgctxt "Выбрать таксономию"
+msgid "Choose taxonomy"
+msgstr ""
+
+msgctxt "Нет доступных таксономий"
+msgid "No available taxonomies"
+msgstr ""
+
+msgctxt "Выбрать шаблон"
+msgid "Choose templates"
+msgstr ""
+
+msgctxt "Нет доступных шаблонов"
+msgid "No available templates"
+msgstr ""
+
+msgctxt "Выбрать"
+msgid "Choose"
+msgstr ""
+
+msgctxt "Нет доступных терминов"
+msgid "No available terms"
+msgstr ""
+
+msgctxt "Just Custom Fields Экспорт"
+msgid "Just Custom Fields Export"
+msgstr ""
+
+msgctxt "Выберите Поля для экспорта "
+msgid "You should choose Fields to export"
+msgstr ""
+
+msgctxt "Тип контента"
+msgid "Content type"
+msgstr ""
+
+msgctxt "Экспорт"
+msgid "Export"
+msgstr ""
+
+msgctxt "Just Custom Fields Импорт"
+msgid "Just Custom Fields Import"
+msgstr ""
+
+msgctxt "Выберите Поля для импорта"
+msgid "You should choose Fields to import"
+msgstr ""
+
+msgctxt "Сохранить поля"
+msgid "Save Fields"
+msgstr ""
+
+msgctxt "Импорт"
+msgid "Import"
+msgstr ""
+
+msgctxt ""
+"Если у вас есть Just Custom Fields файл с настройками полей, вы можете "
+"загрузить некоторые спецификации, в ваш установленный WordPress.<br/><br/>"
+"Пожалуйста выберите ваш файл с конфигурациями и нажмите кнопку \"Импорт\""
+msgid ""
+"If you have Just Custom Fields configuration file you can import some "
+"specific settings from it to your current WordPress installation.<br/><br/>"
+"Please choose your configuration file and press \"Import\" button"
+msgstr ""
+
+msgctxt "Добавить файл для импорта"
+msgid "Add file to import"
+msgstr ""
+
+msgctxt "расширение файла: .json"
+msgid "file extention: .json"
+msgstr ""
+
+msgctxt ""
+"Вы можете сделать экспорт настроек полей и перенести их на другой вебсайт, "
+"при необходимости. Просто нажмите на кнопку \"Мастер Экспорта\" для старта"
+msgid ""
+"You can export specific field settings and move them to another site if "
+"needed. Just click \"Export Wizard\" button to start."
+msgstr ""
+
+msgctxt "Мастер Экспорта"
+msgid "Export Wizard"
+msgstr ""
+
+msgctxt "Конфигурация хранилища настроек "
+msgid "Settings storage configuration"
+msgstr ""
+
+msgctxt "<b>База данных</b>. Полезная если у вас установлен только 1 вебсайт"
+msgid "<b>Database</b>. Useful when you have only 1 site installation"
+msgstr ""
+
+msgctxt ""
+"<b>Файл: Текущая тема</b>. Настройки полей сохраняются в текущую папку темы "
+"в формате json и могут быть легко скопированы на другой сайт."
+msgid ""
+"<b>File system: Current theme folder</b>. Fields configuration is saved to "
+"the current theme folder in json format and can be copied to another site "
+"easily."
+msgstr ""
+
+msgctxt ""
+"<b>Файл: Глобально</b> (/wp-content/jcf-settings/*). Настройки полей "
+"сохраняются в папку wp-content в формате json и могут быть легко скопированы "
+"на другой сайт\n"
+msgid ""
+"<b>File system: Global</b> (/wp-content/jcf-settings/*). Fields "
+"configuration is saved to the wp-content folder in json format and can be "
+"copied to another site easily."
+msgstr ""
+
+msgctxt "Опции Базы Данных Мультисайта"
+msgid "Database MultiSite Options"
+msgstr ""
+
+msgctxt "Сделать настройки полей глобальными для всей сети сайтов"
+msgid "Make fields settings global for all network"
+msgstr ""
+
+msgctxt "Настройки полей уникальные для каждого сайта "
+msgid "Fields settings are unique for each site"
+msgstr ""
+
+msgctxt "Сохранить все настройки"
+msgid "Save all settings"
+msgstr ""
+
+msgctxt "Рекомендации по использованию поля"
+msgid "Usage guidelines for field"
+msgstr ""
+
+msgctxt "В редакторе"
+msgid "Inside the Editor"
+msgstr ""
+
+msgctxt ""
+"Для вставки значения в ваш редактор статьи, пожалуйста скопируйте и вставьте "
+"пример кода ниже вашего редактора."
+msgid ""
+"To insert the value into your post editor, please copy and paste the code "
+"examples below to your editor."
+msgstr ""
+
+msgctxt ""
+"настраиваемые параметры: class=\"myclass\" id=\"myid\" post_id=\"123\" "
+"label=\"yes\""
+msgid ""
+"optional parameters: class=\"myclass\" id=\"myid\" post_id=\"123\" "
+"label=\"yes\""
+msgstr ""
+
+msgctxt "В вашем шаблоне"
+msgid "Inside your Templates"
+msgstr ""
+
+msgctxt ""
+"Для отображения значения или метки поля в вашем шаблоне (например в single."
+"php), пожалуйста используйте примеры ниже"
+msgid ""
+"To print the value or label inside your template (for example in single.php) "
+"please use the examples below:"
+msgstr ""
+
+msgctxt "Редактировать Набор Полей"
+msgid "Edit Fieldset"
+msgstr ""
+
+msgctxt "Коллекция"
+msgid "Collection"
+msgstr ""
+
+msgctxt "Добавить %s группу"
+msgid "Add %s Item"
+msgstr ""
+
+msgctxt "Дата"
+msgid "Date Picker"
+msgstr ""
+
+msgctxt "Текстовое поле"
+msgid "Input Text"
+msgstr ""
+
+msgctxt "Сопутствующий контент"
+msgid "Related Content"
+msgstr ""
+
+msgctxt "Начните печатать Заголовок, чтоб увидеть список"
+msgid "Start typing entry Title to see the list."
+msgstr ""
+
+msgctxt "Выпадающий список"
+msgid "Select"
+msgstr ""
+
+msgctxt "Список с мультивыбором"
+msgid "Select Multiple"
+msgstr ""
+
+msgctxt "Простая загрузка"
+msgid "Simple Media"
+msgstr ""
+
+msgctxt "Выберите изображение"
+msgid "Select image"
+msgstr ""
+
+msgctxt "Выберите файл"
+msgid "Select file"
+msgstr ""
+
+msgctxt "Обновить изображение"
+msgid "Update image"
+msgstr ""
+
+msgctxt "Обновить фийл"
+msgid "Update file"
+msgstr ""
+
+msgctxt "Таблица"
+msgid "Table"
+msgstr ""
+
+msgctxt "Еще нет данных."
+msgid "No data yet."
+msgstr ""
+
+msgctxt "Текстовая область"
+msgid "Textarea"
+msgstr ""
+
+msgctxt "Выберите картинку"
+msgid "Select Picture"
+msgstr ""
+
+msgctxt "Добавить в Статью"
+msgid "Insert into Post"
+msgstr ""
+
+msgctxt "Заголовок - обязательный поле"
+msgid "Title field is required."
+msgstr ""
+
+msgctxt "Не удалось сохранить изменинея в хранилище"
+msgid "Unable to write changes to storage."
+msgstr ""
+
+msgctxt "Неврные опции для данного поля"
+msgid "There are no options for this field."
+msgstr ""
+
+msgctxt "Всем привет"
+msgid "Hello there"
+msgstr ""
+
+msgctxt "Вы уверены что хотите удалить выбранное поле?"
+msgid "Are you sure you want to delete selected field?"
+msgstr ""
+
+msgctxt ""
+"Вы уверены что хотите удалить набор полей?\\nВсе поля будут также удалены!"
+msgid ""
+"Are you sure you want to delete the fieldset?\\nAll fields will be also "
+"deleted!"
+msgstr ""
+
+msgctxt "Выберите Термин таксономии для продолжения"
+msgid "You should select Taxonomy term to continue."
+msgstr ""
+
+msgctxt "Выберите Термин таксономии или Шаблон страницы для продолжения"
+msgid "You should select Taxonomy term or Page template to continue."
+msgstr ""
+
+msgctxt "Термин не существует"
+msgid "The term doesn\\'t exist"
+msgstr ""
+
+msgctxt "Шаблон не существует"
+msgid "The template doesn\\'t exist"
+msgstr ""
+
+msgctxt "Сортировка не изменена"
+msgid "Sorting isn\\'t changed."
+msgstr ""
+
+msgctxt "Набор полей не найден"
+msgid "Fieldset not found"
+msgstr ""
+
+msgctxt "Такой набор полей уже существует"
+msgid "Such fieldset already exists."
+msgstr ""
+
+msgctxt "Переданы неыерные параметры"
+msgid "Wrong params passed."
+msgstr ""
+
+msgctxt "Переданы неверные данные"
+msgid "Wrong data passed."
+msgstr ""
+
+msgctxt "Правила отображения не найдены"
+msgid "Visibility rule not found."
+msgstr ""
+
+msgctxt "Правила отображения не обновлены"
+msgid "Visibility rule not updated."
+msgstr ""
+
+msgctxt "Правила отображения не удалены"
+msgid "Visibility rule not deleted."
+msgstr ""
+
+msgctxt "НЕУДАЧНЫЙ ИМПОРТ! Файл не содержит данных с настройками полей.."
+msgid "IMPORT FAILED! File do not contain fields settings data.."
+msgstr ""
+
+msgctxt "НЕУДАЧНЫЙ ИМПОРТ! Файл для импорта отсутствует."
+msgid "IMPORT FAILED! Import file is missing."
+msgstr ""
+
+msgctxt "НЕУДАЧНЫЙ ИМПОРТ! Невозможно прочитать загруженный файл"
+msgid "IMPORT FAILED! Can\\'t read uploaded file."
+msgstr ""
+
+msgctxt "НЕУДАЧНЫЙ ИМПОРТ! Пожалуйста загрузите файл правильного формата."
+msgid "IMPORT FAILED! Please upload correct file format."
+msgstr ""
+
+msgctxt "<strong>Импорт</strong> успешно завершен!"
+msgid "<strong>Import</strong> has been completed successfully!"
+msgstr ""
+
+msgctxt ""
+"<strong>Неудачный импорт!</strong> Пожплуйста проверте правильность формата "
+"файла."
+msgid ""
+"<strong>Import failed!</strong> Please check that your import file has right "
+"format."
+msgstr ""
+
+msgctxt ""
+"<strong>Неудачный экспорт!</strong> Пожалуйста выберите поля для экспорта."
+msgid "<strong>Export failed!</strong> Please select fields to export."
+msgstr ""
+
+msgctxt ""
+"<strong>Настройки хранилища обовлены неудачно!</strong>. Выберите опцию для "
+"хранения данных"
+msgid ""
+"<strong>Settings storage update FAILED!</strong>. Choose an option for the "
+"data storage"
+msgstr ""
+
+msgctxt ""
+"<strong>Настройки хранилища обовлены неудачно!</strong>. Проверьте права на "
+"запись папки"
+msgid ""
+"<strong>Settings storage update FAILED!</strong>. Check writable permissions "
+"of directory "
+msgstr ""
+
+msgctxt ""
+"<strong>Настройки мультисайта обновлены неудачно!</strong> Выберите опцию "
+"для мультисайта."
+msgid ""
+"<strong>MultiSite settings update FAILED!</strong> Choose an option for the "
+"multisite."
+msgstr ""
+
+msgctxt "Конфигурации <strong>Хранилища настроек</strong> успешно обновлены."
+msgid "<strong>Settings storage</strong> configurations has been updated."
+msgstr ""
+
+msgctxt "<strong>Натсройки мультисайта</strong> успешно обновлены."
+msgid "<strong>MultiSite settings</strong> has been updated."
+msgstr ""
+
+msgctxt "Отклонить это оповещение."
+msgid "Dismiss this notice."
+msgstr ""

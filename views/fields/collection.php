@@ -13,7 +13,7 @@
 					<fieldset>
 						<input type="hidden" name="collection_id" value="<?php echo $collection_id; ?>" />
 						<input type="hidden" name="fieldset_id" value="<?php echo $fieldset_id; ?>" />
-						<label class="nowrap"><?php _e('Add new Field:', \JustCustomFields::TEXTDOMAIN); ?> </label>
+						<label class="nowrap"><?php _e('Add new Field', \JustCustomFields::TEXTDOMAIN); ?>: </label>
 						<select name="field_type" class="jcf_add_collection_field">
 							<?php foreach($registered_fields as $field) : ?>
 							<option value="<?php echo $field['id_base']; ?>"><?php echo esc_html($field['title']); ?></option>

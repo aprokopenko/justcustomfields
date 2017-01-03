@@ -11,7 +11,7 @@ use jcf\models\Settings;
 		<form action="<?php get_permalink(); ?>" id="jcform_settings" method="post" class="jcf_form_horiz" onsubmit="return initSettings();">
 
 			<div class="card pressthis">
-				<h3 class="header"><?php _e('Settings storage configuration:', \JustCustomFields::TEXTDOMAIN); ?></h3>
+				<h3 class="header"><?php _e('Settings storage configuration', \JustCustomFields::TEXTDOMAIN); ?>:</h3>
 
 				<input type="radio" class="jcf_choose_settings" name="source"
 					   value="<?php echo Settings::CONF_SOURCE_DB; ?>" id="jcf_read_db" <?php  checked($source, Settings::CONF_SOURCE_DB); ?>/>
@@ -32,7 +32,7 @@ use jcf\models\Settings;
 
 			<?php if( MULTISITE && $source == Settings::CONF_SOURCE_DB ): ?>
 				<div class="card pressthis">
-					<h3 class="header"><?php _e('Database MultiSite Options:', \JustCustomFields::TEXTDOMAIN); ?></h3>
+					<h3 class="header"><?php _e('Database MultiSite Options', \JustCustomFields::TEXTDOMAIN); ?>:</h3>
 					<fieldset>
 						<input type="radio" name="network" id="jcf_setting_global"
 							   value="<?php echo Settings::CONF_MS_NETWORK; ?>" <?php checked($network, Settings::CONF_MS_NETWORK); ?> />

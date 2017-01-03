@@ -14,7 +14,7 @@
 					'data-fields_container' => "#jcf_fieldset_fields_{$pt_key}_{$fieldset_id}",
 					)); ?>
 			</span>
-			<?php _e('Fieldset:', \JustCustomFields::TEXTDOMAIN); ?> <span><?php echo $fieldset['title']; ?></span>
+			<?php _e('Fieldset', \JustCustomFields::TEXTDOMAIN); ?>: <span><?php echo $fieldset['title']; ?></span>
 		</h3>
 		<div class="jcf_inner_content" id="<?php echo "jcf_fieldset_fields_{$pt_key}_{$fieldset_id}"; ?>">
 			<table class="wp-list-table widefat fixed" cellspacing="0">

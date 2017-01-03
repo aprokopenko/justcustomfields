@@ -117,6 +117,7 @@ class JustCustomFields extends core\Singleton
 	 */
 	public function registerCustomComponents()
 	{
+		load_plugin_textdomain( self::TEXTDOMAIN, false, JCF_ROOT . '/languages/' );
 		do_action( 'jcf_register_fields' );
 	}
 

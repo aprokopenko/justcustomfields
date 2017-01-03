@@ -1,6 +1,6 @@
 <?php $taxonomy = get_taxonomy($terms[0]->taxonomy); ?>
 <?php if ( !empty($terms) ): ?>
-	<p><?php _e('Choose ' . $taxonomy->labels->name . ':', \JustCustomFields::TEXTDOMAIN); ?></p>
+	<p><?php _e('Choose' . $taxonomy->labels->name . ':', \JustCustomFields::TEXTDOMAIN); ?> </p>
 	<?php if ( count($terms) <= 20 ) : ?>
 		<ul class="visibility-list-items">
 			<?php $i = 1;
