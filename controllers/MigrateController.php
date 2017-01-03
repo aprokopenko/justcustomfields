@@ -12,16 +12,24 @@ class MigrateController extends core\Controller
 		$this->_checkStorageVersion();
 	}
 	
+	/**
+	 * Check version of fields storage
+	 * @return boolean
+	 */
 	protected function _checkStorageVersion()
 	{
 		$model = new models\Storage();
+		$version = $model->getVersion();
 		
 		if ( !empty($_POST) ) {
 			$model->load($_POST); 
 			$model->migrate();
 		}
 
-		if ( $model->getVersion() !== \JustCustomFields::VERSION ) {
+		if ( $version !== \JustCustomFields::VERSION ) {
+
+			if ( $model->checkDeprecatedFields() ) return false;
+
 			ob_start();
 			?>
 

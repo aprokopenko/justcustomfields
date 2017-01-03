@@ -6,6 +6,10 @@ class m3000 extends \jcf\core\Migration
 {
 	public $version = '3.000';
 	
+	/**
+	 * Update fields and fieldsets attributes
+	 * @return boolean
+	 */
 	public function up()
 	{
 		$storage = get_option('jcf_read_settings');
@@ -24,6 +28,9 @@ class m3000 extends \jcf\core\Migration
 		return true;		
 	}
 	
+	/**
+	 * Update fields and fieldsets from DataBase
+	 */
 	protected function _updateFieldsFromDB()
 	{
 		$network = get_site_option('jcf_multisite_setting');
@@ -37,10 +44,13 @@ class m3000 extends \jcf\core\Migration
 		$dl = new \jcf\models\DBDataLayer();
 		$dl->setFieldsets($fieldsets);
 		$dl->setFields($fields);
-		$dl->saveFieldsetsDataData();
+		$dl->saveFieldsetsData();
 		$dl->saveFieldsData();
 	}
 
+	/**
+	 * Update fields and fieldsets from File
+	 */
 	protected function _updateFieldsFromFile()
 	{
 		$storage = get_option('jcf_read_settings');
@@ -51,12 +61,10 @@ class m3000 extends \jcf\core\Migration
 		else {
 			$path = get_stylesheet_directory() . '/jcf-settings/jcf_settings.json';
 		}
-		
-		if ( file_exists($path) ) {
-			$content = file_get_contents($file);
-			$data = gettype($content) == 'string' ? json_decode($content, true) : $content;
-		}
-		
+
+		$dl = new \jcf\models\FilesDataLayer();
+		$data = $dl->getDataFromFile($path);
+
 		if ( !empty($data) ) {
 			$newdata = array();
 			$newdata['fields'] = $data['field_settings'];
@@ -78,29 +86,11 @@ class m3000 extends \jcf\core\Migration
 				}
 			}
 		}
-		
-		if ( defined('JSON_PRETTY_PRINT') ) {
-			$newdata = json_encode($newdata, JSON_PRETTY_PRINT);
-		}
-		else {
-			$newdata = jcf_format_json(json_encode($newdata));
-		}
-		$dir = dirname($path);
 
-		// trying to create dir
-		if ( (!is_dir($dir) && !wp_mkdir_p($dir)) || !is_writable($dir) ) {
-			return false;
-		}
-
-		if ( !empty($dir) ) {
-			if ( $fp = fopen($path, 'w') ) {
-				fwrite($fp, $newdata . "\r\n");
-				fclose($fp);
-				jcf_set_chmod($path);
-				return true;
-			}
-		}
-		return false;
+		$dl->setFieldsets($newdata['fieldsets']);
+		$dl->setFields($newdata['fields']);
+		$dl->saveFieldsetsData();
+		$dl->saveFieldsData();
 	}
 }
 
