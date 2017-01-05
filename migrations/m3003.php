@@ -16,8 +16,16 @@ class m3003 extends \jcf\core\Migration
 		$allFields = $model->findAll();
 
 		foreach ($allFields as $post_type => $fields) {
-			foreach ($fields as $key => $field) {
-				$allFields[$post_type][$key]['_version'] = $this->version;
+			if ( !is_array($fields) ) continue;
+
+			foreach ($fields as $id => $field) {
+				if ( !empty($field['fields']) && is_array($field['fields']) ) {
+					foreach ( $field['fields'] as $fid => $f ) {
+						$allFields[$post_type][$id]['fields'][$fid]['_version'] =  $this->version;
+					}
+				}
+				
+				$allFields[$post_type][$id]['_version'] = $this->version;
 			}
 		}
 
@@ -28,9 +36,8 @@ class m3003 extends \jcf\core\Migration
 			$dl = new \jcf\models\FilesDataLayer();
 		}
 
-		$dl->setFields($fields);
+		$dl->setFields($allFields);
 		return $dl->saveFieldsData();
-		
 	}
 }
 

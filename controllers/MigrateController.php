@@ -9,40 +9,52 @@ class MigrateController extends core\Controller
 {
 	public function __construct()
 	{
-		$this->_checkStorageVersion();
+		parent::__construct();
+
+		if ( self::isOldVersion() ) {
+			add_action('admin_menu', array( $this, 'initRoutes' ));
+		}
 	}
 	
-	/**
-	 * Check version of fields storage
-	 * @return boolean
-	 */
-	protected function _checkStorageVersion()
+	public function initRoutes()
+	{
+		$page_title = __('Updates', \JustCustomFields::TEXTDOMAIN);
+		add_submenu_page(null, $page_title, $page_title, 'manage_options', 'jcf_updates', array( $this, 'actionIndex' ));
+	}
+	
+	public function actionIndex()
 	{
 		$model = new models\Storage();
-		$version = $model->getVersion();
-		
-		if ( !empty($_POST) ) {
-			$model->load($_POST); 
+		$deprecatedFields = array();
+
+		if ( $model->load($_POST) ) {
 			$model->migrate();
 		}
 
-		if ( $version !== \JustCustomFields::VERSION ) {
+		$version = $model->getVersion();
 
-			if ( $model->checkDeprecatedFields() ) return false;
+		if ( version_compare($version, '2.3', '<=') ) {
+			$deprecatedFields = $model->getDeprecatedFields();
+		}
+		
+		return $this->_render('updates/index', array(
+			'tab' => 'updates',
+			'deprecated_fields' => $deprecatedFields,
+		));
+	}
+	
+	public static function isOldVersion()
+	{
+		$model = new models\Storage();
+		$version = $model->getVersion();
 
-			ob_start();
-			?>
-
-			<form action="#" method="post" id="jcf_update_storage">
-				<input type="submit" value="<?php _e('Update', \JustCustomFields::TEXTDOMAIN); ?>" 
-					   class="jcf-btn-save button-primary" name="update_storage_version">			
-			</form>
-
-			<?php $update_button = ob_get_clean();
-			return $model->addMessage('Seem your Just Custom Field settings are outdated and need to be updated.' . $update_button);
+		if ( version_compare( $version, \JustCustomFields::VERSION, '<') ) {
+			$model->addMessage(__('Seem your Just Custom Field settings are outdated and need to be updated. '
+					. '<a href="?page=jcf_updates" class="jcf-btn-save button-primary">Update</a>', \JustCustomFields::TEXTDOMAIN));
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 }
 

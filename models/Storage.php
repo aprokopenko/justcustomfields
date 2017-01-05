@@ -10,7 +10,6 @@ class Storage extends core\Model
 
 	protected $_version;
 	protected $_deprecatedFields;
-	protected $_postTypes;
 	
 	public function __construct()
 	{
@@ -40,35 +39,25 @@ class Storage extends core\Model
 	 * Check deprecated fields from oldest versions
 	 * @return boolean
 	 */
-	public function checkDeprecatedFields()
+	public function getDeprecatedFields()
 	{
 		$storage = get_option('jcf_read_settings');
-		
-		if ( empty($storage) ) {
-			$this->_checkDeprecatedFieldsFromDB();
-			$this->_checkDeprecatedFieldsFromFile();
-		} 
-		elseif ( $storage == 'database' ) {
-			$this->_checkDeprecatedFieldsFromDB();
+
+		if ( empty($storage) ) return false;
+
+		if ( $storage == Settings::CONF_SOURCE_DB ) {
+			return $this->_getDeprecatedFieldsFromDB();
 		}
-		else {
-			$this->_checkDeprecatedFieldsFromFile();
-		}
-		
-		if ( !empty($this->_deprecatedFields) && !empty($this->_postTypes) ) {
-			$this->addError('Fields "' . implode(', ', $this->_deprecatedFields) . '" of "' . implode(',', $this->_postTypes) . '" are no longer supported. Please update your theme to use other available components and remove them to upgrade storage settings to latest version.');
-			return true;
-		}
-		
-		return false;
+
+		return $this->_getDeprecatedFieldsFromFile();
 	}
 	
 	/**
 	 * Check deprecated fields from DataBase
 	 */
-	protected function _checkDeprecatedFieldsFromDB()
+	protected function _getDeprecatedFieldsFromDB()
 	{
-		$network = get_site_option('jcf_multisite_setting');
+		$network = Settings::getNetworkMode();
 		$post_types = jcf_get_post_types();
 
 		foreach ( $post_types as $post_type => $object ) {
@@ -76,50 +65,44 @@ class Storage extends core\Model
 			$allfieldsets[$post_type] = $network == Settings::CONF_MS_NETWORK ? get_site_option('jcf_fieldsets-' . $post_type) : get_option('jcf_fieldsets-' . $post_type);
 		}
 
-		$this->_checkDeprecatedFieldsFromArray( $allFields );
+		return $this->_getDeprecatedFieldsFromArray( $allFields );
 	}
 	
 	/**
 	 * Check deprecated fields from File
 	 */
-	protected function _checkDeprecatedFieldsFromFile()
+	protected function _getDeprecatedFieldsFromFile()
 	{
 		$storage = get_option('jcf_read_settings');
+		$path = get_stylesheet_directory() . '/jcf-settings/jcf_settings.json';
 
 		if ( $storage == models\Settings::CONF_SOURCE_FS_GLOBAL ) {
 			$path = WP_CONTENT_DIR . '/jcf-settings/jcf_settings.json';
-		}
-		else {
-			$path = get_stylesheet_directory() . '/jcf-settings/jcf_settings.json';
 		}
 
 		$dl = new \jcf\models\FilesDataLayer();
 		$data = $dl->getDataFromFile($path);
 
-		$this->_checkDeprecatedFieldsFromArray( $data['field_settings'] );
+		return $this->_getDeprecatedFieldsFromArray( $data['field_settings'] );
 	}
 	
 	/**
 	 * Check deprecated fields from array
 	 * @param array $allFields
 	 */
-	protected function _checkDeprecatedFieldsFromArray( $allFields )
+	protected function _getDeprecatedFieldsFromArray( $allFields )
 	{
 		foreach ( $allFields as $pt => $fields ) {
 			if ( !is_array($fields) ) continue;
-			$keys = array_keys($fields);
-			$keys = preg_replace('/[0-9\-]+/', '', $keys);
-
-			if ( array_search('uploadmedia', $keys) ) {
-				$this->_postTypes[$pt] = $pt;
-				$this->_deprecatedFields['uploadmedia'] = 'uploadmedia';
-			}
-
-			if ( array_search('fieldsgroup', $keys) ) {
-				$this->_postTypes[$pt] = $pt;
-				$this->_deprecatedFields['fieldsgroup'] = 'fieldsgroup';
+			
+			foreach ( $fields as $id => $field ) {
+				if ( strpos($id, 'uploadmedia') !== false || strpos($id, 'fieldsgroup') !== false  ) {
+					$this->_deprecatedFields[$pt][] = $field['title'];
+				}
 			}
 		}
+		
+		return $this->_deprecatedFields;
 	}
 	
 	/**
@@ -145,6 +128,7 @@ class Storage extends core\Model
 		}
 		
 		if ( empty($this->getErrors()) ) {
+			$this->addMessage('Just Custom Field settings was updated');
 			return $this->_dL->updateStorageVersion();
 		}
 
@@ -156,7 +140,7 @@ class Storage extends core\Model
 	 * Get migrations list
 	 * @return array
 	 */
-	protected function _getMigrations()
+	public function _getMigrations()
 	{
 		$migrations = scandir(JCF_ROOT . '/migrations');
 

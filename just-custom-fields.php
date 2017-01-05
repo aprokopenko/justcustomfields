@@ -8,7 +8,6 @@ Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
 Version: 3.0.3
 */
-
 define('JCF_ROOT', dirname(__FILE__));
 require_once( JCF_ROOT.'/core/Autoload.php' );
 require_once( JCF_ROOT.'/functions/helpers.php' );
@@ -80,8 +79,8 @@ class JustCustomFields extends core\Singleton
 
 		if ( !is_admin() ) return;
 
-		new controllers\MigrateController();
  		new controllers\AdminController();
+		new controllers\MigrateController();
 		new controllers\SettingsController();
 		new controllers\ImportExportController();
 		new controllers\FieldsetController();
