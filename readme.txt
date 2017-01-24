@@ -10,11 +10,11 @@ Tested up to: 4.7
 Stable tag: trunk
 License: GNU General Public License v2
 
-This plugin adds ability to extend your Posts, Pages (and other custom post types) with additional fields.
+Turn WordPress into more powerful CMS by adding advanced and easy to use custom fields
 
 == Description ==
 
-This plugin adds ability to extend your Posts, Pages (and other custom post types) with additional fields. After installation, you will see a simple settings page, which is self-explanatory to use.
+Just Custom Fields adds ability to extend your Posts, Pages (and other custom post types) with additional fields. After installation, you will see a simple settings page, which is self-explanatory to use.
 We use the standard WordPress PostMeta API to save fields data, so you can use standard WordPress functions in your themes/plugins to get data.
 
 **IMPORTANT** We do not recommend update plugins on your existing sites from version 2.* to version 3.0+.
