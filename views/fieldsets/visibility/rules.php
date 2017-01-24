@@ -1,7 +1,7 @@
 <?php
 /* @var $visibility_rules array */
 
-$templates = jcf_get_page_templates();
+$templates = jcf_get_page_templates($post_type);
 $rule_text_pattern = '{show_hide} when <strong>{based_on}</strong> in <strong>{terms}</strong>';
 $row_index = 1;
 ?>
