@@ -33,22 +33,27 @@ use jcf\models\Fieldset;
 						</select>
 					</p>
 
-					<div class="field-control-actions">
-						<h4>
-							<a href="#" class="visibility_toggle" >
-								<?php _e('Visibility rules', \JustCustomFields::TEXTDOMAIN); ?>
-								<span class="<?php echo !empty($fieldset['visibility_rules']) ? 'dashicons-arrow-up-alt2' : 'dashicons-arrow-down-alt2' ?> dashicons-before"></span>
-							</a>
-						</h4>
-						<div id="visibility" class="<?php echo !empty($fieldset['visibility_rules']) ? '' : 'hidden' ?>">
-							<?php if( !empty($fieldset['visibility_rules']) ): ?>
-								<?php $this->_render('fieldsets/visibility/rules', array('visibility_rules' => $fieldset['visibility_rules'])); ?>
-							<?php else: ?>
-								<?php $this->ajaxGetVisibilityForm(); ?>
-							<?php endif; ?>
+					<?php if ( !empty($templates) || !empty($taxonomies) ): ?>
+						<div class="field-control-actions">
+							<h4>
+								<a href="#" class="visibility_toggle" >
+									<?php _e('Visibility rules', \JustCustomFields::TEXTDOMAIN); ?>
+									<span class="<?php echo !empty($fieldset['visibility_rules']) ? 'dashicons-arrow-up-alt2' : 'dashicons-arrow-down-alt2' ?> dashicons-before"></span>
+								</a>
+							</h4>
+							<div id="visibility" class="<?php echo !empty($fieldset['visibility_rules']) ? '' : 'hidden' ?>">
+								<?php if( !empty($fieldset['visibility_rules']) ): ?>
+									<?php $this->_render('fieldsets/visibility/rules', array(
+												'visibility_rules' => $fieldset['visibility_rules'],
+												'post_type' => $post_type
+									)); ?>
+								<?php else: ?>
+									<?php $this->ajaxGetVisibilityForm(); ?>
+								<?php endif; ?>
+							</div>
+							<br class="clear"/>
 						</div>
-						<br class="clear"/>
-					</div>
+					<?php endif; ?>
 				</fieldset>
 				<div class="field-control-actions">
 					<div class="alignleft">

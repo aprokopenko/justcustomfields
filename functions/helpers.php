@@ -80,22 +80,44 @@ function jcf_get_post_type_icon( $post_type ) {
  *
  * @return array  updated page templates array
  */
-function jcf_get_page_templates( $page_templates = array() ) {
-	$deep_templates = wp_cache_get( 'jcf_page_deep2_templates', 'themes' );
-	if ( ! is_array( $deep_templates ) ) {
+function jcf_get_page_templates( $post_type = 'page', $page_templates = array() ) {
+	$post_templates = wp_cache_get( 'jcf_post_templates_depth2', 'themes' );
+
+	if ( ! is_array( $post_templates ) ) {
 		$wp_theme = wp_get_theme();
 		$files = $wp_theme->get_files('php', 2);
 
-		foreach ( $files as $file => $full_path ) {
-			if ( ! preg_match( '|Template\sName:(.*)$|mi', file_get_contents( $full_path ), $header ) )
+		foreach ($files as $file => $full_path) {
+			if ( $full_path === __FILE__ || (stristr($file, 'core/Web/TemplateHierarchy.php') !== FALSE)) continue;
+
+			if (!preg_match('|Template Name:(.*)$|mi', file_get_contents($full_path), $header)) {
 				continue;
-			$deep_templates[ $file ] = _cleanup_header_comment( $header[1] );
+			}
+
+			$types = array('page');
+			if (preg_match('|Template Post Type:(.*)$|mi', file_get_contents($full_path), $type)) {
+				$types = explode(',', _cleanup_header_comment($type[1]));
+			}
+
+			foreach ($types as $type) {
+				$type = sanitize_key($type);
+				if ( !isset($post_templates[$type]) ) {
+					$post_templates[$type] = array();
+				}
+
+				if ( $post_type == $type ) {
+					$post_templates[$type][$file] = _cleanup_header_comment($header[1]);
+				}
+			}
 		}
 
-		wp_cache_add( 'jcf_page_deep2_templates', $deep_templates, 'themes' );
+		wp_cache_add( 'jcf_post_templates_depth2', $deep_templates, 'themes', 1800 );
 	}
 
-	$page_templates = array_merge(array('default' => 'Default'), $page_templates, $deep_templates);
+	if ( !empty($post_templates[$post_type]) ) {
+		$page_templates = array_merge(array('default' => 'Default'), $page_templates, $post_templates[$post_type]);
+	}
+
 	return $page_templates;
 }
 
