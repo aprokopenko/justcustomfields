@@ -5,16 +5,16 @@ Plugin URI: http://justcoded.com/blog/just-custom-fields-for-wordpress-plugin/
 Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custom gallery
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
-Requires at least: 4.6
-Tested up to: 4.7
+Requires at least: 4.7
+Tested up to: 4.7.1
 Stable tag: trunk
 License: GNU General Public License v2
 
-This plugin adds ability to extend your Posts, Pages (and other custom post types) with additional fields.
+Turn WordPress into more powerful CMS by adding advanced and easy to use custom fields
 
 == Description ==
 
-This plugin adds ability to extend your Posts, Pages (and other custom post types) with additional fields. After installation, you will see a simple settings page, which is self-explanatory to use.
+Just Custom Fields adds ability to extend your Posts, Pages (and other custom post types) with additional fields. After installation, you will see a simple settings page, which is self-explanatory to use.
 We use the standard WordPress PostMeta API to save fields data, so you can use standard WordPress functions in your themes/plugins to get data.
 
 **IMPORTANT** We do not recommend update plugins on your existing sites from version 2.* to version 3.0+.
@@ -80,6 +80,10 @@ To upgrade remove the old plugin folder. After than follow the installation step
 2. The edit post page meta box with fields created on the settings page
 
 == Changelog ==
+* Version 3.0.4
+	* New feature: Added support of fieldset visibility for custom post types based on post template
+	* Update: Description updated.
+	* Tests: Tested with WordPress 4.7.1
 * Version 3.0.3
 	* Optimization: File system mode add caching for json_decode
 	* Tests: Tested with WordPress 4.7

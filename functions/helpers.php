@@ -80,22 +80,53 @@ function jcf_get_post_type_icon( $post_type ) {
  *
  * @return array  updated page templates array
  */
-function jcf_get_page_templates( $page_templates = array() ) {
-	$deep_templates = wp_cache_get( 'jcf_page_deep2_templates', 'themes' );
-	if ( ! is_array( $deep_templates ) ) {
-		$wp_theme = wp_get_theme();
-		$files = $wp_theme->get_files('php', 2);
+function jcf_get_page_templates( $post_type = 'page' ) {
+	$post_templates = wp_cache_get( 'jcf_post_templates_depth2', 'themes' );
 
-		foreach ( $files as $file => $full_path ) {
-			if ( ! preg_match( '|Template\sName:(.*)$|mi', file_get_contents( $full_path ), $header ) )
-				continue;
-			$deep_templates[ $file ] = _cleanup_header_comment( $header[1] );
+	if ( ! is_array( $post_templates ) ) {
+		$wp_theme = wp_get_theme();
+		if ( $wp_theme->errors() && $wp_theme->errors()->get_error_codes() !== array( 'theme_parent_invalid' ) ) {
+			return array();
 		}
 
-		wp_cache_add( 'jcf_page_deep2_templates', $deep_templates, 'themes' );
+		$files = $wp_theme->get_files( 'php', 2 );
+		if ( $wp_theme->parent() ) {
+			$parent_files = $wp_theme->parent()->get_files( 'php', 2 );
+			$files = array_merge( $parent_files, $files );
+		}
+
+		foreach ($files as $file => $full_path) {
+			if ( $full_path === __FILE__
+			    || preg_match( '#^(core|inc|app|functions.php)/#', $file )
+				|| !preg_match( '|Template Name:(.*)$|mi', file_get_contents($full_path), $header )
+			) {
+				continue;
+			}
+
+			$types = array('page');
+			if (preg_match('|Template Post Type:(.*)$|mi', file_get_contents($full_path), $type)) {
+				$types = explode(',', _cleanup_header_comment($type[1]));
+			}
+
+			foreach ($types as $type) {
+				$type = sanitize_key($type);
+				if ( !isset($post_templates[$type]) ) {
+					$post_templates[$type] = array();
+				}
+
+				if ( $post_type == $type ) {
+					$post_templates[$type][$file] = _cleanup_header_comment($header[1]);
+				}
+			}
+		}
+
+		wp_cache_add( 'jcf_post_templates_depth2', $deep_templates, 'themes', 1800 );
 	}
 
-	$page_templates = array_merge(array('default' => 'Default'), $page_templates, $deep_templates);
+	if ( !empty($post_templates[$post_type]) ) {
+		$page_templates = array_merge(array('default' => 'Default'), $post_templates[$post_type]);
+	}
+
 	return $page_templates;
 }
 

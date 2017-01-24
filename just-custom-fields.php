@@ -2,11 +2,11 @@
 /*
 Plugin Name: Just Custom Fields for Wordpress
 Plugin URI: http://justcoded.com/blog/just-custom-fields-for-wordpress-plugin/
-Description: This plugin adds ability to extend your Posts, Pages (and other custom post types) with easy-to-edit additional fields and fields groups. Read the documentation on http://justcustomfields.com.
+Description: Turn WordPress into more powerful CMS by adding advanced and easy to use custom fields. Read the documentation on http://justcustomfields.com.
 Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custom gallery, collection, field group, metabox, fieldsets
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
-Version: 3.0.3
+Version: 3.0.4
 */
 
 define('JCF_ROOT', dirname(__FILE__));
@@ -23,7 +23,7 @@ class JustCustomFields extends core\Singleton
 	 * Plugin text domain for translations
 	 */
 	const TEXTDOMAIN = 'just-custom-fields';
-	const VERSION = '3.003';
+	const VERSION = '3.004';
 
 	/**
 	 * Textual plugin name

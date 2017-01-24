@@ -187,8 +187,9 @@ function jcf_do_action(action, _this) {
     var post_type = $('#post_type').val();
     var selected_tags = jcf_get_post_selected_tags();
     var selected_cats = jcf_get_post_selected_categories();
-    if (post_type == 'page') {
-       var page_select = jcf_get_page_template_select();
+
+    var page_select = jcf_get_page_template_select();
+    if ( page_select !== undefined ) {
        var selected_page_template = page_select.val();
     }
 
