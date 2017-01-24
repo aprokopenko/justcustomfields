@@ -80,17 +80,26 @@ function jcf_get_post_type_icon( $post_type ) {
  *
  * @return array  updated page templates array
  */
-function jcf_get_page_templates( $post_type = 'page', $page_templates = array() ) {
+function jcf_get_page_templates( $post_type = 'page' ) {
 	$post_templates = wp_cache_get( 'jcf_post_templates_depth2', 'themes' );
 
 	if ( ! is_array( $post_templates ) ) {
 		$wp_theme = wp_get_theme();
-		$files = $wp_theme->get_files('php', 2);
+		if ( $wp_theme->errors() && $wp_theme->errors()->get_error_codes() !== array( 'theme_parent_invalid' ) ) {
+			return array();
+		}
+
+		$files = $wp_theme->get_files( 'php', 2 );
+		if ( $wp_theme->parent() ) {
+			$parent_files = $wp_theme->parent()->get_files( 'php', 2 );
+			$files = array_merge( $parent_files, $files );
+		}
 
 		foreach ($files as $file => $full_path) {
-			if ( $full_path === __FILE__ || (stristr($file, 'core/Web/TemplateHierarchy.php') !== FALSE)) continue;
-
-			if (!preg_match('|Template Name:(.*)$|mi', file_get_contents($full_path), $header)) {
+			if ( $full_path === __FILE__
+			    || preg_match( '#^(core|inc|app|functions.php)/#', $file )
+				|| !preg_match( '|Template Name:(.*)$|mi', file_get_contents($full_path), $header )
+			) {
 				continue;
 			}
 
@@ -115,7 +124,7 @@ function jcf_get_page_templates( $post_type = 'page', $page_templates = array() 
 	}
 
 	if ( !empty($post_templates[$post_type]) ) {
-		$page_templates = array_merge(array('default' => 'Default'), $page_templates, $post_templates[$post_type]);
+		$page_templates = array_merge(array('default' => 'Default'), $post_templates[$post_type]);
 	}
 
 	return $page_templates;
