@@ -78,6 +78,28 @@ class DBDataLayer extends core\DataLayer
 	}
 
 	/**
+	 * Get storage version
+	 * @return array
+	 */
+	public function getStorageVersion()
+	{
+		return $this->_getOptions('jcf_storage_version');
+	}
+	
+	/**
+	 * Update storage version
+	 * @return boolean
+	 */
+	public function updateStorageVersion($version = null)
+	{
+		if ( empty($version) ) {
+			$version = \JustCustomFields::VERSION;
+		}
+
+		return $this->_updateOptions('jcf_storage_version', $version);
+	}
+	
+	/**
 	 * Check NetworkMode to be set to global (multisite)
 	 *
 	 * @return bool

@@ -51,6 +51,33 @@ class FilesDataLayer extends core\DataLayer
 	}
 
 	/**
+	 * Get storage version
+	 * @return array
+	 */
+	public function getStorageVersion()
+	{
+		$data = $this->getDataFromFile();
+		return !empty($data['jcf_storage_version']) ? $data['jcf_storage_version'] : false;
+	}
+	
+	/**
+	 * Update storage version
+	 * @return boolean
+	 */
+	public function updateStorageVersion($version = null)
+	{
+		$data = $this->getDataFromFile();
+
+		if ( empty($version) ) {
+			$version = \JustCustomFields::VERSION;
+		}
+		
+		$data['jcf_storage_version'] = $version;
+		return $this->_save($data);
+	}
+	
+	
+	/**
 	 * Get Fieldsets
 	 * @param array $fieldsets
 	 */
