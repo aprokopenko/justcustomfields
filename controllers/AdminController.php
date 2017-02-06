@@ -14,7 +14,9 @@ class AdminController extends core\Controller
 	public function __construct()
 	{
 		parent::__construct();
-		add_action('admin_menu', array( $this, 'adminMenu' ));
+		if ( ! defined('JCF_MIGRATE_MODE') ) {
+			add_action('admin_menu', array( $this, 'adminMenu' ));
+		}
 
 		if ( isset($_GET['page']) && strpos($_GET['page'], 'jcf_') !== FALSE ) {
 			add_action('admin_print_scripts', array( $this, 'addScripts' ));

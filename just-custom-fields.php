@@ -22,7 +22,7 @@ class JustCustomFields extends core\Singleton
 	 * Plugin text domain for translations
 	 */
 	const TEXTDOMAIN = 'just-custom-fields';
-	const VERSION = '3.004';
+	const VERSION = '3.100';
 
 	/**
 	 * Textual plugin name
@@ -75,16 +75,23 @@ class JustCustomFields extends core\Singleton
 	 */
 	public function initControllers()
 	{
-		new controllers\PostTypeController();
+		$loader = new core\PluginLoader();
+		// we use wp_doing_ajax to prevent version check under ajax
+		if ( ! wp_doing_ajax() && $loader->checkMigrationsAvailable() ) {
+			new controllers\MigrateController();
+			new controllers\AdminController();
+		}
+		else {
+			new controllers\PostTypeController();
 
-		if ( !is_admin() ) return;
+			if ( !is_admin() ) return;
 
- 		new controllers\AdminController();
-		new controllers\MigrateController();
-		new controllers\SettingsController();
-		new controllers\ImportExportController();
-		new controllers\FieldsetController();
-		new controllers\FieldController();
+			new controllers\AdminController();
+			new controllers\SettingsController();
+			new controllers\ImportExportController();
+			new controllers\FieldsetController();
+			new controllers\FieldController();
+		}
 	}
 
 	/**
