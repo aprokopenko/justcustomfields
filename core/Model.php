@@ -129,4 +129,13 @@ class Model
 		}
 	}
 
+	/**
+	 * Get current DataLayer storage version
+	 *
+	 * @return float
+	 */
+	public function getStorageVersion()
+	{
+		return $this->_dL->getStorageVersion();
+	}
 }

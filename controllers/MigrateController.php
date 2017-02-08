@@ -22,25 +22,38 @@ class MigrateController extends core\Controller
 	
 	public function actionIndex()
 	{
-		/*
-		$model = new models\Storage();
-		$deprecatedFields = array();
+		$model = new models\Migrate();
 
+		// check that we have something to migrate.
+		$version = $model->getStorageVersion();
+		if ( ! version_compare( $version, \JustCustomFields::VERSION, '<') ) {
+			return $this->actionUpgraded();
+		}
+
+		$migrations = $model->findMigrations();
+
+		// check form submit and migrate
 		if ( $model->load($_POST) ) {
-			$model->migrate();
+			if ( $model->migrate($migrations) ) {
+				return $this->actionUpgraded();
+			}
+			$errors = $model->getErrors();
+		}
+		// if no submit we test migrate to show possible warnings
+		else {
+			$warnings = $model->testMigrate($migrations);
 		}
 
-		$version = $model->getVersion();
-
-		if ( version_compare($version, '2.3', '<=') ) {
-			$deprecatedFields = $model->getDeprecatedFields();
-		}
-		*/
 		return $this->_render('migrate/index', array(
-			'migrations' => array(),
-			'deprecated' => array(),
-			//'deprecated_fields' => $deprecatedFields,
+			'migrations' => $migrations,
+			'warnings' => $warnings,
+			'errors' =>   $errors,
 		));
+	}
+
+	public function actionUpgraded()
+	{
+		return $this->_render('migrate/upgraded');
 	}
 
 }

@@ -69,7 +69,7 @@ class FilesDataLayer extends core\DataLayer
 	 * @param float|null $version
 	 * @return boolean
 	 */
-	public function updateStorageVersion($version = null)
+	public function saveStorageVersion($version = null)
 	{
 		$data = $this->getDataFromFile();
 

@@ -66,7 +66,7 @@ abstract class DataLayer
 	 * @param float|null $version
 	 * @return boolean
 	 */
-	abstract public function updateStorageVersion( $version = null );
+	abstract public function saveStorageVersion( $version = null );
 
 	/**
 	 * Fields settings setter

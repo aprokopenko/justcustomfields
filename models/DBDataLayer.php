@@ -93,7 +93,7 @@ class DBDataLayer extends core\DataLayer
 	 * @param float|null $version
 	 * @return boolean
 	 */
-	public function updateStorageVersion($version = null)
+	public function saveStorageVersion($version = null)
 	{
 		if ( empty($version) ) {
 			$version = \JustCustomFields::VERSION;

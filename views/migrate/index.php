@@ -1,6 +1,7 @@
 <?php
 /* @var $migrations array */
-/* @var $deprecated array */
+/* @var $warnings  array */
+/* @var $errors    array */
 ?>
 <div class="wrap">
 	<h1><?php _e('Just Custom Fields', \JustCustomFields::TEXTDOMAIN); ?></h1>

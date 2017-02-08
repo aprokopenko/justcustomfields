@@ -1,6 +1,7 @@
 <?php
 namespace jcf\models;
 
+use jcf\core\Migration;
 use jcf\core\Model;
 use jcf\core\DataLayerFactory;
 
@@ -21,7 +22,89 @@ class Migrate extends Model
 	}
 
 	/**
+	 * Search available migrations
+	 * set protected $_version, $_migrations properties
+	 *
+	 * @return Migration[]
+	 */
+	public function findMigrations()
+	{
+		$version = $this->_dL->getStorageVersion();
+		if ( ! $version ) {
+			$version = self::guessVersion();
+		}
+
+		$migrations = array();
+		if ( $migration_files = $this->_getMigrationFiles($version) ) {
+			foreach ( $migration_files as $ver => $file ) {
+				$class_name = '\\jcf\\migrations\\' . preg_replace('/\.php$/', '', basename($file));
+
+				require_once $file;
+				$migrations[$ver] = new $class_name();
+			}
+		}
+
+		return $migrations;
+	}
+
+	/**
+	 * Scan migrations directory and filter outdated migration based on current version
+	 *
+	 * @param float $version
+	 *
+	 * @return array
+	 */
+	protected function _getMigrationFiles($version)
+	{
+		$folder = JCF_ROOT . '/migrations';
+		$files = scandir($folder);
+
+		$migrations = array();
+
+		foreach ( $files as $key => $file ) {
+			if ( $file == '.' || $file == '..' || !is_file($folder . '/' . $file)
+			     || ! preg_match('/^m([\dx]+)/', $file, $match)
+			) {
+				continue;
+			}
+
+			$mig_version = str_replace('x', '.', $match[1]);
+			if ( version_compare($mig_version, $version, '<=') ) {
+				continue;
+			}
+
+			$migrations[$mig_version] = $folder . '/' . $file;
+		}
+		ksort($migrations);
+
+		return $migrations;
+	}
+
+	/**
+	 * Do test run to check that we can migrate or need to show warnings
+	 *
+	 * @param Migration[] $migrations
+	 * @return array
+	 */
+	public function testMigrate($migrations)
+	{
+		// TODO: make test run
+	}
+
+	/**
+	 * Run migrations
+	 *
+	 * @param Migration[] $migrations
+	 * @return boolean
+	 */
+	public function migrate($migrations)
+	{
+
+	}
+
+	/**
 	 * Find field settings and search the latest version found in field settings
+	 * Actual only for version less than 3.1
 	 *
 	 * @return bool|int|mixed
 	 */

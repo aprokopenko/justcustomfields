@@ -2,7 +2,7 @@
 
 namespace jcf\migrations;
 
-class m3000 extends \jcf\core\Migration
+class m3x000 extends \jcf\core\Migration
 {
 	public $version = '3.000';
 	
