@@ -102,6 +102,7 @@ class JustField_Collection extends core\JustField
 											}
 
 											$field_obj->isPostEdit = true;
+											$field_obj->fieldOptions['after_title'] = ':</label>';
 											$field_obj->field();
 											?>
 										</div>
@@ -344,6 +345,7 @@ class JustField_Collection extends core\JustField
 					$field_obj->setSlug($field['slug']);
 					$field_obj->instance = $field;
 					$field_obj->isPostEdit = true;
+					$field_obj->fieldOptions['after_title'] = ':</label>';
 					?>
 					<div class="collection_field_border jcf_collection_<?php echo ( intval($field['field_width']) ? $field['field_width'] : '100' ); ?>">
 						<?php echo $field_obj->field(); ?>

@@ -117,6 +117,8 @@ class Migrate extends Model
 	 */
 	public function migrate($migrations)
 	{
+		set_time_limit(0);
+
 		$data = null;
 		foreach ($migrations as $ver => $m) {
 			$data = $m->runUpdate($data, Migration::MODE_UPDATE);

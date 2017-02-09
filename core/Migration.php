@@ -207,5 +207,59 @@ abstract class Migration
 		$root_folder = ($this->_data_source == Settings::CONF_SOURCE_FS_THEME) ? get_stylesheet_directory() : WP_CONTENT_DIR;
 		return $root_folder;
 	}
+
+
+	/**
+	 * Find postmeta by $old_slug, convert it with $formatter and save into $new_slug
+	 *
+	 * @param string $post_type
+	 * @param string $old_slug
+	 * @param string $new_slug
+	 * @param array $formatter  class object and method name
+	 * @return boolean
+	 */
+	protected function importPostmeta($post_type, $old_slug, $new_slug, $formatter)
+	{
+		global $wpdb;
+
+		$blog_ids = array( get_current_blog_id() );
+		if ( is_multisite() && (
+				($this->isDataSource(Settings::CONF_SOURCE_DB) && Settings::CONF_MS_NETWORK == Settings::getNetworkMode())
+			     || $this->isDataSource(Settings::CONF_SOURCE_FS_GLOBAL)
+			)
+		) {
+			// TODO: test multisite mode
+			$blog_ids = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs");
+		}
+
+		foreach ($blog_ids as $blog_id) {
+			is_multisite() && switch_to_blog($blog_id);
+
+			// from and where part to be prepared
+			$from_where = $wpdb->prepare("FROM $wpdb->postmeta as pm INNER JOIN $wpdb->posts as p ON p.id = pm.post_id WHERE meta_key = %s", $old_slug);
+
+			// add batch in 100 rows to prevent memorey overload
+			$start = 0;
+			$per_page = 1000;
+			$count = $wpdb->get_var("SELECT count(meta_id) $from_where");
+
+			while($start < $count) {
+				$postmeta_rows = $wpdb->get_results("SELECT meta_id, post_id, meta_key, meta_value $from_where LIMIT $start, $per_page");
+
+				if ( !empty($postmeta_rows) ) {
+					// update meta one by one
+					foreach ( $postmeta_rows as $postmeta ) {
+						$value = call_user_func_array( $formatter, array( $postmeta ) );
+						update_post_meta( $postmeta->post_id, $new_slug, $value );
+					}
+				}
+
+				$start += $per_page;
+			}
+
+		}
+
+		is_multisite() && restore_current_blog();
+	}
 }
 

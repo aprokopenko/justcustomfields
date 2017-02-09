@@ -116,6 +116,7 @@ class JustField_Checkbox extends core\JustField
 	 * prepare list of options
 	 * 
 	 * @param array $instance	current instance
+	 * @return array
 	 */
 	protected function parsedSelectOptions( $instance )
 	{
