@@ -22,7 +22,32 @@ class m3x000 extends \jcf\core\Migration
 	 */
 	protected function readData()
 	{
-		// TODO: Implement readData() method.
+		if ( $this->isDataSource( Settings::CONF_SOURCE_DB ) ) {
+			$fields = array();
+			$fieldsets = array();
+
+			$post_types = jcf_get_post_types();
+			foreach ( $post_types as $post_type => $object ) {
+				$p_fieldsets = $this->readDB("jcf_fieldsets-{$post_type}");
+				if ( empty($p_fieldsets) ) continue;
+
+				$p_fields = $this->readDB("jcf_fields-{$post_type}");
+				if ( empty($p_fields) ) $p_fields = array();
+
+				$fields[$post_type] = $p_fields;
+				$fieldsets[$post_type] = $p_fieldsets;
+			}
+
+			$this->data = array(
+				self::FIELDS_KEY => $fields,
+				self::FIELDSETS_KEY => $fieldsets,
+			);
+		}
+		else {
+			$json = $this->readFS('jcf-settings/jcf_settings.json');
+			$this->data = json_decode($json, true);
+		}
+		$this->data;
 	}
 
 	/**

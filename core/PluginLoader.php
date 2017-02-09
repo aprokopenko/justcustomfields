@@ -15,7 +15,7 @@ class PluginLoader
 
 	public function checkMigrationsAvailable()
 	{
-		$version = self::getStorageVersion();
+		$version = $this->getStorageVersion();
 
 		// if we can't define version at all - it seems to be a new installation. just write current version
 		if ( empty($version) ) {

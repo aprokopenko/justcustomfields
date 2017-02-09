@@ -205,6 +205,12 @@ class Migrate extends Model
 	 */
 	public static function guessVersion()
 	{
+		// check data source key exists. in v2.3 it was different key
+		if ( ! $data_source = Settings::getDataSourceType( '' ) ) {
+			$data_source = get_site_option('jcf_read_settings', Settings::CONF_SOURCE_DB);
+			update_site_option(Settings::OPT_SOURCE, $data_source);
+		}
+
 		$fields = self::guessFields();
 
 		// we can't guess version if can't find any settings

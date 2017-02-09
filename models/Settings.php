@@ -20,11 +20,16 @@ class Settings extends core\Model
 
 	/**
 	 * Get source settings
+	 *
+	 * @param string $default
 	 * @return string
 	 */
-	public static function getDataSourceType()
+	public static function getDataSourceType( $default = null )
 	{
-		return get_site_option(self::OPT_SOURCE, self::CONF_SOURCE_DB);
+		if ( is_null($default) ) {
+			$default = self::CONF_SOURCE_DB;
+		}
+		return get_site_option(self::OPT_SOURCE, $default);
 	}
 
 	/**

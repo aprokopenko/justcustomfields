@@ -85,7 +85,7 @@ class DBDataLayer extends core\DataLayer
 	 */
 	public function getStorageVersion()
 	{
-		return $this->_getOptions( self::STORAGEVER_OPTION );
+		return $this->_getOptions( self::STORAGEVER_OPTION, '' );
 	}
 	
 	/**
@@ -115,11 +115,12 @@ class DBDataLayer extends core\DataLayer
 	/**
 	 * Get options with wp-options
 	 * @param string $key
+	 * @param mixed  $default
 	 * @return array
 	 */
-	protected function _getOptions( $key )
+	protected function _getOptions( $key, $default = array() )
 	{
-		return $this->isSettingsGlobal() ? get_site_option($key, array()) : get_option($key, array());
+		return $this->isSettingsGlobal() ? get_site_option($key, $default) : get_option($key, $default);
 	}
 
 	/**
