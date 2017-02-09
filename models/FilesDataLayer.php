@@ -118,7 +118,7 @@ class FilesDataLayer extends core\DataLayer
 	public function getDataFromFile( $file = null )
 	{
 		if ( !$file )
-			$file = $this->_getConfigFilePath();
+			$file = $this->getConfigFilePath();
 
 		if ( file_exists($file) ) {
 			$content = file_get_contents($file);
@@ -141,7 +141,7 @@ class FilesDataLayer extends core\DataLayer
 	 * @param string $source_settings
 	 * @return string/boolean
 	 */
-	protected function _getConfigFilePath( $source_settings = null )
+	public function getConfigFilePath( $source_settings = null )
 	{
 		if ( is_null($source_settings) ) {
 			$source_settings = $this->_sourceSettings;
@@ -175,7 +175,7 @@ class FilesDataLayer extends core\DataLayer
 	protected function _save( $data, $file = null )
 	{
 		if ( !$file ) {
-			$file = $this->_getConfigFilePath();
+			$file = $this->getConfigFilePath();
 		}
 
 		if ( defined('JSON_PRETTY_PRINT') ) {

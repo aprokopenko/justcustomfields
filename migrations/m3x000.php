@@ -2,10 +2,63 @@
 
 namespace jcf\migrations;
 
+/**
+ * Class m3x000
+ * Migration from v2.3 to v3.0. A lot of changes were made:
+ * DB:
+ *      settings stored the same as file system in 2 keys: jcf-fields, jcf-fieldsets
+ *
+ * Deprecated fields:
+ *      Upload Media, Fields group are deprecated and have been removed.
+ *      Fields replaced with "Collections" with new slug.
+ *      All data which is possible to move will be migrated into new meta key / slug.
+ *
+ * @package jcf\migrations
+ */
 class m3x000 extends \jcf\core\Migration
 {
-	public $version = '3.000';
-	
+	/**
+	 * Read data from storage
+	 */
+	protected function readData()
+	{
+		// TODO: Implement readData() method.
+	}
+
+	/**
+	 * Test compatibility and deprecated fields
+	 *
+	 * @return bool
+	 */
+	protected function test()
+	{
+		// TODO: make real test
+		return '<p>There are several <strong>deprecated field types</strong> which are no longer exists in a new version: Upload Media, Fields Group.
+				They will be replaced with new field type: Collection. <br>
+				If you use field shortcodes on your site - they won\'t work anymore and have to be replaced with new code.<br>
+				We will try to migrate post data to new format. To prevent frontend errors we will rename new fields and import old data to them.<br>
+				<b>You will need to upgrade your templates to read data from new fields/format.</b>
+			</p>
+			<ul class="jcf_list">
+				<li><strong>Posts</strong> fields Gallery (uploadmedia), Addresses (fieldsgroup) will be converted</li>
+				<li><strong>Pages</strong> fields Photos (uploadmedia), Contacts (fieldsgroup) will be converted</li>
+			</ul>';
+	}
+
+	/**
+	 * Update fields and fieldsets attributes
+	 *
+	 * @return boolean
+	 */
+	protected function update()
+	{
+		// TODO: Implement update() method.
+		return false; // TODO: replace with true
+	}
+
+	//================================================================
+	// TODO: move code below to new methods
+
 	/**
 	 * Update fields and fieldsets attributes
 	 * @return boolean

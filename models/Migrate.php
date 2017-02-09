@@ -8,6 +8,14 @@ use jcf\core\DataLayerFactory;
 class Migrate extends Model
 {
 	/**
+	 * Form button name property
+	 * Used for $model->load()
+	 *
+	 * @var string
+	 */
+	public $upgrade_storage;
+
+	/**
 	 * HTML error message with link to admin upgrade page
 	 */
 	public static function adminUpgradeNotice()
@@ -88,7 +96,17 @@ class Migrate extends Model
 	 */
 	public function testMigrate($migrations)
 	{
-		// TODO: make test run
+		$data = null;
+		$warnings = array();
+
+		foreach ($migrations as $ver => $m) {
+			if ( $warning = $m->runTest( $data ) ) {
+				$warnings[$ver] = $warning;
+			}
+			$data = $m->runUpdate($data);
+		}
+
+		return $warnings;
 	}
 
 	/**
@@ -99,7 +117,84 @@ class Migrate extends Model
 	 */
 	public function migrate($migrations)
 	{
+		$data = null;
+		foreach ($migrations as $ver => $m) {
+			$data = $m->runUpdate($data, Migration::MODE_UPDATE);
+		}
 
+		$fields = $data[Migration::FIELDS_KEY];
+		$fieldsets = $data[Migration::FIELDSETS_KEY];
+
+		$fields = $this->_updateFieldsVersion($fields);
+
+		$this->_dL->setFields($fields);
+		$this->_dL->setFieldsets($fieldsets);
+		$updated = $this->_dL->saveFieldsData() && $this->_dL->saveFieldsetsData();
+
+		// do cleanup
+		if ( $updated ) {
+			$this->_dL->saveStorageVersion();
+			foreach ($migrations as $ver => $m) {
+				$m->runCleanup();
+			}
+			return true;
+		}
+		else {
+			$this->addError('Error! Upgrade failed. Please contact us through github to help you and update migration scripts.');
+		}
+	}
+
+	/**
+	 * Check that current active storage is writable
+	 * Required for Filesystem
+	 * Set error
+	 *
+	 * @return boolean
+	 */
+	public function isStorageWritable()
+	{
+		$data_source = Settings::getDataSourceType();
+
+		// if we use filesystem we need to know it's writable
+		if ( $data_source !== Settings::CONF_SOURCE_DB ) {
+			$filepath = $this->_dL->getConfigFilePath();
+			if ( ! wp_is_writable( dirname($filepath) ) ) {
+				$this->addError('Error! Please check that settings directory is writable "' . dirname($filepath) . '"');
+			}
+			elseif ( is_file($filepath) && ! wp_is_writable($filepath) ) {
+				$this->addError('Error! Please check that settings file is writable "' . ($filepath) . '"');
+			}
+		}
+
+		return ! $this->hasErrors();
+	}
+
+	/**
+	 * Set fields version to all fields
+	 *
+	 * @param array $fields_data
+	 * @return array
+	 */
+	public function _updateFieldsVersion($fields_data)
+	{
+		$version = \JustCustomFields::$version;
+
+		foreach ($fields_data as $post_type => $fields) {
+			if ( !is_array($fields) ) continue;
+
+			foreach ($fields as $id => $field) {
+				// collection also has fields inside
+				if ( !empty($field['fields']) && is_array($field['fields']) ) {
+					foreach ( $field['fields'] as $fid => $f ) {
+						$fields_data[$post_type][$id]['fields'][$fid]['_version'] =  $version;
+					}
+				}
+
+				// update field version
+				$fields_data[$post_type][$id]['_version'] = $version;
+			}
+		}
+		return $fields_data;
 	}
 
 	/**

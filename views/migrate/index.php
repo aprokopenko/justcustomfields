@@ -1,5 +1,5 @@
 <?php
-/* @var $migrations array */
+/* @var $migrations \jcf\core\Migration[] */
 /* @var $warnings  array */
 /* @var $errors    array */
 ?>
@@ -12,28 +12,20 @@
 	<p>We found out that you upgraded the plugin to the newer version. Your field settings needs to be upgraded to continue using the plugin.</p>
 	<p>Please make sure <strong>you have a backup of your current settings</strong> (database dump if you store them in database or json config file).</p>
 
-	<?php if (empty($migrations)) : ?>
+	<?php if (empty($migrations) && empty($errors)) : ?>
 		<div class="jcf_well notice-success">
 			<p>Just click the button below to upgrade.</p>
 		</div>
 	<?php endif; ?>
 
-	<?php if (!empty($deprecated)) : ?>
-		<div class="jcf_well notice-error">
+	<?php if (!empty($warnings)) : ?>
+		<div class="jcf_well notice-warning">
 			<h3>Warning! There are some problems with the upgrade.</h3>
 
-			<!-- TODO: foreach deprecated warnings -->
-			<h4><strong>v3.000 upgrade</strong></h4>
-			<p>There are several <strong>deprecated field types</strong> which are no longer exists in a new version: Upload Media, Fields Group.
-				They will be replaced with new field type: Collection. <br>
-				If you use field shortcodes on your site - they won't work anymore and have to be replaced with new code.<br>
-				We will try to migrate post data to new format. To prevent frontend errors we will rename new fields and import old data to them.<br>
-				<b>You will need to upgrade your templates to read data from new fields/format.</b>
-			</p>
-			<ul class="jcf_list">
-				<li><strong>Posts</strong> fields Gallery (uploadmedia), Addresses (fieldsgroup) will be converted</li>
-				<li><strong>Pages</strong> fields Photos (uploadmedia), Contacts (fieldsgroup) will be converted</li>
-			</ul>
+			<?php foreach ($warnings as $ver => $warning) : ?>
+				<h4><strong>v<?php echo $ver; ?> upgrade</strong></h4>
+				<?php echo $warning; ?>
+			<?php endforeach; ?>
 
 			<h4><u>If you're unable to update your theme templates - please downgrade to the previous version.</u></h4>
 			<p>You can find previous versions on <a href="https://wordpress.org/plugins/just-custom-fields/developers/" target="_blank">wordpress repository</a>.</p>
@@ -42,18 +34,20 @@
 	<?php endif; ?>
 
 	<?php if (!empty($migrations)) : ?>
-		<div class="jcf_well notice-warning">
+		<div class="jcf_well <?php echo empty($warnings)? 'notice-success' : 'notice-warning'; ?>">
 			<p>We will launch several upgrade scripts:</p>
-			<!-- TODO: foreach migrations -->
 			<ul class="jcf_list">
-				<li>v3.000 upgrade</li>
-				<li>v3.100 upgrade</li>
+			<?php foreach ($migrations as $ver => $m) : ?>
+				<li>v<?php echo $ver; ?> upgrade</li>
+			<?php endforeach; ?>
 			</ul>
 		</div>
 	<?php endif; ?>
 
 	<form method="POST" onsubmit="if(jcf_migrate_errors && !confirm('Are you sure you will be able to update your code?')) return false;">
-		<input type="submit" value="Upgrade" name="update_storage_version" class="button button-primary" />
+		<input type="submit" value="Upgrade" name="upgrade_storage" class="button button-primary"
+			   <?php if(!empty($errors)) echo 'disabled'; ?>
+			/>
 	</form>
 
 <?php include(JCF_ROOT . '/views/_footer.php'); ?>

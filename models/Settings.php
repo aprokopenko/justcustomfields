@@ -112,12 +112,12 @@ class Settings extends core\Model
 			$this->addError('empty_source');
 		}
 
-		$fs_theme_storage = get_stylesheet_directory() . '/jcf-settings/';
+		$fs_theme_storage = get_stylesheet_directory() . '/jcf/';
 		if ( $this->source == self::CONF_SOURCE_FS_THEME && (!wp_mkdir_p($fs_theme_storage) || !is_writable($fs_theme_storage)) ) {
 			$this->addError('fs_theme_not_writable');
 		}
 
-		$fs_global_storage = get_home_path() . 'wp-content/jcf-settings/';
+		$fs_global_storage = get_home_path() . 'wp-content/jcf/';
 		if ( $this->source == self::CONF_SOURCE_FS_GLOBAL && (!wp_mkdir_p($fs_global_storage) || !is_writable($fs_global_storage)) ) {
 			$this->addError('fs_global_not_writable');
 		}

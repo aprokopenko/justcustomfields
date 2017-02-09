@@ -37,12 +37,14 @@ class MigrateController extends core\Controller
 			if ( $model->migrate($migrations) ) {
 				return $this->actionUpgraded();
 			}
-			$errors = $model->getErrors();
 		}
 		// if no submit we test migrate to show possible warnings
 		else {
 			$warnings = $model->testMigrate($migrations);
 		}
+
+		$model->isStorageWritable();
+		$errors = $model->getErrors();
 
 		return $this->_render('migrate/index', array(
 			'migrations' => $migrations,
