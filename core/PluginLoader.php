@@ -4,15 +4,32 @@ namespace jcf\core;
 use jcf\core\DataLayerFactory;
 use jcf\models\Migrate;
 
+/**
+ * Class PluginLoader
+ * Perform version check and show migration warning if needed
+ *
+ * @package jcf\core
+ */
 class PluginLoader
 {
+	/**
+	 * @var DataLayer
+	 */
 	private $_dL;
 
+	/**
+	 * PluginLoader constructor.
+	 */
 	public function __construct()
 	{
 		$this->_dL = DataLayerFactory::create();
 	}
 
+	/**
+	 * Check plugin version, compare it with JCF version and print notice in case we need to upgrade
+	 *
+	 * @return bool
+	 */
 	public function checkMigrationsAvailable()
 	{
 		$version = $this->getStorageVersion();
@@ -35,6 +52,12 @@ class PluginLoader
 		return false;
 	}
 
+	/**
+	 * Try to find storage version by setting in db/file
+	 * If not found - it will try to guess it based on fields settings
+	 * 
+	 * @return array|bool|int|mixed
+	 */
 	public function getStorageVersion()
 	{
 		if ( ! $version = $this->_dL->getStorageVersion() ) {

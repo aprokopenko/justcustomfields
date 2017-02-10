@@ -4,6 +4,13 @@ namespace jcf\core;
 
 use jcf\models\Settings;
 
+/**
+ * Class Migration
+ * Used as base class for all specific-version migrations
+ * Contains generic functions to speed-up migrations development
+ *
+ * @package jcf\core
+ */
 abstract class Migration
 {
 	const FIELDS_KEY = 'fields';

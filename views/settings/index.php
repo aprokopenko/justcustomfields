@@ -26,7 +26,7 @@ use jcf\models\Settings;
 				<input type="radio" rel="" class="jcf_choose_settings" name="source"
 					   value="<?php echo Settings::CONF_SOURCE_FS_GLOBAL; ?>" id="jcf_read_file_global"  <?php checked($source, Settings::CONF_SOURCE_FS_GLOBAL); ?>/>
 				<label for="jcf_read_file_global">
-					<?php _e('<b>File system: Global</b> (/wp-content/jcf-settings/*). Fields configuration is saved to the wp-content folder in json format and can be copied to another site easily.' , \JustCustomFields::TEXTDOMAIN); ?>
+					<?php _e('<b>File system: Global</b> (/wp-content/jcf/*). Fields configuration is saved to the wp-content folder in json format and can be copied to another site easily.' , \JustCustomFields::TEXTDOMAIN); ?>
 				</label><br />
 			</div>
 

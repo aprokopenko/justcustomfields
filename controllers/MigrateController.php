@@ -5,21 +5,39 @@ namespace jcf\controllers;
 use jcf\core;
 use jcf\models;
 
+/**
+ * Class MigrateController
+ * Perform migrate operations
+ *
+ * @package jcf\controllers
+ */
 class MigrateController extends core\Controller
 {
+	/**
+	 * MigrateController constructor.
+	 * Init WP hooks
+	 */
 	public function __construct()
 	{
 		parent::__construct();
 		add_action('admin_menu', array( $this, 'initRoutes' ));
 	}
-	
+
+	/**
+	 * Replace main menu "Just Custom Fields" with migration page
+	 */
 	public function initRoutes()
 	{
 		$page_title = \JustCustomFields::$pluginName;
 
 		add_options_page($page_title, $page_title, 'manage_options', 'jcf_upgrade', array( $this, 'actionIndex' ));
 	}
-	
+
+	/**
+	 * Migration information/form/submit
+	 *
+	 * @return bool
+	 */
 	public function actionIndex()
 	{
 		$model = new models\Migrate();
@@ -53,6 +71,11 @@ class MigrateController extends core\Controller
 		));
 	}
 
+	/**
+	 * Success page
+	 *
+	 * @return bool
+	 */
 	public function actionUpgraded()
 	{
 		return $this->_render('migrate/upgraded');
