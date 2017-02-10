@@ -55,7 +55,7 @@ class PluginLoader
 	/**
 	 * Try to find storage version by setting in db/file
 	 * If not found - it will try to guess it based on fields settings
-	 * 
+	 *
 	 * @return array|bool|int|mixed
 	 */
 	public function getStorageVersion()

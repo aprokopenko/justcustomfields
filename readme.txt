@@ -6,7 +6,7 @@ Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custo
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
 Requires at least: 4.7
-Tested up to: 4.7.1
+Tested up to: 4.7.2
 Stable tag: trunk
 License: GNU General Public License v2
 
@@ -80,6 +80,9 @@ To upgrade remove the old plugin folder. After than follow the installation step
 2. The edit post page meta box with fields created on the settings page
 
 == Changelog ==
+* Version 3.1
+	* New feature: Added ability to migrate old data to match latest plugin code base. Support migrations from v2.3.2 and v3.0+
+	* Tests: Tested with WordPress 4.7.2
 * Version 3.0.4
 	* New feature: Added support of fieldset visibility for custom post types based on post template
 	* Update: Description updated.

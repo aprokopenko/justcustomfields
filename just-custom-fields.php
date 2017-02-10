@@ -6,7 +6,7 @@ Description: Turn WordPress into more powerful CMS by adding advanced and easy t
 Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custom gallery, collection, field group, metabox, fieldsets
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
-Version: 3.0.4
+Version: 3.1
 */
 define('JCF_ROOT', dirname(__FILE__));
 require_once( JCF_ROOT.'/core/Autoload.php' );
