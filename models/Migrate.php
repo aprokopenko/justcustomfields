@@ -263,10 +263,10 @@ class Migrate extends Model
 
 			// ver < 3.0 has keys based on post types: 'jcf_fields-{$post_type}'
 			$grouped_fields = array();
-			foreach ( $post_types as $post_type ) {
-				$grouped_fields[$post_type] = array();
-				if ( $fields = $getter("jcf_fields-{$post_type}") ) {
-					$grouped_fields[$post_type] = $fields;
+			foreach ( $post_types as $pt => $post_type ) {
+				$grouped_fields[$pt] = array();
+				if ( $fields = $getter("jcf_fields-{$pt}") ) {
+					$grouped_fields[$pt] = $fields;
 				}
 			}
 			return $grouped_fields;
