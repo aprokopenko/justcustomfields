@@ -212,11 +212,11 @@ class PostTypeController extends core\Controller
 	{
 		global $pagenow;
 
-		if ( $pagenow != 'media-upload.php' || empty($_GET ['jcf_media']) )
+		if ( $pagenow != 'media-upload.php' || empty($_GET['jcf_media']) )
 			return;
 
 		// Gets the right label depending on the caller widget
-		switch ( $_GET ['type'] )
+		switch ( $_GET['type'] )
 		{
 			case 'image': $button_label = __('Select Picture', \JustCustomFields::TEXTDOMAIN);
 				break;

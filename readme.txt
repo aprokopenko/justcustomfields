@@ -6,7 +6,7 @@ Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custo
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
 Requires at least: 4.7
-Tested up to: 4.7.1
+Tested up to: 4.7.2
 Stable tag: trunk
 License: GNU General Public License v2
 
@@ -80,20 +80,23 @@ To upgrade remove the old plugin folder. After than follow the installation step
 2. The edit post page meta box with fields created on the settings page
 
 == Changelog ==
-* Version 3.0.4
+* Version 3.1 - 21 February 2017
+	* New feature: Added ability to migrate old data to match latest plugin code base. Support migrations from v2.3.2 and v3.0+
+	* Tests: New tests with WordPress 4.7.2
+* Version 3.0.4 - 24 January 2017
 	* New feature: Added support of fieldset visibility for custom post types based on post template
 	* Update: Description updated.
 	* Tests: Tested with WordPress 4.7.1
-* Version 3.0.3
+* Version 3.0.3 - 9 December 2016
 	* Optimization: File system mode add caching for json_decode
 	* Tests: Tested with WordPress 4.7
-* Version 3.0.2
+* Version 3.0.2 - 23 November 2016
 	* Bug fix: SSL support for backend scripts and styles includes according to: https://wordpress.org/support/topic/support-for-admin-ssl-conection/
-* Version 3.0.1
+* Version 3.0.1 - 22 November 2016
 	* Bug fix: Related content init in empty Collection on new content page
 	* Bug fix: Field usage help popup code updated. (Added 'echo' to manual call)
 	* Issue fix: #62 table prefix issue in fields visibility query
-* Version 3.0
+* Version 3.0 - 21 November 2016
 	* NEW: Plugin code full refactoring, build all code based on OOP classes and latest WordPress coding recommendations
 	* New feature: Ability to hide fieldsets based on some criterias (taxonomy relation or page template)
 	* New feature: Ability to show fieldset in right column on post edit screen

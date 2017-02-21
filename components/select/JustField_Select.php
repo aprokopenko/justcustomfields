@@ -97,6 +97,7 @@ class JustField_Select extends core\JustField
 	 * prepare list of options
 	 * 
 	 * @param array $instance	current instance
+	 * @return array
 	 */
 	public function parsedSelectOptions( $instance )
 	{

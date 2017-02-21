@@ -10,6 +10,10 @@ class FilesDataLayer extends core\DataLayer
 	protected $_sourceSettings;
 	static private $_cache;
 
+	const FIELDS_KEY = 'fields';
+	const FIELDSETS_KEY = 'fieldsets';
+	const STORAGEVER_KEY = 'version';
+
 	/**
 	 * FilesDataLayer constructor.
 	 *
@@ -34,8 +38,8 @@ class FilesDataLayer extends core\DataLayer
 		}
 
 		$data = $this->getDataFromFile();
-		if ( isset($data['fields']) ) {
-			$this->_fields = $data['fields'];
+		if ( isset($data[self::FIELDS_KEY]) ) {
+			$this->_fields = $data[self::FIELDS_KEY];
 		}
 	}
 
@@ -46,10 +50,38 @@ class FilesDataLayer extends core\DataLayer
 	public function saveFieldsData()
 	{
 		$data = $this->getDataFromFile();
-		$data['fields'] = $this->_fields;
+		$data[self::FIELDS_KEY] = $this->_fields;
 		return $this->_save($data);
 	}
 
+	/**
+	 * Get storage version
+	 * @return array
+	 */
+	public function getStorageVersion()
+	{
+		$data = $this->getDataFromFile();
+		return !empty($data[self::STORAGEVER_KEY]) ? $data[self::STORAGEVER_KEY] : false;
+	}
+	
+	/**
+	 * Update storage version
+	 * @param float|null $version
+	 * @return boolean
+	 */
+	public function saveStorageVersion($version = null)
+	{
+		$data = $this->getDataFromFile();
+
+		if ( empty($version) ) {
+			$version = \JustCustomFields::VERSION;
+		}
+		
+		$data[self::STORAGEVER_KEY] = $version;
+		return $this->_save($data);
+	}
+	
+	
 	/**
 	 * Get Fieldsets
 	 * @param array $fieldsets
@@ -62,8 +94,8 @@ class FilesDataLayer extends core\DataLayer
 		}
 
 		$data = $this->getDataFromFile();
-		if ( isset($data['fieldsets']) ) {
-			$this->_fieldsets = $data['fieldsets'];
+		if ( isset($data[self::FIELDSETS_KEY]) ) {
+			$this->_fieldsets = $data[self::FIELDSETS_KEY];
 		}
 	}
 
@@ -74,7 +106,7 @@ class FilesDataLayer extends core\DataLayer
 	public function saveFieldsetsData()
 	{
 		$data = $this->getDataFromFile();
-		$data['fieldsets'] = $this->_fieldsets;
+		$data[self::FIELDSETS_KEY] = $this->_fieldsets;
 		return $this->_save($data);
 	}
 
@@ -86,7 +118,7 @@ class FilesDataLayer extends core\DataLayer
 	public function getDataFromFile( $file = null )
 	{
 		if ( !$file )
-			$file = $this->_getConfigFilePath();
+			$file = $this->getConfigFilePath();
 
 		if ( file_exists($file) ) {
 			$content = file_get_contents($file);
@@ -109,7 +141,7 @@ class FilesDataLayer extends core\DataLayer
 	 * @param string $source_settings
 	 * @return string/boolean
 	 */
-	protected function _getConfigFilePath( $source_settings = null )
+	public function getConfigFilePath( $source_settings = null )
 	{
 		if ( is_null($source_settings) ) {
 			$source_settings = $this->_sourceSettings;
@@ -118,16 +150,18 @@ class FilesDataLayer extends core\DataLayer
 		switch ($source_settings) {
 
 			case models\Settings::CONF_SOURCE_FS_THEME:
-				$path = get_stylesheet_directory() . '/jcf-settings/jcf_settings.json';
+				$path = get_stylesheet_directory() . '/jcf/config.json';
 				break;
 
 			case models\Settings::CONF_SOURCE_FS_GLOBAL:
-				$path = WP_CONTENT_DIR . '/jcf-settings/jcf_settings.json';
+				$path = WP_CONTENT_DIR . '/jcf/config.json';
 				break;
 
 			default:
 				return false;
 		}
+
+		$path = apply_filters('jcf_config_filepath', $path, $source_settings);
 
 		return $path;
 	}
@@ -141,7 +175,7 @@ class FilesDataLayer extends core\DataLayer
 	protected function _save( $data, $file = null )
 	{
 		if ( !$file ) {
-			$file = $this->_getConfigFilePath();
+			$file = $this->getConfigFilePath();
 		}
 
 		if ( defined('JSON_PRETTY_PRINT') ) {

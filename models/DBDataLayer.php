@@ -12,6 +12,10 @@ use jcf\models;
  */
 class DBDataLayer extends core\DataLayer
 {
+	const FIELDS_OPTION = 'jcf_fields';
+	const FIELDSETS_OPTION = 'jcf_fieldsets';
+	const STORAGEVER_OPTION = 'jcf_storage_version';
+
 	/**
 	 * Setting chosen by site administrator
 	 *
@@ -42,8 +46,7 @@ class DBDataLayer extends core\DataLayer
 			return;
 		}
 
-		$option_name = 'jcf-fields';
-		$this->_fields = $this->_getOptions($option_name);
+		$this->_fields = $this->_getOptions( self::FIELDS_OPTION );
 	}
 
 	/**
@@ -51,7 +54,7 @@ class DBDataLayer extends core\DataLayer
 	 */
 	public function saveFieldsData()
 	{
-		return $this->_updateOptions('jcf-fields', $this->_fields);
+		return $this->_updateOptions(self::FIELDS_OPTION, $this->_fields);
 	}
 
 	/**
@@ -65,8 +68,7 @@ class DBDataLayer extends core\DataLayer
 			return;
 		}
 
-		$option_name = 'jcf-fieldsets';
-		$this->_fieldsets = $this->_getOptions($option_name);
+		$this->_fieldsets = $this->_getOptions( self::FIELDSETS_OPTION );
 	}
 
 	/**
@@ -74,9 +76,32 @@ class DBDataLayer extends core\DataLayer
 	 */
 	public function saveFieldsetsData()
 	{
-		return $this->_updateOptions('jcf-fieldsets', $this->_fieldsets);
+		return $this->_updateOptions(self::FIELDSETS_OPTION, $this->_fieldsets);
 	}
 
+	/**
+	 * Get storage version
+	 * @return array
+	 */
+	public function getStorageVersion()
+	{
+		return $this->_getOptions( self::STORAGEVER_OPTION, '' );
+	}
+	
+	/**
+	 * Update storage version
+	 * @param float|null $version
+	 * @return boolean
+	 */
+	public function saveStorageVersion($version = null)
+	{
+		if ( empty($version) ) {
+			$version = \JustCustomFields::VERSION;
+		}
+
+		return $this->_updateOptions(self::STORAGEVER_OPTION, $version);
+	}
+	
 	/**
 	 * Check NetworkMode to be set to global (multisite)
 	 *
@@ -90,11 +115,12 @@ class DBDataLayer extends core\DataLayer
 	/**
 	 * Get options with wp-options
 	 * @param string $key
+	 * @param mixed  $default
 	 * @return array
 	 */
-	protected function _getOptions( $key )
+	protected function _getOptions( $key, $default = array() )
 	{
-		return $this->isSettingsGlobal() ? get_site_option($key, array()) : get_option($key, array());
+		return $this->isSettingsGlobal() ? get_site_option($key, $default) : get_option($key, $default);
 	}
 
 	/**

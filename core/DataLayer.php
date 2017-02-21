@@ -54,6 +54,21 @@ abstract class DataLayer
 	}
 
 	/**
+	 * Method to get version of storage
+	 * 
+	 * @return array
+	 */
+	abstract public function getStorageVersion();
+
+	/**
+	 * Method to update version of storage till last
+	 *
+	 * @param float|null $version
+	 * @return boolean
+	 */
+	abstract public function saveStorageVersion( $version = null );
+
+	/**
 	 * Fields settings setter
 	 *
 	 * @param array|null $fields

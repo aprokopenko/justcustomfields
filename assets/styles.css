@@ -231,6 +231,10 @@ body.jcf-loading input body.jcf-loading select {
 	display: block;
 	margin-bottom: 5px;
 }
+ul.jcf_list {
+	padding-left: 20px;
+	list-style: circle;
+}
 .jcf_modalWindow {
 	left: 100px;
 	right: 100px;
@@ -378,6 +382,17 @@ ul.visibility-list-items.visibility-list-items-tpl li {
 	width: inherit !important;
 }
 .collection_list .check-column{ width:2.2em !important; }
+.jcf_well{
+	margin: 5px 0 15px;
+	background: #fff;
+	border-left: 4px solid #fff;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+	padding: 1px 12px;
+}
+.jcf_well.notice-success{ border-left-color: #46b450; }
+.jcf_well.notice-error{ border-left-color: #dc3232; }
+.jcf_well.notice-warning{ border-left-color: #ffb900; }
+
 
 @media only screen and (max-width: 1200px) {
 	.jcf_edit_modal_shadow {
