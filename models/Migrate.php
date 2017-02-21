@@ -160,7 +160,8 @@ class Migrate extends Model
 		// if we use filesystem we need to know it's writable
 		if ( $data_source !== Settings::CONF_SOURCE_DB ) {
 			$filepath = $this->_dL->getConfigFilePath();
-			if ( ! wp_is_writable( dirname($filepath) ) ) {
+			$filedir = dirname($filepath);
+			if ( (!is_dir($filedir) && !wp_mkdir_p($filedir)) || !wp_is_writable($filedir) ) {
 				$this->addError('Error! Please check that settings directory is writable "' . dirname($filepath) . '"');
 			}
 			elseif ( is_file($filepath) && ! wp_is_writable($filepath) ) {
