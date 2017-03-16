@@ -36,12 +36,14 @@ class SettingsController extends core\Controller
 
 		$source = $model::getDataSourceType();
 		$network = $model::getNetworkMode();
+		$googlemaps_api_key = $model::getGoogleMapsApiKey();
 
 		// load template
 		return $this->_render('settings/index', array(
 					'tab' => 'settings',
 					'source' => $source,
-					'network' => $network
+					'network' => $network,
+					'googlemaps_api_key' => $googlemaps_api_key,
 		));
 	}
 

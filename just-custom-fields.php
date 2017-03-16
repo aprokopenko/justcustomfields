@@ -109,7 +109,7 @@ class JustCustomFields extends core\Singleton
 		$this->registerField( 'jcf\components\collection\JustField_Collection' );
 		$this->registerField( 'jcf\components\table\JustField_Table', true );
 		$this->registerField( 'jcf\components\relatedcontent\JustField_RelatedContent', true );
-		$this->registerField( 'jcf\components\googlemap\JustField_GoogleMap', true );
+		$this->registerField( 'jcf\components\googlemaps\JustField_GoogleMaps', false );
 	}
 
 	/**

@@ -21,6 +21,7 @@ div.jcf_edit_field select,
 div.jcf_edit_field textarea{
 	margin-top:0;
 }
+div.jcf_edit_field input.jcf-half-width { width: 50% !important; }
 div.jcf_edit_field select { width:50%; }
 div.jcf_edit_field select.jcf-multiple { height:auto; max-height: 200px; }
 #poststuff .inside div.jcf_edit_field p.howto{

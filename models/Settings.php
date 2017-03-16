@@ -14,9 +14,13 @@ class Settings extends core\Model
 
 	const OPT_SOURCE = 'jcf_source_settings';
 	const OPT_MULTISITE = 'jcf_multisite_setting';
+	const OPT_GOOGLEMAPS = 'jcf_googlemaps_apikey';
+
+	private static $site_domain;
 
 	public $source;
 	public $network;
+	public $googlemaps_api_key;
 
 	/**
 	 * Get source settings
@@ -45,6 +49,21 @@ class Settings extends core\Model
 	}
 
 	/**
+	 * Get google maps api key
+	 *
+	 * @return string
+	 */
+	public static function getGoogleMapsApiKey()
+	{
+		$domain = self::getSiteDomain();
+		$googlemaps_settings = get_option(self::OPT_GOOGLEMAPS, array());
+		if ( !empty($googlemaps_settings[$domain]) ) {
+			return $googlemaps_settings[$domain];
+		}
+		return '';
+	}
+
+	/**
 	 * Save settings
 	 * @return boolean
 	 */
@@ -52,6 +71,7 @@ class Settings extends core\Model
 	{
 		$this->_updateNetworkMode();
 		$this->_updateDataSource();
+		$this->_updateGoogleMapsApiKey();
 	}
 
 	/**
@@ -86,6 +106,34 @@ class Settings extends core\Model
 		}
 
 		return false;
+	}
+
+	/**
+	 * Update google maps API key according to the domain.
+	 *
+	 * @return boolean
+	 */
+	protected function _updateGoogleMapsApiKey()
+	{
+		$domain = self::getSiteDomain();
+		$googlemaps_settings = get_option(self::OPT_GOOGLEMAPS, array());
+		$googlemaps_settings[$domain] = $this->googlemaps_api_key;
+		return update_option(self::OPT_GOOGLEMAPS, $googlemaps_settings);
+	}
+
+	/**
+	 * Get API key based on current domain. Sometimes API key can be restricted to domains, so we take settings only for current domain.
+	 *
+	 * @return mixed
+	 */
+	protected static function getSiteDomain()
+	{
+		if ( empty( self::$site_domain ) ) {
+			$site_url = get_site_url();
+			self::$site_domain = parse_url($site_url, PHP_URL_HOST);
+		}
+
+		return self::$site_domain;
 	}
 
 	/**

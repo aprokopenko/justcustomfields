@@ -1,6 +1,7 @@
 <?php
 /* @var $source string */
 /* @var $network string */
+/* @var $googlemaps_api_key string */
 
 use jcf\models\Settings;
 ?>
@@ -44,6 +45,18 @@ use jcf\models\Settings;
 					</fieldset>
 				</div>
 			<?php endif; ?>
+
+			<div class="card pressthis">
+				<h3 class="header"><?php _e('Google Maps Settings:', \JustCustomFields::TEXTDOMAIN); ?></h3>
+
+				<label for="googlemaps_api_key"><?php _e('Google Maps API Key', \JustCustomFields::TEXTDOMAIN); ?></label>
+
+				<input type="text" name="googlemaps_api_key" id="googlemaps_api_key" class="regular-text"
+					   value="<?php echo esc_attr($googlemaps_api_key) ?>" /><br />
+
+				<p><a href="https://developers.google.com/maps/documentation/javascript/get-api-key#get-an-api-key" target="_blank" >Click here to generate your API Key.</p>
+				<br />
+			</div>
 
 			<br /><br />
 			<?php wp_nonce_field("just-nonce"); ?>
