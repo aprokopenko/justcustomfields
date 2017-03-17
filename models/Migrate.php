@@ -117,21 +117,27 @@ class Migrate extends Model
 	 */
 	public function migrate($migrations)
 	{
-		set_time_limit(0);
+		if ( !empty($migrations) ) {
+			set_time_limit(0);
 
-		$data = null;
-		foreach ($migrations as $ver => $m) {
-			$data = $m->runUpdate($data, Migration::MODE_UPDATE);
+			$data = null;
+			foreach ($migrations as $ver => $m) {
+				$data = $m->runUpdate($data, Migration::MODE_UPDATE);
+			}
+
+			$fields = $data[Migration::FIELDS_KEY];
+			$fieldsets = $data[Migration::FIELDSETS_KEY];
+
+			$fields = $this->_updateFieldsVersion($fields);
+
+			$this->_dL->setFields($fields);
+			$this->_dL->setFieldsets($fieldsets);
+			$updated = $this->_dL->saveFieldsData() && $this->_dL->saveFieldsetsData();
 		}
-
-		$fields = $data[Migration::FIELDS_KEY];
-		$fieldsets = $data[Migration::FIELDSETS_KEY];
-
-		$fields = $this->_updateFieldsVersion($fields);
-
-		$this->_dL->setFields($fields);
-		$this->_dL->setFieldsets($fieldsets);
-		$updated = $this->_dL->saveFieldsData() && $this->_dL->saveFieldsetsData();
+		else {
+			$migrations = array();
+			$updated = true;
+		}
 
 		// do cleanup
 		if ( $updated ) {

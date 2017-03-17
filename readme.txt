@@ -6,7 +6,7 @@ Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custo
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
 Requires at least: 4.7
-Tested up to: 4.7.2
+Tested up to: 4.7.3
 Stable tag: trunk
 License: GNU General Public License v2
 
@@ -80,6 +80,9 @@ To upgrade remove the old plugin folder. After than follow the installation step
 2. The edit post page meta box with fields created on the settings page
 
 == Changelog ==
+* Version 3.2 - 17 March 2017
+	* New feature: Google Maps component (Latitude and Longitude selector with Google Maps)
+	* Tests: New tests with WordPress 4.7.3
 * Version 3.1 - 21 February 2017
 	* New feature: Added ability to migrate old data to match latest plugin code base. Support migrations from v2.3.2 and v3.0+
 	* Tests: New tests with WordPress 4.7.2
