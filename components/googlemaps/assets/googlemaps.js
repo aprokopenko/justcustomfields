@@ -32,10 +32,12 @@ function jcf_googlemaps_init_field(i) {
   }
 
   var geocoder = new google.maps.Geocoder();
+
   // search button event
   document.getElementById( jcf_googlemap.search_btn_id ).addEventListener('click', function() {
     jcf_googlemaps_geocode_address(geocoder, map, jcf_googlemap);
   });
+
   // prevent address line enter command
   document.getElementById( jcf_googlemap.address_id ).addEventListener('keypress', function(event) {
     if (event.keyCode == 13) {
@@ -44,6 +46,34 @@ function jcf_googlemaps_init_field(i) {
       event.stopPropagation();
       return false;
     }
+  });
+
+  // clean up button
+  document.getElementById( jcf_googlemap.clean_btn_id ).addEventListener('click', function (e) {
+    e.preventDefault();
+
+    // remove marker
+    if ( jcf_googlemap.markers.length ) {
+      jcf_googlemap.markers[0].setMap(null);
+      jcf_googlemap.markers = [];
+    }
+
+    jQuery( jcf_googlemap.lng_ctrl_id ).val('');
+    jQuery( jcf_googlemap.lat_ctrl_id ).val('');
+    jQuery( '#' + jcf_googlemap.address_id ).val('');
+
+    return false;
+  })
+
+  // set button
+  document.getElementById( jcf_googlemap.set_btn_id ).addEventListener('click', function (e) {
+    var lat = parseFloat( jQuery( jcf_googlemap.lat_ctrl_id ).val() );
+    var lng = parseFloat( jQuery( jcf_googlemap.lng_ctrl_id ).val() );
+
+    if ( isNaN(lat) ) { lat = 0.00; }
+    if ( isNaN(lng) ) { lng = 0.00; }
+
+    jcf_googlemaps_add_marker({lat: lat, lng: lng}, map, jcf_googlemap);
   });
 
   // This event listener calls addMarker() when the map is clicked.
@@ -115,3 +145,13 @@ google.maps.event.addDomListener(window, 'load', function() {
     jcf_googlemaps_init_field(i);
   }
 });
+
+jQuery(document).ready(function(){
+
+  jQuery(document).on('click', '.jcf_googlemaps_toggle_manually', function (e) {
+    e.preventDefault();
+
+    jQuery(this).closest('.form-field').find('.jcf_googlemaps_coordinates').toggle();
+  })
+
+})
