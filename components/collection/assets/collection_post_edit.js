@@ -16,6 +16,9 @@ jQuery(document).ready(function() {
       if ( jQuery(ui.newHeader).hasClass('jcf_field_removed') ) {
         return false;
       }
+    },
+    activate: function (event, ui) {
+      jcf_do_action('collection_row_activated', this, event, ui);
     }
   });
 

@@ -7,6 +7,7 @@ use jcf\models\Settings;
 
 class JustField_GoogleMaps extends core\JustField
 {
+	protected static $shorcode_enqueue_script;
 
 	public function __construct()
 	{
@@ -37,7 +38,7 @@ class JustField_GoogleMaps extends core\JustField
 							   value="<?php echo esc_attr($this->entry['address']); ?>" class="jcf-half-width">
 						<input id="<?php echo $this->getFieldId('search_btn'); ?>" type="button" class="button" value="Find">
 					</div>
-					<div id="<?php echo $this->getFieldId('map'); ?>" style="width: 100%; height: 400px;"></div>
+					<div class="jcf-googlemaps-container" id="<?php echo $this->getFieldId('map'); ?>" style="width: 100%; max-width: 800px; height: 400px;"></div>
 
 					<input type="hidden"
 						   name="<?php echo $this->getFieldName('lat'); ?>"
@@ -64,6 +65,9 @@ class JustField_GoogleMaps extends core\JustField
 						  'lng': <?php echo (float)$this->entry['lng']; ?>,
 						  'markers': []
 						})
+						<?php if ( $this->isCollectionField() && defined('DOING_AJAX') && DOING_AJAX ) : ?>
+                        	jcf_googlemaps_init_field( window.jcf_googlemaps.length -1 );
+						<?php endif; ?>
 					</script>
 				<?php endif; ?>
 
@@ -136,49 +140,61 @@ class JustField_GoogleMaps extends core\JustField
 	 */
 	public function shortcodeValue( $args )
 	{
-		/*
-		if ( empty($this->entry) ) return '';
-		$markers = str_replace('-', '_', $this->getFieldId('markers'));
-		$function_prefix = str_replace('-', '', $this->id);
-		$instance = wp_parse_args((array) $this->instance, array( 'title' => '', 'description' => '', 'api_key' => '' ));
-		$api_key = esc_attr($instance['api_key']);
-		
-		ob_start();
-		?>
-		<script>
-			(function ($){
-				if ( $('script[id="jcf-google-map"]').length < 1 ) {
-					document.write('<script id="jcf-google-map" src="http://maps.googleapis.com/maps/api/js?key=<?= $api_key; ?>&ver=3"><\/script>');
-				}
-			})(jQuery);
-		</script>
-		
-		<div id="jcf-map-<?php echo $this->id; ?>" style="width: 100%; height: 400px;"></div>
-		
-		<script>
-			google.maps.event.addDomListener(window, 'load', function() {
-				var map = new google.maps.Map(document.getElementById('jcf-map-<?php echo $this->id; ?>'), {
-					zoom: 2,
-					center: {lat: 5.397, lng: 5.644},
-				});
+		$api_key = Settings::getGoogleMapsApiKey();
 
-				<?php if ( !( empty($this->entry['lng']) || empty($this->entry['lat']) ) ) : ?>
-					map.setCenter({lat: <?php echo $this->entry['lat']; ?>, lng: <?php echo $this->entry['lng']; ?>});
-					var marker = new google.maps.Marker({
-						position: {lat: <?php echo $this->entry['lat']; ?>, lng: <?php echo $this->entry['lng']; ?>},
+		if ( empty($api_key) ) {
+			return 'Google Maps API Key does not configured correctly.';
+		}
+
+		if ( empty($this->entry['lat']) || empty($this->entry['lng']) ) {
+			return '<!-- Field values (lat./lng.) are empty -->';
+		}
+
+		ob_start();
+
+		if ( ! self::$shorcode_enqueue_script ) :
+		?>
+			<script>
+				if ( ! document.getElementById('googlemaps_api_for_jcf') ) {
+				  document.write('<script id="googlemaps_api_for_jcf" src="//maps.googleapis.com/maps/api/js?key=<?php echo esc_attr($api_key); ?>&ver=3"><\/script>');
+
+				  window.jcf_googlemaps = [];
+				  window.addEventListener('load', function() {
+					for ( var i = 0; i < jcf_googlemaps.length; i++ ) {
+					  jcf_googlemap = window.jcf_googlemaps[i];
+
+					  var map = new google.maps.Map(document.getElementById(jcf_googlemap.container_id), {
+						zoom: 15,
+						center: {lat: jcf_googlemap.lat, lng: jcf_googlemap.lng},
+					  });
+
+					  var marker = new google.maps.Marker({
+						position: {lat: jcf_googlemap.lat, lng: jcf_googlemap.lng},
 						map: map
-					});
-				<?php endif; ?>
-			});
-		</script>
+					  });
+					}
+				  });
+				}
+			</script>
 		<?php
+			self::$shorcode_enqueue_script = 'included';
+		endif;
+		?>
+
+		<div id="jcf-map-<?php echo $this->id; ?>" class="jcf-map-container" style="min-height: 200px;"></div>
+		<script>
+          window.jcf_googlemaps.push({
+            container_id: 'jcf-map-<?php echo $this->id; ?>',
+            lat: <?php echo $this->entry['lat']; ?>,
+            lng: <?php echo $this->entry['lng']; ?>,
+		  })
+		</script>
+
+		<?php
+
 		$content = ob_get_clean();
 
 		return $content;
-		*/
-		return '';
 	}
 
 }
-
-

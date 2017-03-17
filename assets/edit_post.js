@@ -40,11 +40,11 @@ function jcf_do_action(action, _this) {
   }
 
   var results = {};
-  var args = [].slice.apply(arguments).slice(1);
+  var args = [].slice.apply(arguments).slice(2);
   for (var k in window.jcfActions[action]) {
     var callback = window.jcfActions[action][k];
     if ( 'function' == typeof(callback) ) {
-      results[k] = callback.call(args);
+      results[k] = callback.apply(_this, args);
     }
   }
   return results;
