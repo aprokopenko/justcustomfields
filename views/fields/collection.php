@@ -11,11 +11,12 @@
 			<div class="inner_content">
 				<form action="#" method="post" class="jcform_add_collection_field">
 					<fieldset>
-						<input type="hidden" name="collection_id" value="<?php echo $collection_id;  ?>" />
+						<input type="hidden" name="collection_id" value="<?php echo $collection_id; ?>" />
 						<input type="hidden" name="fieldset_id" value="<?php echo $fieldset_id; ?>" />
 						<label class="nowrap"><?php _e('Add new Field:', \JustCustomFields::TEXTDOMAIN); ?> </label>
 						<select name="field_type" class="jcf_add_collection_field">
 							<?php foreach( $registered_fields as $field ) :  ?>
+								<?php // TODO: replace !empty($prefix) to something more intuitive ?>
 								<?php if ( !empty($prefix) && $field['id_base'] == 'relatedcontent' ) continue; ?>
 								<option value="<?php echo $field['id_base']; ?>"><?php echo esc_html($field['title']); ?></option>
 							<?php endforeach; ?>

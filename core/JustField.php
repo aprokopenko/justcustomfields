@@ -189,6 +189,7 @@ class JustField
 
 				$collection_slug = $fields[$this->postType][$this->collectionId]['slug'];
 
+				// TODO: replace with getter
 				if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
 					$data = get_term_meta($this->postID, $collection_slug, true);
 				}
@@ -204,6 +205,7 @@ class JustField
 		else {
 			// load entry
 			if ( !empty($this->slug) ) {
+				// TODO: replace with getter
 				if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
 					$this->entry = get_term_meta($this->postID, $this->slug, true);
 				}
@@ -467,7 +469,7 @@ class JustField
 		// get real values
 		$values = $this->save($input);
 		// save to post meta
-		
+		// TODO: replace with setter
 		if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
 			update_term_meta($this->postID, $this->slug, $values);
 		}
@@ -492,6 +494,7 @@ class JustField
 
 		
 		if ( method_exists($this, 'addJs') ) {
+			// TODO: make code below better
 			if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== FALSE ) {
 				$this->addJs();
 			}
@@ -515,6 +518,7 @@ class JustField
 			return false;
 
 		if ( method_exists($this, 'addCss') ) {
+			// TODO: make code below better
 			if ( strpos($this->postType, models\Fieldset::TAXONOMY_PREFIX) !== FALSE ) {
 				$this->addCss();
 			}

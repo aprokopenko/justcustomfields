@@ -1,9 +1,10 @@
 <?php include(JCF_ROOT . '/views/_header.php'); ?>
 
-	<h2><a href="?page=jcf_admin" class="jcf_change_pt"><?php _e('Post types & Taxonomies', \JustCustomFields::TEXTDOMAIN); ?></a> &raquo;
-		<?php echo $post_type->label; ?> &raquo; <?php _e('Custom fields', \JustCustomFields::TEXTDOMAIN); ?>
+	<h2><a href="?page=jcf_admin" class="jcf_change_pt"><?php _e('Fields', \JustCustomFields::TEXTDOMAIN); ?></a> &raquo;
+		<?php echo $post_type->label; ?> &raquo; <small><?php _e('Configure', \JustCustomFields::TEXTDOMAIN); ?></small>
 	</h2>
-	
+
+	<?php // TODO: replace $prefix.* with var from controller ?>
 	<input type="hidden" id="jcf_post_type_hidden" value="<?php echo $prefix . $post_type->name; ?>" />
 	
 	<div class="jcf_columns jcf_width66p">

@@ -88,7 +88,7 @@ window.JcfSimpleMedia = {
 }
 
 jQuery(document).ready(function() {
-  var node = jQuery('#post-body, .jcf-taxonomy');
+  var node = jQuery('#post-body, .jcf-taxonomy-box');
   node.find('div.jcf-simple-row a.jcf_simple_delete').live('click', function( e ) {
     var value_id = jQuery(this).data('field_id');
     var row = jQuery(this).parents('div.jcf-simple-row');

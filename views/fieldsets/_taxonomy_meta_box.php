@@ -3,7 +3,7 @@
 		<td colspan = "2">
 <?php endif; ?>
 					
-			<div class="postbox jcf-taxonomy">
+			<div class="postbox jcf-taxonomy-box">
 				<h2 class="hndle"><span><?= $name; ?></span></h2>
 				<div class="inside">
 					<?= $content; ?>

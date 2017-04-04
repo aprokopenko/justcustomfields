@@ -5,9 +5,12 @@ namespace jcf\controllers;
 use jcf\models;
 use jcf\core;
 
+// TODO: validate all code below!
+
 class TaxonomyController extends core\Controller
 {
-	protected $_taxonomy;
+	protected $_taxonomy = null;
+
 	/**
 	 * Init all wp-actions
 	 */
@@ -32,8 +35,11 @@ class TaxonomyController extends core\Controller
 	 */
 	protected function _isTaxonomyEdit()
 	{
-		$is_edit_taxonomy = isset($_GET['taxonomy']);
-		$this->_taxonomy = $_GET['taxonomy'];
+		$is_edit_taxonomy = false;
+		if ( !empty($_GET['taxonomy']) ) {
+			$is_edit_taxonomy = true;
+			$this->_taxonomy = $_GET['taxonomy'];
+		}
 
 		$current_script = '';
 		if ( !empty($_SERVER['REQUEST_URI']) ) {

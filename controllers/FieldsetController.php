@@ -48,6 +48,7 @@ class FieldsetController extends core\Controller
 	{
 		$post_type = $_GET['pt'];
 
+		// TODO: replace with some getter
 		if ( strpos($post_type, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
 			$prefix = models\Fieldset::TAXONOMY_PREFIX;
 			$post_types = jcf_get_taxonomies('objects');
@@ -114,6 +115,7 @@ class FieldsetController extends core\Controller
 			$taxonomies = get_object_taxonomies($model->post_type, 'objects');
 			$templates = jcf_get_page_templates($model->post_type);
 
+			// TODO: replace with model getter:
 			if ( strpos($model->post_type, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
 				$prefix = models\Fieldset::TAXONOMY_PREFIX;
 			}
@@ -123,7 +125,7 @@ class FieldsetController extends core\Controller
 				'post_type' => $model->post_type,
 				'taxonomies' => $taxonomies,
 				'templates' => $templates,
-				'prefix' => $prefix
+				'prefix' => $prefix,
 			));
 		}
 

@@ -46,8 +46,9 @@ class FieldController extends core\Controller
 
 		if ( $model->load($_POST) && $success = $model->save() ) {
 			if ( isset($success['id_base']) && $success['id_base'] == 'collection' ) {
-				$jcf = \JustCustomFields::run();
+				$jcf = \JustCustomFields::getInstance();
 				$registered_fields = $jcf->getFields('collection');
+				// TODO: replace next line with model getter,
 				$prefix = strpos($model->post_type, models\Fieldset::TAXONOMY_PREFIX) !== false ? models\Fieldset::TAXONOMY_PREFIX : false;
 
 				ob_start();
@@ -56,7 +57,7 @@ class FieldController extends core\Controller
 					'collection_id' => $success['id'],
 					'fieldset_id' => $success['fieldset_id'],
 					'registered_fields' => $registered_fields,
-					'prefix' => $prefix
+					'prefix' => $prefix,
 				));
 				$success["collection_fields"] = ob_get_clean();
 			}

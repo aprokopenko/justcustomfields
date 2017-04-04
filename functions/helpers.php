@@ -48,14 +48,37 @@ function jcf_get_post_types( $format = 'single' ) {
 }
 
 /**
+ * get registered taxonomies
+ * @param string $format
+ * @return string
+ */
+function jcf_get_taxonomies( $format = 'names' ) {
+
+	$all_taxonomies = get_taxonomies(array( 'show_ui' => true, 'public' => true ), $format);
+
+	$taxonomies = array();
+
+	foreach ( $all_taxonomies as $key => $val ) {
+		// TODO: replace with constant
+		$taxonomies['tax_' . $key] = $val;
+	}
+
+	return $taxonomies;
+}
+
+/**
  * Find the correct post type icon name
  *
  * @param array|object $post_type  object
  * @return string
  */
 function jcf_get_post_type_icon( $post_type ) {
+	if ( is_a($post_type, '\WP_Post_Type') ) {
+		$icon = $post_type->menu_icon;
+	} elseif ( is_a($post_type, '\WP_Taxonomy') ) {
+		$icon = $post_type->hierarchical? 'dashicons-category' : 'dashicons-tag';
+	}
 	$post_type = (array)$post_type;
-	$icon = $post_type['menu_icon'];
 
 	$standard_post_types = array(
 		'post' => 'dashicons-admin-post',
@@ -311,22 +334,4 @@ function jcf_html_checkbox( array $attributes = array() ) {
 function jcf_esc_textarea( $value ) {
 	$safe_text = htmlspecialchars( $value, ENT_NOQUOTES, get_option( 'blog_charset' ) );
 	return $safe_text;
-}
-
-/**
- * get registered taxonomies
- * @param string $format
- * @return string 
- */
-function jcf_get_taxonomies( $format = 'names' ) {
-
-	$all_taxonomies = get_taxonomies(array( 'show_ui' => true, 'public' => true ), $format);
-
-	$taxonomies = array();
-
-	foreach ( $all_taxonomies as $key => $val ) {
-		$taxonomies['tax_' . $key] = $val;
-	}
-
-	return $taxonomies;
 }

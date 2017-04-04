@@ -59,6 +59,7 @@ class JustField_Textarea extends core\JustField
 						</script>
 					<?php  endif;  ?>
 
+					<?php // TODO: add smart case: check tinymce enabled, check that we're on taxonomy page ?>
 					<script>
 						jQuery(document).ready(function() {
 							jQuery( '#addtag' ).on( 'mousedown', '#submit', function() {

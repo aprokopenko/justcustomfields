@@ -3,7 +3,9 @@
 <div class="jcf_tab-content">
 	<div class="jcf_inner-tab-content" >
 		<div class="icon32 icon32-posts-page" id="icon-edit"><br></div>
-		<p><?php _e('You should choose Custom Post Type first to configure fields for it:', \JustCustomFields::TEXTDOMAIN); ?></p>
+		<p><?php _e('You can choose Post Type or Taxonomy to configure custom fields for it:', \JustCustomFields::TEXTDOMAIN); ?></p>
+
+		<h3>Post Types</h3>
 		<div>
 			<ul class="dotted-list jcf-bold">
 				<?php foreach ( $post_types as $key => $obj ) : ?>
@@ -22,8 +24,8 @@
 			</ul>
 		</div>
 
-		<br /><br />
-		<p><?php _e('You should choose Custom Taxonomies first to configure fields for it:', \JustCustomFields::TEXTDOMAIN); ?></p>
+		<br />
+		<h3>Taxonomies</h3>
 		<div>
 			<ul class="dotted-list jcf-bold">
 				<?php foreach ( $taxonomies as $tax_key => $tax_obj ) : ?>
