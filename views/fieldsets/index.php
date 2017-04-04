@@ -1,10 +1,10 @@
 <?php include(JCF_ROOT . '/views/_header.php'); ?>
 
-	<h2><a href="?page=jcf_admin" class="jcf_change_pt"><?php _e('Post types', \JustCustomFields::TEXTDOMAIN); ?></a> &raquo;
+	<h2><a href="?page=jcf_admin" class="jcf_change_pt"><?php _e('Post types & Taxonomies', \JustCustomFields::TEXTDOMAIN); ?></a> &raquo;
 		<?php echo $post_type->label; ?> &raquo; <?php _e('Custom fields', \JustCustomFields::TEXTDOMAIN); ?>
 	</h2>
 	
-	<input type="hidden" id="jcf_post_type_hidden" value="<?php echo $post_type->name; ?>" />
+	<input type="hidden" id="jcf_post_type_hidden" value="<?php echo $prefix . $post_type->name; ?>" />
 	
 	<div class="jcf_columns jcf_width66p">
 		<div id="jcf_fieldsets">
@@ -72,7 +72,8 @@
 													'collection' => isset($collections[$field_id])? $collections[$field_id] : array(),
 													'collection_id' => $field_id,
 													'fieldset_id' => $fieldset['id'],
-													'registered_fields' => $collections['registered_fields']
+													'registered_fields' => $collections['registered_fields'],
+													'prefix' => $prefix
 												)); ?></td>
 										<?php endif; ?>
 									</tr>
@@ -90,8 +91,9 @@
 							<input type="hidden" name="fieldset_id" value="<?php echo $fieldset['id']; ?>" />
 							<label class="nowrap"><?php _e('Add new Field:', \JustCustomFields::TEXTDOMAIN); ?> </label>
 							<select name="field_type" class="jcf_add_field">
-								<?php foreach($registered_fields as $field) : ?>
-								<option value="<?php echo $field['id_base']; ?>"><?php echo esc_html($field['title']); ?></option>
+								<?php foreach( $registered_fields as $field ) : ?>
+									<?php if ( !empty($prefix) && $field['id_base'] == 'relatedcontent' ) continue; ?>
+									<option value="<?php echo $field['id_base']; ?>"><?php echo esc_html($field['title']); ?></option>
 								<?php endforeach; ?>
 							</select>
 							<input type="submit" class="button show_modal" name="add_field" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />

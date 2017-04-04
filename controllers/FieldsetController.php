@@ -47,7 +47,15 @@ class FieldsetController extends core\Controller
 	public function actionIndex()
 	{
 		$post_type = $_GET['pt'];
-		$post_types = jcf_get_post_types('object');
+
+		if ( strpos($post_type, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
+			$prefix = models\Fieldset::TAXONOMY_PREFIX;
+			$post_types = jcf_get_taxonomies('objects');
+		}
+		else {
+			$prefix = '';
+			$post_types = jcf_get_post_types('object');
+		}
 
 		$jcf = \JustCustomFields::getInstance();
 		$fieldset_model = new models\Fieldset();
@@ -66,7 +74,8 @@ class FieldsetController extends core\Controller
 			'fieldsets' => $fieldsets,
 			'field_settings' => $fields,
 			'collections' => $collections,
-			'registered_fields' => $registered_fields
+			'registered_fields' => $registered_fields,
+			'prefix' => $prefix
 		);
 		return $this->_render('fieldsets/index', $template_params);
 	}
@@ -99,15 +108,22 @@ class FieldsetController extends core\Controller
 	public function ajaxGetForm()
 	{
 		$model = new models\Fieldset();
+		$prefix = '';
 
 		if ( $model->load($_POST) && $fieldset = $model->findById($model->fieldset_id) ) {
 			$taxonomies = get_object_taxonomies($model->post_type, 'objects');
 			$templates = jcf_get_page_templates($model->post_type);
+
+			if ( strpos($model->post_type, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
+				$prefix = models\Fieldset::TAXONOMY_PREFIX;
+			}
+
 			return $this->_renderAjax('fieldsets/form', 'html', array(
 				'fieldset' => $fieldset,
 				'post_type' => $model->post_type,
 				'taxonomies' => $taxonomies,
-				'templates' => $templates
+				'templates' => $templates,
+				'prefix' => $prefix
 			));
 		}
 
