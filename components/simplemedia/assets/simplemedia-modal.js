@@ -1,4 +1,4 @@
-/*global window,jQuery,wp */
+/* @global window,jQuery,wp */
 var JcfMediaModal = function( options ) {
   'use strict';
   this.settings = {
@@ -88,7 +88,14 @@ window.JcfSimpleMedia = {
 }
 
 jQuery(document).ready(function() {
-  var node = jQuery('#post-body, .jcf-taxonomy-box');
+  if ( jQuery('body').hasClass('edit-tags-php') ) {
+    var node = jQuery('#addtag');
+  } else if ( jQuery('body').hasClass('term-php') ) {
+    var node = jQuery('#edittag');
+  } else {
+    var node = jQuery('#post-body');
+  }
+
   node.find('div.jcf-simple-row a.jcf_simple_delete').live('click', function( e ) {
     var value_id = jQuery(this).data('field_id');
     var row = jQuery(this).parents('div.jcf-simple-row');

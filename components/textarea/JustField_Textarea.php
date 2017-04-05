@@ -62,8 +62,8 @@ class JustField_Textarea extends core\JustField
 					<?php if ( $this->isTaxonomyField() ) : ?>
 					<script>
 						jQuery(document).ready(function() {
-							jQuery( '#addtag' ).on( 'mousedown', '#submit', function() {
-								tinymce.triggerSave();
+							jQuery(document).on( 'mousedown click keydown', '#submit', function() {
+							  tinymce.triggerSave();
 							});
 						});
 					</script>

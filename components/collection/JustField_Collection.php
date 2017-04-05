@@ -325,6 +325,7 @@ class JustField_Collection extends core\JustField
 		$collection = core\JustFieldFactory::create($model);
 		self::$currentCollectionFieldKey = $_POST['group_id'];
 
+		header("Content-Type: text/html; charset=" . get_bloginfo('charset'));
 		?>
 		<div class="collection_field_group">
 			<h3>
