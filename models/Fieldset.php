@@ -4,9 +4,12 @@ namespace jcf\models;
 
 use jcf\core;
 use jcf\models;
+use jcf\core\traits\WithPostTypeKind;
 
 class Fieldset extends core\Model
 {
+	use WithPostTypeKind;
+
 	const POSITION_ADVANCED = 'advanced';
 	const POSITION_SIDE = 'side';
 	const POSITION_NORMAL = 'normal';
@@ -14,8 +17,6 @@ class Fieldset extends core\Model
 	const PRIO_DEFAULT = 'default';
 	const PRIO_HIGH = 'high';
 	const PRIO_LOW = 'low';
-	
-	const TAXONOMY_PREFIX = 'tax_';
 
 	public $title;
 	public $post_type;

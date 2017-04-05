@@ -163,7 +163,7 @@ class JustCustomFields extends core\Singleton
 		$collection_fields = array();
 		foreach ($this->_fields as $f) {
 			if ( !$f['collection_field'] ) continue;
-			$collection_fields[] = $f;
+			$collection_fields[ $f['id_base'] ] = $f;
 		}
 		
 		return $collection_fields;

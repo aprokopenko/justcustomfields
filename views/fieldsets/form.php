@@ -1,6 +1,14 @@
 <?php
+/**
+ * @var $fieldset array
+ * @var $post_type string
+ * @var $taxonomies \WP_Taxonomy[]
+ * @var $templates array
+ * @var $post_type_kind string
+ */
 
 use jcf\models\Fieldset;
+use jcf\core\JustField;
 
 ?>
 <div class="jcf_edit_modal_shadow">
@@ -16,7 +24,7 @@ use jcf\models\Fieldset;
 						<label for="jcf_edit_fieldset_title"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label>
 						<input class="widefat" id="jcf_edit_fieldset_title" type="text" name="title" value="<?php echo esc_attr($fieldset['title']); ?>" />
 					</p>
-					<?php if ( empty($prefix) ) : ?>
+					<?php if ( JustField::POSTTYPE_KIND_POST == $post_type_kind ) : ?>
 						<p>
 							<label for="jcf_edit_fieldset_position"><?php _e('Position:', \JustCustomFields::TEXTDOMAIN); ?></label><br>
 							<select id="jcf_edit_fieldset_position" name="position" style="width:100%;">
@@ -35,7 +43,7 @@ use jcf\models\Fieldset;
 						</p>
 					<?php endif; ?>
 
-					<?php if ( empty($prefix) && (!empty($templates) || !empty($taxonomies)) ): ?>
+					<?php if ( JustField::POSTTYPE_KIND_POST == $post_type_kind && (!empty($templates) || !empty($taxonomies)) ): ?>
 						<div class="field-control-actions">
 							<h4>
 								<a href="#" class="visibility_toggle" >

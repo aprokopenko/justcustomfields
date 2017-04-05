@@ -21,6 +21,8 @@ class AdminController extends core\Controller
 		if ( isset($_GET['page']) && strpos($_GET['page'], 'jcf_') !== FALSE ) {
 			add_action('admin_print_scripts', array( $this, 'addScripts' ));
 			add_action('admin_print_styles', array( $this, 'addStyles' ));
+		} else {
+			add_action('admin_init', array($this, 'registerEditAssets') );
 		}
 
 		add_action('admin_print_scripts', array( $this, 'localizeScripts' ));
@@ -92,5 +94,19 @@ class AdminController extends core\Controller
 		wp_register_style($slug, jcf_plugin_url('assets/styles.css'), array( 'media-views' ));
 		wp_enqueue_style($slug);
 	}
-	
+
+	/**
+	 * Register post/term edit assets which can be used in dependency.
+	 */
+	public function registerEditAssets()
+	{
+		wp_register_script(
+			'jcf_edit_post',
+				jcf_plugin_url('assets/edit_post.js'),
+				array( 'jquery', 'tags-box' )
+		);
+
+		wp_register_style('jcf_edit_post', jcf_plugin_url('assets/edit_post.css'));
+	}
+
 }

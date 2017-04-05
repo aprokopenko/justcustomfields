@@ -141,7 +141,7 @@ class JustField_GoogleMaps extends core\JustField
 			wp_register_script('jcf_googlemaps_api', esc_url('//maps.googleapis.com/maps/api/js?key=' . $api_key), array('jquery'), '3', false);
 			wp_enqueue_script('jcf_googlemaps_api');
 
-			wp_register_script('jcf_googlemaps_events', plugins_url( '/assets/googlemaps.js', __FILE__ ), array('jquery', 'jcf_googlemaps_api'));
+			wp_register_script('jcf_googlemaps_events', plugins_url( '/assets/googlemaps.js', __FILE__ ), array('jquery', 'jcf_googlemaps_api', 'jcf_edit_post'));
 			wp_enqueue_script('jcf_googlemaps_events');
 		}
 	}

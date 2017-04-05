@@ -3,9 +3,12 @@
 namespace jcf\models;
 
 use jcf\core;
+use jcf\core\traits\WithPostTypeKind;
 
 class Field extends core\Model
 {
+	use WithPostTypeKind;
+
 	public $post_type;
 	public $field_id;
 	public $field_type;

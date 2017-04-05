@@ -46,37 +46,39 @@ class FieldsetController extends core\Controller
 	 */
 	public function actionIndex()
 	{
-		$post_type = $_GET['pt'];
-
-		// TODO: replace with some getter
-		if ( strpos($post_type, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
-			$prefix = models\Fieldset::TAXONOMY_PREFIX;
-			$post_types = jcf_get_taxonomies('objects');
-		}
-		else {
-			$prefix = '';
-			$post_types = jcf_get_post_types('object');
-		}
+		$post_type_id = $_GET['pt'];
+		$post_type_kind = models\Fieldset::getPostTypeKind($post_type_id);
 
 		$jcf = \JustCustomFields::getInstance();
 		$fieldset_model = new models\Fieldset();
 		$field_model = new models\Field();
 
-		$fieldsets = $fieldset_model->findByPostType($post_type);
-		$fields = $field_model->findByPostType($post_type);
-		$collections = $field_model->findCollectionsByPostType($post_type);
+		$fieldsets = $fieldset_model->findByPostType($post_type_id);
+		$fields = $field_model->findByPostType($post_type_id);
+		$collections = $field_model->findCollectionsByPostType($post_type_id);
 		$collections['registered_fields'] = $jcf->getFields('collection');
 		$registered_fields = $jcf->getFields();
+
+		if ( core\JustField::POSTTYPE_KIND_TAXONOMY == $post_type_kind ) {
+			$post_types = jcf_get_taxonomies('objects');
+			// taxonomies are linked to Posts, so we don't need related content here.
+			unset( $registered_fields['relatedcontent'] );
+			unset( $collections['registered_fields']['relatedcontent'] );
+		} else {
+			$post_types = jcf_get_post_types('object');
+		}
+
 
 		// load template
 		$template_params = array(
 			'tab' => 'fields',
-			'post_type' => $post_types[$post_type],
+			'post_type' => $post_types[$post_type_id],
+			'post_type_id' => $post_type_id,
+			'post_type_kind' => $post_type_kind,
 			'fieldsets' => $fieldsets,
 			'field_settings' => $fields,
 			'collections' => $collections,
 			'registered_fields' => $registered_fields,
-			'prefix' => $prefix
 		);
 		return $this->_render('fieldsets/index', $template_params);
 	}
@@ -115,17 +117,14 @@ class FieldsetController extends core\Controller
 			$taxonomies = get_object_taxonomies($model->post_type, 'objects');
 			$templates = jcf_get_page_templates($model->post_type);
 
-			// TODO: replace with model getter:
-			if ( strpos($model->post_type, models\Fieldset::TAXONOMY_PREFIX) !== false ) {
-				$prefix = models\Fieldset::TAXONOMY_PREFIX;
-			}
+			$post_type_kind = $model->getPostTypeKind($model->post_type);
 
 			return $this->_renderAjax('fieldsets/form', 'html', array(
 				'fieldset' => $fieldset,
 				'post_type' => $model->post_type,
 				'taxonomies' => $taxonomies,
 				'templates' => $templates,
-				'prefix' => $prefix,
+				'post_type_kind' => $post_type_kind,
 			));
 		}
 

@@ -1,11 +1,22 @@
+<?php
+/**
+ * @var $tab string
+ * @var $post_type \WP_Post_Type|\WP_Taxonomy
+ * @var $post_type_id string
+ * @var $post_type_kind string
+ * @var $fieldsets array
+ * @var $field_settings array
+ * @var $collections array
+ * @var $registered_fields array
+ */
+?>
 <?php include(JCF_ROOT . '/views/_header.php'); ?>
 
 	<h2><a href="?page=jcf_admin" class="jcf_change_pt"><?php _e('Fields', \JustCustomFields::TEXTDOMAIN); ?></a> &raquo;
 		<?php echo $post_type->label; ?> &raquo; <small><?php _e('Configure', \JustCustomFields::TEXTDOMAIN); ?></small>
 	</h2>
 
-	<?php // TODO: replace $prefix.* with var from controller ?>
-	<input type="hidden" id="jcf_post_type_hidden" value="<?php echo $prefix . $post_type->name; ?>" />
+	<input type="hidden" id="jcf_post_type_hidden" value="<?php echo $post_type_id; ?>" />
 	
 	<div class="jcf_columns jcf_width66p">
 		<div id="jcf_fieldsets">
@@ -74,7 +85,7 @@
 													'collection_id' => $field_id,
 													'fieldset_id' => $fieldset['id'],
 													'registered_fields' => $collections['registered_fields'],
-													'prefix' => $prefix
+													'post_type_kind' => $post_type_kind,
 												)); ?></td>
 										<?php endif; ?>
 									</tr>
@@ -93,7 +104,6 @@
 							<label class="nowrap"><?php _e('Add new Field:', \JustCustomFields::TEXTDOMAIN); ?> </label>
 							<select name="field_type" class="jcf_add_field">
 								<?php foreach( $registered_fields as $field ) : ?>
-									<?php if ( !empty($prefix) && $field['id_base'] == 'relatedcontent' ) continue; ?>
 									<option value="<?php echo $field['id_base']; ?>"><?php echo esc_html($field['title']); ?></option>
 								<?php endforeach; ?>
 							</select>

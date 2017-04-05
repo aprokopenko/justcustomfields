@@ -59,8 +59,7 @@ function jcf_get_taxonomies( $format = 'names' ) {
 	$taxonomies = array();
 
 	foreach ( $all_taxonomies as $key => $val ) {
-		// TODO: replace with constant
-		$taxonomies['tax_' . $key] = $val;
+		$taxonomies[\jcf\core\JustField::POSTTYPE_KIND_PREFIX_TAXONOMY . $key] = $val;
 	}
 
 	return $taxonomies;

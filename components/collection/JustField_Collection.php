@@ -195,7 +195,7 @@ class JustField_Collection extends core\JustField
 		wp_register_script(
 			'jcf_collection_post_edit',
 			jcf_plugin_url('components/collection/assets/collection_post_edit.js'),
-			array( 'jquery' )
+			array( 'jquery', 'jcf_edit_post' )
 		);
 		wp_enqueue_script('jquery-ui-accordion');
 		wp_enqueue_script('jcf_collection_post_edit');
@@ -238,7 +238,11 @@ class JustField_Collection extends core\JustField
 	 */
 	public function addCss()
 	{
-		wp_register_style('jcf_collection', jcf_plugin_url('components/collection/assets/collection.css'), array( 'thickbox' ));
+		wp_register_style(
+			'jcf_collection',
+			jcf_plugin_url('components/collection/assets/collection.css'),
+			array( 'thickbox', 'jcf_edit_post' )
+		);
 		wp_enqueue_style('jcf_collection');
 	}
 

@@ -4,8 +4,7 @@ namespace jcf\controllers;
 
 use jcf\models;
 use jcf\core;
-
-// TODO: validate all code below!
+use jcf\core\JustField;
 
 class TaxonomyController extends core\Controller
 {
@@ -26,8 +25,8 @@ class TaxonomyController extends core\Controller
 		
 		add_action( $this->_taxonomy . '_edit_form_fields', array($this, 'actionRender'), 10, 2 );
 		add_action( $this->_taxonomy . '_add_form_fields', array($this, 'actionRender'), 10, 2 );
-		add_action( 'edit_terms', array($this, 'saveTaxonomyExt'), 10, 3 );
-		add_action( 'create_term', array($this, 'saveTaxonomyExt'), 10, 3 );
+		add_action( 'edit_terms', array($this, 'saveCustomFields'), 10, 3 );
+		add_action( 'create_term', array($this, 'saveCustomFields'), 10, 3 );
 	}
 	
 	/**
@@ -49,11 +48,11 @@ class TaxonomyController extends core\Controller
 			$current_script = $_SERVER['SCRIPT_NAME'];
 		}
 
-		if (strpos($current_script, 'term.php') !== FALSE || strpos($current_script, 'edit-tags.php') !== FALSE) {
+		$is_add_term = false;
+		if (strpos($current_script, 'term.php') !== FALSE
+			|| strpos($current_script, 'edit-tags.php') !== FALSE
+		) {
 			$is_add_term = true;
-		}
-		else {
-			$is_add_term = false;
 		}
 
 		return $is_edit_taxonomy || $is_add_term;
@@ -65,9 +64,9 @@ class TaxonomyController extends core\Controller
 		$htmlFields = '';
 		if ( !empty($term->term_id) ) $is_edit = true;
 
-		$taxonomy = models\Fieldset::TAXONOMY_PREFIX . $this->_taxonomy;
+		$post_type = JustField::POSTTYPE_KIND_PREFIX_TAXONOMY . $this->_taxonomy;
 		$model = new models\Fieldset();
-		$fieldsets = $model->findByPostType($taxonomy);
+		$fieldsets = $model->findByPostType($post_type);
 
 		$field_model = new models\Field();
 
@@ -84,7 +83,7 @@ class TaxonomyController extends core\Controller
 					if ( !$enabled ) continue;
 
 					$params = array(
-						'post_type' => $taxonomy,
+						'post_type' => $post_type,
 						'field_id' => $field_id,
 						'fieldset_id' => $fieldset['id']
 					);
@@ -114,13 +113,14 @@ class TaxonomyController extends core\Controller
 		}
 	}
 	
-	public function saveTaxonomyExt( $term_id, $tt_id, $taxonomy = null  )
+	public function saveCustomFields( $term_id, $tt_id, $taxonomy = null  )
 	{
-		$taxonomy = empty($taxonomy) ? models\Fieldset::TAXONOMY_PREFIX . $tt_id : models\Fieldset::TAXONOMY_PREFIX . $taxonomy;
+		$post_type = empty($taxonomy) ? $tt_id :  $taxonomy;
+		$post_type = JustField::POSTTYPE_KIND_PREFIX_TAXONOMY . $post_type;
 		
 		$fieldsets_model = new models\Fieldset();
 		$field_model = new models\Field();
-		$field_model->post_type = $taxonomy;
+		$field_model->post_type = $post_type;
 
 		$fieldsets = $fieldsets_model->findByPostType($taxonomy);
 
