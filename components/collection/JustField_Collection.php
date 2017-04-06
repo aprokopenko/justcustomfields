@@ -116,8 +116,9 @@ class JustField_Collection extends core\JustField
 						<div class="clr"></div>
 						<input type="button" value="<?php echo sprintf(__('Add %s Item', \JustCustomFields::TEXTDOMAIN), $this->instance['title']); ?>" 
 							   class="button button-large jcf_add_more_collection"
-							   data-collection_id="<?php echo $this->id; ?>"
-							   data-fieldset_id="<?php echo $this->fieldsetId; ?>"
+							   data-collection_id="<?php echo esc_attr($this->id); ?>"
+							   data-fieldset_id="<?php echo esc_attr($this->fieldsetId); ?>"
+							   data-post_type="<?php echo esc_attr($field_model->post_type); ?>"
 							   name="jcf_add_more_collection">
 						<div class="clr"></div>
 					</div>
@@ -195,7 +196,7 @@ class JustField_Collection extends core\JustField
 		wp_register_script(
 			'jcf_collection_post_edit',
 			jcf_plugin_url('components/collection/assets/collection_post_edit.js'),
-			array( 'jquery', 'jcf_edit_post' )
+			array( 'jquery', 'jquery-ui-accordion', 'jquery-ui-sortable', 'jcf_edit_post' )
 		);
 		wp_enqueue_script('jquery-ui-accordion');
 		wp_enqueue_script('jcf_collection_post_edit');

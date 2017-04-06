@@ -180,7 +180,7 @@ class JustField_Table extends core\JustField
 	{
 		global $wp_version;
 
-		wp_register_script('jcf_table', jcf_plugin_url('components/table/table.js'), array( 'jquery', 'jcf_edit_post' ));
+		wp_register_script('jcf_table', jcf_plugin_url('components/table/table.js'), array( 'jquery', 'jquery-ui-sortable', 'jcf_edit_post' ));
 		wp_enqueue_script('jcf_table');
 
 		// add text domain if not registered with another component

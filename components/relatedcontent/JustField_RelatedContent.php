@@ -227,7 +227,9 @@ class JustField_RelatedContent extends core\JustField
 	public function addJs()
 	{
 		wp_register_script(
-			'jcf_related_content', plugins_url( '/related-content.js', __FILE__ ), array( 'jquery', 'jquery-ui-autocomplete', 'jcf_edit_post' )
+			'jcf_related_content',
+				plugins_url( '/related-content.js', __FILE__ ),
+				array( 'jquery', 'jquery-ui-autocomplete', 'jquery-ui-sortable', 'jcf_edit_post' )
 		);
 		wp_enqueue_script('jcf_related_content');
 

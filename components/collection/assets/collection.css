@@ -3,6 +3,13 @@
 	margin-bottom: 15px;
 }
 .collection_field_group.empty{ margin: 0; }
+.collection_field_group h3{
+	font-size: 14px;
+	padding: 8px 12px;
+	margin: 0;
+	line-height: 1.4;
+	font-weight: normal;
+}
 .collection_field_group .collection_field_group_entry{
 	padding: 0 15px 15px;
 }

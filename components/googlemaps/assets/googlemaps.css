@@ -1,0 +1,21 @@
+.jcf_edit_field.field_googlemaps .jcf_cols {
+	display: flex;
+	flex-wrap: wrap;
+}
+.jcf_edit_field.field_googlemaps .jcf_cols .jcf_col1{
+	flex-basis: 50%;
+	min-width: 300px;
+}
+.jcf_edit_field.field_googlemaps .jcf_cols .jcf_col2{
+	margin-bottom: 8px;
+}
+.jcf_googlemaps_coordinates {
+	padding: 0 0 8px 30px;
+	overflow: hidden;
+}
+.jcf_googlemaps_coordinates span { display:block; float:left; width:80px; text-align: right; padding-right: 10px; font-weight: bold; }
+.jcf_googlemaps_coordinates input[type=text] { float:left; width:200px; }
+.jcf_googlemaps_coordinates_buttons {
+	width:230px;
+	float: left;
+}

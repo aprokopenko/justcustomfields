@@ -97,13 +97,17 @@ class TaxonomyController extends core\Controller
 
 		foreach ( $fieldsets as $f_id => $fieldset ) {
 
+			foreach ( $fieldset['fields'] as $field_id => $enabled ) {
+				if ( !$enabled ) {
+					unset($fieldset['fields'][$field_id]);
+				}
+			}
+
 			// if all fields disabled -> remove fieldset
 			if ( empty($fieldset['fields']) ) continue;
 
 			$htmlFields = '';
 			foreach ($fieldset['fields'] as $field_id => $enabled) {
-				if ( !$enabled ) continue;
-
 				$params = array(
 					'post_type' => $post_type,
 					'field_id' => $field_id,

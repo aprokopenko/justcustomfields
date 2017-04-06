@@ -1,4 +1,4 @@
-window.jcf_googlemaps  = [];
+if ( ! window.jcf_googlemaps ) window.jcf_googlemaps  = [];
 
 /**
  * Init field with map
@@ -78,6 +78,7 @@ function jcf_googlemaps_init_field(i) {
 
   // This event listener calls addMarker() when the map is clicked.
   google.maps.event.addListener(map, 'click', function(event) {
+    jQuery( '#' + jcf_googlemap.address_id ).val('');
     jcf_googlemaps_add_marker(event.latLng, map, jcf_googlemap);
   });
 
@@ -121,9 +122,10 @@ function jcf_googlemaps_geocode_address(geocoder, map, jcf_googlemap) {
 
 /**
  * Add new event for collection open row. We need to call map resize here
- * @param this  The accordion object
  * @param event The jquery UI event
  * @param ui    The jquery UI widget event values
+ *
+ * @var this  The accordion object
  */
 function jcf_googlemaps_collection_opened(event, ui) {
   if ( ui.newPanel.size() && jQuery(ui.newPanel).find('.jcf-googlemaps-container').size() ) {
@@ -138,14 +140,37 @@ function jcf_googlemaps_collection_opened(event, ui) {
 jcf_add_action('collection_row_activated', 'googlemaps_resize', jcf_googlemaps_collection_opened);
 
 /**
- * init map objects for each jcf googlemap object
+ * Clean global maps settings variable
+ *
+ * @param response
+ *
+ * @var this  Ajax object
  */
-google.maps.event.addDomListener(window, 'load', function() {
+function jcf_googlemaps_clean_maps(response) {
+  window.jcf_googlemaps  = [];
+}
+jcf_add_action('taxonomy_term_added', 'googlemaps_taxonomy_term_added', jcf_googlemaps_clean_maps);
+
+/**
+ * Run init for all available maps
+ */
+function jcf_googlemaps_init_maps() {
   for (var i=0; i<window.jcf_googlemaps.length; i++) {
     jcf_googlemaps_init_field(i);
   }
-});
+}
 
+/**
+ * init map objects for each jcf googlemap object
+ */
+google.maps.event.addDomListener(window, 'load', function() {
+  jcf_googlemaps_init_maps();
+});
+jcf_add_action('taxonomy_term_added_form_refreshed', 'googlemaps_taxonomy_term_added', jcf_googlemaps_init_maps);
+
+/**
+ * DOM ready
+ */
 jQuery(document).ready(function(){
 
   jQuery(document).on('click', '.jcf_googlemaps_toggle_manually', function (e) {

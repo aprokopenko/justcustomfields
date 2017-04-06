@@ -34,7 +34,7 @@ class JustField_GoogleMaps extends core\JustField
 					<strong>Please set Google Maps API Key on Just Custom Fields <a href="<?php echo esc_url( admin_url('options-general.php?page=jcf_settings')); ?>">Settings</a> page.</strong>
 				<?php else : ?>
 					<div class="jcf_cols">
-						<div class="jcf_col2">
+						<div class="jcf_col1">
 							<input type="text" id="<?php echo $this->getFieldId('address'); ?>" name="<?php echo $this->getFieldName('address'); ?>"
 								   placeholder="Enter address to search with Google Maps"
 								   value="<?php echo esc_attr($this->entry['address']); ?>" >
@@ -65,9 +65,12 @@ class JustField_GoogleMaps extends core\JustField
 								id="<?php echo $this->getFieldId('lng'); ?>"
 								value="<?php echo esc_attr($this->entry['lng']); ?>"
 								>
-						<button id="<?php echo $this->getFieldId('set_btn'); ?>" class="button" type="button">Set Marker</button>
-						&nbsp; <a href="#" class="jcf_googlemaps_toggle_manually">hide coordinates</a>
+						<div class="jcf_googlemaps_coordinates_buttons">
+							<button id="<?php echo $this->getFieldId('set_btn'); ?>" class="button" type="button">Set Marker</button>
+							&nbsp; <a href="#" class="jcf_googlemaps_toggle_manually">hide coordinates</a>
+						</div>
 					</div>
+					<div class="clear"></div>
 
 					<div class="jcf-googlemaps-container" id="<?php echo $this->getFieldId('map'); ?>" style="width: 100%; max-width: 800px; height: 400px;"></div>
 
@@ -76,6 +79,7 @@ class JustField_GoogleMaps extends core\JustField
 					<?php endif; ?>
 
 					<script>
+                      	if ( ! window.jcf_googlemaps ) window.jcf_googlemaps  = [];
 						window.jcf_googlemaps.push({
 						  'id': '<?php echo esc_attr( $this->id ); ?>',
 						  'map_id': '<?php echo $this->getFieldId('map'); ?>',
@@ -144,6 +148,15 @@ class JustField_GoogleMaps extends core\JustField
 			wp_register_script('jcf_googlemaps_events', plugins_url( '/assets/googlemaps.js', __FILE__ ), array('jquery', 'jcf_googlemaps_api', 'jcf_edit_post'));
 			wp_enqueue_script('jcf_googlemaps_events');
 		}
+	}
+
+	/**
+	 * add custom css
+	 */
+	public function addCss()
+	{
+		wp_register_style('jcf_googlemaps', jcf_plugin_url('components/googlemaps/assets/googlemaps.css'), array(  'jcf_edit_post' ));
+		wp_enqueue_style('jcf_googlemaps');
 	}
 
 	/**

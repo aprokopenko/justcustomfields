@@ -10,8 +10,11 @@
         'taxonomy': taxonomy
       },
       success: function(response) {
-        console.log(response);
+        jcf_do_action('taxonomy_term_added', this, response);
+
         $('#jcf_taxonomy_fields').html(response);
+
+        jcf_do_action('taxonomy_term_added_form_refreshed', this, response);
       }
     })
     console.log(taxonomy);
