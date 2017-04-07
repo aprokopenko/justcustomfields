@@ -3,12 +3,10 @@
 namespace jcf\models;
 
 use jcf\core;
-use jcf\core\traits\WithPostTypeKind;
+use jcf\core\JustField;
 
 class Field extends core\Model
 {
-	use WithPostTypeKind;
-
 	public $post_type;
 	public $field_id;
 	public $field_type;
@@ -136,4 +134,20 @@ class Field extends core\Model
 		}
 		return true;
 	}
+
+	/**
+	 * Check what post type kind of given post type ID
+	 *
+	 * @param string $post_type Post type ID or Prefixed taxonomy ID
+	 * @return string
+	 */
+	public static function getPostTypeKind( $post_type )
+	{
+		$kind = JustField::POSTTYPE_KIND_POST;
+		if ( 0 === strpos($post_type, JustField::POSTTYPE_KIND_PREFIX_TAXONOMY) ) {
+			$kind = JustField::POSTTYPE_KIND_TAXONOMY;
+		}
+		return $kind;
+	}
+
 }

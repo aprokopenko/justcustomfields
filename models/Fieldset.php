@@ -4,12 +4,9 @@ namespace jcf\models;
 
 use jcf\core;
 use jcf\models;
-use jcf\core\traits\WithPostTypeKind;
 
 class Fieldset extends core\Model
 {
-	use WithPostTypeKind;
-
 	const POSITION_ADVANCED = 'advanced';
 	const POSITION_SIDE = 'side';
 	const POSITION_NORMAL = 'normal';
@@ -250,4 +247,14 @@ class Fieldset extends core\Model
 		return !empty($save);
 	}
 
+	/**
+	 * Check what post type kind of given post type ID
+	 *
+	 * @param string $post_type Post type ID or Prefixed taxonomy ID
+	 * @return string
+	 */
+	public static function getPostTypeKind( $post_type )
+	{
+		return Field::getPostTypeKind( $post_type );
+	}
 }

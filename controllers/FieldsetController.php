@@ -111,7 +111,6 @@ class FieldsetController extends core\Controller
 	public function ajaxGetForm()
 	{
 		$model = new models\Fieldset();
-		$prefix = '';
 
 		if ( $model->load($_POST) && $fieldset = $model->findById($model->fieldset_id) ) {
 			$taxonomies = get_object_taxonomies($model->post_type, 'objects');
