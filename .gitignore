@@ -4,6 +4,7 @@
 /nbproject/
 .project
 .idea
+.jcremote.ini
 
 # composer
 composer.lock
