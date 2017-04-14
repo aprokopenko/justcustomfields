@@ -1,0 +1,87 @@
+.jcmf-multi-field {
+    font-size: 16px;
+    padding: 0 0 50px 0;
+    position: relative;
+    box-sizing: border-box;
+}
+.jcmf-form-item {
+    padding: 5px 20px;
+    position: relative;
+    overflow: hidden;
+}
+.jcmf-form-item.has-error {
+    border-bottom: 2px solid #d00;
+    background: #ffdada;
+}
+.jcmf-remove-input {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    color: #444;
+}
+.jcmf-add-input-btn {
+    background-color: #f5f5f5;
+    position: absolute;
+    bottom: 10px;
+}
+.jcmf-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-radius: 4px;
+}
+.cols .jcmf-input {
+    float: left;
+    margin-right: 1%;
+}
+.col-2 .jcmf-input { width: 48.9%; }
+.col-3 .jcmf-input { width: 31.9%; }
+.col-4 .jcmf-input { width: 23.9%; }
+.col-5 .jcmf-input { width: 18.9%; }
+.col-6 .jcmf-input { width: 14.9%; }
+.col-7 .jcmf-input { width: 12.9%; }
+.col-8 .jcmf-input { width: 11.5%; margin-right: 0.5%; }
+.col-9 .jcmf-input { width: 10.5%; margin-right: 0.5%; }
+.col-10 .jcmf-input { width: 9%; margin-right: 0.5%; }
+
+.jcmf-input {
+    display: block;
+}
+input.jcmf-input {
+    border:1px solid #ddd;
+    border-bottom: 2px solid #558;
+    padding: 3px 10px;
+    color:#333;
+}
+select.jcmf-input {
+    color:#333;
+    border:1px solid #ddd;
+    border-bottom: 2px solid #556;
+    height: 29px;
+}
+textarea.jcmf-input {
+    color:#333;
+    height:auto;
+    min-height: 30px;
+}
+.jcmf-multi-field .handle {
+    position: absolute;
+    left: 0;
+    top: 25px;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 32px;
+    background-color: #f3f3f3;
+    display: block;
+}
+.jcmf-multi-field .handle.sortable {
+    background-color: #b3b3b3;
+    cursor: move;
+}

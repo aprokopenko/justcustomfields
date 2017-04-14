@@ -12,7 +12,6 @@ use jcf\core;
  */
 class JustField_Select extends core\JustField
 {
-
 	public function __construct()
 	{
 		$field_ops = array( 'classname' => 'field_select' );
@@ -25,7 +24,6 @@ class JustField_Select extends core\JustField
 	 */
 	public function field()
 	{
-		$values = $this->parsedSelectOptions($this->instance);
 		?>
 		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
 			<?php echo $this->fieldOptions['before_widget']; ?>
@@ -35,8 +33,8 @@ class JustField_Select extends core\JustField
 						<?php if (!empty($this->instance['empty_option'])) : ?>
 							<option value="" <?php echo selected($this->instance['empty_option'], $this->entry, false); ?>><?php echo esc_attr($this->instance['empty_option']); ?></option>
 						<?php endif; ?>
-						<?php foreach ( (array) $values as $key => $val ) : ?>
-							<option value="<?php echo esc_attr($val); ?>" <?php echo selected($val, $this->entry, false); ?>><?php echo esc_html(ucfirst($key)); ?></option>
+						<?php foreach ( (array) $this->instance['options'] as $val ) : ?>
+							<option value="<?php echo esc_attr($val['id']); ?>" <?php echo selected($val['id'], $this->entry, false); ?>><?php echo esc_attr($val['label']); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
@@ -54,16 +52,59 @@ class JustField_Select extends core\JustField
 	public function form()
 	{
 		//Defaults
-		$instance = wp_parse_args((array) $this->instance, array( 'title' => '', 'description' => '', 'options' => '', 'empty_option' => '' ));
+		$instance =
+			wp_parse_args(
+				(array) $this->instance,
+				array( 'title' => '', 'description' => '', 'options' => array(), 'empty_option' => '' )
+			);
 		$title = esc_attr($instance['title']);
-		$options = esc_attr($instance['options']);
+		$options = $instance['options'];
 		$description = esc_html($instance['description']);
 		$empty_option = esc_attr($instance['empty_option']);
 		?>
 		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
-		<p><label for="<?php echo $this->getFieldId('options'); ?>"><?php _e('Options:', \JustCustomFields::TEXTDOMAIN); ?></label> 
-			<textarea class="widefat" id="<?php echo $this->getFieldId('options'); ?>" name="<?php echo $this->getFieldName('options'); ?>" ><?php echo $options; ?></textarea>
-			<br/><small><?php _e('Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', \JustCustomFields::TEXTDOMAIN); ?></small></p>
+		<p><label for="<?php echo $this->getFieldId('options'); ?>"><?php _e('Options:', \JustCustomFields::TEXTDOMAIN); ?></label>
+		<div class="options"></div>
+		<?php
+		$multi_field_config = array(
+			array(
+				'name' => 'label',
+				'placeholder' => 'Label',
+				'type' => 'text',
+			),
+			array(
+				'name' => 'id',
+				'placeholder' => 'ID',
+				'type' => 'text',
+			),
+		);
+		?>
+			<script type="text/javascript">
+				( function( $ ) {
+
+					$(document).ready(function() {
+						$('.options').jcMultiField({
+							addButton: { class: 'button' },
+							removeButton: { class: 'dashicons dashicons-no-alt' },
+							dragHandler: { class: 'dashicons dashicons-menu' },
+
+							fieldId: '<?php echo $this->getFieldName('options'); ?>',
+							structure: <?php echo json_encode( $multi_field_config ) ?>,
+							data: <?php echo json_encode( $options ) ?>,
+						});
+					});
+
+				}( jQuery ));
+			</script>
+			<style type="text/css">
+				.jcmf-multi-field .handle { background-color: transparent !important; color: #aaa; }
+				.jcmf-multi-field .handle.sortable { color: #333; }
+				.jcmf-multi-field .button { margin-left: 23px; }
+				.jtmce_help .dashicons{ text-decoration: none !important; }
+				.jtmce_help_box { max-width: 800px; padding: 0 0 30px; }
+				.jtmce_help_box.hidden { display: none;}
+			</style>
+
 		<p><label for="<?php echo $this->getFieldId('empty_option'); ?>"><?php _e('Empty option:', \JustCustomFields::TEXTDOMAIN); ?></label><input class="widefat" id="<?php echo $this->getFieldId('empty_option'); ?>" name="<?php echo $this->getFieldName('empty_option'); ?>" placeholder="ex. Choose item from the list"" type="text" value="<?php echo $empty_option; ?>" />
 			<br/><small><?php _e('Leave blank to disable empty option', \JustCustomFields::TEXTDOMAIN); ?></small></p>
 		<p><label for="<?php echo $this->getFieldId('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->getFieldName('description'); ?>" id="<?php echo $this->getFieldId('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
@@ -75,6 +116,7 @@ class JustField_Select extends core\JustField
 	 */
 	public function save( $values )
 	{
+
 		$values = $values['val'];
 
 		return $values;
@@ -87,38 +129,12 @@ class JustField_Select extends core\JustField
 	{
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['options'] = strip_tags($new_instance['options']);
+		$instance['options'] = $this->orderOptions($new_instance['options']);
 		$instance['description'] = strip_tags($new_instance['description']);
 		$instance['empty_option'] = strip_tags($new_instance['empty_option']);
 		return $instance;
 	}
 
-	/**
-	 * prepare list of options
-	 * 
-	 * @param array $instance	current instance
-	 * @return array
-	 */
-	public function parsedSelectOptions( $instance )
-	{
-		$values = array();
-		$settings = $instance['options'];
-
-		$v = explode("\n", $settings);
-		foreach ( $v as $val ) {
-			$val = trim($val);
-			if ( empty($val) ) continue;
-			if ( strpos($val, '|') !== FALSE ) {
-				$a = explode('|', $val);
-				$values[$a[0]] = $a[1];
-			}
-			elseif ( !empty($val) ) {
-				$values[$val] = $val;
-			}
-		}
-
-		return $values;
-	}
 
 	/**
 	 * print field values inside the shortcode

@@ -616,4 +616,32 @@ class JustField
 	{
 		return $args['before_value'] . esc_html($this->entry) . $args['after_value'];
 	}
+
+	/**
+	 * Correct order options after drup&drop
+	 *
+	 * @param $options
+	 *
+	 * @return array
+	 */
+
+	public function orderOptions($options)
+	{
+
+		$new_options = array();
+		$i = 0;
+		foreach ($options as $val){
+			$option = [];
+			foreach($val as $key => $opt){
+				$option[$key] = strip_tags($opt);
+			}
+			if ( ! empty( $option['id'] && $option['label'] ) ){
+				$new_options[$i] = $option;
+			}
+			$i++;
+		}
+
+		return $new_options;
+	}
+
 }

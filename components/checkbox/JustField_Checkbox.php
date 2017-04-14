@@ -25,15 +25,12 @@ class JustField_Checkbox extends core\JustField
 	 */
 	public function field()
 	{
-		// prepare options array
-		$values = $this->parsedSelectOptions($this->instance);
-
-		if ( empty($values) ) {
+		if ( empty($this->instance['settings']) ) {
 			echo '<p>' . __('Please check settings. Values are empty', \JustCustomFields::TEXTDOMAIN) . '</p>';
 			return false;
 		}
 
-		$single_checkbox = (count($values) == 1) ? true : false;
+		$single_checkbox = (count($this->instance['settings']) == 1) ? true : false;
 		?>
 		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
 			<?php echo $this->fieldOptions['before_widget']; ?>
@@ -41,16 +38,16 @@ class JustField_Checkbox extends core\JustField
 				
 				<div class="checkboxes-set">
 					<div class="checkbox-row">
-						<?php foreach ( (array) $values as $key => $val ) : ?>
+						<?php foreach ( (array) $this->instance['settings'] as $val ) : ?>
 							<?php
 							if ( $single_checkbox ) {
-								$checked = ($val == $this->entry) ? true : false;
+								$checked = ($val['id'] == $this->entry) ? true : false;
 							}
 							else {
-								$checked = in_array($val, (array) $this->entry);
+								$checked = in_array($val['id'], (array) $this->entry);
 							}
 							?>
-							<label><input type="checkbox" name="<?php echo $this->getFieldName('val') . ($single_checkbox ? '' : '[]'); ?>" id="<?php echo $this->getFieldId('val'); ?>" value="<?php echo esc_attr($val); ?>" <?php echo checked(true, $checked, false); ?>/> <?php echo $key; ?></label>
+							<label><input type="checkbox" name="<?php echo $this->getFieldName('val') . ($single_checkbox ? '' : '[]'); ?>" id="<?php echo $this->getFieldId('val'); ?>" value="<?php echo esc_attr($val['id']); ?>" <?php echo checked(true, $checked, false); ?>/> <?php echo $val['label']; ?></label>
 						<?php endforeach; ?>
 					</div>
 				</div>
@@ -69,10 +66,10 @@ class JustField_Checkbox extends core\JustField
 	public function form()
 	{
 		// Defaults
-		$instance = wp_parse_args((array) $this->instance, array( 'title' => '', 'settings' => '', 'description' => '' ));
+		$instance = wp_parse_args((array) $this->instance, array( 'title' => '', 'settings' => array(), 'description' => '' ));
 
 		$title = esc_attr($instance['title']);
-		$settings = esc_attr($instance['settings']);
+		$settings = $instance['settings'];
 		$description = esc_html($instance['description']);
 		?>
 		<p>
@@ -80,9 +77,47 @@ class JustField_Checkbox extends core\JustField
 			<input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" />
 		</p>
 		<p>
-			<label for="<?php echo $this->getFieldId('settings'); ?>"><?php _e('Settings:', \JustCustomFields::TEXTDOMAIN); ?></label> 
-			<textarea class="widefat" id="<?php echo $this->getFieldId('settings'); ?>" name="<?php echo $this->getFieldName('settings'); ?>" ><?php echo $settings; ?></textarea>
-			<br/><small><?php _e('Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', \JustCustomFields::TEXTDOMAIN); ?></small>
+			<label for="<?php echo $this->getFieldId('settings'); ?>"><?php _e('Settings:', \JustCustomFields::TEXTDOMAIN); ?></label>
+		<div class="settings"></div>
+		<?php
+		$multi_field_config = array(
+			array(
+				'name' => 'label',
+				'placeholder' => 'Label',
+				'type' => 'text',
+			),
+			array(
+				'name' => 'id',
+				'placeholder' => 'ID',
+				'type' => 'text',
+			),
+		);
+		?>
+		<script type="text/javascript">
+			( function( $ ) {
+
+				$(document).ready(function() {
+					$('.settings').jcMultiField({
+						addButton: { class: 'button' },
+						removeButton: { class: 'dashicons dashicons-no-alt' },
+						dragHandler: { class: 'dashicons dashicons-menu' },
+
+						fieldId: '<?php echo $this->getFieldName('settings'); ?>',
+						structure: <?php echo json_encode( $multi_field_config ) ?>,
+						data: <?php echo json_encode( $settings ) ?>,
+					});
+				});
+
+			}( jQuery ));
+		</script>
+		<style type="text/css">
+			.jcmf-multi-field .handle { background-color: transparent !important; color: #aaa; }
+			.jcmf-multi-field .handle.sortable { color: #333; }
+			.jcmf-multi-field .button { margin-left: 23px; }
+			.jtmce_help .dashicons{ text-decoration: none !important; }
+			.jtmce_help_box { max-width: 800px; padding: 0 0 30px; }
+			.jtmce_help_box.hidden { display: none;}
+		</style>
 		</p>
 		<p>
 			<label for="<?php echo $this->getFieldId('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label>
@@ -107,34 +142,9 @@ class JustField_Checkbox extends core\JustField
 	{
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['settings'] = strip_tags($new_instance['settings']);
+		$instance['settings'] = $this->orderOptions($new_instance['settings']);
 		$instance['description'] = strip_tags($new_instance['description']);
 		return $instance;
-	}
-
-	/**
-	 * prepare list of options
-	 * 
-	 * @param array $instance	current instance
-	 * @return array
-	 */
-	protected function parsedSelectOptions( $instance )
-	{
-		$values = array();
-		$v = explode("\n", $instance['settings']);
-
-		foreach ( $v as $val ) {
-			$val = trim($val);
-
-			if ( strpos($val, '|') !== FALSE ) {
-				$a = explode('|', $val);
-				$values[$a[0]] = $a[1];
-			}
-			elseif ( !empty($val) ) {
-				$values[$val] = $val;
-			}
-		}
-		return $values;
 	}
 
 	/**
