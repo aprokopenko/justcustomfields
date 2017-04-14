@@ -128,6 +128,7 @@ class JustField_Select extends core\JustField
 	public function update( $new_instance, $old_instance )
 	{
 		$instance = $old_instance;
+
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['options'] = $this->orderOptions($new_instance['options']);
 		$instance['description'] = strip_tags($new_instance['description']);
