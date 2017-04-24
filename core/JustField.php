@@ -528,16 +528,9 @@ class JustField
 	 */
 	public function doAddJs()
 	{
-		global $jcf_included_assets;
-
-		if ( !empty($jcf_included_assets['scripts'][get_class($this)]) )
-			return false;
-
-		
 		if ( method_exists($this, 'addJs') ) {
 			$this->addJs();
 		}
-		$jcf_included_assets['scripts'][get_class($this)] = 1;
 	}
 
 	/**
@@ -547,15 +540,9 @@ class JustField
 	 */
 	public function doAddCss()
 	{
-		global $jcf_included_assets;
-
-		if ( !empty($jcf_included_assets['styles'][get_class($this)]) )
-			return false;
-
 		if ( method_exists($this, 'addCss') ) {
 			$this->addCss();
 		}
-		$jcf_included_assets['styles'][get_class($this)] = 1;
 	}
 
 	/**

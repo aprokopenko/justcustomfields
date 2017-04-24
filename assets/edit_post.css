@@ -203,7 +203,7 @@ span.jcf_copied_to_clip{
 	font-weight: normal;
 	color: #212121;
 }
-.jcf_edit_field .wp-editor-tools { left:25%; }
+.jcf_edit_field .wp-editor-tools { left:25%; width: 75%; }
 .jcf_edit_field.field_datepicker .dashicons { line-height: 28px; }
 
 /* right column styles */
