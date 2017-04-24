@@ -58,7 +58,7 @@ class PostTypeController extends core\Controller
 		$fieldsets = $model->findByPostType($post_type);
 
 		$field_model = new models\Field();
-		$fields = $field_model->findByPostType($post_type_id);
+		$fields = $field_model->findByPostType($post_type);
 
 		$visibility_model = new models\FieldsetVisibility();
 		$visibility_rules = $visibility_model->findByPostType($post_type);
