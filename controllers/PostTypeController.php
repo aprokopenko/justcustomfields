@@ -103,10 +103,11 @@ class PostTypeController extends core\Controller
 	{
 		$model = new models\Field();
 		$fieldset = $box['args'][0];
+		$fields = $model->findByPostType($post->post_type);
 		$this->_render('shortcodes/modal');
 
 		foreach ( $fieldset['fields'] as $field_id => $enabled ) {
-			if ( !$enabled ) continue;
+			if ( !$enabled || empty( $fields[$field_id] ) ) continue;
 
 			$params = array(
 				'post_type' => $post->post_type,
