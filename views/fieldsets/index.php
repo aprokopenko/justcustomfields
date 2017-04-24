@@ -55,7 +55,9 @@
 						</tr></tfoot>
 						<tbody id="the-list-<?php echo $fieldset['id']; ?>">
 							<?php if( !empty($fieldset['fields']) && is_array($fieldset['fields']) ) : ?>
-								<?php foreach($fieldset['fields'] as $field_id => $enabled) : ?>
+								<?php foreach($fieldset['fields'] as $field_id => $enabled) :
+										if ( empty($field_settings[$field_id]) ) continue;
+									?>
 									<tr id="field_row_<?php echo $field_id; ?>" class="field_row <?php echo $field_id; ?>">
 										<td class="jcf-check-column" align="center">
 											<span class="dashicons dashicons-menu drag-handle"></span>

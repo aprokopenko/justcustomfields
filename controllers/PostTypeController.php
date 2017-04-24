@@ -58,6 +58,7 @@ class PostTypeController extends core\Controller
 		$fieldsets = $model->findByPostType($post_type);
 
 		$field_model = new models\Field();
+		$fields = $field_model->findByPostType($post_type_id);
 
 		$visibility_model = new models\FieldsetVisibility();
 		$visibility_rules = $visibility_model->findByPostType($post_type);
@@ -69,7 +70,7 @@ class PostTypeController extends core\Controller
 				if ( empty($fieldset['fields']) ) continue;
 
 				foreach ($fieldset['fields'] as $field_id => $enabled) {
-					if ( !$enabled ) continue;
+					if ( !$enabled || empty( $fields[$field_id] ) ) continue;
 
 					$params = array(
 						'post_type' => $post_type,
