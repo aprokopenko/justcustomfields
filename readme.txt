@@ -14,8 +14,8 @@ Turn WordPress into more powerful CMS by adding advanced and easy to use custom 
 
 == Description ==
 
-Just Custom Fields adds ability to extend your Posts, Pages (and other custom post types) with additional fields. After installation, you will see a simple settings page, which is self-explanatory to use.
-We use the standard WordPress PostMeta API to save fields data, so you can use standard WordPress functions in your themes/plugins to get data.
+Just Custom Fields adds ability to extend your Posts, Pages (and other custom post types) and Taxonomies with additional fields. After installation, you will see a simple settings page, which is self-explanatory to use.
+We use the standard WordPress PostMeta API and TaxonomyMeta API to save fields data, so you can use standard WordPress functions in your themes/plugins to get data.
 
 **IMPORTANT** We do not recommend update plugins on your existing sites from version 2.* to version 3.0+.
 JCF v3.0+ is not compatible with versions 2.*, so some field settings can be lost (and as a result - wrong values on post edit pages).
@@ -69,6 +69,10 @@ To use values from these fields in your theme, you can use the usual post meta f
 
 * get_post_meta()
 * get_post_custom()
+
+To use values from Taxonomy fields in your theme, you can use standard taxonomy meta function:
+
+* get_term_meta()
 
 == Upgrade Notice ==
 
