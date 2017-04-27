@@ -17,7 +17,6 @@
         jcf_do_action('taxonomy_term_added_form_refreshed', this, response);
       }
     })
-    console.log(taxonomy);
   }
 
   $( document ).ready(function(){
