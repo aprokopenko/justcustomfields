@@ -54,7 +54,8 @@ use jcf\models\Settings;
 				<input type="text" name="googlemaps_api_key" id="googlemaps_api_key" class="regular-text"
 					   value="<?php echo esc_attr($googlemaps_api_key) ?>" /><br />
 
-				<p><a href="https://developers.google.com/maps/documentation/javascript/get-api-key#get-an-api-key" target="_blank" >Click here to generate your API Key.</p>
+				<p><a href="https://developers.google.com/maps/documentation/javascript/get-api-key#get-an-api-key" target="_blank" >Click here</a> to generate your API Key.</p>
+				<p><small>Usually API key is domain related, so if you moved your site to a new domain - please update the API key.</small></p>
 				<br />
 			</div>
 

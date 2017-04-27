@@ -7,6 +7,12 @@ use jcf\core;
 
 class JustField
 {
+	const POSTTYPE_KIND_PREFIX_TAXONOMY = 'TAX_';
+	const POSTTYPE_KIND_PREFIX_POST = '';
+
+	const POSTTYPE_KIND_TAXONOMY = 'taxonomy';
+	const POSTTYPE_KIND_POST = 'post';
+
 	/**
 	 * Root id for all fields of this type (field type)
 	 * @var string
@@ -45,6 +51,7 @@ class JustField
 	public $fieldsetId = '';
 	public $collectionId = '';
 	public $postType;
+	public $postTypeKind = 'post';
 
 	/**
 	 * this is field settings (like title, slug etc)
@@ -111,6 +118,14 @@ class JustField
 		if ( !empty($this->collectionId) )
 			return true;
 		return false;
+	}
+
+	/**
+	 * Check if this field is created for taxonomy.
+	 */
+	public function isTaxonomyField()
+	{
+		return ( self::POSTTYPE_KIND_TAXONOMY === $this->postTypeKind );
 	}
 
 	/**
@@ -188,8 +203,8 @@ class JustField
 					return;
 
 				$collection_slug = $fields[$this->postType][$this->collectionId]['slug'];
+				$data = $this->get_meta_data($this->postID, $collection_slug, true);
 
-				$data = get_post_meta($this->postID, $collection_slug, true);
 				if ( isset($data[$key_from_collection][$this->slug]) ) {
 					$this->entry = $data[$key_from_collection][$this->slug];
 				}
@@ -198,11 +213,31 @@ class JustField
 		else {
 			// load entry
 			if ( !empty($this->slug) ) {
-				$this->entry = get_post_meta($this->postID, $this->slug, true);
+				$this->entry = $this->get_meta_data($this->postID, $this->slug, true);
 			}
 		}
 	}
 
+	/**
+	 * Get meta data from post or term based on current postTypeKind
+	 *
+	 * @param int    $object_id Post or Term ID
+	 * @param string $meta_key  Meta data key (identifier)
+	 * @param bool   $single    Value is single or not.
+	 *
+	 * @return mixed|null
+	 */
+	public function get_meta_data($object_id, $meta_key, $single = false)
+	{
+		if ( self::POSTTYPE_KIND_POST == $this->postTypeKind ) {
+			return get_post_meta($object_id, $meta_key, $single);
+		} elseif ( self::POSTTYPE_KIND_TAXONOMY == $this->postTypeKind ) {
+			return get_term_meta($object_id, $meta_key, $single);
+		} else {
+			return null;
+		}
+	}
+	
 	/**
 	 * Set post type
 	 * @param string $post_type
@@ -210,6 +245,11 @@ class JustField
 	public function setPostType( $post_type )
 	{
 		$this->postType = $post_type;
+		if ( 0 === strpos($this->postType, self::POSTTYPE_KIND_PREFIX_TAXONOMY) ) {
+			$this->postTypeKind = self::POSTTYPE_KIND_TAXONOMY;
+		} else {
+			$this->postTypeKind = self::POSTTYPE_KIND_POST;
+		}
 	}
 
 	/**
@@ -456,10 +496,31 @@ class JustField
 		// get real values
 		$values = $this->save($input);
 		// save to post meta
-		update_post_meta($this->postID, $this->slug, $values);
+		$this->update_meta_data($this->postID, $this->slug, $values);
+
 		return true;
 	}
 
+	/**
+	 * Update meta data for post or term based on current postTypeKind
+	 *
+	 * @param int    $object_id  Post or Term ID
+	 * @param string $meta_key   Meta data key (identifier)
+	 * @param mixed  $meta_value Meta value to be saved.
+	 *
+	 * @return mixed|null
+	 */
+	public function update_meta_data($object_id, $meta_key, $meta_value)
+	{
+		if ( self::POSTTYPE_KIND_POST == $this->postTypeKind ) {
+			return update_post_meta($object_id, $meta_key, $meta_value);
+		} elseif ( self::POSTTYPE_KIND_TAXONOMY == $this->postTypeKind ) {
+			return update_term_meta($object_id, $meta_key, $meta_value);
+		} else {
+			return null;
+		}
+	}
+	
 	/**
 	 * method that call $this->add_js to enqueue scripts in head section
 	 * do this only on post edit page and if at least one field is exists.
@@ -467,15 +528,9 @@ class JustField
 	 */
 	public function doAddJs()
 	{
-		global $jcf_included_assets;
-
-		if ( !empty($jcf_included_assets['scripts'][get_class($this)]) )
-			return false;
-
 		if ( method_exists($this, 'addJs') ) {
-			add_action('jcf_admin_edit_post_scripts', array( $this, 'addJs' ), 10);
+			$this->addJs();
 		}
-		$jcf_included_assets['scripts'][get_class($this)] = 1;
 	}
 
 	/**
@@ -485,15 +540,9 @@ class JustField
 	 */
 	public function doAddCss()
 	{
-		global $jcf_included_assets;
-
-		if ( !empty($jcf_included_assets['styles'][get_class($this)]) )
-			return false;
-
 		if ( method_exists($this, 'addCss') ) {
-			add_action('jcf_admin_edit_post_styles', array( $this, 'addCss' ), 10);
+			$this->addCss();
 		}
-		$jcf_included_assets['styles'][get_class($this)] = 1;
 	}
 
 	/**

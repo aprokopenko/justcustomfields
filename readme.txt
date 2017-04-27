@@ -6,7 +6,7 @@ Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custo
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
 Requires at least: 4.7
-Tested up to: 4.7.3
+Tested up to: 4.7.4
 Stable tag: trunk
 License: GNU General Public License v2
 
@@ -80,6 +80,11 @@ To upgrade remove the old plugin folder. After than follow the installation step
 2. The edit post page meta box with fields created on the settings page
 
 == Changelog ==
+* Version 3.3 - 26 April 2017
+	* New feature: Taxonomy term custom fields!
+	* Bug: Editor "Add media" button row overlap the Posts sidebar
+	* Bug: Theme config path hook doesn't work inside migration process.
+	* Tests: New tests with WordPress 4.7.4
 * Version 3.2 - 17 March 2017
 	* New feature: Google Maps component (Latitude and Longitude selector with Google Maps)
 	* Tests: New tests with WordPress 4.7.3

@@ -31,6 +31,7 @@ class Fieldset extends core\Model
 		$fields = $this->_dL->getFields();
 		$fieldsets = $this->_dL->getFieldsets();
 		$post_types = jcf_get_post_types();
+		$taxonomies = jcf_get_taxonomies();
 
 		foreach ( $post_types as $key => $post_type ) {
 			$pt = $post_type->name;
@@ -51,6 +52,27 @@ class Fieldset extends core\Model
 					$fieldset_fields = array_keys($fieldset['fields']);
 					$live_fields = array_intersect($fieldset_fields, $field_keys);
 					$count[$pt]['fields'] += count($live_fields);
+				}
+			}
+		}
+		
+		foreach ( $taxonomies as $tax_key => $taxonomy ) {
+			$count[$tax_key] = array(
+				'fieldsets' => 0,
+				'fields' => 0,
+			);
+
+			if ( empty($fields[$tax_key]) ) continue;
+
+			$field_keys = array_keys($fields[$tax_key]);
+
+			if ( !empty($fieldsets[$tax_key]) ) {
+				$count[$tax_key]['fieldsets'] = count($fieldsets[$tax_key]);
+
+				foreach ($fieldsets[$tax_key] as $fieldset) {
+					$fieldset_fields = array_keys($fieldset['fields']);
+					$live_fields = array_intersect($fieldset_fields, $field_keys);
+					$count[$tax_key]['fields'] += count($live_fields);
 				}
 			}
 		}
@@ -225,4 +247,14 @@ class Fieldset extends core\Model
 		return !empty($save);
 	}
 
+	/**
+	 * Check what post type kind of given post type ID
+	 *
+	 * @param string $post_type Post type ID or Prefixed taxonomy ID
+	 * @return string
+	 */
+	public static function getPostTypeKind( $post_type )
+	{
+		return Field::getPostTypeKind( $post_type );
+	}
 }

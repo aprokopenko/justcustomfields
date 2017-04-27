@@ -44,7 +44,7 @@ class PluginLoader
 			define('JCF_MIGRATE_MODE', true);
 			// print notice if we're not on migrate page
 			if (empty($_GET['page']) || $_GET['page'] != 'jcf_upgrade') {
-				add_action( 'admin_notices', array('\jcf\Models\Migrate', 'adminUpgradeNotice') );
+				add_action( 'admin_notices', array('\jcf\models\Migrate', 'adminUpgradeNotice') );
 			}
 			return true;
 		}

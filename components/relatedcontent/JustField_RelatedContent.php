@@ -227,7 +227,9 @@ class JustField_RelatedContent extends core\JustField
 	public function addJs()
 	{
 		wp_register_script(
-			'jcf_related_content', plugins_url( '/related-content.js', __FILE__ ), array( 'jquery', 'jquery-ui-autocomplete' )
+			'jcf_related_content',
+				plugins_url( '/related-content.js', __FILE__ ),
+				array( 'jquery', 'jquery-ui-autocomplete', 'jquery-ui-sortable', 'jcf_edit_post' )
 		);
 		wp_enqueue_script('jcf_related_content');
 
@@ -244,7 +246,7 @@ class JustField_RelatedContent extends core\JustField
 		wp_register_style('ui-autocomplete', plugins_url( '/assets/jquery-ui-1.8.14.autocomplete.css', __FILE__ ));
 		wp_enqueue_style('ui-autocomplete');
 
-		wp_register_style('jcf_related_content', plugins_url( '/related-content.css', __FILE__ ) );
+		wp_register_style('jcf_related_content', plugins_url( '/related-content.css', __FILE__ ), array( 'jcf_edit_post' ) );
 		wp_enqueue_style('jcf_related_content');
 	}
 

@@ -150,10 +150,10 @@ class JustField_SimpleMedia extends core\JustField
 	{
 		global $pagenow, $wp_version, $post_ID;
 		// only load on select pages 
-		if ( !in_array($pagenow, array( 'post-new.php', 'post.php', 'media-upload-popup' )) )
+		if ( !in_array($pagenow, array( 'post-new.php', 'post.php', 'media-upload-popup', 'edit-tags.php', 'term.php' )) )
 			return;
 		wp_enqueue_media(array( 'post' => ( $post_ID ? $post_ID : null ) ));
-		wp_enqueue_script("jcf-simpleupload-modal", jcf_plugin_url('components/simplemedia/assets/simplemedia-modal.js'), array( 'jquery', 'media-models' ));
+		wp_enqueue_script("jcf-simpleupload-modal", jcf_plugin_url('components/simplemedia/assets/simplemedia-modal.js'), array( 'jquery', 'media-models', 'jcf_edit_post' ));
 
 		// add text domain if not registered with another component
 		global $wp_scripts;
@@ -164,7 +164,7 @@ class JustField_SimpleMedia extends core\JustField
 
 	public function addCss()
 	{
-		wp_register_style('jcf_simplemedia', jcf_plugin_url('components/simplemedia/assets/simplemedia.css'), array( 'thickbox' ));
+		wp_register_style('jcf_simplemedia', jcf_plugin_url('components/simplemedia/assets/simplemedia.css'), array( 'thickbox', 'jcf_edit_post' ));
 		wp_enqueue_style('jcf_simplemedia');
 	}
 

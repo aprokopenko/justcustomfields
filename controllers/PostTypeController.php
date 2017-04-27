@@ -58,6 +58,7 @@ class PostTypeController extends core\Controller
 		$fieldsets = $model->findByPostType($post_type);
 
 		$field_model = new models\Field();
+		$fields = $field_model->findByPostType($post_type);
 
 		$visibility_model = new models\FieldsetVisibility();
 		$visibility_rules = $visibility_model->findByPostType($post_type);
@@ -69,7 +70,7 @@ class PostTypeController extends core\Controller
 				if ( empty($fieldset['fields']) ) continue;
 
 				foreach ($fieldset['fields'] as $field_id => $enabled) {
-					if ( !$enabled ) continue;
+					if ( !$enabled || empty( $fields[$field_id] ) ) continue;
 
 					$params = array(
 						'post_type' => $post_type,
@@ -102,10 +103,11 @@ class PostTypeController extends core\Controller
 	{
 		$model = new models\Field();
 		$fieldset = $box['args'][0];
+		$fields = $model->findByPostType($post->post_type);
 		$this->_render('shortcodes/modal');
 
 		foreach ( $fieldset['fields'] as $field_id => $enabled ) {
-			if ( !$enabled ) continue;
+			if ( !$enabled || empty( $fields[$field_id] ) ) continue;
 
 			$params = array(
 				'post_type' => $post->post_type,
@@ -186,12 +188,7 @@ class PostTypeController extends core\Controller
 	 */
 	public function addScripts()
 	{
-		wp_register_script(
-				'jcf_edit_post', jcf_plugin_url('assets/edit_post.js'), array( 'jquery', 'tags-box' )
-		);
 		wp_enqueue_script('jcf_edit_post');
-
-		do_action('jcf_admin_edit_post_scripts');
 	}
 
 	/**
@@ -199,10 +196,7 @@ class PostTypeController extends core\Controller
 	 */
 	public function addStyles()
 	{
-		wp_register_style('jcf_edit_post', jcf_plugin_url('assets/edit_post.css'));
 		wp_enqueue_style('jcf_edit_post');
-
-		do_action('jcf_admin_edit_post_styles');
 	}
 
 	/**

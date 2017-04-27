@@ -15,8 +15,8 @@
 						<input type="hidden" name="fieldset_id" value="<?php echo $fieldset_id; ?>" />
 						<label class="nowrap"><?php _e('Add new Field:', \JustCustomFields::TEXTDOMAIN); ?> </label>
 						<select name="field_type" class="jcf_add_collection_field">
-							<?php foreach($registered_fields as $field) : ?>
-							<option value="<?php echo $field['id_base']; ?>"><?php echo esc_html($field['title']); ?></option>
+							<?php foreach( $registered_fields as $field ) :  ?>
+								<option value="<?php echo $field['id_base']; ?>"><?php echo esc_html($field['title']); ?></option>
 							<?php endforeach; ?>
 						</select>
 						<input type="submit" class="button show_modal" name="add_field" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />

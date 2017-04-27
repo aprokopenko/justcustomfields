@@ -49,7 +49,7 @@ function jcf_collection_fields_control() {
       fieldset_id: jQuery(this).data('fieldset_id'),
       collection_id: jQuery(this).data('collection_id'),
       group_id: next_field_group_index,
-      post_type: jQuery('input#post_type').val()
+      post_type: jQuery(this).data('post_type')
     };
 
     jQuery.post(ajaxurl, data, function( response ) {

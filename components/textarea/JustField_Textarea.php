@@ -57,6 +57,16 @@ class JustField_Textarea extends core\JustField
 								tinymce.execCommand('mceAddEditor', false, '<?php echo $this->getFieldId('val'); ?>');
 							})
 						</script>
+					<?php  endif;  ?>
+
+					<?php if ( $this->isTaxonomyField() ) : ?>
+					<script>
+						jQuery(document).ready(function() {
+							jQuery(document).on( 'mousedown click keydown', '#submit', function() {
+							  tinymce.triggerSave();
+							});
+						});
+					</script>
 					<?php endif; ?>
 
 				<?php else: // no editor - print textarea  ?>

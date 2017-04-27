@@ -205,7 +205,6 @@ class m3x000 extends \jcf\core\Migration
 
 					// check fieldsgroup and upload media
 					if ( preg_match('/^(fieldsgroup|uploadmedia)\-/', $field_id, $match) ) {
-						// TODO: update fields group
 						$field = $all_fields[$post_type][$field_id];
 
 						$collection_id = 'collection-' . $this->unique++;

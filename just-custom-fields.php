@@ -6,7 +6,7 @@ Description: Turn WordPress into more powerful CMS by adding advanced and easy t
 Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custom gallery, collection, field group, metabox, fieldsets
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
-Version: 3.2
+Version: 3.3
 */
 define('JCF_ROOT', dirname(__FILE__));
 require_once( JCF_ROOT.'/core/Autoload.php' );
@@ -22,7 +22,7 @@ class JustCustomFields extends core\Singleton
 	 * Plugin text domain for translations
 	 */
 	const TEXTDOMAIN = 'just-custom-fields';
-	const VERSION = '3.200';
+	const VERSION = '3.300';
 
 	/**
 	 * Textual plugin name
@@ -63,11 +63,17 @@ class JustCustomFields extends core\Singleton
 		self::$pluginName = __('Just Custom Fields', JustCustomFields::TEXTDOMAIN);
 		self::$version = self::VERSION;
 
+		// run all init actions after theme setup to be able to add hooks from theme
+		add_action('after_setup_theme', array($this, 'safeInit'));
+	}
+
+	public function safeInit()
+	{
 		// init features, which this plugin is created for
 		$this->initControllers();
 
+		// init all standard available field components
 		$this->initFields();
-		add_action('plugins_loaded', array($this, 'registerCustomComponents'));
 	}
 
 	/**
@@ -83,6 +89,7 @@ class JustCustomFields extends core\Singleton
 		}
 		else {
 			new controllers\PostTypeController();
+			new controllers\TaxonomyController();
 
 			if ( !is_admin() ) return;
 
@@ -110,21 +117,18 @@ class JustCustomFields extends core\Singleton
 		$this->registerField( 'jcf\components\table\JustField_Table', true );
 		$this->registerField( 'jcf\components\relatedcontent\JustField_RelatedContent', true );
 		$this->registerField( 'jcf\components\googlemaps\JustField_GoogleMaps', true );
-	}
 
-	/**
-	 * Launch hook to be able to register mode components from themes and other plugins
-	 *
-	 *	to add more field components with your custom code:
-	 *	- add_action  'jcf_register_fields'
-	 *	- include your components files
-	 *	- run
-	 *  $jcf = new \JustCustomFields();
-	 *  $jcf->registerField('namespace\className', $collection_field = true|false);
-	 *
-	 */
-	public function registerCustomComponents()
-	{
+		/**
+		 * Registration of custom components from themes and other plugins
+		 *
+		 *	to add more your owrn component within a theme or a plugin:
+		 *	- register callback function for action  'jcf_register_fields'
+		 *	- include your components files
+		 *	- run
+		 *  $jcf = new \JustCustomFields();
+		 *  $jcf->registerField('namespace\className', $collection_field = true|false);
+		 *
+		 */
 		do_action( 'jcf_register_fields' );
 	}
 
@@ -162,7 +166,7 @@ class JustCustomFields extends core\Singleton
 		$collection_fields = array();
 		foreach ($this->_fields as $f) {
 			if ( !$f['collection_field'] ) continue;
-			$collection_fields[] = $f;
+			$collection_fields[ $f['id_base'] ] = $f;
 		}
 		
 		return $collection_fields;
