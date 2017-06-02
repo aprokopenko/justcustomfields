@@ -124,12 +124,12 @@ class JustCustomFields extends core\Singleton {
 	}
 
 	/**
-	* Register field component
-	*
-	* @param $class_name
-	* @param bool $collection_field
-	* @return bool
-	*/
+	 * Register field component
+	 *
+	 * @param $class_name
+	 * @param bool $collection_field
+	 * @return bool
+	 */
 	public function registerField( $class_name, $collection_field = false ) {
 		if ( strpos( $class_name, '\\' ) === false ) {
 			$class_name = '\\' . $class_name;
@@ -184,4 +184,3 @@ class JustCustomFields extends core\Singleton {
 }
 
 JustCustomFields::run();
-

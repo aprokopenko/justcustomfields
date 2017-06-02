@@ -1,10 +1,22 @@
+<?php
+/**
+ * @var $tab string
+ * @var $post_type \WP_Post_Type|\WP_Taxonomy
+ * @var $post_type_id string
+ * @var $post_type_kind string
+ * @var $fieldsets array
+ * @var $field_settings array
+ * @var $collections array
+ * @var $registered_fields array
+ */
+?>
 <?php include(JCF_ROOT . '/views/_header.php'); ?>
 
-	<h2><a href="?page=jcf_admin" class="jcf_change_pt"><?php _e('Post types', \JustCustomFields::TEXTDOMAIN); ?></a> &raquo;
-		<?php echo $post_type->label; ?> &raquo; <?php _e('Custom fields', \JustCustomFields::TEXTDOMAIN); ?>
+	<h2><a href="?page=jcf_admin" class="jcf_change_pt"><?php _e('Fields', \JustCustomFields::TEXTDOMAIN); ?></a> &raquo;
+		<?php echo $post_type->label; ?> &raquo; <small><?php _e('Configure', \JustCustomFields::TEXTDOMAIN); ?></small>
 	</h2>
-	
-	<input type="hidden" id="jcf_post_type_hidden" value="<?php echo $post_type->name; ?>" />
+
+	<input type="hidden" id="jcf_post_type_hidden" value="<?php echo $post_type_id; ?>" />
 	
 	<div class="jcf_columns jcf_width66p">
 		<div id="jcf_fieldsets">
@@ -43,7 +55,9 @@
 						</tr></tfoot>
 						<tbody id="the-list-<?php echo $fieldset['id']; ?>">
 							<?php if( !empty($fieldset['fields']) && is_array($fieldset['fields']) ) : ?>
-								<?php foreach($fieldset['fields'] as $field_id => $enabled) : ?>
+								<?php foreach($fieldset['fields'] as $field_id => $enabled) :
+										if ( empty($field_settings[$field_id]) ) continue;
+									?>
 									<tr id="field_row_<?php echo $field_id; ?>" class="field_row <?php echo $field_id; ?>">
 										<td class="jcf-check-column" align="center">
 											<span class="dashicons dashicons-menu drag-handle"></span>
@@ -72,7 +86,8 @@
 													'collection' => isset($collections[$field_id])? $collections[$field_id] : array(),
 													'collection_id' => $field_id,
 													'fieldset_id' => $fieldset['id'],
-													'registered_fields' => $collections['registered_fields']
+													'registered_fields' => $collections['registered_fields'],
+													'post_type_kind' => $post_type_kind,
 												)); ?></td>
 										<?php endif; ?>
 									</tr>
@@ -90,8 +105,8 @@
 							<input type="hidden" name="fieldset_id" value="<?php echo $fieldset['id']; ?>" />
 							<label class="nowrap"><?php _e('Add new Field:', \JustCustomFields::TEXTDOMAIN); ?> </label>
 							<select name="field_type" class="jcf_add_field">
-								<?php foreach($registered_fields as $field) : ?>
-								<option value="<?php echo $field['id_base']; ?>"><?php echo esc_html($field['title']); ?></option>
+								<?php foreach( $registered_fields as $field ) : ?>
+									<option value="<?php echo $field['id_base']; ?>"><?php echo esc_html($field['title']); ?></option>
 								<?php endforeach; ?>
 							</select>
 							<input type="submit" class="button show_modal" name="add_field" value="<?php _e('Add', \JustCustomFields::TEXTDOMAIN); ?>" />

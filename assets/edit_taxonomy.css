@@ -1,0 +1,11 @@
+.jcf-taxonomy-box h2 {
+    font-size: 14px;
+    padding: 8px 12px;
+    margin: 0;
+    line-height: 1.4;
+    cursor: default!important;
+}
+.form-wrap .jcf-taxonomy-box .form-field {
+    margin: 0;
+}
+

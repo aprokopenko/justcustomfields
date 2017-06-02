@@ -165,14 +165,20 @@ class Settings extends core\Model
 			$this->addError('empty_source');
 		}
 
-		$fs_theme_storage = get_stylesheet_directory() . '/jcf/';
-		if ( $this->source == self::CONF_SOURCE_FS_THEME && (!wp_mkdir_p($fs_theme_storage) || !is_writable($fs_theme_storage)) ) {
-			$this->addError('fs_theme_not_writable');
+		if ( $this->source == self::CONF_SOURCE_FS_THEME ) {
+			$path = apply_filters('jcf_config_filepath', get_stylesheet_directory() . '/jcf/config.json', self::CONF_SOURCE_FS_THEME);
+			$fs_theme_storage = dirname($path);
+			if ( !wp_mkdir_p($fs_theme_storage) || !is_writable($fs_theme_storage) ) {
+				$this->addError( 'fs_theme_not_writable' );
+			}
 		}
 
-		$fs_global_storage = get_home_path() . 'wp-content/jcf/';
-		if ( $this->source == self::CONF_SOURCE_FS_GLOBAL && (!wp_mkdir_p($fs_global_storage) || !is_writable($fs_global_storage)) ) {
-			$this->addError('fs_global_not_writable');
+		if ( $this->source == self::CONF_SOURCE_FS_GLOBAL ) {
+			$path = apply_filters('jcf_config_filepath', WP_CONTENT_DIR . '/jcf/config.json', self::CONF_SOURCE_FS_GLOBAL);
+			$fs_global_storage = dirname($path);
+			if ( !wp_mkdir_p($fs_global_storage) || !is_writable($fs_global_storage) ) {
+				$this->addError('fs_global_not_writable');
+			}
 		}
 
 		return ! $this->hasErrors();

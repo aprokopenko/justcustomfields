@@ -6,7 +6,7 @@ Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custo
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
 Requires at least: 4.7
-Tested up to: 4.7.3
+Tested up to: 4.7.4
 Stable tag: trunk
 License: GNU General Public License v2
 
@@ -14,8 +14,8 @@ Turn WordPress into more powerful CMS by adding advanced and easy to use custom 
 
 == Description ==
 
-Just Custom Fields adds ability to extend your Posts, Pages (and other custom post types) with additional fields. After installation, you will see a simple settings page, which is self-explanatory to use.
-We use the standard WordPress PostMeta API to save fields data, so you can use standard WordPress functions in your themes/plugins to get data.
+Just Custom Fields adds ability to extend your Posts, Pages (and other custom post types) and Taxonomies with additional fields. After installation, you will see a simple settings page, which is self-explanatory to use.
+We use the standard WordPress PostMeta API and TaxonomyMeta API to save fields data, so you can use standard WordPress functions in your themes/plugins to get data.
 
 **IMPORTANT** We do not recommend update plugins on your existing sites from version 2.* to version 3.0+.
 JCF v3.0+ is not compatible with versions 2.*, so some field settings can be lost (and as a result - wrong values on post edit pages).
@@ -70,6 +70,10 @@ To use values from these fields in your theme, you can use the usual post meta f
 * get_post_meta()
 * get_post_custom()
 
+To use values from Taxonomy fields in your theme, you can use standard taxonomy meta function:
+
+* get_term_meta()
+
 == Upgrade Notice ==
 
 To upgrade remove the old plugin folder. After than follow the installation steps 1-2. All settings will be saved.
@@ -80,6 +84,11 @@ To upgrade remove the old plugin folder. After than follow the installation step
 2. The edit post page meta box with fields created on the settings page
 
 == Changelog ==
+* Version 3.3 - 26 April 2017
+	* New feature: Taxonomy term custom fields!
+	* Bug: Editor "Add media" button row overlap the Posts sidebar
+	* Bug: Theme config path hook doesn't work inside migration process.
+	* Tests: New tests with WordPress 4.7.4
 * Version 3.2 - 17 March 2017
 	* New feature: Google Maps component (Latitude and Longitude selector with Google Maps)
 	* Tests: New tests with WordPress 4.7.3

@@ -4,6 +4,7 @@ namespace jcf\controllers;
 
 use jcf\models;
 use jcf\core;
+use jcf\core\JustField;
 
 class FieldController extends core\Controller
 {
@@ -46,15 +47,21 @@ class FieldController extends core\Controller
 
 		if ( $model->load($_POST) && $success = $model->save() ) {
 			if ( isset($success['id_base']) && $success['id_base'] == 'collection' ) {
-				$jcf = \JustCustomFields::run();
+				$jcf = \JustCustomFields::getInstance();
 				$registered_fields = $jcf->getFields('collection');
+
+				$post_type_kind = models\Field::getPostTypeKind($model->post_type);
+				if ( JustField::POSTTYPE_KIND_TAXONOMY == $post_type_kind ) {
+					unset($registered_fields['relatedcontent']);
+				}
 
 				ob_start();
 				$this->_render('fields/collection', array(
 					'collection' => $success['instance'],
 					'collection_id' => $success['id'],
 					'fieldset_id' => $success['fieldset_id'],
-					'registered_fields' => $registered_fields
+					'registered_fields' => $registered_fields,
+					'post_type_kind' => $post_type_kind,
 				));
 				$success["collection_fields"] = ob_get_clean();
 			}
@@ -62,7 +69,7 @@ class FieldController extends core\Controller
 			return $this->_renderAjax(null, 'json', $success);
 		}
 
-		return $this->_renderAjax(null, 'json', array( 'status' => !empty($field), 'error' => $model->getErrors() ));
+		return $this->_renderAjax(null, 'json', array( 'status' => false, 'error' => $model->getErrors() ));
 	}
 
 	/**
