@@ -31,8 +31,8 @@ class AdminController extends core\Controller
 	 */
 	public function adminMenu()
 	{
-		$page_title = \JustCustomFields::$pluginName;
-		$page_slug = \JustCustomFields::$pluginSlug;
+		$page_title = \JustCustomFields::$plugin_name;
+		$page_slug = \JustCustomFields::$plugin_slug;
 
 		add_options_page($page_title, $page_title, 'manage_options', 'jcf_admin', array( $this, 'actionIndex' ));
 	}
@@ -59,7 +59,7 @@ class AdminController extends core\Controller
 	 */
 	public function addScripts()
 	{
-		$slug = \JustCustomFields::$pluginSlug;
+		$slug = \JustCustomFields::$plugin_slug;
 		wp_register_script(
 			$slug,
 			jcf_plugin_url('assets/just_custom_fields.js'),
@@ -86,7 +86,7 @@ class AdminController extends core\Controller
 	 */
 	public function addStyles()
 	{
-		$slug = \JustCustomFields::$pluginName;
+		$slug = \JustCustomFields::$plugin_name;
 		wp_register_style($slug, jcf_plugin_url('assets/styles.css'), array( 'media-views' ));
 		wp_enqueue_style($slug);
 	}

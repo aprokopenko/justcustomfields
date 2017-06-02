@@ -64,7 +64,7 @@ class Field extends core\Model
 	public function save( $import = null )
 	{
 		$field_obj = core\JustFieldFactory::create($this);
-		$field_index = core\JustFieldFactory::createFieldIndex($field_obj->idBase);
+		$field_index = core\JustFieldFactory::createFieldIndex($field_obj->id_base);
 
 		return $field_obj->doUpdate($field_index, $import);
 	}

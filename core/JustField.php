@@ -11,7 +11,7 @@ class JustField
 	 * Root id for all fields of this type (field type)
 	 * @var string
 	 */
-	public $idBase;
+	public $id_base;
 	public static $compatibility = '3.0+'; // compatibility with WP version + it >=, - it <
 	public $title; // Name for this field type.
 	public $slug = null;
@@ -73,7 +73,7 @@ class JustField
 	 */
 	public function __construct( $id_base, $title, $field_options = array() )
 	{
-		$this->idBase = $id_base;
+		$this->id_base = $id_base;
 		$this->title = $title;
 		$this->fieldOptions = array_merge($this->fieldOptions, $field_options);
 
@@ -141,13 +141,13 @@ class JustField
 		$this->id = $id;
 
 		// this is add request. so number is 0
-		if ( $this->id == $this->idBase ) {
+		if ( $this->id == $this->id_base ) {
 			$this->number = 0;
 			$this->isNew = true;
 		}
 		// parse number
 		else {
-			$this->number = str_replace($this->idBase . '-', '', $this->id);
+			$this->number = str_replace($this->id_base . '-', '', $this->id);
 
 			// load instance data
 			$fields = $this->_dL->getFields();
@@ -232,10 +232,10 @@ class JustField
 
 		if ( $this->isCollectionField() && $this->isPostEdit ) {
 			$collection = core\JustFieldFactory::create($field_model);
-			return str_replace('-', $delimeter, 'field' . $delimeter . $collection->idBase . $delimeter . $collection->number . $delimeter
+			return str_replace('-', $delimeter, 'field' . $delimeter . $collection->id_base . $delimeter . $collection->number . $delimeter
 					. \jcf\components\collection\JustField_Collection::$currentCollectionFieldKey . $delimeter . $this->id . $delimeter . $str);
 		}
-		return 'field' . $delimeter . $this->idBase . $delimeter . $this->number . $delimeter . $str;
+		return 'field' . $delimeter . $this->id_base . $delimeter . $this->number . $delimeter . $str;
 	}
 
 	/**
@@ -258,9 +258,9 @@ class JustField
 
 		if ( $this->isCollectionField() && $this->isPostEdit ) {
 			$collection = core\JustFieldFactory::create($field_model);
-			return 'field-' . $collection->idBase . '[' . $collection->number . '][' . \jcf\components\collection\JustField_Collection::$currentCollectionFieldKey . '][' . $this->id . '][' . $str . ']';
+			return 'field-' . $collection->id_base . '[' . $collection->number . '][' . \jcf\components\collection\JustField_Collection::$currentCollectionFieldKey . '][' . $this->id . '][' . $str . ']';
 		}
-		return 'field-' . $this->idBase . '[' . $this->number . '][' . $str . ']';
+		return 'field-' . $this->id_base . '[' . $this->number . '][' . $str . ']';
 	}
 
 	/**
@@ -310,7 +310,7 @@ class JustField
 	 */
 	public function doUpdate( $field_index, $params = null )
 	{
-		$input = !is_null($params) ? $params : $_POST['field-' . $this->idBase][$this->number];
+		$input = !is_null($params) ? $params : $_POST['field-' . $this->id_base][$this->number];
 		// remove all slashed from values
 		foreach ( $input as $var => $value ) {
 			if ( is_string($value) ) {
@@ -328,7 +328,7 @@ class JustField
 		$instance['slug'] = strip_tags($input['slug']);
 		$instance['enabled'] = (int) @$input['enabled'];
 
-		if ( $this->idBase == 'inputtext' )
+		if ( $this->id_base == 'inputtext' )
 			$instance['group_title'] = (int) @$input['group_title'];
 
 		// starting from vers. 1.4 all new fields should be marked with version of the plugin
@@ -339,7 +339,7 @@ class JustField
 		if ( empty($instance['_version']) ) {
 			$instance['_version'] = 1.34;
 		}
-		$instance['_type'] = $this->idBase;
+		$instance['_type'] = $this->id_base;
 
 		// new from version 1.4: validation/normalization
 		$this->validateInstance($instance);
@@ -353,12 +353,12 @@ class JustField
 
 		if ( $this->isNew ) {
 			$this->number = $field_index;
-			$this->id = $this->idBase . '-' . $this->number;
+			$this->id = $this->id_base . '-' . $this->number;
 		}
 
 		// check slug field
 		if ( empty($instance['slug']) ) {
-			$instance['slug'] = '_field_' . $this->idBase . '__' . $this->number;
+			$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
 		}
 
 		$fields = $this->_dL->getFields();
@@ -393,7 +393,7 @@ class JustField
 		$res = array(
 			'status' => '1',
 			'id' => $this->id,
-			'id_base' => $this->idBase,
+			'id_base' => $this->id_base,
 			'fieldset_id' => $this->fieldsetId,
 			'collection_id' => $this->collectionId,
 			'is_new' => $this->isNew,
@@ -443,15 +443,15 @@ class JustField
 			return false;
 
 		// check that we have data in POST
-		if ( $this->idBase != 'checkbox' && (
-				empty($_POST['field-' . $this->idBase][$this->number]) ||
-				!is_array($_POST['field-' . $this->idBase][$this->number])
+		if ( $this->id_base != 'checkbox' && (
+				empty($_POST['field-' . $this->id_base][$this->number]) ||
+				!is_array($_POST['field-' . $this->id_base][$this->number])
 				)
 		) {
 			return false;
 		}
 
-		$input = @$_POST['field-' . $this->idBase][$this->number];
+		$input = @$_POST['field-' . $this->id_base][$this->number];
 
 		// get real values
 		$values = $this->save($input);
@@ -566,8 +566,8 @@ class JustField
 
 		$class_names = array(
 			"jcf-value",
-			"jcf-value-{$this->idBase}",
-			"jcf-value-{$this->idBase}-{$this->slug}",
+			"jcf-value-{$this->id_base}",
+			"jcf-value-{$this->id_base}-{$this->slug}",
 		);
 
 		if ( !empty($args['class']) ) {

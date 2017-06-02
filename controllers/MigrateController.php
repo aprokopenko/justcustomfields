@@ -28,7 +28,7 @@ class MigrateController extends core\Controller
 	 */
 	public function initRoutes()
 	{
-		$page_title = \JustCustomFields::$pluginName;
+		$page_title = \JustCustomFields::$plugin_name;
 
 		add_options_page($page_title, $page_title, 'manage_options', 'jcf_upgrade', array( $this, 'actionIndex' ));
 	}

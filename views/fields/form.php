@@ -1,4 +1,4 @@
-<?php $op = ($field->idBase == $field->id) ? __('Add', \JustCustomFields::TEXTDOMAIN) : __('Edit', \JustCustomFields::TEXTDOMAIN); ?>
+<?php $op = ($field->id_base == $field->id) ? __('Add', \JustCustomFields::TEXTDOMAIN) : __('Edit', \JustCustomFields::TEXTDOMAIN); ?>
 <div class="jcf_edit_modal_shadow">
 	<div class="jcf_edit_field">
 		<h3 class="header"><?php echo $op . ' ' . $field->title; ?></h3>
@@ -8,7 +8,7 @@
 				<fieldset>
 					<input type="hidden" name="field_id" value="<?php echo $field->id; ?>" />
 					<input type="hidden" name="field_number" value="<?php echo $field->number; ?>" />
-					<input type="hidden" name="field_id_base" value="<?php echo $field->idBase; ?>" />
+					<input type="hidden" name="field_id_base" value="<?php echo $field->id_base; ?>" />
 					<input type="hidden" name="fieldset_id" value="<?php echo $field->fieldsetId; ?>" />
 					<?php if( $field->isCollectionField() ) : ?>
 						<input type="hidden" name="collection_id" value="<?php echo $field->collectionId; ?>" />
@@ -38,7 +38,7 @@
 							<?php _e('Enabled', \JustCustomFields::TEXTDOMAIN); ?></label>
 					</p>
 					<?php if($field->isCollectionField()) : ?>
-						<?php if($field->idBase == 'inputtext') : ?>
+						<?php if($field->id_base == 'inputtext') : ?>
 							<p>
 								<label for="<?php echo $field->getFieldId('group_title'); ?>">
 									<input class="checkbox" type="checkbox"

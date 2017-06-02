@@ -15,8 +15,7 @@ require_once( JCF_ROOT.'/functions/helpers.php' );
 use jcf\core;
 use jcf\controllers;
 
-class JustCustomFields extends core\Singleton
-{
+class JustCustomFields extends core\Singleton {
 
 	/**
 	 * Plugin text domain for translations
@@ -29,14 +28,14 @@ class JustCustomFields extends core\Singleton
 	 *
 	 * @var string
 	 */
-	public static $pluginName;
+	public static $plugin_name;
 
 	/**
 	 * Variable-style plugin name
 	 *
 	 * @var string
 	 */
-	public static $pluginSlug = 'just_custom_fields';
+	public static $plugin_slug = 'just_custom_fields';
 
 	/**
 	 * Current plugin version
@@ -55,36 +54,35 @@ class JustCustomFields extends core\Singleton
 	/**
 	 * Plugin main entry point
 	 *
-	 * protected constructor prevents creating another plugin instance with "new" operator
+	 * Protected constructor prevents creating another plugin instance with "new" operator
 	 */
-	protected function __construct()
-	{
-		// init plugin name and version
-		self::$pluginName = __('Just Custom Fields', JustCustomFields::TEXTDOMAIN);
-		self::$version = self::VERSION;
+	protected function __construct() {
+		/* init plugin name and version */
+		self::$plugin_name = __( 'Just Custom Fields', JustCustomFields::TEXTDOMAIN );
+		self::$version     = self::VERSION;
 
-		// init features, which this plugin is created for
+		/* init features, which this plugin is created for */
 		$this->initControllers();
 
 		$this->initFields();
-		add_action('plugins_loaded', array($this, 'registerCustomComponents'));
+		add_action( 'plugins_loaded', array( $this, 'registerCustomComponents' ) );
 	}
 
 	/**
 	 * Init all controllers to support post edit pages and admin configuration pages
 	 */
-	public function initControllers()
-	{
+	public function initControllers() {
 		$loader = new core\PluginLoader();
-		// we use wp_doing_ajax to prevent version check under ajax
+		/* we use wp_doing_ajax to prevent version check under ajax */
 		if ( ! wp_doing_ajax() && $loader->checkMigrationsAvailable() ) {
 			new controllers\MigrateController();
 			new controllers\AdminController();
-		}
-		else {
+		} else {
 			new controllers\PostTypeController();
 
-			if ( !is_admin() ) return;
+			if ( ! is_admin() ) {
+				return;
+			}
 
 			new controllers\AdminController();
 			new controllers\SettingsController();
@@ -97,8 +95,7 @@ class JustCustomFields extends core\Singleton
 	/**
 	 * Init field components (field types, which can be added to post type)
 	 */
-	public function initFields()
-	{
+	public function initFields() {
 		$this->registerField( 'jcf\components\inputtext\JustField_InputText', true );
 		$this->registerField( 'jcf\components\textarea\JustField_Textarea', true );
 		$this->registerField( 'jcf\components\select\JustField_Select', true );
@@ -115,68 +112,71 @@ class JustCustomFields extends core\Singleton
 	/**
 	 * Launch hook to be able to register mode components from themes and other plugins
 	 *
-	 *	to add more field components with your custom code:
+	 *	To add more field components with your custom code:
 	 *	- add_action  'jcf_register_fields'
 	 *	- include your components files
 	 *	- run
 	 *  $jcf = new \JustCustomFields();
 	 *  $jcf->registerField('namespace\className', $collection_field = true|false);
-	 *
 	 */
-	public function registerCustomComponents()
-	{
+	public function registerCustomComponents() {
 		do_action( 'jcf_register_fields' );
 	}
 
 	/**
-	 * register field component
-	 *
-	 * @param $class_name
-	 * @param bool $collection_field
-	 * @return bool
-	 */
-	public function registerField( $class_name, $collection_field = false )
-	{
-		if ( strpos($class_name, '\\') === FALSE ) $class_name = '\\' . $class_name;
+	* Register field component
+	*
+	* @param $class_name
+	* @param bool $collection_field
+	* @return bool
+	*/
+	public function registerField( $class_name, $collection_field = false ) {
+		if ( strpos( $class_name, '\\' ) === false ) {
+			$class_name = '\\' . $class_name;
+		}
 
 		$field_obj = new $class_name();
 
 		$field = array(
-			'id_base' => $field_obj->idBase,
+			'id_base' => $field_obj->id_base,
 			'class' => $class_name,
 			'title' => $field_obj->title,
 			'collection_field' => $collection_field,
 		);
-		$this->_fields[$field_obj->idBase] = $field;
+		$this->_fields[ $field_obj->id_base ] = $field;
 	}
-	
+
 	/**
-	 *	return array of registered fields
+	 *	Return array of registered fields
+	 *
+	 * @param bool $collection_only
+	 * @return array $collection_fields
 	 */
-	public function getFields( $collection_only = false )
-	{
-		if ( ! $collection_only )
+	public function getFields( $collection_only = false ) {
+		if ( ! $collection_only ) {
 			return $this->_fields;
-		
-		// filter by collection availability
+		}
+		/* filter by collection availability */
 		$collection_fields = array();
-		foreach ($this->_fields as $f) {
-			if ( !$f['collection_field'] ) continue;
+		foreach ( $this->_fields as $f ) {
+			if ( ! $f['collection_field'] ) {
+				continue;
+			}
 			$collection_fields[] = $f;
 		}
-		
+
 		return $collection_fields;
 	}
-	
+
 	/**
 	 * Field info (title, id_base, class)
+	 *
 	 * @param string $id_base
 	 * @return array
 	 */
-	public function getFieldInfo($id_base)
-	{
-		if ( !empty($this->_fields[$id_base]) ) {
-			return $this->_fields[$id_base];
+	public function getFieldInfo( $id_base ) {
+		if ( ! empty( $this->_fields[ $id_base ] ) ) {
+			return $this->_fields[ $id_base ];
 		}
 		return null;
 	}
