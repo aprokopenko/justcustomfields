@@ -26,9 +26,9 @@ class JustField_Textarea extends core\JustField
 	public function field()
 	{
 		?>
-		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
-			<?php echo $this->fieldOptions['before_widget']; ?>
-				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
+		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->field_options['classname']; ?>">
+			<?php echo $this->field_options['before_widget']; ?>
+				<?php echo $this->field_options['before_title'] . esc_html($this->instance['title']) . $this->field_options['after_title']; ?>
 				<?php
 				if ( !empty($this->instance['editor']) ) : // check editor
 
@@ -77,7 +77,7 @@ class JustField_Textarea extends core\JustField
 				<?php if ( !empty($this->instance['description']) ) : ?>
 					<p class="howto"><?php echo esc_html($this->instance['description']); ?></p>
 				<?php endif; ?>
-			<?php echo $this->fieldOptions['after_widget']; ?>
+			<?php echo $this->field_options['after_widget']; ?>
 		</div>
 		<?php
 	}

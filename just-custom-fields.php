@@ -8,9 +8,9 @@ Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
 Version: 3.2
 */
-define('JCF_ROOT', dirname(__FILE__));
-require_once( JCF_ROOT.'/core/Autoload.php' );
-require_once( JCF_ROOT.'/functions/helpers.php' );
+define( 'JCF_ROOT', dirname( __FILE__ ) );
+require_once( JCF_ROOT . '/core/Autoload.php' );
+require_once( JCF_ROOT . '/functions/helpers.php' );
 
 use jcf\core;
 use jcf\controllers;

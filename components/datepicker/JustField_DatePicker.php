@@ -21,9 +21,9 @@ class JustField_DatePicker extends core\JustField
 	public function field()
 	{
 		?>
-		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
-			<?php echo $this->fieldOptions['before_widget']; ?>
-				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
+		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->field_options['classname']; ?>">
+			<?php echo $this->field_options['before_widget']; ?>
+				<?php echo $this->field_options['before_title'] . esc_html($this->instance['title']) . $this->field_options['after_title']; ?>
 				
 				<div>
 					<input id="<?php echo $this->getFieldId('val'); ?>" name="<?php echo $this->getFieldName('val'); ?>" type="text" value="<?php echo esc_attr($this->entry); ?>" size="14" style="width:150px;" />
@@ -43,7 +43,7 @@ class JustField_DatePicker extends core\JustField
 					<p class="howto"><?php echo esc_html($this->instance['description']); ?></p>
 				<?php endif; ?>
 
-			<?php echo $this->fieldOptions['after_widget']; ?>
+			<?php echo $this->field_options['after_widget']; ?>
 		</div>
 		<?php
 	}

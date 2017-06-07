@@ -124,7 +124,7 @@ class TaxonomyController extends core\Controller
 				$field_obj->doAddJs();
 				$field_obj->doAddCss();
 
-				$field_obj->fieldOptions['after_title'] = ': </label>';
+				$field_obj->field_options['after_title'] = ': </label>';
 				ob_start();
 				$field_obj->field();
 				$htmlFields .= ob_get_clean();

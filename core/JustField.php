@@ -21,7 +21,7 @@ class JustField
 	public static $compatibility = '3.0+'; // compatibility with WP version + it >=, - it <
 	public $title; // Name for this field type.
 	public $slug = null;
-	public $fieldOptions = array(
+	public $field_options = array(
 		'classname' => 'jcf_custom_field',
 		'before_widget' => '<div class="form-field">',
 		'after_widget' => '</div>',
@@ -80,9 +80,9 @@ class JustField
 	 */
 	public function __construct( $id_base, $title, $field_options = array() )
 	{
-		$this->id_base = $id_base;
-		$this->title = $title;
-		$this->fieldOptions = array_merge($this->fieldOptions, $field_options);
+		$this->id_base       = $id_base;
+		$this->title         = $title;
+		$this->field_options = array_merge($this->field_options, $field_options);
 
 		// init data layer
 		$this->_dL = DataLayerFactory::create();
@@ -170,8 +170,8 @@ class JustField
 				$this->instance = (array) $fields[$this->postType][$this->id];
 
 			if ( !empty($this->instance) ) {
-				$this->slug = $this->instance['slug'];
-				$this->fieldOptions['after_title'] .= '<div class="jcf-get-shortcode" rel="' . $this->slug .'">
+				$this->slug                         = $this->instance['slug'];
+				$this->field_options['after_title'] .= '<div class="jcf-get-shortcode" rel="' . $this->slug . '">
 					<span class="dashicons dashicons-editor-help wp-ui-text-highlight"></span>
 				</div>';
 			}

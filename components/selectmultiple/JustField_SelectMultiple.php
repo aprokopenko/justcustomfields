@@ -30,9 +30,9 @@ class JustField_SelectMultiple extends core\JustField
 		// prepare options array
 		$values = $this->parsedSelectOptions($this->instance);
 		?>
-		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
-			<?php echo $this->fieldOptions['before_widget']; ?>
-				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
+		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->field_options['classname']; ?>">
+			<?php echo $this->field_options['before_widget']; ?>
+				<?php echo $this->field_options['before_title'] . esc_html($this->instance['title']) . $this->field_options['after_title']; ?>
 				<div class="select_multiple_field">
 					<select name="<?php echo $this->getFieldName('val'); ?>[]" id="<?php echo $this->getFieldId('val'); ?>" class="jcf-multiple" multiple="multiple">
 					<?php foreach ( $values as $key => $val ): ?>
@@ -43,7 +43,7 @@ class JustField_SelectMultiple extends core\JustField
 				<?php if ( $this->instance['description'] != '' ) : ?>
 					<p class="howto"><?php echo esc_html($this->instance['description']); ?></p>
 				<?php endif; ?>
-			<?php echo $this->fieldOptions['after_widget']; ?>
+			<?php echo $this->field_options['after_widget']; ?>
 		</div>
 		<?php
 	}

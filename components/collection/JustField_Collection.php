@@ -55,9 +55,9 @@ class JustField_Collection extends core\JustField
 
 		$entries = (array) $this->entry;
 		?>
-		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
-			<?php echo $this->fieldOptions['before_widget']; ?>
-				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
+		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->field_options['classname']; ?>">
+			<?php echo $this->field_options['before_widget']; ?>
+				<?php echo $this->field_options['before_title'] . esc_html($this->instance['title']) . $this->field_options['after_title']; ?>
 
 				<?php if ( empty($this->instance['fields']) ) : ?>
 					<p class="error">Collection element has no fields registered. Please check component settings</p>
@@ -101,8 +101,8 @@ class JustField_Collection extends core\JustField
 												$field_obj->entry = $fields[$field['slug']];
 											}
 
-											$field_obj->isPostEdit = true;
-											$field_obj->fieldOptions['after_title'] = ':</label>';
+											$field_obj->isPostEdit                   = true;
+											$field_obj->field_options['after_title'] = ':</label>';
 											$field_obj->field();
 											?>
 										</div>
@@ -123,7 +123,7 @@ class JustField_Collection extends core\JustField
 						<div class="clr"></div>
 					</div>
 				<?php endif; ?>
-			<?php echo $this->fieldOptions['after_widget']; ?>
+			<?php echo $this->field_options['after_widget']; ?>
 		</div>
 		<?php
 	}
@@ -349,9 +349,9 @@ class JustField_Collection extends core\JustField
 					if ( !$field_obj ) continue;
 					
 					$field_obj->setSlug($field['slug']);
-					$field_obj->instance = $field;
-					$field_obj->isPostEdit = true;
-					$field_obj->fieldOptions['after_title'] = ':</label>';
+					$field_obj->instance                     = $field;
+					$field_obj->isPostEdit                   = true;
+					$field_obj->field_options['after_title'] = ':</label>';
 					?>
 					<div class="collection_field_border jcf_collection_<?php echo ( intval($field['field_width']) ? $field['field_width'] : '100' ); ?>">
 						<?php echo $field_obj->field(); ?>
