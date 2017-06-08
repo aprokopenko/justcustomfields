@@ -115,13 +115,13 @@ class JustField_Table extends core\JustField
 		$columns = esc_html($instance['columns']);
 		$description = esc_html($instance['description']);
 		?>
-		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label>
-			<input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
-		<p><label for="<?php echo $this->getFieldId('fields'); ?>"><?php _e('Columns:', \JustCustomFields::TEXTDOMAIN); ?></label>
-			<textarea name="<?php echo $this->getFieldName('columns'); ?>" id="<?php echo $this->getFieldId('columns'); ?>" cols="20" rows="4" class="widefat"><?php echo $columns; ?></textarea>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('fields'); ?>"><?php _e('Columns:', \JustCustomFields::TEXTDOMAIN); ?></label>
+			<textarea name="<?php echo $this->get_field_name('columns'); ?>" id="<?php echo $this->get_field_id('columns'); ?>" cols="20" rows="4" class="widefat"><?php echo $columns; ?></textarea>
 			<br/><small><?php _e('Format: %colname|%coltitle<br/><i>Example: username|User name', \JustCustomFields::TEXTDOMAIN); ?></i></small></p>
-		<p><label for="<?php echo $this->getFieldId('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label> 
-			<textarea name="<?php echo $this->getFieldName('description'); ?>" id="<?php echo $this->getFieldId('description'); ?>" cols="20" rows="2" class="widefat"><?php echo $description; ?></textarea></p>
+		<p><label for="<?php echo $this->get_field_id('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label>
+			<textarea name="<?php echo $this->get_field_name('description'); ?>" id="<?php echo $this->get_field_id('description'); ?>" cols="20" rows="2" class="widefat"><?php echo $description; ?></textarea></p>
 		<?php
 	}
 
@@ -168,12 +168,12 @@ class JustField_Table extends core\JustField
 	 */
 	protected function getFieldIdL2( $field, $number )
 	{
-		return $this->getFieldId($number . '-' . $field);
+		return $this->get_field_id( $number . '-' . $field);
 	}
 
 	protected function getFieldNameL2( $field, $number )
 	{
-		return $this->getFieldName($number . '][' . $field);
+		return $this->get_field_name( $number . '][' . $field);
 	}
 
 	public function addJs()

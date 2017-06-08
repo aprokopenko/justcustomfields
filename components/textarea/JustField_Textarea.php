@@ -37,8 +37,8 @@ class JustField_Textarea extends core\JustField
 					 * @todo have bug with switching editor/text after ajax field loading, now disabled this functionality
 					 * @author Kirill Samojlenko
 					 */
-					wp_editor($this->entry, $this->getFieldId('val'), array(
-						'textarea_name' => $this->getFieldName('val'),
+					wp_editor($this->entry, $this->get_field_id('val'), array(
+						'textarea_name' => $this->get_field_name('val'),
 						'textarea_rows' => 5,
 						'media_buttons' => true,
 						'wpautop' => true,
@@ -53,8 +53,8 @@ class JustField_Textarea extends core\JustField
 						?>
 						<script type="text/javascript">
 							jQuery(document).ready(function() {
-								tinymce.execCommand('mceRemoveEditor', false, '<?php echo $this->getFieldId('val'); ?>');
-								tinymce.execCommand('mceAddEditor', false, '<?php echo $this->getFieldId('val'); ?>');
+								tinymce.execCommand('mceRemoveEditor', false, '<?php echo $this->get_field_id('val'); ?>');
+								tinymce.execCommand('mceAddEditor', false, '<?php echo $this->get_field_id('val'); ?>');
 							})
 						</script>
 					<?php  endif;  ?>
@@ -71,7 +71,7 @@ class JustField_Textarea extends core\JustField
 
 				<?php else: // no editor - print textarea  ?>
 					<?php $entry = esc_html($this->entry); ?>
-					<textarea name="<?php echo $this->getFieldName('val'); ?>" id="<?php echo $this->getFieldId('val'); ?>" rows="5" cols="50"><?php echo $entry ?></textarea>
+					<textarea name="<?php echo $this->get_field_name('val'); ?>" id="<?php echo $this->get_field_id('val'); ?>" rows="5" cols="50"><?php echo $entry ?></textarea>
 				<?php endif; ?>
 
 				<?php if ( !empty($this->instance['description']) ) : ?>
@@ -93,9 +93,9 @@ class JustField_Textarea extends core\JustField
 		$description = esc_html($instance['description']);
 		$checked = !empty($instance['editor']) ? ' checked="checked" ' : '';
 		?>
-		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
-		<p><label for="<?php echo $this->getFieldId('editor'); ?>"><input class="checkbox" id="<?php echo $this->getFieldId('editor'); ?>" name="<?php echo $this->getFieldName('editor'); ?>" type="checkbox" value="1" <?php echo $checked; ?> /> <?php _e('Use Editor for this textarea:', \JustCustomFields::TEXTDOMAIN); ?></label></p>
-		<p><label for="<?php echo $this->getFieldId('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->getFieldName('description'); ?>" id="<?php echo $this->getFieldId('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('editor'); ?>"><input class="checkbox" id="<?php echo $this->get_field_id('editor'); ?>" name="<?php echo $this->get_field_name('editor'); ?>" type="checkbox" value="1" <?php echo $checked; ?> /> <?php _e('Use Editor for this textarea:', \JustCustomFields::TEXTDOMAIN); ?></label></p>
+		<p><label for="<?php echo $this->get_field_id('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->get_field_name('description'); ?>" id="<?php echo $this->get_field_id('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
 		<?php
 	}
 

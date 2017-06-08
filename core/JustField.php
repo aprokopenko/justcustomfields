@@ -257,7 +257,7 @@ class JustField
 	 * @param  string  $str  string to be converted
 	 * @return string
 	 */
-	public function getFieldId( $str, $delimeter = '-' )
+	public function get_field_id( $str, $delimeter = '-' )
 	{
 		/**
 		 * if is field of collection and itst post edit page create collection field id
@@ -283,7 +283,7 @@ class JustField
 	 * @param  string  $str  string to be converted
 	 * @return string
 	 */
-	public function getFieldName( $str )
+	public function get_field_name( $str )
 	{
 		/**
 		 * if is field of collection and itst post edit page create collection field name

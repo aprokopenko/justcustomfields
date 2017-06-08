@@ -19,8 +19,8 @@
 						$slug = esc_attr($field->slug);
 					?>
 					<p>
-						<label for="<?php echo $field->getFieldId('slug'); ?>"><?php _e('Slug:', \JustCustomFields::TEXTDOMAIN); ?></label>
-						<input class="widefat" id="<?php echo $field->getFieldId('slug'); ?>" name="<?php echo $field->getFieldName('slug'); ?>" type="text" value="<?php echo $slug; ?>" />
+						<label for="<?php echo $field->get_field_id('slug'); ?>"><?php _e('Slug:', \JustCustomFields::TEXTDOMAIN); ?></label>
+						<input class="widefat" id="<?php echo $field->get_field_id('slug'); ?>" name="<?php echo $field->get_field_name('slug'); ?>" type="text" value="<?php echo $slug; ?>" />
 						<br/><small><?php _e('Machine name, will be used for postmeta field name. (should start from underscore)', \JustCustomFields::TEXTDOMAIN); ?></small>
 					</p>
 					<?php
@@ -30,20 +30,20 @@
 						}
 					?>
 					<p>
-						<label for="<?php echo $field->getFieldId('enabled'); ?>">
+						<label for="<?php echo $field->get_field_id('enabled'); ?>">
 							<input class="checkbox" type="checkbox"
-									id="<?php echo $field->getFieldId('enabled'); ?>"
-									name="<?php echo $field->getFieldName('enabled'); ?>"
+									id="<?php echo $field->get_field_id('enabled'); ?>"
+									name="<?php echo $field->get_field_name('enabled'); ?>"
 									value="1" <?php checked(true, @$field->instance['enabled']); ?> />
 							<?php _e('Enabled', \JustCustomFields::TEXTDOMAIN); ?></label>
 					</p>
 					<?php if($field->isCollectionField()) : ?>
 						<?php if($field->id_base == 'inputtext') : ?>
 							<p>
-								<label for="<?php echo $field->getFieldId('group_title'); ?>">
+								<label for="<?php echo $field->get_field_id('group_title'); ?>">
 									<input class="checkbox" type="checkbox"
-										id="<?php echo $field->getFieldId('group_title'); ?>"
-										name="<?php echo $field->getFieldName('group_title'); ?>"
+										id="<?php echo $field->get_field_id('group_title'); ?>"
+										name="<?php echo $field->get_field_name('group_title'); ?>"
 										value="1" <?php checked(true, @$field->instance['group_title']); ?> />
 									<?php _e('Use this field as collection item title?', \JustCustomFields::TEXTDOMAIN); ?>
 								</label>
@@ -51,10 +51,10 @@
 
 						<?php endif; ?>
 						<p>
-							<label for="<?php echo $field->getFieldId('field_width'); ?>"><?php _e('Select Field Width', \JustCustomFields::TEXTDOMAIN); ?></label>
+							<label for="<?php echo $field->get_field_id('field_width'); ?>"><?php _e('Select Field Width', \JustCustomFields::TEXTDOMAIN); ?></label>
 							<select class="widefat"
-									id="<?php echo $field->getFieldId('field_width'); ?>"
-									name="<?php echo $field->getFieldName('field_width'); ?>">
+									id="<?php echo $field->get_field_id('field_width'); ?>"
+									name="<?php echo $field->get_field_name('field_width'); ?>">
 								<?php foreach( \jcf\components\collection\JustField_Collection::$fieldWidth as $key => $width) : ?>
 									<option value="<?php echo $key; ?>"<?php echo (@$field->instance['field_width']==$key?' selected':''); ?>>
 										<?php echo $width; ?></option>

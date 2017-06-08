@@ -35,12 +35,12 @@ class JustField_GoogleMaps extends core\JustField
 				<?php else : ?>
 					<div class="jcf_cols">
 						<div class="jcf_col1">
-							<input type="text" id="<?php echo $this->getFieldId('address'); ?>" name="<?php echo $this->getFieldName('address'); ?>"
+							<input type="text" id="<?php echo $this->get_field_id('address'); ?>" name="<?php echo $this->get_field_name('address'); ?>"
 								   placeholder="Enter address to search with Google Maps"
 								   value="<?php echo esc_attr($this->entry['address']); ?>" >
 						</div>
 						<div class="jcf_col2">
-							<button id="<?php echo $this->getFieldId('search_btn'); ?>" class="button" type="button">
+							<button id="<?php echo $this->get_field_id('search_btn'); ?>" class="button" type="button">
 								<span class="dashicons dashicons-search"></span> Find
 							</button> &nbsp; or &nbsp;
 							<button class="button jcf_googlemaps_toggle_manually" type="button">
@@ -48,7 +48,7 @@ class JustField_GoogleMaps extends core\JustField
 							</button> &nbsp; or &nbsp;
 							<span class="widget-control-remove">
 								<span class="dashicons dashicons-editor-removeformatting"></span>
-								<a id="<?php echo $this->getFieldId('clean_btn'); ?>" href="#" class="widget-control-remove"> Clean</a>
+								<a id="<?php echo $this->get_field_id('clean_btn'); ?>" href="#" class="widget-control-remove"> Clean</a>
 							</span>
 						</div>
 					</div>
@@ -56,23 +56,23 @@ class JustField_GoogleMaps extends core\JustField
 					<div class="jcf_googlemaps_coordinates" style="display: none;">
 						<span>Coordinates</span>
 						<input type="text" placeholder="Latitude"
-								name="<?php echo $this->getFieldName('lat'); ?>"
-								id="<?php echo $this->getFieldId('lat'); ?>"
+								name="<?php echo $this->get_field_name('lat'); ?>"
+								id="<?php echo $this->get_field_id('lat'); ?>"
 								value="<?php echo esc_attr($this->entry['lat']); ?>"
 								>
 						<input type="text" placeholder="Longtitude"
-								name="<?php echo $this->getFieldName('lng'); ?>"
-								id="<?php echo $this->getFieldId('lng'); ?>"
+								name="<?php echo $this->get_field_name('lng'); ?>"
+								id="<?php echo $this->get_field_id('lng'); ?>"
 								value="<?php echo esc_attr($this->entry['lng']); ?>"
 								>
 						<div class="jcf_googlemaps_coordinates_buttons">
-							<button id="<?php echo $this->getFieldId('set_btn'); ?>" class="button" type="button">Set Marker</button>
+							<button id="<?php echo $this->get_field_id('set_btn'); ?>" class="button" type="button">Set Marker</button>
 							&nbsp; <a href="#" class="jcf_googlemaps_toggle_manually">hide coordinates</a>
 						</div>
 					</div>
 					<div class="clear"></div>
 
-					<div class="jcf-googlemaps-container" id="<?php echo $this->getFieldId('map'); ?>" style="width: 100%; max-width: 800px; height: 400px;"></div>
+					<div class="jcf-googlemaps-container" id="<?php echo $this->get_field_id('map'); ?>" style="width: 100%; max-width: 800px; height: 400px;"></div>
 
 					<?php if ( $this->instance['description'] != '' ) : ?>
 						<p class="howto"><?php echo esc_html($this->instance['description']); ?></p>
@@ -82,13 +82,13 @@ class JustField_GoogleMaps extends core\JustField
                       	if ( ! window.jcf_googlemaps ) window.jcf_googlemaps  = [];
 						window.jcf_googlemaps.push({
 						  'id': '<?php echo esc_attr( $this->id ); ?>',
-						  'map_id': '<?php echo $this->getFieldId('map'); ?>',
-						  'address_id': '<?php echo $this->getFieldId('address'); ?>',
-						  'search_btn_id': '<?php echo $this->getFieldId('search_btn'); ?>',
-						  'clean_btn_id': '<?php echo $this->getFieldId('clean_btn'); ?>',
-						  'set_btn_id': '<?php echo $this->getFieldId('set_btn'); ?>',
-						  'lng_ctrl_id': '#<?php echo $this->getFieldId('lng'); ?>',
-						  'lat_ctrl_id': '#<?php echo $this->getFieldId('lat'); ?>',
+						  'map_id': '<?php echo $this->get_field_id('map'); ?>',
+						  'address_id': '<?php echo $this->get_field_id('address'); ?>',
+						  'search_btn_id': '<?php echo $this->get_field_id('search_btn'); ?>',
+						  'clean_btn_id': '<?php echo $this->get_field_id('clean_btn'); ?>',
+						  'set_btn_id': '<?php echo $this->get_field_id('set_btn'); ?>',
+						  'lng_ctrl_id': '#<?php echo $this->get_field_id('lng'); ?>',
+						  'lat_ctrl_id': '#<?php echo $this->get_field_id('lat'); ?>',
 						  'lat': <?php echo (float)$this->entry['lat']; ?>,
 						  'lng': <?php echo (float)$this->entry['lng']; ?>,
 						  'markers': []
@@ -131,8 +131,8 @@ class JustField_GoogleMaps extends core\JustField
 			<div class="error"><?php _e('Please set Google Maps API Key on Settings page.', JCF_TEXTDOMAIN); ?></div>
 		<?php endif; ?>
 
-		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
-		<p><label for="<?php echo $this->getFieldId('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->getFieldName('description'); ?>" id="<?php echo $this->getFieldId('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->get_field_name('description'); ?>" id="<?php echo $this->get_field_id('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
 		<?php
 	}
 	

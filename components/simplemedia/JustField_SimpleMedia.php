@@ -54,31 +54,31 @@ class JustField_SimpleMedia extends core\JustField
 							</div>
 						<?php endif; ?>
 							<div class="jcf-simple-file-info">
-								<input type="hidden" name="<?php echo $this->getFieldName('simplemedia'); ?>" id="<?php echo $this->getFieldId('simplemedia'); ?>" value="true">
+								<input type="hidden" name="<?php echo $this->get_field_name('simplemedia'); ?>" id="<?php echo $this->get_field_id('simplemedia'); ?>" value="true">
 								<input type="hidden"
-									   id="<?php echo $this->getFieldId('uploaded_file'); ?>"
-									   name="<?php echo $this->getFieldName('uploaded_file'); ?>"
+									   id="<?php echo $this->get_field_id('uploaded_file'); ?>"
+									   name="<?php echo $this->get_field_name('uploaded_file'); ?>"
 									   value="<?php echo $value; ?>" />
 								<p class="<?php echo $delete_class; ?>"><a href="<?php echo $link; ?>" target="_blank"><?php echo basename($link); ?></a></p>
-								<a href="#"  id="simplemedia-<?php echo $this->getFieldId('uploaded_file'); ?>" class="button button-large "
-								   data-selected_id="<?php echo $this->getFieldId('uploaded_file'); ?>" 
-								   data-uploader_title="<?php echo $upload_text; ?>" 
+								<a href="#" id="simplemedia-<?php echo $this->get_field_id('uploaded_file'); ?>" class="button button-large "
+								   data-selected_id="<?php echo $this->get_field_id('uploaded_file'); ?>"
+								   data-uploader_title="<?php echo $upload_text; ?>"
 								   data-media_type="<?php echo ($upload_type == 'image' ? $upload_type : ''); ?>"
 								   data-uploader_button_text="<?php echo esc_attr($upload_text); ?>"><?php echo $upload_text; ?></a>
 								<script type="text/javascript">
 									//create modal upload pop-up to select Media Files
 									jQuery(document).ready(function() {
-										var mm_<?php echo $this->getFieldId('uploaded_file', '_'); ?> = new JcfMediaModal({
-											calling_selector: "#simplemedia-<?php echo $this->getFieldId('uploaded_file'); ?>",
+										var mm_<?php echo $this->get_field_id('uploaded_file', '_'); ?> = new JcfMediaModal({
+											calling_selector: "#simplemedia-<?php echo $this->get_field_id('uploaded_file'); ?>",
 											cb: function( attachment ) {
 												JcfSimpleMedia.selectMedia(attachment,
-													"<?php echo $this->getFieldId('uploaded_file'); ?>", "<?php echo (( $upload_type == 'image' ) ? 'image' : 'all'); ?>"
+													"<?php echo $this->get_field_id('uploaded_file'); ?>", "<?php echo (( $upload_type == 'image' ) ? 'image' : 'all'); ?>"
 													);
 											}
 										});
 									});
 								</script>
-								<a href="#" class="button button-large jcf_simple_delete<?php echo $delete_class; ?>" data-field_id="<?php echo $this->getFieldId('uploaded_file'); ?>"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a>
+								<a href="#" class="button button-large jcf_simple_delete<?php echo $delete_class; ?>" data-field_id="<?php echo $this->get_field_id('uploaded_file'); ?>"><?php _e('Delete', \JustCustomFields::TEXTDOMAIN); ?></a>
 							</div>
 						</div>
 					</div>
@@ -105,16 +105,16 @@ class JustField_SimpleMedia extends core\JustField
 		$type = $instance['type'];
 		$description = esc_html($instance['description']);
 		?>
-		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> 
-			<input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 		<p>
-			<label for="<?php echo $this->getFieldId('type'); ?>"><?php _e('Type of files:', \JustCustomFields::TEXTDOMAIN); ?></label>
-			<select class="widefat" id="<?php echo $this->getFieldId('type'); ?>" name="<?php echo $this->getFieldName('type'); ?>">
+			<label for="<?php echo $this->get_field_id('type'); ?>"><?php _e('Type of files:', \JustCustomFields::TEXTDOMAIN); ?></label>
+			<select class="widefat" id="<?php echo $this->get_field_id('type'); ?>" name="<?php echo $this->get_field_name('type'); ?>">
 				<option value="file" <?php selected('file', $type); ?>><?php _e('All', \JustCustomFields::TEXTDOMAIN); ?></option>
 				<option value="image" <?php selected('image', $type); ?>><?php _e('Only Images', \JustCustomFields::TEXTDOMAIN); ?></option>
 			</select>
 		</p>
-		<p><label for="<?php echo $this->getFieldId('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->getFieldName('description'); ?>" id="<?php echo $this->getFieldId('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
+		<p><label for="<?php echo $this->get_field_id('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->get_field_name('description'); ?>" id="<?php echo $this->get_field_id('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
 		<?php
 	}
 

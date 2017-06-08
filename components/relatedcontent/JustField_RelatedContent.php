@@ -145,11 +145,11 @@ class JustField_RelatedContent extends core\JustField
 
 		$post_types = jcf_get_post_types('object');
 		?>
-		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label>
-			<input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 
-		<p><label for="<?php echo $this->getFieldId('post_type'); ?>"><?php _e('Post type:', \JustCustomFields::TEXTDOMAIN); ?></label> 
-			<select name="<?php echo $this->getFieldName('post_type'); ?>" id="<?php echo $this->getFieldId('post_type'); ?>">
+		<p><label for="<?php echo $this->get_field_id('post_type'); ?>"><?php _e('Post type:', \JustCustomFields::TEXTDOMAIN); ?></label>
+			<select name="<?php echo $this->get_field_name('post_type'); ?>" id="<?php echo $this->get_field_id('post_type'); ?>">
 				<option value="any" <?php selected('any', $instance['post_type']); ?>><?php _e('All', \JustCustomFields::TEXTDOMAIN); ?></option>
 				<?php foreach ( $post_types as $pt_id => $pt ) : ?>
 					<option value="<?php echo $pt_id; ?>" <?php selected($pt_id, $instance['post_type']); ?>><?php echo $pt->label; ?></option>
@@ -157,15 +157,15 @@ class JustField_RelatedContent extends core\JustField
 			</select>
 		</p>
 
-		<p><label for="<?php echo $this->getFieldId('input_type'); ?>"><?php _e('Input type:', \JustCustomFields::TEXTDOMAIN); ?></label> 
-			<select name="<?php echo $this->getFieldName('input_type'); ?>" id="<?php echo $this->getFieldId('input_type'); ?>">
+		<p><label for="<?php echo $this->get_field_id('input_type'); ?>"><?php _e('Input type:', \JustCustomFields::TEXTDOMAIN); ?></label>
+			<select name="<?php echo $this->get_field_name('input_type'); ?>" id="<?php echo $this->get_field_id('input_type'); ?>">
 				<option value="autocomplete" <?php selected('autocomplete', $instance['input_type']); ?>><?php _e('Autocomplete', \JustCustomFields::TEXTDOMAIN); ?></option>
 				<option value="select" <?php selected('select', $instance['input_type']); ?>><?php _e('Dropdown list', \JustCustomFields::TEXTDOMAIN); ?></option>
 			</select>
 		</p>
 
-		<p><label for="<?php echo $this->getFieldId('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label> 
-			<textarea name="<?php echo $this->getFieldName('description'); ?>" id="<?php echo $this->getFieldId('description'); ?>" cols="20" rows="2" class="widefat"><?php echo $description; ?></textarea></p>
+		<p><label for="<?php echo $this->get_field_id('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label>
+			<textarea name="<?php echo $this->get_field_name('description'); ?>" id="<?php echo $this->get_field_id('description'); ?>" cols="20" rows="2" class="widefat"><?php echo $description; ?></textarea></p>
 		<?php
 	}
 
@@ -213,12 +213,12 @@ class JustField_RelatedContent extends core\JustField
 	 */
 	protected function getFieldIdL2( $field, $number )
 	{
-		return $this->getFieldId($number . '-' . $field);
+		return $this->get_field_id( $number . '-' . $field);
 	}
 
 	protected function getFieldNameL2( $field, $number )
 	{
-		return $this->getFieldName($number . '][' . $field);
+		return $this->get_field_name( $number . '][' . $field);
 	}
 
 	/**

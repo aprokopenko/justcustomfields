@@ -31,7 +31,7 @@ class JustField_Select extends core\JustField
 			<?php echo $this->field_options['before_widget']; ?>
 				<?php echo $this->field_options['before_title'] . esc_html($this->instance['title']) . $this->field_options['after_title']; ?>
 				<div class="select-field">
-					<select name="<?php echo $this->getFieldName('val'); ?>" id="<?php echo $this->getFieldId('val'); ?>">
+					<select name="<?php echo $this->get_field_name('val'); ?>" id="<?php echo $this->get_field_id('val'); ?>">
 						<?php if (!empty($this->instance['empty_option'])) : ?>
 							<option value="" <?php echo selected($this->instance['empty_option'], $this->entry, false); ?>><?php echo esc_attr($this->instance['empty_option']); ?></option>
 						<?php endif; ?>
@@ -60,13 +60,13 @@ class JustField_Select extends core\JustField
 		$description = esc_html($instance['description']);
 		$empty_option = esc_attr($instance['empty_option']);
 		?>
-		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
-		<p><label for="<?php echo $this->getFieldId('options'); ?>"><?php _e('Options:', \JustCustomFields::TEXTDOMAIN); ?></label> 
-			<textarea class="widefat" id="<?php echo $this->getFieldId('options'); ?>" name="<?php echo $this->getFieldName('options'); ?>" ><?php echo $options; ?></textarea>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('options'); ?>"><?php _e('Options:', \JustCustomFields::TEXTDOMAIN); ?></label>
+			<textarea class="widefat" id="<?php echo $this->get_field_id('options'); ?>" name="<?php echo $this->get_field_name('options'); ?>" ><?php echo $options; ?></textarea>
 			<br/><small><?php _e('Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', \JustCustomFields::TEXTDOMAIN); ?></small></p>
-		<p><label for="<?php echo $this->getFieldId('empty_option'); ?>"><?php _e('Empty option:', \JustCustomFields::TEXTDOMAIN); ?></label><input class="widefat" id="<?php echo $this->getFieldId('empty_option'); ?>" name="<?php echo $this->getFieldName('empty_option'); ?>" placeholder="ex. Choose item from the list"" type="text" value="<?php echo $empty_option; ?>" />
+		<p><label for="<?php echo $this->get_field_id('empty_option'); ?>"><?php _e('Empty option:', \JustCustomFields::TEXTDOMAIN); ?></label><input class="widefat" id="<?php echo $this->get_field_id('empty_option'); ?>" name="<?php echo $this->get_field_name('empty_option'); ?>" placeholder="ex. Choose item from the list"" type="text" value="<?php echo $empty_option; ?>" />
 			<br/><small><?php _e('Leave blank to disable empty option', \JustCustomFields::TEXTDOMAIN); ?></small></p>
-		<p><label for="<?php echo $this->getFieldId('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->getFieldName('description'); ?>" id="<?php echo $this->getFieldId('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
+		<p><label for="<?php echo $this->get_field_id('description'); ?>"><?php _e('Description:', \JustCustomFields::TEXTDOMAIN); ?></label> <textarea name="<?php echo $this->get_field_name('description'); ?>" id="<?php echo $this->get_field_id('description'); ?>" cols="20" rows="4" class="widefat"><?php echo $description; ?></textarea></p>
 		<?php
 	}
 

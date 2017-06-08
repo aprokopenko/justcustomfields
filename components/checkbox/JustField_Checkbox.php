@@ -24,7 +24,7 @@ class JustField_Checkbox extends core\JustField
 	 */
 	public function field() {
 		/* prepare options array */
-		$values = $this->parsedSelectOptions( $this->instance );
+		$values = $this->parsed_select_options( $this->instance );
 
 		if ( empty( $values ) ) {
 			echo '<p>' . __( 'Please check settings. Values are empty', \JustCustomFields::TEXTDOMAIN ) . '</p>';
@@ -47,7 +47,7 @@ class JustField_Checkbox extends core\JustField
 								$checked = in_array( $val, (array) $this->entry );
 							}
 							?>
-							<label><input type="checkbox" name="<?php echo esc_attr( $this->getFieldName( 'val' ) ) . ( $single_checkbox ? '' : '[]' ); ?>" id="<?php echo esc_attr( $this->getFieldId( 'val' ) ); ?>" value="<?php echo esc_attr( $val ); ?>" <?php echo checked( true, $checked, false ); ?>/> <?php echo esc_html( $key ); ?></label>
+							<label><input type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'val' ) ) . ( $single_checkbox ? '' : '[]' ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'val' ) ); ?>" value="<?php echo esc_attr( $val ); ?>" <?php echo checked( true, $checked, false ); ?>/> <?php echo esc_html( $key ); ?></label>
 						<?php endforeach; ?>
 					</div>
 				</div>
@@ -68,17 +68,17 @@ class JustField_Checkbox extends core\JustField
 		$instance = wp_parse_args( (array) $this->instance, array( 'title' => '', 'settings' => '', 'description' => '' ) );
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->getFieldId( 'title' ) ); ?>"><?php esc_html_e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
-			<input class="widefat" id="<?php echo esc_attr( $this->getFieldId( 'title' ) ); ?>" name="<?php echo $this->getFieldName( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->getFieldId( 'settings' ) ); ?>"><?php esc_html_e( 'Settings:', \JustCustomFields::TEXTDOMAIN ); ?></label>
-			<textarea class="widefat" id="<?php echo esc_attr( $this->getFieldId('settings') ); ?>" name="<?php echo esc_attr( $this->getFieldName('settings') ); ?>" ><?php echo esc_attr( $instance['settings'] ); ?></textarea>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'settings' ) ); ?>"><?php esc_html_e( 'Settings:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id('settings') ); ?>" name="<?php echo esc_attr( $this->get_field_name('settings') ); ?>" ><?php echo esc_attr( $instance['settings'] ); ?></textarea>
 			<br/><small><?php _e( 'Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', \JustCustomFields::TEXTDOMAIN ); ?></small>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->getFieldId( 'description' ) ); ?>"><?php esc_html_e( 'Description:', \JustCustomFields::TEXTDOMAIN ); ?></label>
-			<textarea name="<?php echo $this->getFieldName('description'); ?>" id="<?php echo esc_html( $this->getFieldId( 'description' ) ); ?>" cols="20" rows="4" class="widefat"><?php echo esc_html( $instance['description'] ); ?></textarea>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<textarea name="<?php echo $this->get_field_name('description'); ?>" id="<?php echo esc_html( $this->get_field_id( 'description' ) ); ?>" cols="20" rows="4" class="widefat"><?php echo esc_html( $instance['description'] ); ?></textarea>
 		</p>
 		<?php
 	}
@@ -108,7 +108,7 @@ class JustField_Checkbox extends core\JustField
 	 * @param array $instance	current instance
 	 * @return array
 	 */
-	protected function parsedSelectOptions( $instance ) {
+	protected function parsed_select_options( $instance ) {
 		$values = array();
 		$v = explode( "\n", $instance['settings'] );
 
@@ -129,7 +129,7 @@ class JustField_Checkbox extends core\JustField
 	 * 	Print fields values from shortcode
 	 */
 	public function shortcodeValue( $args ) {
-		$options = $this->parsedSelectOptions( $this->instance );
+		$options = $this->parsed_select_options( $this->instance );
 		$options = array_flip( $options );
 
 		if ( empty( $this->entry ) ) {

@@ -62,7 +62,7 @@ class JustField_Collection extends core\JustField
 				<?php if ( empty($this->instance['fields']) ) : ?>
 					<p class="error">Collection element has no fields registered. Please check component settings</p>
 				<?php else: ?>
-					<input type="hidden" name="<?php echo $this->getFieldName('empty'); ?>" value="1">
+					<input type="hidden" name="<?php echo $this->get_field_name('empty'); ?>" value="1">
 					<div class="collection_fields">
 						<div class="collection_field_group empty"></div>
 						<?php foreach ( $entries as $key => $fields ) : ?>
@@ -138,7 +138,7 @@ class JustField_Collection extends core\JustField
 		$description = esc_html($instance['description']);
 		$title = esc_attr($instance['title']);
 		?>
-		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>
 		<?php
 	}
 
