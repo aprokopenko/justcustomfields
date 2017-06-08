@@ -165,7 +165,7 @@ class JustField
 			$this->number = str_replace($this->id_base . '-', '', $this->id);
 
 			// load instance data
-			$fields = $this->_dL->getFields();
+			$fields = $this->_dL->get_fields();
 			if ( isset($fields[$this->postType][$this->id]) )
 				$this->instance = (array) $fields[$this->postType][$this->id];
 
@@ -198,7 +198,7 @@ class JustField
 		if ( !empty($this->collectionId) ) {
 			// load entry
 			if ( !empty($this->slug) ) {
-				$fields = $this->_dL->getFields();
+				$fields = $this->_dL->get_fields();
 				if ( empty($fields[$this->postType][$this->collectionId]) )
 					return;
 
@@ -401,11 +401,11 @@ class JustField
 			$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
 		}
 
-		$fields = $this->_dL->getFields();
+		$fields = $this->_dL->get_fields();
 
 		if ( !$this->isCollectionField() ) {
 			// update fieldset
-			$fieldsets = $this->_dL->getFieldsets();
+			$fieldsets = $this->_dL->get_fieldsets();
 			$fieldsets[$this->postType][$this->fieldsetId]['fields'][$this->id] = $instance['enabled'];
 			$this->_dL->setFieldsets($fieldsets);
 			$this->_dL->saveFieldsetsData();
@@ -448,13 +448,13 @@ class JustField
 	 */
 	public function doDelete()
 	{
-		$fields = $this->_dL->getFields();
+		$fields = $this->_dL->get_fields();
 
 		if ( !empty($this->collectionId) ) {
 			unset($fields[$this->postType][$this->collectionId]['fields'][$this->id]);
 		}
 		else {
-			$fieldsets = $this->_dL->getFieldsets();
+			$fieldsets = $this->_dL->get_fieldsets();
 			unset($fieldsets[$this->postType][$this->fieldsetId]['fields'][$this->id]);
 			unset($fields[$this->postType][$this->id]);
 

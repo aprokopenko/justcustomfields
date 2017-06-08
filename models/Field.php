@@ -21,7 +21,7 @@ class Field extends core\Model
 	 */
 	public function findAll()
 	{
-		return $this->_dL->getFields();
+		return $this->_dL->get_fields();
 	}
 
 	/**
@@ -31,7 +31,7 @@ class Field extends core\Model
 	 */
 	public function findByPostType( $post_type )
 	{
-		$fields = $this->_dL->getFields();
+		$fields = $this->_dL->get_fields();
 		if ( !empty($fields[$post_type]) )
 			return $fields[$post_type];
 
@@ -45,7 +45,7 @@ class Field extends core\Model
 	 */
 	public function findCollectionsByPostType( $post_type )
 	{
-		$fields = $this->_dL->getFields();
+		$fields = $this->_dL->get_fields();
 		$collections = array();
 
 		if ( !empty($fields[$post_type]) ) {
@@ -88,7 +88,7 @@ class Field extends core\Model
 	public function sort()
 	{
 		$order = trim($this->fields_order, ',');
-		$fieldsets = $this->_dL->getFieldsets();
+		$fieldsets = $this->_dL->get_fieldsets();
 		$new_fields = explode(',', $order);
 		$fieldsets[$this->post_type][$this->fieldset_id]['fields'] = array();
 
@@ -112,7 +112,7 @@ class Field extends core\Model
 	 */
 	public function sortCollection()
 	{
-		$fields = $this->_dL->getFields();
+		$fields = $this->_dL->get_fields();
 		$order = trim($this->fields_order, ',');
 		$new_sort = explode(',', $order);
 		$new_fields = array();

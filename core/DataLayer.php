@@ -38,7 +38,7 @@ abstract class DataLayer
 	 *
 	 * @return array
 	 */
-	public function getFields()
+	public function get_fields()
 	{
 		return $this->_fields;
 	}
@@ -48,7 +48,7 @@ abstract class DataLayer
 	 *
 	 * @return array
 	 */
-	public function getFieldsets()
+	public function get_fieldsets()
 	{
 		return $this->_fieldsets;
 	}

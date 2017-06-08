@@ -48,7 +48,7 @@ class FieldController extends core\Controller
 		if ( $model->load($_POST) && $success = $model->save() ) {
 			if ( isset($success['id_base']) && $success['id_base'] == 'collection' ) {
 				$jcf = \JustCustomFields::getInstance();
-				$registered_fields = $jcf->getFields('collection');
+				$registered_fields = $jcf->get_fields('collection');
 
 				$post_type_kind = models\Field::getPostTypeKind($model->post_type);
 				if ( JustField::POSTTYPE_KIND_TAXONOMY == $post_type_kind ) {

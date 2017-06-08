@@ -24,7 +24,7 @@ class Shortcodes extends core\Model
 		//get post type
 		$post_type = get_post_type($post_id);
 		//get field settings
-		$field_settings = $this->_dL->getFields();
+		$field_settings = $this->_dL->get_fields();
 		if ( empty($field_settings[$post_type]) )
 			return false;
 

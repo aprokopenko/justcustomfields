@@ -20,7 +20,7 @@ class JustCustomFields extends core\Singleton {
 	/**
 	 * Plugin text domain for translations
 	 */
-	const TEXTDOMAIN = 'just-custom-fields';
+	const TEXTDOMAIN = 'jcf';
 	const VERSION = '3.200';
 
 	/**
@@ -62,19 +62,19 @@ class JustCustomFields extends core\Singleton {
 		self::$version     = self::VERSION;
 
 		/* init features, which this plugin is created for */
-		$this->initControllers();
+		$this->init_controllers();
 
-		$this->initFields();
-		add_action( 'plugins_loaded', array( $this, 'registerCustomComponents' ) );
+		$this->init_fields();
+		add_action( 'plugins_loaded', array( $this, 'register_custom_components' ) );
 	}
 
 	/**
 	 * Init all controllers to support post edit pages and admin configuration pages
 	 */
-	public function initControllers() {
+	public function init_controllers() {
 		$loader = new core\PluginLoader();
 		/* we use wp_doing_ajax to prevent version check under ajax */
-		if ( ! wp_doing_ajax() && $loader->checkMigrationsAvailable() ) {
+		if ( ! wp_doing_ajax() && $loader->check_migrations_available() ) {
 			new controllers\MigrateController();
 			new controllers\AdminController();
 		} else {
@@ -95,18 +95,18 @@ class JustCustomFields extends core\Singleton {
 	/**
 	 * Init field components (field types, which can be added to post type)
 	 */
-	public function initFields() {
-		$this->registerField( 'jcf\components\inputtext\JustField_InputText', true );
-		$this->registerField( 'jcf\components\textarea\JustField_Textarea', true );
-		$this->registerField( 'jcf\components\select\JustField_Select', true );
-		$this->registerField( 'jcf\components\selectmultiple\JustField_SelectMultiple', true );
-		$this->registerField( 'jcf\components\checkbox\JustField_Checkbox', true );
-		$this->registerField( 'jcf\components\datepicker\JustField_DatePicker', true );
-		$this->registerField( 'jcf\components\simplemedia\JustField_SimpleMedia', true );
-		$this->registerField( 'jcf\components\collection\JustField_Collection' );
-		$this->registerField( 'jcf\components\table\JustField_Table', true );
-		$this->registerField( 'jcf\components\relatedcontent\JustField_RelatedContent', true );
-		$this->registerField( 'jcf\components\googlemaps\JustField_GoogleMaps', true );
+	public function init_fields() {
+		$this->register_field( 'jcf\components\inputtext\JustField_InputText', true );
+		$this->register_field( 'jcf\components\textarea\JustField_Textarea', true );
+		$this->register_field( 'jcf\components\select\JustField_Select', true );
+		$this->register_field( 'jcf\components\selectmultiple\JustField_SelectMultiple', true );
+		$this->register_field( 'jcf\components\checkbox\JustField_Checkbox', true );
+		$this->register_field( 'jcf\components\datepicker\JustField_DatePicker', true );
+		$this->register_field( 'jcf\components\simplemedia\JustField_SimpleMedia', true );
+		$this->register_field( 'jcf\components\collection\JustField_Collection' );
+		$this->register_field( 'jcf\components\table\JustField_Table', true );
+		$this->register_field( 'jcf\components\relatedcontent\JustField_RelatedContent', true );
+		$this->register_field( 'jcf\components\googlemaps\JustField_GoogleMaps', true );
 	}
 
 	/**
@@ -117,9 +117,9 @@ class JustCustomFields extends core\Singleton {
 	 *	- include your components files
 	 *	- run
 	 *  $jcf = new \JustCustomFields();
-	 *  $jcf->registerField('namespace\className', $collection_field = true|false);
+	 *  $jcf->register_field('namespace\className', $collection_field = true|false);
 	 */
-	public function registerCustomComponents() {
+	public function register_custom_components() {
 		do_action( 'jcf_register_fields' );
 	}
 
@@ -130,7 +130,7 @@ class JustCustomFields extends core\Singleton {
 	 * @param bool $collection_field
 	 * @return bool
 	 */
-	public function registerField( $class_name, $collection_field = false ) {
+	public function register_field( $class_name, $collection_field = false ) {
 		if ( strpos( $class_name, '\\' ) === false ) {
 			$class_name = '\\' . $class_name;
 		}
@@ -152,7 +152,7 @@ class JustCustomFields extends core\Singleton {
 	 * @param bool $collection_only
 	 * @return array $collection_fields
 	 */
-	public function getFields( $collection_only = false ) {
+	public function get_fields( $collection_only = false ) {
 		if ( ! $collection_only ) {
 			return $this->_fields;
 		}
@@ -174,7 +174,7 @@ class JustCustomFields extends core\Singleton {
 	 * @param string $id_base
 	 * @return array
 	 */
-	public function getFieldInfo( $id_base ) {
+	public function get_field_info( $id_base ) {
 		if ( ! empty( $this->_fields[ $id_base ] ) ) {
 			return $this->_fields[ $id_base ];
 		}

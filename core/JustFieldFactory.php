@@ -23,7 +23,7 @@ class JustFieldFactory
 		$id_base = preg_replace('/\-([0-9]+)/', '', $field_mixed);
 
 		$jcf = \JustCustomFields::run();
-		$field_info = $jcf->getFieldInfo($id_base);
+		$field_info = $jcf->get_field_info($id_base);
 
 		if ( empty($field_info['class']) || !class_exists($field_info['class']) ) {
 			return null;

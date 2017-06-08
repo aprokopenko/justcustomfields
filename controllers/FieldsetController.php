@@ -56,8 +56,8 @@ class FieldsetController extends core\Controller
 		$fieldsets = $fieldset_model->findByPostType($post_type_id);
 		$fields = $field_model->findByPostType($post_type_id);
 		$collections = $field_model->findCollectionsByPostType($post_type_id);
-		$collections['registered_fields'] = $jcf->getFields('collection');
-		$registered_fields = $jcf->getFields();
+		$collections['registered_fields'] = $jcf->get_fields('collection');
+		$registered_fields = $jcf->get_fields();
 
 		if ( core\JustField::POSTTYPE_KIND_TAXONOMY == $post_type_kind ) {
 			$post_types = jcf_get_taxonomies('objects');

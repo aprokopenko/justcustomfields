@@ -30,7 +30,7 @@ class PluginLoader
 	 *
 	 * @return bool
 	 */
-	public function checkMigrationsAvailable()
+	public function check_migrations_available()
 	{
 		$version = $this->getStorageVersion();
 

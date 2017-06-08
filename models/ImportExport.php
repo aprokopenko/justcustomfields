@@ -74,8 +74,8 @@ class ImportExport extends core\Model
 	{
 		if ( $this->action != 'jcf_import_fields' || empty($this->selected_data) || empty($this->import_source) ) return;
 
-		$dl_fields = $this->_dL->getFields();
-		$dl_fieldsets = $this->_dL->getFieldsets();
+		$dl_fields = $this->_dL->get_fields();
+		$dl_fieldsets = $this->_dL->get_fieldsets();
 
 		// we take origin import source and remove elements which are not selected
 		$import_source = json_decode(stripslashes($this->import_source), true);

@@ -247,7 +247,7 @@ class Migrate extends Model
 	{
 		// try to get fields from current data layer. maybe we don't have much changes
 		$data_layer = DataLayerFactory::create();
-		if ( $fields = $data_layer->getFields() ) {
+		if ( $fields = $data_layer->get_fields() ) {
 			return $fields;
 		}
 

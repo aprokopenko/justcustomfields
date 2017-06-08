@@ -36,7 +36,7 @@ class FieldsetVisibility extends core\Model
 	 */
 	public function findByPostType($post_type) 
 	{
-		$fieldsets = $this->_dL->getFieldsets();
+		$fieldsets = $this->_dL->get_fieldsets();
 		$visibility_rules = array();
 
 		if ( empty($fieldsets[$post_type]) ) return;
@@ -95,7 +95,7 @@ class FieldsetVisibility extends core\Model
 
 		if ( !empty($this->scenario) && $this->scenario == self::SCENARIO_UPDATE ) {
 
-			$visibility_rule = $this->_getFieldsetVisibility($this->fieldset_id, $this->rule_id);
+			$visibility_rule = $this->_get_fieldset_visibility($this->fieldset_id, $this->rule_id);
 
 			if ( empty($visibility_rule) ) {
 				$this->addError(__('Visibility rule not found.', \JustCustomFields::TEXTDOMAIN));
@@ -137,7 +137,7 @@ class FieldsetVisibility extends core\Model
 	 */
 	public function update()
 	{
-		$visibility_rules = $this->_getFieldsetVisibility($this->fieldset_id);
+		$visibility_rules = $this->_get_fieldset_visibility($this->fieldset_id);
 
 		if ( empty($this->rule_id) ) $this->rule_id = time();
 
@@ -159,7 +159,7 @@ class FieldsetVisibility extends core\Model
 	 */
 	public function delete()
 	{
-		$visibility_rules = $this->_getFieldsetVisibility($this->fieldset_id);
+		$visibility_rules = $this->_get_fieldset_visibility($this->fieldset_id);
 		if ( isset($visibility_rules[$this->rule_id]) )
 			unset($visibility_rules[$this->rule_id]);
 
@@ -210,9 +210,9 @@ class FieldsetVisibility extends core\Model
 	 * @param integer|null $rule_id
 	 * @return mixed
 	 */
-	protected function _getFieldsetVisibility( $fieldset_id, $rule_id = null )
+	protected function _get_fieldset_visibility( $fieldset_id, $rule_id = null )
 	{
-		$fieldsets = $this->_dL->getFieldsets();
+		$fieldsets = $this->_dL->get_fieldsets();
 
 		// if we take only fieldset settings - return it
 		if ( is_null($rule_id) ) {
@@ -239,7 +239,7 @@ class FieldsetVisibility extends core\Model
 	 */
 	protected function _saveFieldsetVisibility( $fieldset_id, $rules )
 	{
-		$fieldsets = $this->_dL->getFieldsets();
+		$fieldsets = $this->_dL->get_fieldsets();
 		$fieldsets[$this->post_type][$fieldset_id]['visibility_rules'] = $rules;
 		return $this->_save($fieldsets);
 	}
