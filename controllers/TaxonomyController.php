@@ -6,19 +6,23 @@ use jcf\models;
 use jcf\core;
 use jcf\core\JustField;
 
-class TaxonomyController extends core\Controller
-{
+class TaxonomyController extends core\Controller {
+
+	/**
+	 * Taxonomy var
+	 *
+	 * @var $_taxonomy
+	 */
 	protected $_taxonomy = null;
 
 	/**
 	 * Init all wp-actions
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		parent::__construct();
 
-		if ( $this->_isTaxonomyEdit() ) {
-			add_action('admin_print_scripts', array( $this, 'addScripts' ));
+		if ( $this->_is_taxonomy_edit() ) {
+			add_action('admin_print_scripts', array( $this, 'add_scripts' ));
 			add_action('admin_print_styles', array( $this, 'addStyles' ));
 			add_action('admin_head', array( $this, 'addMediaUploaderJs' ));
 
@@ -35,7 +39,7 @@ class TaxonomyController extends core\Controller
 	/**
 	 * Check if we are on Taxonomy edit screen (add or update)
 	 */
-	protected function _isTaxonomyEdit()
+	protected function _is_taxonomy_edit()
 	{
 		$is_edit_taxonomy = false;
 		if ( !empty($_GET['taxonomy']) ) {
@@ -73,7 +77,7 @@ class TaxonomyController extends core\Controller
 
 		$post_type = JustField::POSTTYPE_KIND_PREFIX_TAXONOMY . $this->_taxonomy;
 		$model = new models\Fieldset();
-		$fieldsets = $model->findByPostType($post_type);
+		$fieldsets = $model->find_by_post_type($post_type);
 
 		if ( !empty($fieldsets) ) {
 			print '<div id="jcf_taxonomy_fields">';
@@ -118,7 +122,7 @@ class TaxonomyController extends core\Controller
 				if ( !$field_obj ) continue;
 
 				if ( $term_id ) {
-					$field_obj->setPostID($term_id);
+					$field_obj->set_post_id($term_id);
 				}
 
 				$field_obj->doAddJs();
@@ -149,7 +153,7 @@ class TaxonomyController extends core\Controller
 		$post_type = JustField::POSTTYPE_KIND_PREFIX_TAXONOMY . $_POST['taxonomy'];
 
 		$fieldsets_model = new models\Fieldset();
-		$fieldsets = $fieldsets_model->findByPostType($post_type);
+		$fieldsets = $fieldsets_model->find_by_post_type($post_type);
 
 		if ( empty($fieldsets) ) {
 			exit();
@@ -175,7 +179,7 @@ class TaxonomyController extends core\Controller
 		$post_type = JustField::POSTTYPE_KIND_PREFIX_TAXONOMY . $post_type;
 		
 		$fieldsets_model = new models\Fieldset();
-		$fieldsets = $fieldsets_model->findByPostType($post_type);
+		$fieldsets = $fieldsets_model->find_by_post_type($post_type);
 		if ( empty($fieldsets) ) {
 			return;
 		}
@@ -191,8 +195,8 @@ class TaxonomyController extends core\Controller
 				$field_model->field_id = $field_id;
 
 				$field_obj = core\JustFieldFactory::create($field_model);
-				$field_obj->setPostID($term_id);
-				$field_obj->doSave();
+				$field_obj->set_post_id($term_id);
+				$field_obj->do_save();
 			}
 		}
 
@@ -202,7 +206,7 @@ class TaxonomyController extends core\Controller
 	/**
 	 * 	add custom scripts to post edit page
 	 */
-	public function addScripts()
+	public function add_scripts()
 	{
 		wp_register_script(
 			'jcf_edit_taxonomy',

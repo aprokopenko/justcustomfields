@@ -35,7 +35,7 @@ class Migrate extends Model
 	 *
 	 * @return Migration[]
 	 */
-	public function findMigrations()
+	public function find_migrations()
 	{
 		$version = $this->_dL->getStorageVersion();
 		if ( ! $version ) {
@@ -94,7 +94,7 @@ class Migrate extends Model
 	 * @param Migration[] $migrations
 	 * @return array
 	 */
-	public function testMigrate($migrations)
+	public function test_migrate($migrations)
 	{
 		$data = null;
 		$warnings = array();
@@ -159,7 +159,7 @@ class Migrate extends Model
 	 *
 	 * @return boolean
 	 */
-	public function isStorageWritable()
+	public function is_storage_writable()
 	{
 		$data_source = Settings::getDataSourceType();
 

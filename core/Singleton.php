@@ -14,7 +14,7 @@ class Singleton
 	 *
 	 * @return Singleton A single instance of this class.
 	 */
-	public static function getInstance()
+	public static function get_instance()
 	{
 		if ( null === static::$instance ) {
 			static::$instance = new static();
@@ -30,7 +30,7 @@ class Singleton
 	 */
 	public static function run()
 	{
-		return static::getInstance();
+		return static::get_instance();
 	}
 
 	/**

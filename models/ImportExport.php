@@ -15,7 +15,7 @@ class ImportExport extends core\Model
 	/**
 	 * Get fields for import
 	 */
-	public function getImportFields()
+	public function get_import_fields()
 	{
 		if ( $this->action != 'jcf_import_fields_form' || !$this->validateImportFile() ) return;
 

@@ -75,7 +75,7 @@ class Model
 		add_action('jcf_print_admin_notice', array( $this, 'printMessages' ));
 	}
 
-	public function getErrors()
+	public function get_errors()
 	{
 		return $this->_errors;
 	}
@@ -134,7 +134,7 @@ class Model
 	 *
 	 * @return float
 	 */
-	public function getStorageVersion()
+	public function get_storage_version()
 	{
 		return $this->_dL->getStorageVersion();
 	}

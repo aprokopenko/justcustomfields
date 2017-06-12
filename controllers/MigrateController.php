@@ -11,26 +11,23 @@ use jcf\models;
  *
  * @package jcf\controllers
  */
-class MigrateController extends core\Controller
-{
+class MigrateController extends core\Controller {
 	/**
 	 * MigrateController constructor.
 	 * Init WP hooks
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		parent::__construct();
-		add_action('admin_menu', array( $this, 'initRoutes' ));
+		add_action( 'admin_menu', array( $this, 'init_routes' ) );
 	}
 
 	/**
 	 * Replace main menu "Just Custom Fields" with migration page
 	 */
-	public function initRoutes()
-	{
+	public function init_routes() {
 		$page_title = \JustCustomFields::$plugin_name;
 
-		add_options_page($page_title, $page_title, 'manage_options', 'jcf_upgrade', array( $this, 'actionIndex' ));
+		add_options_page( $page_title, $page_title, 'manage_options', 'jcf_upgrade', array( $this, 'action_index' ) );
 	}
 
 	/**
@@ -38,36 +35,34 @@ class MigrateController extends core\Controller
 	 *
 	 * @return bool
 	 */
-	public function actionIndex()
-	{
+	public function action_index() {
 		$model = new models\Migrate();
 
 		// check that we have something to migrate.
-		$version = $model->getStorageVersion();
-		if ( ! version_compare( $version, \JustCustomFields::VERSION, '<') ) {
-			return $this->actionUpgraded();
+		$version = $model->get_storage_version();
+		if ( ! version_compare( $version, \JustCustomFields::VERSION, '<' ) ) {
+			return $this->action_upgraded();
 		}
 
-		$migrations = $model->findMigrations();
+		$migrations = $model->find_migrations();
 
-		// check form submit and migrate
+		/* check form submit and migrate */
 		if ( $model->load($_POST) ) {
-			if ( $model->migrate($migrations) ) {
-				return $this->actionUpgraded();
+			if ( $model->migrate( $migrations ) ) {
+				return $this->action_upgraded();
 			}
-		}
-		// if no submit we test migrate to show possible warnings
+		} // if no submit we test migrate to show possible warnings
 		else {
-			$warnings = $model->testMigrate($migrations);
+			$warnings = $model->test_migrate( $migrations );
 		}
 
-		$model->isStorageWritable();
-		$errors = $model->getErrors();
+		$model->is_storage_writable();
+		$errors = $model->get_errors();
 
 		return $this->_render('migrate/index', array(
 			'migrations' => $migrations,
 			'warnings' => $warnings,
-			'errors' =>   $errors,
+			'errors' => $errors,
 		));
 	}
 
@@ -76,9 +71,8 @@ class MigrateController extends core\Controller
 	 *
 	 * @return bool
 	 */
-	public function actionUpgraded()
-	{
-		return $this->_render('migrate/upgraded');
+	public function action_upgraded() {
+		return $this->_render( 'migrate/upgraded' );
 	}
 
 }

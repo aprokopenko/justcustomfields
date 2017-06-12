@@ -34,7 +34,7 @@ class FieldsetVisibility extends core\Model
 	 * @param string $post_type
 	 * @return array
 	 */
-	public function findByPostType($post_type) 
+	public function find_by_post_type($post_type)
 	{
 		$fieldsets = $this->_dL->get_fieldsets();
 		$visibility_rules = array();
@@ -82,7 +82,7 @@ class FieldsetVisibility extends core\Model
 	 * Get form data for visibility rules form
 	 * @return array
 	 */
-	public function getForm()
+	public function get_form()
 	{
 		$output = array();
 		$taxonomies = get_object_taxonomies($this->post_type, 'objects');
@@ -119,7 +119,7 @@ class FieldsetVisibility extends core\Model
 	 * Get visibility rules for fieldset with $this->_request
 	 * @return array
 	 */
-	public function getBasedOnOptions()
+	public function get_based_on_options()
 	{
 		if ( $this->based_on == self::BASEDON_PAGE_TPL ) {
 			$options = jcf_get_page_templates($this->post_type);
@@ -179,7 +179,7 @@ class FieldsetVisibility extends core\Model
 	 * @global \WPDB $wpdb
 	 * @return array
 	 */
-	public static function findTaxonomyTerms($taxonomy, $term)
+	public static function find_taxonomy_terms($taxonomy, $term)
 	{
 		global $wpdb;
 

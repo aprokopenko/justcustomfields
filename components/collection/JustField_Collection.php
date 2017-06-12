@@ -287,7 +287,7 @@ class JustField_Collection extends core\JustField
 				$field_model->load($params) && $field_obj = core\JustFieldFactory::create($field_model);
 				if ( !$field_obj ) continue;
 
-				$field_obj->setPostID($this->postID, $key);
+				$field_obj->set_post_id($this->postID, $key);
 				$shortcode_value[] = $field_obj->doShortcode($args);
 				unset($field_obj);
 			}

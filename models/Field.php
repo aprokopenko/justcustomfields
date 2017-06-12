@@ -29,7 +29,7 @@ class Field extends core\Model
 	 * @param string $post_type
 	 * @return array
 	 */
-	public function findByPostType( $post_type )
+	public function find_by_post_type( $post_type )
 	{
 		$fields = $this->_dL->get_fields();
 		if ( !empty($fields[$post_type]) )
@@ -43,7 +43,7 @@ class Field extends core\Model
 	 * @param string $post_type
 	 * @return array
 	 */
-	public function findCollectionsByPostType( $post_type )
+	public function find_collections_by_post_type( $post_type )
 	{
 		$fields = $this->_dL->get_fields();
 		$collections = array();
@@ -141,7 +141,7 @@ class Field extends core\Model
 	 * @param string $post_type Post type ID or Prefixed taxonomy ID
 	 * @return string
 	 */
-	public static function getPostTypeKind( $post_type )
+	public static function get_post_type_kind( $post_type )
 	{
 		$kind = JustField::POSTTYPE_KIND_POST;
 		if ( 0 === strpos($post_type, JustField::POSTTYPE_KIND_PREFIX_TAXONOMY) ) {

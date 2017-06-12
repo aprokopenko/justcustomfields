@@ -26,7 +26,7 @@ class Fieldset extends core\Model
 	 * Return number of registered fields and fieldsets for specific post type
 	 * @return array
 	 */
-	public function getFieldsCounter()
+	public function get_fields_counter()
 	{
 		$fields = $this->_dL->get_fields();
 		$fieldsets = $this->_dL->get_fieldsets();
@@ -85,7 +85,7 @@ class Fieldset extends core\Model
 	 * @param string $post_type Name post type
 	 * @return array
 	 */
-	public function findByPostType( $post_type )
+	public function find_by_post_type( $post_type )
 	{
 		$fieldsets = $this->_dL->get_fieldsets();
 		if ( !empty($fieldsets[$post_type]) )
@@ -108,7 +108,7 @@ class Fieldset extends core\Model
 	 * @param string $fieldset_id
 	 * @return array
 	 */
-	public function findById( $fieldset_id )
+	public function find_by_id( $fieldset_id )
 	{
 		$fieldsets = $this->_dL->get_fieldsets();
 		if ( empty($fieldsets[$this->post_type][$fieldset_id]) ) {
@@ -253,8 +253,8 @@ class Fieldset extends core\Model
 	 * @param string $post_type Post type ID or Prefixed taxonomy ID
 	 * @return string
 	 */
-	public static function getPostTypeKind( $post_type )
+	public static function get_post_type_kind( $post_type )
 	{
-		return Field::getPostTypeKind( $post_type );
+		return Field::get_post_type_kind( $post_type );
 	}
 }

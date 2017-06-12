@@ -191,7 +191,7 @@ class JustField
 	 * set post ID and load entry from wp-postmeta
 	 * @param  int  $post_ID  post ID variable
 	 */
-	public function setPostID( $post_ID, $key_from_collection = FALSE )
+	public function set_post_id( $post_ID, $key_from_collection = FALSE )
 	{
 		$this->postID = $post_ID;
 
@@ -476,7 +476,7 @@ class JustField
 	 *
 	 * @return boolean;
 	 */
-	public function doSave()
+	public function do_save()
 	{
 		// check that number and post_ID is set
 		if ( empty($this->postID) || empty($this->number) )
