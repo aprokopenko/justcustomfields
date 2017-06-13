@@ -31,14 +31,14 @@ class JustFieldFactory
 
 		$model = new $field_info['class']();
 		$model->setPostType($field->post_type);
-		$model->setFieldset($field->fieldset_id);
-		$model->setCollection($field->collection_id);
+		$model->set_fieldset($field->fieldset_id);
+		$model->set_collection($field->collection_id);
 		$model->setId($field_mixed);
 
-		if ( !$model->isNew && $field->collection_id ) {
+		if ( !$model->is_new && $field->collection_id ) {
 			$collection = new \jcf\components\collection\JustField_Collection();
 			$collection->setPostType($field->post_type);
-			$collection->setFieldset($field->fieldset_id);
+			$collection->set_fieldset($field->fieldset_id);
 			$collection->setId($field->collection_id);
 
 			$field_instance = $collection->instance['fields'][$field_mixed];

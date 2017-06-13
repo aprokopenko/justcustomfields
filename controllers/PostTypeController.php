@@ -124,7 +124,7 @@ class PostTypeController extends core\Controller {
 				continue;
 			}
 
-			$field_obj->set_post_id( $post->ID );
+			$field_obj->setPostId( $post->ID );
 			$field_obj->field();
 		}
 		unset( $field_obj );
@@ -184,7 +184,7 @@ class PostTypeController extends core\Controller {
 			foreach ( $fieldset['fields'] as $field_id => $tmp ) {
 				$field_model->field_id = $field_id;
 				$field_obj = core\JustFieldFactory::create( $field_model );
-				$field_obj->set_post_id( $post->ID );
+				$field_obj->setPostId( $post->ID );
 				$field_obj->do_save();
 			}
 		}

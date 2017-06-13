@@ -28,7 +28,7 @@ class Settings extends core\Model
 	 * @param string $default
 	 * @return string
 	 */
-	public static function getDataSourceType( $default = null )
+	public static function get_data_source_type( $default = null )
 	{
 		if ( is_null($default) ) {
 			$default = self::CONF_SOURCE_DB;

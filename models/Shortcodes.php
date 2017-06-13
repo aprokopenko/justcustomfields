@@ -24,7 +24,7 @@ class Shortcodes extends core\Model
 		//get post type
 		$post_type = get_post_type($post_id);
 		//get field settings
-		$field_settings = $this->_dL->get_fields();
+		$field_settings = $this->_dl->get_fields();
 		if ( empty($field_settings[$post_type]) )
 			return false;
 
@@ -43,7 +43,7 @@ class Shortcodes extends core\Model
 			$field_obj = core\JustFieldFactory::create($field_model);
 			if ( !$field_obj ) return false;
 
-			$field_obj->set_post_id($post_id);
+			$field_obj->setPostId($post_id);
 
 			unset($args['field']);
 			return $field_obj->doShortcode($args);

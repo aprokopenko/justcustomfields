@@ -3,7 +3,7 @@ jQuery(document).ready(function () {
     initAddFieldsetBox();
     initFieldsetsEdit();
     initAjaxBoxClose();
-    initFieldsetFields();
+    initFieldset_fields();
   }
   initImport();
   initExport();
@@ -327,7 +327,7 @@ function initFieldsetsEdit() {
 /**
  *	init fieldset fields grid and add form
  */
-function initFieldsetFields() {
+function initFieldset_fields() {
 
   // init add form
   jQuery('#jcf_fieldsets form.jcform_add_field').submit(function( e ) {

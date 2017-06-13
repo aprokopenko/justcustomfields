@@ -11,6 +11,7 @@ class FieldsetController extends core\Controller {
 	 * Init all wp-actions
 	 */
 	public function __construct() {
+
 		parent::__construct();
 		add_action( 'admin_menu', array( $this, 'init_routes' ) );
 
@@ -103,6 +104,7 @@ class FieldsetController extends core\Controller {
 	 * Form html on fieldset Update request
 	 */
 	public function ajax_get_form() {
+		//ini_set('display_errors',1);
 		$model = new models\Fieldset();
 
 		if ( $model->load( $_POST ) && $fieldset = $model->find_by_id( $model->fieldset_id ) ) {

@@ -37,7 +37,7 @@ class Migrate extends Model
 	 */
 	public function find_migrations()
 	{
-		$version = $this->_dL->getStorageVersion();
+		$version = $this->_dl->get_storage_version();
 		if ( ! $version ) {
 			$version = self::guessVersion();
 		}
@@ -130,9 +130,9 @@ class Migrate extends Model
 
 			$fields = $this->_updateFieldsVersion($fields);
 
-			$this->_dL->setFields($fields);
-			$this->_dL->setFieldsets($fieldsets);
-			$updated = $this->_dL->saveFieldsData() && $this->_dL->saveFieldsetsData();
+			$this->_dl->set_fields($fields);
+			$this->_dl->set_fieldsets($fieldsets);
+			$updated = $this->_dl->save_fields_data() && $this->_dl->save_fieldsets_data();
 		}
 		else {
 			$migrations = array();
@@ -141,7 +141,7 @@ class Migrate extends Model
 
 		// do cleanup
 		if ( $updated ) {
-			$this->_dL->saveStorageVersion();
+			$this->_dl->save_storage_version();
 			foreach ($migrations as $ver => $m) {
 				$m->runCleanup();
 			}
@@ -161,11 +161,11 @@ class Migrate extends Model
 	 */
 	public function is_storage_writable()
 	{
-		$data_source = Settings::getDataSourceType();
+		$data_source = Settings::get_data_source_type();
 
 		// if we use filesystem we need to know it's writable
 		if ( $data_source !== Settings::CONF_SOURCE_DB ) {
-			$filepath = $this->_dL->getConfigFilePath();
+			$filepath = $this->_dl->getConfigFilePath();
 			$filedir = dirname($filepath);
 			if ( (!is_dir($filedir) && !wp_mkdir_p($filedir)) || !wp_is_writable($filedir) ) {
 				$this->addError('Error! Please check that settings directory is writable "' . dirname($filepath) . '"');
@@ -215,7 +215,7 @@ class Migrate extends Model
 	public static function guessVersion()
 	{
 		// check data source key exists. in v2.3 it was different key
-		if ( ! $data_source = Settings::getDataSourceType( '' ) ) {
+		if ( ! $data_source = Settings::get_data_source_type( '' ) ) {
 			$data_source = get_site_option('jcf_read_settings', Settings::CONF_SOURCE_DB);
 			update_site_option(Settings::OPT_SOURCE, $data_source);
 		}
@@ -252,7 +252,7 @@ class Migrate extends Model
 		}
 
 		// we can't find the fields now we should try to search them manually
-		$data_source = Settings::getDataSourceType();
+		$data_source = Settings::get_data_source_type();
 		$network_mode = Settings::getNetworkMode();
 		$post_types = jcf_get_post_types();
 

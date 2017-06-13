@@ -19,10 +19,10 @@ class ImportExport extends core\Model
 	{
 		if ( $this->action != 'jcf_import_fields_form' || !$this->validateImportFile() ) return;
 
-		/* @var $files_dL FilesDataLayer */
+		/* @var $files_dl FilesDataLayer */
 		$import_file = $_FILES['import_data']['tmp_name'];
-		$files_dL = core\DataLayerFactory::create('file');
-		$data = $files_dL->getDataFromFile( $import_file );
+		$files_dl = core\DataLayerFactory::create('file');
+		$data = $files_dl->getDataFromFile( $import_file );
 		unlink($import_file);
 
 		if ( empty($data['post_types']) ) {
@@ -74,8 +74,8 @@ class ImportExport extends core\Model
 	{
 		if ( $this->action != 'jcf_import_fields' || empty($this->selected_data) || empty($this->import_source) ) return;
 
-		$dl_fields = $this->_dL->get_fields();
-		$dl_fieldsets = $this->_dL->get_fieldsets();
+		$dl_fields = $this->_dl->get_fields();
+		$dl_fieldsets = $this->_dl->get_fieldsets();
 
 		// we take origin import source and remove elements which are not selected
 		$import_source = json_decode(stripslashes($this->import_source), true);
@@ -124,9 +124,9 @@ class ImportExport extends core\Model
 		}
 
 		// save to data layer
-		$this->_dL->setFields($dl_fields);
-		$this->_dL->setFieldsets($dl_fieldsets);
-		$import_status = $this->_dL->saveFieldsData() && $this->_dL->saveFieldsetsData();
+		$this->_dl->set_fields($dl_fields);
+		$this->_dl->set_fieldsets($dl_fieldsets);
+		$import_status = $this->_dl->save_fields_data() && $this->_dl->save_fieldsets_data();
 
 		if ( $import_status ) {
 			$this->addMessage(__('<strong>Import</strong> has been completed successfully!', \JustCustomFields::TEXTDOMAIN));

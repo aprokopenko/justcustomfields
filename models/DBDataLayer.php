@@ -39,7 +39,7 @@ class DBDataLayer extends core\DataLayer
 	 * Setter/Init for $this->_fields property
 	 * @param array $fields
 	 */
-	public function setFields( $fields = null )
+	public function set_fields( $fields = null )
 	{
 		if ( !is_null($fields) ) {
 			$this->_fields = $fields;
@@ -52,7 +52,7 @@ class DBDataLayer extends core\DataLayer
 	/**
 	 * Update fields in wp-options or wp-site-options table
 	 */
-	public function saveFieldsData()
+	public function save_fields_data()
 	{
 		return $this->_updateOptions(self::FIELDS_OPTION, $this->_fields);
 	}
@@ -61,7 +61,7 @@ class DBDataLayer extends core\DataLayer
 	 * Setter/Init for Fieldsets
 	 * @param array $fieldsets
 	 */
-	public function setFieldsets( $fieldsets = null )
+	public function set_fieldsets( $fieldsets = null )
 	{
 		if ( !is_null($fieldsets) ) {
 			$this->_fieldsets = $fieldsets;
@@ -74,7 +74,7 @@ class DBDataLayer extends core\DataLayer
 	/**
 	 * Save fieldsets
 	 */
-	public function saveFieldsetsData()
+	public function save_fieldsets_data()
 	{
 		return $this->_updateOptions(self::FIELDSETS_OPTION, $this->_fieldsets);
 	}
@@ -83,7 +83,7 @@ class DBDataLayer extends core\DataLayer
 	 * Get storage version
 	 * @return array
 	 */
-	public function getStorageVersion()
+	public function get_storage_version()
 	{
 		return $this->_getOptions( self::STORAGEVER_OPTION, '' );
 	}
@@ -93,7 +93,7 @@ class DBDataLayer extends core\DataLayer
 	 * @param float|null $version
 	 * @return boolean
 	 */
-	public function saveStorageVersion($version = null)
+	public function save_storage_version($version = null)
 	{
 		if ( empty($version) ) {
 			$version = \JustCustomFields::VERSION;

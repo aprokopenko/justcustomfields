@@ -58,7 +58,7 @@ use jcf\core\JustField;
 												'post_type' => $post_type
 									)); ?>
 								<?php else: ?>
-									<?php $this->ajaxGetVisibilityForm(); ?>
+									<?php $this->ajax_get_visibility_form(); ?>
 								<?php endif; ?>
 							</div>
 							<br class="clear"/>

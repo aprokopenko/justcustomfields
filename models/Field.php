@@ -21,7 +21,7 @@ class Field extends core\Model
 	 */
 	public function findAll()
 	{
-		return $this->_dL->get_fields();
+		return $this->_dl->get_fields();
 	}
 
 	/**
@@ -31,7 +31,7 @@ class Field extends core\Model
 	 */
 	public function find_by_post_type( $post_type )
 	{
-		$fields = $this->_dL->get_fields();
+		$fields = $this->_dl->get_fields();
 		if ( !empty($fields[$post_type]) )
 			return $fields[$post_type];
 
@@ -45,7 +45,7 @@ class Field extends core\Model
 	 */
 	public function find_collections_by_post_type( $post_type )
 	{
-		$fields = $this->_dL->get_fields();
+		$fields = $this->_dl->get_fields();
 		$collections = array();
 
 		if ( !empty($fields[$post_type]) ) {
@@ -88,7 +88,7 @@ class Field extends core\Model
 	public function sort()
 	{
 		$order = trim($this->fields_order, ',');
-		$fieldsets = $this->_dL->get_fieldsets();
+		$fieldsets = $this->_dl->get_fieldsets();
 		$new_fields = explode(',', $order);
 		$fieldsets[$this->post_type][$this->fieldset_id]['fields'] = array();
 
@@ -96,9 +96,9 @@ class Field extends core\Model
 			$fieldsets[$this->post_type][$this->fieldset_id]['fields'][$field_id] = $field_id;
 		}
 
-		$this->_dL->setFieldsets($fieldsets);
+		$this->_dl->set_fieldsets($fieldsets);
 
-		if ( !$this->_dL->saveFieldsetsData() ) {
+		if ( !$this->_dl->save_fieldsets_data() ) {
 			$this->addError(__('Sorting isn\'t changed.', \JustCustomFields::TEXTDOMAIN));
 			return false;
 		}
@@ -112,7 +112,7 @@ class Field extends core\Model
 	 */
 	public function sortCollection()
 	{
-		$fields = $this->_dL->get_fields();
+		$fields = $this->_dl->get_fields();
 		$order = trim($this->fields_order, ',');
 		$new_sort = explode(',', $order);
 		$new_fields = array();
@@ -126,9 +126,9 @@ class Field extends core\Model
 		}
 
 		$fields[$this->post_type][$this->collection_id]['fields'] = $new_fields;
-		$this->_dL->setFields($fields);
+		$this->_dl->set_fields($fields);
 
-		if ( !$this->_dL->saveFieldsData() ) {
+		if ( !$this->_dl->save_fields_data() ) {
 			$this->addError(__('Sorting isn\'t changed.', \JustCustomFields::TEXTDOMAIN));
 			return false;
 		}

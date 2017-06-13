@@ -36,7 +36,7 @@ class FieldsetVisibility extends core\Model
 	 */
 	public function find_by_post_type($post_type)
 	{
-		$fieldsets = $this->_dL->get_fieldsets();
+		$fieldsets = $this->_dl->get_fieldsets();
 		$visibility_rules = array();
 
 		if ( empty($fieldsets[$post_type]) ) return;
@@ -212,7 +212,7 @@ class FieldsetVisibility extends core\Model
 	 */
 	protected function _get_fieldset_visibility( $fieldset_id, $rule_id = null )
 	{
-		$fieldsets = $this->_dL->get_fieldsets();
+		$fieldsets = $this->_dl->get_fieldsets();
 
 		// if we take only fieldset settings - return it
 		if ( is_null($rule_id) ) {
@@ -239,7 +239,7 @@ class FieldsetVisibility extends core\Model
 	 */
 	protected function _saveFieldsetVisibility( $fieldset_id, $rules )
 	{
-		$fieldsets = $this->_dL->get_fieldsets();
+		$fieldsets = $this->_dl->get_fieldsets();
 		$fieldsets[$this->post_type][$fieldset_id]['visibility_rules'] = $rules;
 		return $this->_save($fieldsets);
 	}
@@ -252,8 +252,8 @@ class FieldsetVisibility extends core\Model
 	 */
 	protected function _save( $fieldsets )
 	{
-		$this->_dL->setFieldsets($fieldsets);
-		$saved = $this->_dL->saveFieldsetsData();
+		$this->_dl->set_fieldsets($fieldsets);
+		$saved = $this->_dl->save_fieldsets_data();
 		return !empty($saved);
 	}
 

@@ -25,7 +25,7 @@ class Model
 	/**
 	 * @var \jcf\models\DataLayer
 	 */
-	protected $_dL;
+	protected $_dl;
 
 	/**
 	 * Model constructor.
@@ -33,7 +33,7 @@ class Model
 	 */
 	public function __construct()
 	{
-		$this->_dL = DataLayerFactory::create();
+		$this->_dl = DataLayerFactory::create();
 	}
 
 	/**
@@ -136,6 +136,6 @@ class Model
 	 */
 	public function get_storage_version()
 	{
-		return $this->_dL->getStorageVersion();
+		return $this->_dl->get_storage_version();
 	}
 }

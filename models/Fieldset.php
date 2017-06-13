@@ -28,8 +28,8 @@ class Fieldset extends core\Model
 	 */
 	public function get_fields_counter()
 	{
-		$fields = $this->_dL->get_fields();
-		$fieldsets = $this->_dL->get_fieldsets();
+		$fields = $this->_dl->get_fields();
+		$fieldsets = $this->_dl->get_fieldsets();
 		$post_types = jcf_get_post_types();
 		$taxonomies = jcf_get_taxonomies();
 
@@ -87,7 +87,7 @@ class Fieldset extends core\Model
 	 */
 	public function find_by_post_type( $post_type )
 	{
-		$fieldsets = $this->_dL->get_fieldsets();
+		$fieldsets = $this->_dl->get_fieldsets();
 		if ( !empty($fieldsets[$post_type]) )
 			return $fieldsets[$post_type];
 
@@ -100,7 +100,7 @@ class Fieldset extends core\Model
 	 */
 	public function findAll()
 	{
-		return $this->_dL->get_fieldsets();
+		return $this->_dl->get_fieldsets();
 	}
 
 	/**
@@ -110,7 +110,7 @@ class Fieldset extends core\Model
 	 */
 	public function find_by_id( $fieldset_id )
 	{
-		$fieldsets = $this->_dL->get_fieldsets();
+		$fieldsets = $this->_dl->get_fieldsets();
 		if ( empty($fieldsets[$this->post_type][$fieldset_id]) ) {
 			$this->addError(__('Fieldset not found', \JustCustomFields::TEXTDOMAIN));
 			return false;
@@ -131,7 +131,7 @@ class Fieldset extends core\Model
 
 		$slug = $this->createSlug();
 
-		$fieldsets = $this->_dL->get_fieldsets();
+		$fieldsets = $this->_dl->get_fieldsets();
 
 		// check exists
 		if ( isset($fieldsets[$this->post_type][$slug]) ) {
@@ -161,7 +161,7 @@ class Fieldset extends core\Model
 			return false;
 		}
 
-		$fieldsets = $this->_dL->get_fieldsets();
+		$fieldsets = $this->_dl->get_fieldsets();
 		if ( isset($fieldsets[$this->post_type][$this->fieldset_id]) )
 			unset($fieldsets[$this->post_type][$this->fieldset_id]);
 
@@ -174,7 +174,7 @@ class Fieldset extends core\Model
 	 */
 	public function update()
 	{
-		$fieldsets = $this->_dL->get_fieldsets();
+		$fieldsets = $this->_dl->get_fieldsets();
 
 		if ( empty($fieldsets[$this->post_type][$this->fieldset_id]) ) {
 			$this->addError(__('Wrong data passed.', \JustCustomFields::TEXTDOMAIN));
@@ -200,7 +200,7 @@ class Fieldset extends core\Model
 	public function sort()
 	{
 		$sort = explode(',', trim($this->fieldsets_order, ','));
-		$fieldsets = $this->_dL->get_fieldsets();
+		$fieldsets = $this->_dl->get_fieldsets();
 
 		$ordered_fieldsets = array();
 		foreach ( $sort as $key ) {
@@ -242,8 +242,8 @@ class Fieldset extends core\Model
 	 */
 	protected function _save( $fieldsets )
 	{
-		$this->_dL->setFieldsets($fieldsets);
-		$save = $this->_dL->saveFieldsetsData();
+		$this->_dl->set_fieldsets($fieldsets);
+		$save = $this->_dl->save_fieldsets_data();
 		return !empty($save);
 	}
 

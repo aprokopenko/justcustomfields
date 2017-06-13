@@ -59,7 +59,7 @@ class JustField_Textarea extends core\JustField
 						</script>
 					<?php  endif;  ?>
 
-					<?php if ( $this->isTaxonomyField() ) : ?>
+					<?php if ( $this->is_taxonomy_field() ) : ?>
 					<script>
 						jQuery(document).ready(function() {
 							jQuery(document).on( 'mousedown click keydown', '#submit', function() {

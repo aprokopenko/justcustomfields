@@ -51,7 +51,7 @@ abstract class Migration
 	 */
 	public function __construct()
 	{
-		$this->_data_source = Settings::getDataSourceType();
+		$this->_data_source = Settings::get_data_source_type();
 		$this->_network_mode = Settings::getNetworkMode();
 	}
 

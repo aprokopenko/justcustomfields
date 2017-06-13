@@ -93,7 +93,7 @@ class JustField_GoogleMaps extends core\JustField
 						  'lng': <?php echo (float)$this->entry['lng']; ?>,
 						  'markers': []
 						})
-						<?php if ( $this->isCollectionField() && defined('DOING_AJAX') && DOING_AJAX ) : ?>
+						<?php if ( $this->is_collection_field() && defined('DOING_AJAX') && DOING_AJAX ) : ?>
                         	jcf_googlemaps_init_field( window.jcf_googlemaps.length -1 );
 						<?php endif; ?>
 					</script>

@@ -21,7 +21,7 @@ class FilesDataLayer extends core\DataLayer
 	 */
 	public function __construct()
 	{
-		$this->_sourceSettings = models\Settings::getDataSourceType();
+		$this->_sourceSettings = models\Settings::get_data_source_type();
 
 		parent::__construct();
 	}
@@ -30,7 +30,7 @@ class FilesDataLayer extends core\DataLayer
 	 * Set $this->_fields property
 	 * @param array $fields
 	 */
-	public function setFields( $fields = null )
+	public function set_fields( $fields = null )
 	{
 		if ( !is_null($fields) ) {
 			$this->_fields = $fields;
@@ -47,7 +47,7 @@ class FilesDataLayer extends core\DataLayer
 	 * Update fields
 	 * @return boolean
 	 */
-	public function saveFieldsData()
+	public function save_fields_data()
 	{
 		$data = $this->getDataFromFile();
 		$data[self::FIELDS_KEY] = $this->_fields;
@@ -58,7 +58,7 @@ class FilesDataLayer extends core\DataLayer
 	 * Get storage version
 	 * @return array
 	 */
-	public function getStorageVersion()
+	public function get_storage_version()
 	{
 		$data = $this->getDataFromFile();
 		return !empty($data[self::STORAGEVER_KEY]) ? $data[self::STORAGEVER_KEY] : false;
@@ -69,7 +69,7 @@ class FilesDataLayer extends core\DataLayer
 	 * @param float|null $version
 	 * @return boolean
 	 */
-	public function saveStorageVersion($version = null)
+	public function save_storage_version($version = null)
 	{
 		$data = $this->getDataFromFile();
 
@@ -86,7 +86,7 @@ class FilesDataLayer extends core\DataLayer
 	 * Get Fieldsets
 	 * @param array $fieldsets
 	 */
-	public function setFieldsets( $fieldsets = null )
+	public function set_fieldsets( $fieldsets = null )
 	{
 		if ( !is_null($fieldsets) ) {
 			$this->_fieldsets = $fieldsets;
@@ -103,7 +103,7 @@ class FilesDataLayer extends core\DataLayer
 	 * Save fieldsets
 	 * @return boolean
 	 */
-	public function saveFieldsetsData()
+	public function save_fieldsets_data()
 	{
 		$data = $this->getDataFromFile();
 		$data[self::FIELDSETS_KEY] = $this->_fieldsets;

@@ -4,14 +4,14 @@
 		<h3 class="header"><?php echo $op . ' ' . $field->title; ?></h3>
 		<a href="#close" class="button-link jcf_close field-control-close" type="button"><span class="media-modal-icon"></span></a>
 		<div class="jcf_inner_content">
-			<form action="#" method="post" id="<?php echo ( $field->isCollectionField() ? 'jcform_edit_collection_field':'jcform_edit_field');?>">
+			<form action="#" method="post" id="<?php echo ( $field->is_collection_field() ? 'jcform_edit_collection_field':'jcform_edit_field');?>">
 				<fieldset>
 					<input type="hidden" name="field_id" value="<?php echo $field->id; ?>" />
 					<input type="hidden" name="field_number" value="<?php echo $field->number; ?>" />
 					<input type="hidden" name="field_id_base" value="<?php echo $field->id_base; ?>" />
-					<input type="hidden" name="fieldset_id" value="<?php echo $field->fieldsetId; ?>" />
-					<?php if( $field->isCollectionField() ) : ?>
-						<input type="hidden" name="collection_id" value="<?php echo $field->collectionId; ?>" />
+					<input type="hidden" name="fieldset_id" value="<?php echo $field->fieldset_id; ?>" />
+					<?php if( $field->is_collection_field() ) : ?>
+						<input type="hidden" name="collection_id" value="<?php echo $field->collection_id; ?>" />
 					<?php
 						endif;
 						$field->form();
@@ -25,7 +25,7 @@
 					</p>
 					<?php
 						// enabled field
-						if( $field->isNew ){
+						if( $field->is_new ){
 							$field->instance['enabled'] = 1;
 						}
 					?>
@@ -37,7 +37,7 @@
 									value="1" <?php checked(true, @$field->instance['enabled']); ?> />
 							<?php _e('Enabled', \JustCustomFields::TEXTDOMAIN); ?></label>
 					</p>
-					<?php if($field->isCollectionField()) : ?>
+					<?php if($field->is_collection_field()) : ?>
 						<?php if($field->id_base == 'inputtext') : ?>
 							<p>
 								<label for="<?php echo $field->get_field_id('group_title'); ?>">

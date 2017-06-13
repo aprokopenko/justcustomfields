@@ -15,14 +15,14 @@ class PluginLoader
 	/**
 	 * @var DataLayer
 	 */
-	private $_dL;
+	private $_dl;
 
 	/**
 	 * PluginLoader constructor.
 	 */
 	public function __construct()
 	{
-		$this->_dL = DataLayerFactory::create();
+		$this->_dl = DataLayerFactory::create();
 	}
 
 	/**
@@ -36,7 +36,7 @@ class PluginLoader
 
 		// if we can't define version at all - it seems to be a new installation. just write current version
 		if ( empty($version) ) {
-			$this->_dL->saveStorageVersion();
+			$this->_dl->save_storage_version();
 			return false;
 		}
 
@@ -60,7 +60,7 @@ class PluginLoader
 	 */
 	public function getStorageVersion()
 	{
-		if ( ! $version = $this->_dL->getStorageVersion() ) {
+		if ( ! $version = $this->_dl->get_storage_version() ) {
 			$version = Migrate::guessVersion();
 		}
 

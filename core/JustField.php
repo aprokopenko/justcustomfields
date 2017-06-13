@@ -5,8 +5,10 @@ namespace jcf\core;
 use jcf\models;
 use jcf\core;
 
-class JustField
-{
+/**
+ * Class JustField
+ */
+class JustField {
 	const POSTTYPE_KIND_PREFIX_TAXONOMY = 'TAX_';
 	const POSTTYPE_KIND_PREFIX_POST = '';
 
@@ -15,135 +17,209 @@ class JustField
 
 	/**
 	 * Root id for all fields of this type (field type)
+	 *
 	 * @var string
 	 */
 	public $id_base;
-	public static $compatibility = '3.0+'; // compatibility with WP version + it >=, - it <
-	public $title; // Name for this field type.
+
+	/**
+	 * Compatibility with WP version + it >=, - it <
+	 *
+	 * @var string
+	 */
+	public static $compatibility = '3.0+';
+
+	/**
+	 * Name for this field type
+	 *
+	 * @var string
+	 */
+	public $title;
+
+	/**
+	 * Slug for this field type.
+	 *
+	 * @var string
+	 */
 	public $slug = null;
+
+	/**
+	 * Field options for this field type.
+	 *
+	 * @var array
+	 */
 	public $field_options = array(
 		'classname' => 'jcf_custom_field',
 		'before_widget' => '<div class="form-field">',
 		'after_widget' => '</div>',
 		'before_title' => '<label>',
-		'after_title' => ':</label>'
+		'after_title' => ':</label>',
 	);
-	public $isNew = false;
 
 	/**
-	 * check for change field name if it edit on post edit page
+	 * Root id for all fields of this type (field type)
+	 *
+	 * @var string
 	 */
-	public $isPostEdit = false;
+	public $is_new = false;
+
+	/**
+	 * Check for change field name if it edit on post edit page
+	 *
+	 * @var bool
+	 */
+	public $is_post_edit = false;
 
 	/**
 	 * Unique ID number of the current instance
-	 * 
-	 * @var integer 
+	 *
+	 * @var integer
 	 */
 	public $number = false;
 
 	/**
 	 * Unique ID string of the current instance (id_base-number)
-	 * 
+	 *
 	 * @var string
 	 */
 	public $id = false;
-	public $fieldsetId = '';
-	public $collectionId = '';
-	public $postType;
-	public $postTypeKind = 'post';
 
 	/**
-	 * this is field settings (like title, slug etc)
-	 * 
+	 * Unique fieldset ID string of the current instance (id_base-number)
+	 *
+	 * @var string
+	 */
+	public $fieldset_id = '';
+
+	/**
+	 * Unique collection ID string of the current instance (id_base-number)
+	 *
+	 * @var string
+	 */
+	public $collection_id = '';
+
+	/**
+	 * Post type
+	 *
+	 * @var string
+	 */
+	public $post_type;
+
+	/**
+	 * Post type kind
+	 *
+	 * @var string
+	 */
+	public $post_type_kind = 'post';
+
+	/**
+	 * This is field settings (like title, slug etc)
+	 *
 	 * @var array
 	 */
 	public $instance = array();
-	public $postID = 0;
+
+	/**
+	 * Unique post ID string of the current instance (id_base-number)
+	 *
+	 * @var int
+	 */
+	public $post_id = 0;
 
 	/**
 	 * Field data for each post
+	 *
 	 * @var mixed
 	 */
 	public $entry = null;
-	public $fieldErrors = array();
+
+	/**
+	 * Field errors for each post
+	 *
+	 * @var array
+	 */
+	public $field_errors = array();
 
 	/**
 	 * DataLayer to save instances to
 	 *
 	 * @var \jcf\core\DataLayer
 	 */
-	protected $_dL;
+	protected $_dl;
 
 	/**
 	 * Constructor
+	 *
+	 * @param int    $id_base ID base.
+	 * @param string $title Title.
+	 * @param array  $field_options Field options.
 	 */
-	public function __construct( $id_base, $title, $field_options = array() )
-	{
+	public function __construct( $id_base, $title, $field_options = array() ) {
 		$this->id_base       = $id_base;
 		$this->title         = $title;
-		$this->field_options = array_merge($this->field_options, $field_options);
+		$this->field_options = array_merge( $this->field_options, $field_options );
 
-		// init data layer
-		$this->_dL = DataLayerFactory::create();
+		/* init data layer */
+		$this->_dl = DataLayerFactory::create();
 	}
 
 	/**
-	 * check field compatibility with WP version
+	 * Check field compatibility with WP version
+	 *
+	 * @param string $compatibility Compability.
+	 * @return bool
 	 * @deprecated
 	 */
-	public static function checkCompatibility( $compatibility )
-	{
+	public static function check_compatibility( $compatibility ) {
 		global $wp_version;
 
 		$operator = '<';
-		if ( strpos($compatibility, '+') ) {
-			$compatibility = substr($compatibility, 0, -1);
+		if ( strpos( $compatibility, '+' ) ) {
+			$compatibility = substr( $compatibility, 0, -1 );
 			$operator = '>=';
-		}
-		elseif ( strpos($compatibility, '-') ) {
-			$compatibility = substr($compatibility, 0, -1);
+		} elseif ( strpos( $compatibility, '-' ) ) {
+			$compatibility = substr( $compatibility, 0, -1 );
 		}
 
-		if ( !version_compare($wp_version, $compatibility, $operator) )
+		if ( ! version_compare( $wp_version, $compatibility, $operator ) ) {
 			return false;
+		}
 		return true;
 	}
 
 	/**
-	 * check, that this field is part of collection
+	 * Check, that this field is part of collection
 	 */
-	public function isCollectionField()
-	{
-		if ( !empty($this->collectionId) )
+	public function is_collection_field() {
+		if ( ! empty( $this->collection_id ) ) {
 			return true;
+		}
 		return false;
 	}
 
 	/**
 	 * Check if this field is created for taxonomy.
 	 */
-	public function isTaxonomyField()
-	{
-		return ( self::POSTTYPE_KIND_TAXONOMY === $this->postTypeKind );
+	public function is_taxonomy_field() {
+		return ( self::POSTTYPE_KIND_TAXONOMY === $this->post_type_kind );
 	}
 
 	/**
-	 * set class property $this->fieldsetId
-	 * @param   string  $fieldset_id  fieldset string ID
+	 * Set class property $this->fieldset_id
+	 *
+	 * @param string $fieldset_id fieldset string ID.
 	 */
-	public function setFieldset( $fieldset_id )
-	{
-		$this->fieldsetId = $fieldset_id;
+	public function set_fieldset( $fieldset_id ) {
+		$this->fieldset_id = $fieldset_id;
 	}
 
 	/**
-	 * set class property $this->collectionId
-	 * @param   string  $fieldset_id  fieldset string ID
+	 * Set class property $this->collection_id
+	 *
+	 * @param string $collection_id fieldset string ID.
 	 */
-	public function setCollection( $collection_id )
-	{
-		$this->collectionId = $collection_id;
+	public function set_collection( $collection_id ) {
+		$this->collection_id = $collection_id;
 	}
 
 	/**
@@ -158,16 +234,16 @@ class JustField
 		// this is add request. so number is 0
 		if ( $this->id == $this->id_base ) {
 			$this->number = 0;
-			$this->isNew = true;
+			$this->is_new = true;
 		}
 		// parse number
 		else {
 			$this->number = str_replace($this->id_base . '-', '', $this->id);
 
 			// load instance data
-			$fields = $this->_dL->get_fields();
-			if ( isset($fields[$this->postType][$this->id]) )
-				$this->instance = (array) $fields[$this->postType][$this->id];
+			$fields = $this->_dl->get_fields();
+			if ( isset($fields[$this->post_type][$this->id]) )
+				$this->instance = (array) $fields[$this->post_type][$this->id];
 
 			if ( !empty($this->instance) ) {
 				$this->slug                         = $this->instance['slug'];
@@ -191,19 +267,19 @@ class JustField
 	 * set post ID and load entry from wp-postmeta
 	 * @param  int  $post_ID  post ID variable
 	 */
-	public function set_post_id( $post_ID, $key_from_collection = FALSE )
+	public function setPostID( $post_ID, $key_from_collection = FALSE )
 	{
-		$this->postID = $post_ID;
+		$this->post_id = $post_ID;
 
-		if ( !empty($this->collectionId) ) {
+		if ( !empty($this->collection_id) ) {
 			// load entry
 			if ( !empty($this->slug) ) {
-				$fields = $this->_dL->get_fields();
-				if ( empty($fields[$this->postType][$this->collectionId]) )
+				$fields = $this->_dl->get_fields();
+				if ( empty($fields[$this->post_type][$this->collection_id]) )
 					return;
 
-				$collection_slug = $fields[$this->postType][$this->collectionId]['slug'];
-				$data = $this->get_meta_data($this->postID, $collection_slug, true);
+				$collection_slug = $fields[$this->post_type][$this->collection_id]['slug'];
+				$data = $this->get_meta_data($this->post_id, $collection_slug, true);
 
 				if ( isset($data[$key_from_collection][$this->slug]) ) {
 					$this->entry = $data[$key_from_collection][$this->slug];
@@ -213,13 +289,13 @@ class JustField
 		else {
 			// load entry
 			if ( !empty($this->slug) ) {
-				$this->entry = $this->get_meta_data($this->postID, $this->slug, true);
+				$this->entry = $this->get_meta_data($this->post_id, $this->slug, true);
 			}
 		}
 	}
 
 	/**
-	 * Get meta data from post or term based on current postTypeKind
+	 * Get meta data from post or term based on current post_type_kind
 	 *
 	 * @param int    $object_id Post or Term ID
 	 * @param string $meta_key  Meta data key (identifier)
@@ -229,26 +305,26 @@ class JustField
 	 */
 	public function get_meta_data($object_id, $meta_key, $single = false)
 	{
-		if ( self::POSTTYPE_KIND_POST == $this->postTypeKind ) {
+		if ( self::POSTTYPE_KIND_POST == $this->post_type_kind ) {
 			return get_post_meta($object_id, $meta_key, $single);
-		} elseif ( self::POSTTYPE_KIND_TAXONOMY == $this->postTypeKind ) {
+		} elseif ( self::POSTTYPE_KIND_TAXONOMY == $this->post_type_kind ) {
 			return get_term_meta($object_id, $meta_key, $single);
 		} else {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Set post type
 	 * @param string $post_type
 	 */
 	public function setPostType( $post_type )
 	{
-		$this->postType = $post_type;
-		if ( 0 === strpos($this->postType, self::POSTTYPE_KIND_PREFIX_TAXONOMY) ) {
-			$this->postTypeKind = self::POSTTYPE_KIND_TAXONOMY;
+		$this->post_type = $post_type;
+		if ( 0 === strpos($this->post_type, self::POSTTYPE_KIND_PREFIX_TAXONOMY) ) {
+			$this->post_type_kind = self::POSTTYPE_KIND_TAXONOMY;
 		} else {
-			$this->postTypeKind = self::POSTTYPE_KIND_POST;
+			$this->post_type_kind = self::POSTTYPE_KIND_POST;
 		}
 	}
 
@@ -263,17 +339,17 @@ class JustField
 		 * if is field of collection and itst post edit page create collection field id
 		 */
 		$params = array(
-			'post_type' => $this->postType,
-			'field_id' => $this->collectionId,
-			'fieldset_id' => $this->fieldsetId
+			'post_type' => $this->post_type,
+			'field_id' => $this->collection_id,
+			'fieldset_id' => $this->fieldset_id
 		);
 		$field_model = new models\Field();
 		$field_model->load($params);
 
-		if ( $this->isCollectionField() && $this->isPostEdit ) {
+		if ( $this->is_collection_field() && $this->is_post_edit ) {
 			$collection = core\JustFieldFactory::create($field_model);
 			return str_replace('-', $delimeter, 'field' . $delimeter . $collection->id_base . $delimeter . $collection->number . $delimeter
-					. \jcf\components\collection\JustField_Collection::$currentCollectionFieldKey . $delimeter . $this->id . $delimeter . $str);
+			                                    . \jcf\components\collection\JustField_Collection::$currentCollectionFieldKey . $delimeter . $this->id . $delimeter . $str);
 		}
 		return 'field' . $delimeter . $this->id_base . $delimeter . $this->number . $delimeter . $str;
 	}
@@ -289,14 +365,14 @@ class JustField
 		 * if is field of collection and itst post edit page create collection field name
 		 */
 		$params = array(
-			'post_type' => $this->postType,
-			'field_id' => $this->collectionId,
-			'fieldset_id' => $this->fieldsetId
+			'post_type' => $this->post_type,
+			'field_id' => $this->collection_id,
+			'fieldset_id' => $this->fieldset_id
 		);
 		$field_model = new models\Field();
 		$field_model->load($params);
 
-		if ( $this->isCollectionField() && $this->isPostEdit ) {
+		if ( $this->is_collection_field() && $this->is_post_edit ) {
 			$collection = core\JustFieldFactory::create($field_model);
 			return 'field-' . $collection->id_base . '[' . $collection->number . '][' . \jcf\components\collection\JustField_Collection::$currentCollectionFieldKey . '][' . $this->id . '][' . $str . ']';
 		}
@@ -323,7 +399,7 @@ class JustField
 	{
 		$slug = trim($slug);
 
-		if ( !empty($slug) && $slug{0} != '_' && !$this->isCollectionField() ) {
+		if ( !empty($slug) && $slug{0} != '_' && !$this->is_collection_field() ) {
 			$slug = '_' . $slug;
 		}
 		return $slug;
@@ -372,7 +448,7 @@ class JustField
 			$instance['group_title'] = (int) @$input['group_title'];
 
 		// starting from vers. 1.4 all new fields should be marked with version of the plugin
-		if ( $this->isNew ) {
+		if ( $this->is_new ) {
 			$instance['_version'] = \JustCustomFields::VERSION;
 		}
 		// for old records: set 1.34 - last version without versioning the fields
@@ -386,12 +462,12 @@ class JustField
 
 		// check for errors
 		// IMPORTANT: experimental function
-		if ( !empty($this->fieldErrors) ) {
-			$errors = implode('\n', $this->fieldErrors);
+		if ( !empty($this->field_errors) ) {
+			$errors = implode('\n', $this->field_errors);
 			return array( 'status' => '0', 'error' => $errors );
 		}
 
-		if ( $this->isNew ) {
+		if ( $this->is_new ) {
 			$this->number = $field_index;
 			$this->id = $this->id_base . '-' . $this->number;
 		}
@@ -401,16 +477,16 @@ class JustField
 			$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
 		}
 
-		$fields = $this->_dL->get_fields();
+		$fields = $this->_dl->get_fields();
 
-		if ( !$this->isCollectionField() ) {
+		if ( !$this->is_collection_field() ) {
 			// update fieldset
-			$fieldsets = $this->_dL->get_fieldsets();
-			$fieldsets[$this->postType][$this->fieldsetId]['fields'][$this->id] = $instance['enabled'];
-			$this->_dL->setFieldsets($fieldsets);
-			$this->_dL->saveFieldsetsData();
+			$fieldsets = $this->_dl->get_fieldsets();
+			$fieldsets[$this->post_type][$this->fieldset_id]['fields'][$this->id] = $instance['enabled'];
+			$this->_dl->set_fieldsets($fieldsets);
+			$this->_dl->save_fieldsets_data();
 
-			$fields[$this->postType][$this->id] = $instance;
+			$fields[$this->post_type][$this->id] = $instance;
 		}
 		else {
 			$instance['field_width'] = $input['field_width'];
@@ -418,11 +494,11 @@ class JustField
 			if ( isset($input['group_title']) )
 				$instance['group_title'] = true;
 
-			$fields[$this->postType][$this->collectionId]['fields'][$this->id] = $instance;
+			$fields[$this->post_type][$this->collection_id]['fields'][$this->id] = $instance;
 		}
 
-		$this->_dL->setFields($fields);
-		if ( !$this->_dL->saveFieldsData() ) {
+		$this->_dl->set_fields($fields);
+		if ( !$this->_dl->save_fields_data() ) {
 			return array(
 				'status' => 0,
 				'error' => __('Unable to write changes to storage.', \JustCustomFields::TEXTDOMAIN)
@@ -434,9 +510,9 @@ class JustField
 			'status' => '1',
 			'id' => $this->id,
 			'id_base' => $this->id_base,
-			'fieldset_id' => $this->fieldsetId,
-			'collection_id' => $this->collectionId,
-			'is_new' => $this->isNew,
+			'fieldset_id' => $this->fieldset_id,
+			'collection_id' => $this->collection_id,
+			'is_new' => $this->is_new,
 			'instance' => $instance
 		);
 		return $res;
@@ -448,22 +524,22 @@ class JustField
 	 */
 	public function doDelete()
 	{
-		$fields = $this->_dL->get_fields();
+		$fields = $this->_dl->get_fields();
 
-		if ( !empty($this->collectionId) ) {
-			unset($fields[$this->postType][$this->collectionId]['fields'][$this->id]);
+		if ( !empty($this->collection_id) ) {
+			unset($fields[$this->post_type][$this->collection_id]['fields'][$this->id]);
 		}
 		else {
-			$fieldsets = $this->_dL->get_fieldsets();
-			unset($fieldsets[$this->postType][$this->fieldsetId]['fields'][$this->id]);
-			unset($fields[$this->postType][$this->id]);
+			$fieldsets = $this->_dl->get_fieldsets();
+			unset($fieldsets[$this->post_type][$this->fieldset_id]['fields'][$this->id]);
+			unset($fields[$this->post_type][$this->id]);
 
-			$this->_dL->setFieldsets($fieldsets);
-			$this->_dL->saveFieldsetsData();
+			$this->_dl->set_fieldsets($fieldsets);
+			$this->_dl->save_fieldsets_data();
 		}
 
-		$this->_dL->setFields($fields);
-		if ( !$this->_dL->saveFieldsData() ) {
+		$this->_dl->set_fields($fields);
+		if ( !$this->_dl->save_fields_data() ) {
 			return false;
 		}
 
@@ -479,14 +555,14 @@ class JustField
 	public function do_save()
 	{
 		// check that number and post_ID is set
-		if ( empty($this->postID) || empty($this->number) )
+		if ( empty($this->post_id) || empty($this->number) )
 			return false;
 
 		// check that we have data in POST
 		if ( $this->id_base != 'checkbox' && (
 				empty($_POST['field-' . $this->id_base][$this->number]) ||
 				!is_array($_POST['field-' . $this->id_base][$this->number])
-				)
+			)
 		) {
 			return false;
 		}
@@ -496,13 +572,13 @@ class JustField
 		// get real values
 		$values = $this->save($input);
 		// save to post meta
-		$this->update_meta_data($this->postID, $this->slug, $values);
+		$this->update_meta_data($this->post_id, $this->slug, $values);
 
 		return true;
 	}
 
 	/**
-	 * Update meta data for post or term based on current postTypeKind
+	 * Update meta data for post or term based on current post_type_kind
 	 *
 	 * @param int    $object_id  Post or Term ID
 	 * @param string $meta_key   Meta data key (identifier)
@@ -512,15 +588,15 @@ class JustField
 	 */
 	public function update_meta_data($object_id, $meta_key, $meta_value)
 	{
-		if ( self::POSTTYPE_KIND_POST == $this->postTypeKind ) {
+		if ( self::POSTTYPE_KIND_POST == $this->post_type_kind ) {
 			return update_post_meta($object_id, $meta_key, $meta_value);
-		} elseif ( self::POSTTYPE_KIND_TAXONOMY == $this->postTypeKind ) {
+		} elseif ( self::POSTTYPE_KIND_TAXONOMY == $this->post_type_kind ) {
 			return update_term_meta($object_id, $meta_key, $meta_value);
 		} else {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * method that call $this->add_js to enqueue scripts in head section
 	 * do this only on post edit page and if at least one field is exists.
@@ -599,7 +675,7 @@ class JustField
 
 	/**
 	 * Print shortcode
-	 * 
+	 *
 	 * @param array $args shortcode attributes
 	 * @return string
 	 */
@@ -611,7 +687,7 @@ class JustField
 			'field' => '',
 			'post_id' => '',
 			'label' => false,
-				), $args);
+		), $args);
 
 		$class_names = array(
 			"jcf-value",
@@ -646,7 +722,7 @@ class JustField
 
 	/**
 	 * Print field label inside shortcode call
-	 * 
+	 *
 	 * @param array $args	shortcode args
 	 * @return string
 	 */
@@ -657,7 +733,7 @@ class JustField
 
 	/**
 	 * Print fields values from shortcode
-	 * 
+	 *
 	 * @param array $args	shortcode args
 	 * @return string
 	 */
