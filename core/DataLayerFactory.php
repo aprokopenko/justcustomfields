@@ -13,7 +13,8 @@ class DataLayerFactory {
 	/**
 	 * Create data layer object
 	 *
-	 * @param string $source_type  database|fs_theme|fs_global / similar to models\Settings::CONF_SOURCE_*.
+	 * @param string $source_type database|fs_theme|fs_global / similar to models\Settings::CONF_SOURCE_*.
+	 *
 	 * @return \jcf\core\DataLayer
 	 */
 	public static function create( $source_type = null ) {

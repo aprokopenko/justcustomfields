@@ -92,7 +92,7 @@ class JustField_DatePicker extends core\JustField
 		return $instance;
 	}
 
-	public function addJs()
+	public function add_js()
 	{
 		/**
 		 * WP version 3.0 and above have datepicker ui-core;
@@ -100,7 +100,7 @@ class JustField_DatePicker extends core\JustField
 		wp_enqueue_script('jquery-ui-datepicker');
 	}
 
-	public function addCss()
+	public function add_css()
 	{
 		wp_register_style('jcf_ui_datepicker', jcf_plugin_url('components/datepicker/ui-theme-smoothness/jquery-ui-1.8.13.custom.css'));
 		wp_enqueue_style('jcf_ui_datepicker');

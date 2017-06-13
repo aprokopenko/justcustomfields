@@ -60,6 +60,7 @@ abstract class DataLayer {
 	 * Method to update version of storage till last
 	 *
 	 * @param float|null $version Version.
+	 *
 	 * @return boolean
 	 */
 	abstract public function save_storage_version( $version = null );
@@ -68,6 +69,7 @@ abstract class DataLayer {
 	 * Fields settings setter
 	 *
 	 * @param array|null $fields Fields.
+	 *
 	 * @return mixed
 	 */
 	abstract public function set_fields( $fields = null );
@@ -83,6 +85,7 @@ abstract class DataLayer {
 	 * Fieldsets settings setter
 	 *
 	 * @param array|null $fieldsets Fieldsets.
+	 *
 	 * @return mixed
 	 */
 	abstract public function set_fieldsets( $fieldsets = null );

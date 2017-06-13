@@ -14,7 +14,7 @@ use jcf\core;
 class JustField_Collection extends core\JustField
 {
 	public static $compatibility = "4.0+";
-	public static $currentCollectionFieldKey = 0;
+	public static $current_collection_field_key = 0;
 	public static $fieldWidth = array(
 		'100' => '100%',
 		'75' => '75%',
@@ -48,7 +48,7 @@ class JustField_Collection extends core\JustField
 		$field_model = new models\Field();
 		$field_model->load($params);
 
-		self::$currentCollectionFieldKey = 0;
+		self::$current_collection_field_key = 0;
 
 		if ( empty($this->entry) )
 			$this->entry = array();
@@ -111,7 +111,7 @@ class JustField_Collection extends core\JustField
 								</div>
 							</div>
 							<?php
-							self::$currentCollectionFieldKey = self::$currentCollectionFieldKey + 1;
+							self::$current_collection_field_key = self::$current_collection_field_key + 1;
 						endforeach;?>
 						<div class="clr"></div>
 						<input type="button" value="<?php echo sprintf(__('Add %s Item', \JustCustomFields::TEXTDOMAIN), $this->instance['title']); ?>" 
@@ -191,7 +191,7 @@ class JustField_Collection extends core\JustField
 	/**
 	 * 	add script for collection and custom scripts and styles from collection fields
 	 */
-	public function addJs()
+	public function add_js()
 	{
 		wp_register_script(
 			'jcf_collection_post_edit',
@@ -213,10 +213,10 @@ class JustField_Collection extends core\JustField
 				$field_model->load($params) && $field_obj = core\JustFieldFactory::create($field_model);
 				if ( !$field_obj ) continue;
 
-				if ( method_exists($field_obj, 'addJs') )
-					$field_obj->addJs();
-				if ( method_exists($field_obj, 'addCss') )
-					$field_obj->addCss();
+				if ( method_exists($field_obj, 'add_js') )
+					$field_obj->add_js();
+				if ( method_exists($field_obj, 'add_css') )
+					$field_obj->add_css();
 			}
 		}
 	}
@@ -237,7 +237,7 @@ class JustField_Collection extends core\JustField
 	/**
 	 * 	add custom  styles from collection
 	 */
-	public function addCss()
+	public function add_css()
 	{
 		wp_register_style(
 			'jcf_collection',
@@ -266,7 +266,7 @@ class JustField_Collection extends core\JustField
 	 * 
 	 * @param array $args	shortcode args
 	 */
-	public function shortcodeValue( $args )
+	public function shortcode_value( $args )
 	{
 		$fields = $this->getCollectionFieldsSettings();
 		if ( empty($fields) ) return '';
@@ -287,8 +287,8 @@ class JustField_Collection extends core\JustField
 				$field_model->load($params) && $field_obj = core\JustFieldFactory::create($field_model);
 				if ( !$field_obj ) continue;
 
-				$field_obj->setPostId($this->post_id, $key);
-				$shortcode_value[] = $field_obj->doShortcode($args);
+				$field_obj->set_post_id($this->post_id, $key);
+				$shortcode_value[] = $field_obj->do_shortcode($args);
 				unset($field_obj);
 			}
 		}
@@ -324,7 +324,7 @@ class JustField_Collection extends core\JustField
 		$model->post_type = $_POST['post_type'];
 		$model->collection_id = false;
 		$collection = core\JustFieldFactory::create($model);
-		self::$currentCollectionFieldKey = $_POST['group_id'];
+		self::$current_collection_field_key = $_POST['group_id'];
 
 		header("Content-Type: text/html; charset=" . get_bloginfo('charset'));
 		?>
@@ -348,7 +348,7 @@ class JustField_Collection extends core\JustField
 					$field_obj = core\JustFieldFactory::create($model);
 					if ( !$field_obj ) continue;
 					
-					$field_obj->setSlug($field['slug']);
+					$field_obj->set_slug($field['slug']);
 					$field_obj->instance                     = $field;
 					$field_obj->is_post_edit                 = true;
 					$field_obj->field_options['after_title'] = ':</label>';

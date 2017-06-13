@@ -2,10 +2,14 @@
 
 namespace jcf\core;
 
-class Singleton
-{
+/**
+ * Singleton
+ */
+class Singleton {
 	/**
-	 * Refers to a single instance of this class. 
+	 * Refers to a single instance of this class.
+	 *
+	 * @var $instance
 	 */
 	protected static $instance = null;
 
@@ -14,8 +18,7 @@ class Singleton
 	 *
 	 * @return Singleton A single instance of this class.
 	 */
-	public static function get_instance()
-	{
+	public static function get_instance() {
 		if ( null === static::$instance ) {
 			static::$instance = new static();
 		}
@@ -25,11 +28,10 @@ class Singleton
 
 	/**
 	 * Alias for creating object of *Singleton* pattern
-	 * 
+	 *
 	 * @return Singleton A single instance of this class.
 	 */
-	public static function run()
-	{
+	public static function run() {
 		return static::get_instance();
 	}
 
@@ -37,18 +39,16 @@ class Singleton
 	 * Protected constructor to prevent creating a new instance of the
 	 * *Singleton* via the `new` operator from outside of this class.
 	 */
-	protected function __construct()
-	{
+	protected function __construct() {
 	}
 
 	/**
 	 * Private clone method to prevent cloning of the instance of the
 	 * *Singleton* instance.
-	 * 
+	 *
 	 * @return void
 	 */
-	private function __clone()
-	{
+	private function __clone() {
 	}
 
 	/**
@@ -57,8 +57,7 @@ class Singleton
 	 *
 	 * @return void
 	 */
-	private function __wakeup()
-	{
+	private function __wakeup() {
 	}
 
 }

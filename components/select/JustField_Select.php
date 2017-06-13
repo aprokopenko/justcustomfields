@@ -125,7 +125,7 @@ class JustField_Select extends core\JustField
 	 * 
 	 * @params array $args	shortcode args
 	 */
-	public function shortcodeValue( $args )
+	public function shortcode_value( $args )
 	{
 		$options = $this->parsedSelectOptions($this->instance);
 		$options = array_flip($options);

@@ -43,10 +43,10 @@ class Shortcodes extends core\Model
 			$field_obj = core\JustFieldFactory::create($field_model);
 			if ( !$field_obj ) return false;
 
-			$field_obj->setPostId($post_id);
+			$field_obj->set_post_id($post_id);
 
 			unset($args['field']);
-			return $field_obj->doShortcode($args);
+			return $field_obj->do_shortcode($args);
 		}
 		else {
 			return false;

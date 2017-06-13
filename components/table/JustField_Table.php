@@ -176,7 +176,7 @@ class JustField_Table extends core\JustField
 		return $this->get_field_name( $number . '][' . $field);
 	}
 
-	public function addJs()
+	public function add_js()
 	{
 		global $wp_version;
 
@@ -188,7 +188,7 @@ class JustField_Table extends core\JustField
 		wp_localize_script('jcf_table', 'jcf_textdomain', jcf_get_language_strings());
 	}
 
-	public function addCss()
+	public function add_css()
 	{
 		wp_register_style('jcf_table', jcf_plugin_url('components/table/table.css'), array(  'jcf_edit_post' ));
 		wp_enqueue_style('jcf_table');
@@ -218,7 +218,7 @@ class JustField_Table extends core\JustField
 	/**
 	 * 	print fields values from shortcode
 	 */
-	public function shortcodeValue( $args )
+	public function shortcode_value( $args )
 	{
 		$columns = $this->parseColumnsOptions();
 		if ( empty($columns) || empty($this->entry) )

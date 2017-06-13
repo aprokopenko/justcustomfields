@@ -128,7 +128,7 @@ class JustField_Checkbox extends core\JustField
 	/**
 	 * 	Print fields values from shortcode
 	 */
-	public function shortcodeValue( $args ) {
+	public function shortcode_value( $args ) {
 		$options = $this->parsed_select_options( $this->instance );
 		$options = array_flip( $options );
 

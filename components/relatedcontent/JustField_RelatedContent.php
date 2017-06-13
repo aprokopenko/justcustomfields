@@ -224,7 +224,7 @@ class JustField_RelatedContent extends core\JustField
 	/**
 	 * 	add custom scripts
 	 */
-	public function addJs()
+	public function add_js()
 	{
 		wp_register_script(
 			'jcf_related_content',
@@ -241,7 +241,7 @@ class JustField_RelatedContent extends core\JustField
 		}
 	}
 
-	public function addCss()
+	public function add_css()
 	{
 		wp_register_style('ui-autocomplete', plugins_url( '/assets/jquery-ui-1.8.14.autocomplete.css', __FILE__ ));
 		wp_enqueue_style('ui-autocomplete');
@@ -253,7 +253,7 @@ class JustField_RelatedContent extends core\JustField
 	/**
 	 * 	print fields values from shortcode
 	 */
-	public function shortcodeValue( $args )
+	public function shortcode_value( $args )
 	{
 		if ( empty($this->entry) )
 			return;

@@ -20,18 +20,18 @@ class m3x100 extends \jcf\core\Migration
 	/**
 	 * Read data from storage
 	 */
-	public function readData()
+	public function read_data()
 	{
-		if ( $this->isDataSource( Settings::CONF_SOURCE_DB ) ) {
-			$fields = $this->readDB('jcf-fields');
-			$fieldsets = $this->readDB('jcf-fieldsets');
+		if ( $this->is_data_source( Settings::CONF_SOURCE_DB ) ) {
+			$fields = $this->read_db('jcf-fields');
+			$fieldsets = $this->read_db('jcf-fieldsets');
 			$this->data = array(
 				self::FIELDS_KEY => $fields,
 				self::FIELDSETS_KEY => $fieldsets,
 			);
 		}
 		else {
-			$json = $this->readFS('jcf-settings/jcf_settings.json');
+			$json = $this->read_fs('jcf-settings/jcf_settings.json');
 			$this->data = json_decode($json, true);
 		}
 	}
@@ -63,12 +63,12 @@ class m3x100 extends \jcf\core\Migration
 	 */
 	public function cleanup()
 	{
-		if ( $this->isDataSource( Settings::CONF_SOURCE_DB ) ) {
-			$this->cleanDB('jcf-fields');
-			$this->cleanDB('jcf-fieldsets');
+		if ( $this->is_data_source( Settings::CONF_SOURCE_DB ) ) {
+			$this->clean_db('jcf-fields');
+			$this->clean_db('jcf-fieldsets');
 		}
 		else {
-			$root = $this->getFilesRoot();
+			$root = $this->get_files_root();
 			@unlink( $root . '/jcf-settings/jcf_settings.json' );
 			@rmdir( $root . '/jcf-settings' );
 		}

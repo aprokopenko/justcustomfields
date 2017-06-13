@@ -146,7 +146,7 @@ class JustField_SimpleMedia extends core\JustField
 	/**
 	 * 	add custom scripts
 	 */
-	public function addJs()
+	public function add_js()
 	{
 		global $pagenow, $wp_version, $post_ID;
 		// only load on select pages 
@@ -162,7 +162,7 @@ class JustField_SimpleMedia extends core\JustField
 		}
 	}
 
-	public function addCss()
+	public function add_css()
 	{
 		wp_register_style('jcf_simplemedia', jcf_plugin_url('components/simplemedia/assets/simplemedia.css'), array( 'thickbox', 'jcf_edit_post' ));
 		wp_enqueue_style('jcf_simplemedia');
@@ -173,7 +173,7 @@ class JustField_SimpleMedia extends core\JustField
 	 *
 	 * @params array $args	shortcode args
 	 */
-	public function shortcodeValue( $args )
+	public function shortcode_value( $args )
 	{
 		if ( empty($this->entry) ) return '';
 

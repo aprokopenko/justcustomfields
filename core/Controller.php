@@ -3,7 +3,7 @@
 namespace jcf\core;
 
 /**
- * 	Main controller
+ *    Main controller
  */
 class Controller {
 

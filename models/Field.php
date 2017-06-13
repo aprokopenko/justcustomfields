@@ -65,9 +65,9 @@ class Field extends core\Model
 	public function save( $import = null )
 	{
 		$field_obj = core\JustFieldFactory::create($this);
-		$field_index = core\JustFieldFactory::createFieldIndex($field_obj->id_base);
+		$field_index = core\JustFieldFactory::create_field_index($field_obj->id_base);
 
-		return $field_obj->doUpdate($field_index, $import);
+		return $field_obj->do_update($field_index, $import);
 	}
 
 	/**
@@ -78,7 +78,7 @@ class Field extends core\Model
 	{
 		$field_obj = core\JustFieldFactory::create($this);
 
-		return $field_obj->doDelete();
+		return $field_obj->do_delete();
 	}
 
 	/**
@@ -99,7 +99,7 @@ class Field extends core\Model
 		$this->_dl->set_fieldsets($fieldsets);
 
 		if ( !$this->_dl->save_fieldsets_data() ) {
-			$this->addError(__('Sorting isn\'t changed.', \JustCustomFields::TEXTDOMAIN));
+			$this->add_error(__('Sorting isn\'t changed.', \JustCustomFields::TEXTDOMAIN));
 			return false;
 		}
 
@@ -129,7 +129,7 @@ class Field extends core\Model
 		$this->_dl->set_fields($fields);
 
 		if ( !$this->_dl->save_fields_data() ) {
-			$this->addError(__('Sorting isn\'t changed.', \JustCustomFields::TEXTDOMAIN));
+			$this->add_error(__('Sorting isn\'t changed.', \JustCustomFields::TEXTDOMAIN));
 			return false;
 		}
 		return true;

@@ -84,7 +84,7 @@ class Settings extends core\Model
 			return false;
 
 		if ( update_site_option(self::OPT_SOURCE, $this->source) ) {
-			$this->addMessage('source_updated');
+			$this->add_message('source_updated');
 			return true;
 		}
 
@@ -101,7 +101,7 @@ class Settings extends core\Model
 			return false;
 
 		if ( update_site_option(self::OPT_MULTISITE, $this->network) ) {
-			$this->addMessage('ms_updated');
+			$this->add_message('ms_updated');
 			return true;
 		}
 
@@ -141,7 +141,7 @@ class Settings extends core\Model
 	 *
 	 * @return array
 	 */
-	public function messageTemplates()
+	public function message_templates()
 	{
 		return array(
 			'empty_source' => __('<strong>Settings storage update FAILED!</strong>. Choose an option for the data storage', \JustCustomFields::TEXTDOMAIN),
@@ -162,14 +162,14 @@ class Settings extends core\Model
 	public function validateDataSource()
 	{
 		if ( empty($this->source) ) {
-			$this->addError('empty_source');
+			$this->add_error('empty_source');
 		}
 
 		if ( $this->source == self::CONF_SOURCE_FS_THEME ) {
 			$path = apply_filters('jcf_config_filepath', get_stylesheet_directory() . '/jcf/config.json', self::CONF_SOURCE_FS_THEME);
 			$fs_theme_storage = dirname($path);
 			if ( !wp_mkdir_p($fs_theme_storage) || !is_writable($fs_theme_storage) ) {
-				$this->addError( 'fs_theme_not_writable' );
+				$this->add_error( 'fs_theme_not_writable' );
 			}
 		}
 
@@ -177,11 +177,11 @@ class Settings extends core\Model
 			$path = apply_filters('jcf_config_filepath', WP_CONTENT_DIR . '/jcf/config.json', self::CONF_SOURCE_FS_GLOBAL);
 			$fs_global_storage = dirname($path);
 			if ( !wp_mkdir_p($fs_global_storage) || !is_writable($fs_global_storage) ) {
-				$this->addError('fs_global_not_writable');
+				$this->add_error('fs_global_not_writable');
 			}
 		}
 
-		return ! $this->hasErrors();
+		return ! $this->has_errors();
 	}
 
 	/**
@@ -197,7 +197,7 @@ class Settings extends core\Model
 			$this->network = self::CONF_MS_SITE;
 		}
 
-		return ! $this->hasErrors();
+		return ! $this->has_errors();
 	}
 
 }

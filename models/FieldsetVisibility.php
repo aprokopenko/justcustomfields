@@ -98,7 +98,7 @@ class FieldsetVisibility extends core\Model
 			$visibility_rule = $this->_get_fieldset_visibility($this->fieldset_id, $this->rule_id);
 
 			if ( empty($visibility_rule) ) {
-				$this->addError(__('Visibility rule not found.', \JustCustomFields::TEXTDOMAIN));
+				$this->add_error(__('Visibility rule not found.', \JustCustomFields::TEXTDOMAIN));
 				return false;
 			}
 
@@ -146,7 +146,7 @@ class FieldsetVisibility extends core\Model
 
 		$saved = $this->_saveFieldsetVisibility($this->fieldset_id, $visibility_rules);
 		if ( !$saved ) {
-			$this->addError(__('Visibility rule not updated.', \JustCustomFields::TEXTDOMAIN));
+			$this->add_error(__('Visibility rule not updated.', \JustCustomFields::TEXTDOMAIN));
 			return false;
 		}
 
@@ -165,7 +165,7 @@ class FieldsetVisibility extends core\Model
 
 		$saved = $this->_saveFieldsetVisibility($this->fieldset_id, $visibility_rules);
 		if ( !$saved ) {
-			$this->addError(__('Visibility rule not deleted.', \JustCustomFields::TEXTDOMAIN));
+			$this->add_error(__('Visibility rule not deleted.', \JustCustomFields::TEXTDOMAIN));
 			return false;
 		}
 

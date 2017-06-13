@@ -117,7 +117,7 @@ class JustField_SelectMultiple extends core\JustField
 	/**
 	 * 	print fields values from shortcode
 	 */
-	public function shortcodeValue( $args )
+	public function shortcode_value( $args )
 	{
 		$options = $this->parsedSelectOptions($this->instance);
 		$options = array_flip($options);

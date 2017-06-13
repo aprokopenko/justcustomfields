@@ -100,10 +100,10 @@ class Migrate extends Model
 		$warnings = array();
 
 		foreach ($migrations as $ver => $m) {
-			if ( $warning = $m->runTest( $data ) ) {
+			if ( $warning = $m->run_test( $data ) ) {
 				$warnings[$ver] = $warning;
 			}
-			$data = $m->runUpdate($data);
+			$data = $m->run_update($data);
 		}
 
 		return $warnings;
@@ -122,7 +122,7 @@ class Migrate extends Model
 
 			$data = null;
 			foreach ($migrations as $ver => $m) {
-				$data = $m->runUpdate($data, Migration::MODE_UPDATE);
+				$data = $m->run_update($data, Migration::MODE_UPDATE);
 			}
 
 			$fields = $data[Migration::FIELDS_KEY];
@@ -143,12 +143,12 @@ class Migrate extends Model
 		if ( $updated ) {
 			$this->_dl->save_storage_version();
 			foreach ($migrations as $ver => $m) {
-				$m->runCleanup();
+				$m->run_cleanup();
 			}
 			return true;
 		}
 		else {
-			$this->addError('Error! Upgrade failed. Please contact us through github to help you and update migration scripts.');
+			$this->add_error('Error! Upgrade failed. Please contact us through github to help you and update migration scripts.');
 		}
 	}
 
@@ -168,14 +168,14 @@ class Migrate extends Model
 			$filepath = $this->_dl->getConfigFilePath();
 			$filedir = dirname($filepath);
 			if ( (!is_dir($filedir) && !wp_mkdir_p($filedir)) || !wp_is_writable($filedir) ) {
-				$this->addError('Error! Please check that settings directory is writable "' . dirname($filepath) . '"');
+				$this->add_error('Error! Please check that settings directory is writable "' . dirname($filepath) . '"');
 			}
 			elseif ( is_file($filepath) && ! wp_is_writable($filepath) ) {
-				$this->addError('Error! Please check that settings file is writable "' . ($filepath) . '"');
+				$this->add_error('Error! Please check that settings file is writable "' . ($filepath) . '"');
 			}
 		}
 
-		return ! $this->hasErrors();
+		return ! $this->has_errors();
 	}
 
 	/**

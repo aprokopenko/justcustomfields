@@ -226,15 +226,15 @@ class JustField {
 	}
 
 	/**
-	 * set class propreties "id", "number"
+	 * Set class propreties "id", "number"
 	 * load instance and entries for this field
 	 *
-	 * @param  string $id field id (cosist of id_base + number)
+	 * @param  string $id field id (cosist of id_base + number).
 	 */
-	public function setId( $id ) {
+	public function set_id( $id ) {
 		$this->id = $id;
 
-		// this is add request. so number is 0
+		// this is add request. so number is 0.
 		if ( $this->id == $this->id_base ) {
 			$this->number = 0;
 			$this->is_new = true;
@@ -242,7 +242,7 @@ class JustField {
 		else {
 			$this->number = str_replace( $this->id_base . '-', '', $this->id );
 
-			// load instance data
+			// load instance data.
 			$fields = $this->_dl->get_fields();
 			if ( isset( $fields[ $this->post_type ][ $this->id ] ) ) {
 				$this->instance = (array) $fields[ $this->post_type ][ $this->id ];
@@ -258,24 +258,25 @@ class JustField {
 	}
 
 	/**
-	 * setter for slug
+	 * Setter for slug
 	 *
-	 * @param  string $slug field slug
+	 * @param  string $slug field slug.
 	 */
-	public function setSlug( $slug ) {
-		$this->slug = $this->validateInstanceSlug( $slug );
+	public function set_slug( $slug ) {
+		$this->slug = $this->validate_instance_slug( $slug );
 	}
 
 	/**
-	 * set post ID and load entry from wp-postmeta
+	 * Set post ID and load entry from wp-postmeta
 	 *
-	 * @param  int $post_ID post ID variable
+	 * @param  int  $post_id post ID variable.
+	 * @param  bool $key_from_collection key from collection variable.
 	 */
-	public function setPostID( $post_ID, $key_from_collection = false ) {
-		$this->post_id = $post_ID;
+	public function set_post_id( $post_id, $key_from_collection = false ) {
+		$this->post_id = $post_id;
 
 		if ( ! empty( $this->collection_id ) ) {
-			// load entry
+			// load entry.
 			if ( ! empty( $this->slug ) ) {
 				$fields = $this->_dl->get_fields();
 				if ( empty( $fields[ $this->post_type ][ $this->collection_id ] ) ) {
@@ -290,7 +291,7 @@ class JustField {
 				}
 			}
 		} else {
-			// load entry
+			// load entry.
 			if ( ! empty( $this->slug ) ) {
 				$this->entry = $this->get_meta_data( $this->post_id, $this->slug, true );
 			}
@@ -300,8 +301,8 @@ class JustField {
 	/**
 	 * Get meta data from post or term based on current post_type_kind
 	 *
-	 * @param int    $object_id Post or Term ID
-	 * @param string $meta_key Meta data key (identifier)
+	 * @param int    $object_id Post or Term ID.
+	 * @param string $meta_key Meta data key (identifier).
 	 * @param bool   $single Value is single or not.
 	 *
 	 * @return mixed|null
@@ -319,9 +320,9 @@ class JustField {
 	/**
 	 * Set post type
 	 *
-	 * @param string $post_type
+	 * @param string $post_type Post type.
 	 */
-	public function setPostType( $post_type ) {
+	public function set_post_type( $post_type ) {
 		$this->post_type = $post_type;
 		if ( 0 === strpos( $this->post_type, self::POSTTYPE_KIND_PREFIX_TAXONOMY ) ) {
 			$this->post_type_kind = self::POSTTYPE_KIND_TAXONOMY;
@@ -331,15 +332,16 @@ class JustField {
 	}
 
 	/**
-	 * generate unique id attribute based on id_base and number
+	 * Generate unique id attribute based on id_base and number
 	 *
-	 * @param  string $str string to be converted
+	 * @param  string $str       string to be converted.
+	 * @param  string $delimeter string delimiter.
 	 *
 	 * @return string
 	 */
 	public function get_field_id( $str, $delimeter = '-' ) {
 		/**
-		 * if is field of collection and itst post edit page create collection field id
+		 * If is field of collection and itst post edit page create collection field id.
 		 */
 		$params      = array(
 			'post_type'   => $this->post_type,
@@ -353,22 +355,22 @@ class JustField {
 			$collection = core\JustFieldFactory::create( $field_model );
 
 			return str_replace( '-', $delimeter, 'field' . $delimeter . $collection->id_base . $delimeter . $collection->number . $delimeter
-			                                     . \jcf\components\collection\JustField_Collection::$currentCollectionFieldKey . $delimeter . $this->id . $delimeter . $str );
+			                                     . \jcf\components\collection\JustField_Collection::$current_collection_field_key . $delimeter . $this->id . $delimeter . $str );
 		}
 
 		return 'field' . $delimeter . $this->id_base . $delimeter . $this->number . $delimeter . $str;
 	}
 
 	/**
-	 * generate unique name attribute based on id_base and number
+	 * Generate unique name attribute based on id_base and number
 	 *
-	 * @param  string $str string to be converted
+	 * @param  string $str string to be converted.
 	 *
 	 * @return string
 	 */
 	public function get_field_name( $str ) {
 		/**
-		 * if is field of collection and itst post edit page create collection field name
+		 * If is field of collection and itst post edit page create collection field name
 		 */
 		$params      = array(
 			'post_type'   => $this->post_type,
@@ -381,34 +383,34 @@ class JustField {
 		if ( $this->is_collection_field() && $this->is_post_edit ) {
 			$collection = core\JustFieldFactory::create( $field_model );
 
-			return 'field-' . $collection->id_base . '[' . $collection->number . '][' . \jcf\components\collection\JustField_Collection::$currentCollectionFieldKey . '][' . $this->id . '][' . $str . ']';
+			return 'field-' . $collection->id_base . '[' . $collection->number . '][' . \jcf\components\collection\JustField_Collection::$current_collection_field_key . '][' . $this->id . '][' . $str . ']';
 		}
 
 		return 'field-' . $this->id_base . '[' . $this->number . '][' . $str . ']';
 	}
 
 	/**
-	 * validates instance. normalize different field values
+	 * Validates instance. normalize different field values
 	 *
-	 * @param array $instance
+	 * @param array $instance Instance.
 	 */
-	public function validateInstance( & $instance ) {
+	public function validate_instance( & $instance ) {
 		if ( $instance['_version'] >= 1.4 ) {
-			$instance['slug'] = $this->validateInstanceSlug( $instance['slug'] );
+			$instance['slug'] = $this->validate_instance_slug( $instance['slug'] );
 		}
 	}
 
 	/**
-	 * validate that slug has first underscore
+	 * Validate that slug has first underscore
 	 *
-	 * @param string $slug
+	 * @param string $slug Slug.
 	 *
 	 * @return string
 	 */
-	public function validateInstanceSlug( $slug ) {
+	public function validate_instance_slug( $slug ) {
 		$slug = trim( $slug );
 
-		if ( ! empty( $slug ) && $slug{0} != '_' && ! $this->is_collection_field() ) {
+		if ( ! empty( $slug ) && '_' !== $slug{0} && ! $this->is_collection_field() ) {
 			$slug = '_' . $slug;
 		}
 
@@ -416,13 +418,13 @@ class JustField {
 	}
 
 	/**
-	 * get valid value for instance version
+	 * Get valid value for instance version
 	 *
-	 * @param array $instance
+	 * @param array $instance Instance.
 	 *
 	 * @return float
 	 */
-	public function getInstanceVersion( $instance ) {
+	public function get_instance_version( $instance ) {
 		if ( empty( $instance['_version'] ) ) {
 			return 1.34;
 		} else {
@@ -431,16 +433,17 @@ class JustField {
 	}
 
 	/**
-	 * method to save field instance to the storage
+	 * Method to save field instance to the storage
 	 * call $this->update inside
 	 *
-	 * @param array $params for update field
+	 * @param array $field_index for update field.
+	 * @param array $params      for update field.
 	 *
-	 * @return boolean
+	 * @return array
 	 */
-	public function doUpdate( $field_index, $params = null ) {
+	public function do_update( $field_index, $params = null ) {
 		$input = ! is_null( $params ) ? $params : $_POST[ 'field-' . $this->id_base ][ $this->number ];
-		// remove all slashed from values
+		// remove all slashed from values.
 		foreach ( $input as $var => $value ) {
 			if ( is_string( $value ) ) {
 				$input[ $var ] = stripslashes( $value );
@@ -471,11 +474,11 @@ class JustField {
 		}
 		$instance['_type'] = $this->id_base;
 
-		// new from version 1.4: validation/normalization
-		$this->validateInstance( $instance );
+		// new from version 1.4: validation/normalization.
+		$this->validate_instance( $instance );
 
 		// check for errors
-		// IMPORTANT: experimental function
+		// IMPORTANT: experimental function.
 		if ( ! empty( $this->field_errors ) ) {
 			$errors = implode( '\n', $this->field_errors );
 
@@ -487,7 +490,7 @@ class JustField {
 			$this->id     = $this->id_base . '-' . $this->number;
 		}
 
-		// check slug field
+		// check slug field.
 		if ( empty( $instance['slug'] ) ) {
 			$instance['slug'] = '_field_' . $this->id_base . '__' . $this->number;
 		}
@@ -495,7 +498,7 @@ class JustField {
 		$fields = $this->_dl->get_fields();
 
 		if ( ! $this->is_collection_field() ) {
-			// update fieldset
+			// update fieldset.
 			$fieldsets                                                                  = $this->_dl->get_fieldsets();
 			$fieldsets[ $this->post_type ][ $this->fieldset_id ]['fields'][ $this->id ] = $instance['enabled'];
 			$this->_dl->set_fieldsets( $fieldsets );
@@ -520,7 +523,7 @@ class JustField {
 			);
 		}
 
-		// return status
+		// return status.
 		$res = array(
 			'status'        => '1',
 			'id'            => $this->id,
@@ -535,11 +538,11 @@ class JustField {
 	}
 
 	/**
-	 * method to delete field from the storage
+	 * Method to delete field from the storage
 	 *
 	 * @return boolean
 	 */
-	public function doDelete() {
+	public function do_delete() {
 		$fields = $this->_dl->get_fields();
 
 		if ( ! empty( $this->collection_id ) ) {
@@ -562,19 +565,19 @@ class JustField {
 	}
 
 	/**
-	 * method to save data from edit post page to postmeta
+	 * Method to save data from edit post page to postmeta
 	 * call $this->save()
 	 *
 	 * @return boolean;
 	 */
 	public function do_save() {
-		// check that number and post_ID is set
+		// check that number and post_ID is set.
 		if ( empty( $this->post_id ) || empty( $this->number ) ) {
 			return false;
 		}
 
-		// check that we have data in POST
-		if ( $this->id_base != 'checkbox' && (
+		// check that we have data in POST.
+		if ( 'checkbox' !== $this->id_base && (
 				empty( $_POST[ 'field-' . $this->id_base ][ $this->number ] ) ||
 				! is_array( $_POST[ 'field-' . $this->id_base ][ $this->number ] )
 			)
@@ -584,9 +587,9 @@ class JustField {
 
 		$input = @$_POST[ 'field-' . $this->id_base ][ $this->number ];
 
-		// get real values
+		// get real values.
 		$values = $this->save( $input );
-		// save to post meta
+		// save to post meta.
 		$this->update_meta_data( $this->post_id, $this->slug, $values );
 
 		return true;
@@ -595,8 +598,8 @@ class JustField {
 	/**
 	 * Update meta data for post or term based on current post_type_kind
 	 *
-	 * @param int    $object_id Post or Term ID
-	 * @param string $meta_key Meta data key (identifier)
+	 * @param int    $object_id Post or Term ID.
+	 * @param string $meta_key Meta data key (identifier).
 	 * @param mixed  $meta_value Meta value to be saved.
 	 *
 	 * @return mixed|null
@@ -612,24 +615,24 @@ class JustField {
 	}
 
 	/**
-	 * method that call $this->add_js to enqueue scripts in head section
+	 * Method that call $this->add_js to enqueue scripts in head section
 	 * do this only on post edit page and if at least one field is exists.
 	 * do this only once
 	 */
-	public function doAddJs() {
-		if ( method_exists( $this, 'addJs' ) ) {
-			$this->addJs();
+	public function do_add_js() {
+		if ( method_exists( $this, 'add_js' ) ) {
+			$this->add_js();
 		}
 	}
 
 	/**
-	 * method that call $this->add_css to enqueue styles in head section
+	 * Method that call $this->add_css to enqueue styles in head section
 	 * do this only on post edit page and if at least one field is exists.
 	 * do this only once
 	 */
-	public function doAddCss() {
-		if ( method_exists( $this, 'addCss' ) ) {
-			$this->addCss();
+	public function do_add_css() {
+		if ( method_exists( $this, 'add_css' ) ) {
+			$this->add_css();
 		}
 	}
 
@@ -637,8 +640,6 @@ class JustField {
 	 * Echo the field post edit form.
 	 *
 	 * Subclasses should over-ride this function to generate their field code.
-	 *
-	 * @param array $args Field options data
 	 */
 	public function field() {
 		die( 'function cf_Field::field() must be over-ridden in a sub-class.' );
@@ -649,7 +650,7 @@ class JustField {
 	 *
 	 * Subclasses should over-ride this function to generate their field code.
 	 *
-	 * @param array $values Form submitted values
+	 * @param array $values Form submitted values.
 	 */
 	public function save( $values ) {
 		die( 'function cf_Field::save() must be over-ridden in a sub-class.' );
@@ -662,8 +663,8 @@ class JustField {
 	 * The newly calculated value of $instance should be returned.
 	 * If "false" is returned, the instance won't be saved/updated.
 	 *
-	 * @param array $new_instance New settings for this instance as input by the user via form()
-	 * @param array $old_instance Old settings for this instance
+	 * @param array $new_instance New settings for this instance as input by the user via form().
+	 * @param array $old_instance Old settings for this instance.
 	 *
 	 * @return array Settings to save or bool false to cancel saving
 	 */
@@ -673,8 +674,6 @@ class JustField {
 
 	/**
 	 * Echo the settings update form
-	 *
-	 * @param array $instance Current settings
 	 *
 	 * @return string
 	 */
@@ -687,11 +686,11 @@ class JustField {
 	/**
 	 * Print shortcode
 	 *
-	 * @param array $args shortcode attributes
+	 * @param array $args shortcode attributes.
 	 *
 	 * @return string
 	 */
-	public function doShortcode( $args ) {
+	public function do_shortcode( $args ) {
 		$args = array_merge( array(
 			'id'      => '',
 			'class'   => '',
@@ -701,7 +700,7 @@ class JustField {
 		), $args );
 
 		$class_names = array(
-			"jcf-value",
+			'jcf-value',
 			"jcf-value-{$this->id_base}",
 			"jcf-value-{$this->id_base}-{$this->slug}",
 		);
@@ -724,10 +723,10 @@ class JustField {
 		$args['after_value']  = '</div>';
 
 		if ( ! empty( $args['label'] ) ) {
-			$sc .= $this->shortcodeLabel( $args );
+			$sc .= $this->shortcode_label( $args );
 		}
 
-		$sc .= $this->shortcodeValue( $args );
+		$sc .= $this->shortcode_value( $args );
 		$sc .= '</div>';
 
 		return $sc;
@@ -736,22 +735,22 @@ class JustField {
 	/**
 	 * Print field label inside shortcode call
 	 *
-	 * @param array $args shortcode args
+	 * @param array $args shortcode args.
 	 *
 	 * @return string
 	 */
-	public function shortcodeLabel( $args ) {
+	public function shortcode_label( $args ) {
 		return $args['before_label'] . esc_html( $this->instance['title'] ) . $args['after_label'];
 	}
 
 	/**
 	 * Print fields values from shortcode
 	 *
-	 * @param array $args shortcode args
+	 * @param array $args shortcode args.
 	 *
 	 * @return string
 	 */
-	public function shortcodeValue( $args ) {
+	public function shortcode_value( $args ) {
 		return $args['before_value'] . esc_html( $this->entry ) . $args['after_value'];
 	}
 }

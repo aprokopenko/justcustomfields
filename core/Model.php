@@ -7,21 +7,29 @@ namespace jcf\core;
  */
 class Model {
 	/**
+	 * Errors
+	 *
 	 * @var array
 	 */
 	protected $_errors;
 
 	/**
+	 * Messages
+	 *
 	 * @var array
 	 */
 	protected $_messages;
 
 	/**
+	 * Message templates
+	 *
 	 * @var array
 	 */
-	protected $_msgTpls = null;
+	protected $_msg_tpls = null;
 
 	/**
+	 * Data layers
+	 *
 	 * @var \jcf\models\DataLayer
 	 */
 	protected $_dl;
@@ -40,46 +48,49 @@ class Model {
 	 *
 	 * @return array
 	 */
-	public function messageTemplates() {
+	public function message_templates() {
 		return array();
 	}
 
 	/**
 	 * Set errors
 	 *
-	 * @param string $error
+	 * @param string $error Error.
 	 */
-	public function addError( $error ) {
-		if ( is_null( $this->_msgTpls ) ) {
-			$this->_msgTpls = $this->messageTemplates();
+	public function add_error( $error ) {
+		if ( is_null( $this->_msg_tpls ) ) {
+			$this->_msg_tpls = $this->message_templates();
 		}
 
-		if ( isset( $this->_msgTpls[ $error ] ) ) {
-			$error = $this->_msgTpls[ $error ];
+		if ( isset( $this->_msg_tpls[ $error ] ) ) {
+			$error = $this->_msg_tpls[ $error ];
 		}
 		$this->_errors[] = $error;
 
-		add_action( 'jcf_print_admin_notice', array( $this, 'printMessages' ) );
+		add_action( 'jcf_print_admin_notice', array( $this, 'print_messages' ) );
 	}
 
 	/**
 	 * Set messages
 	 *
-	 * @param string $message
+	 * @param string $message Message.
 	 */
-	public function addMessage( $message ) {
-		if ( is_null( $this->_msgTpls ) ) {
-			$this->_msgTpls = $this->messageTemplates();
+	public function add_message( $message ) {
+		if ( is_null( $this->_msg_tpls ) ) {
+			$this->_msg_tpls = $this->message_templates();
 		}
 
-		if ( isset( $this->_msgTpls[ $message ] ) ) {
-			$message = $this->_msgTpls[ $message ];
+		if ( isset( $this->_msg_tpls[ $message ] ) ) {
+			$message = $this->_msg_tpls[ $message ];
 		}
 		$this->_messages[] = $message;
 
-		add_action( 'jcf_print_admin_notice', array( $this, 'printMessages' ) );
+		add_action( 'jcf_print_admin_notice', array( $this, 'print_messages' ) );
 	}
 
+	/**
+	 * Get errors
+	 */
 	public function get_errors() {
 		return $this->_errors;
 	}
@@ -87,18 +98,18 @@ class Model {
 	/**
 	 * Check errors
 	 */
-	public function hasErrors() {
+	public function has_errors() {
 		return ! empty( $this->_errors );
 	}
 
 	/**
 	 * Render notices
 	 *
-	 * @param array $args
+	 * @param array $args Args.
 	 *
 	 * @return html
 	 */
-	public function printMessages( $args = array() ) {
+	public function print_messages( $args = array() ) {
 		if ( empty( $this->_messages ) && empty( $this->_errors ) ) {
 			return;
 		}
@@ -110,13 +121,13 @@ class Model {
 	/**
 	 * Set request params
 	 *
-	 * @param array $params
+	 * @param array $params Params.
 	 *
 	 * @return boolean
 	 */
 	public function load( $params ) {
 		if ( ! empty( $params ) ) {
-			$this->setAttributes( $params );
+			$this->set_attributes( $params );
 
 			return true;
 		}
@@ -127,9 +138,9 @@ class Model {
 	/**
 	 * Set attributes to model
 	 *
-	 * @param type $params
+	 * @param type $params Params.
 	 */
-	public function setAttributes( $params ) {
+	public function set_attributes( $params ) {
 		$self = get_class( $this );
 		foreach ( $params as $key => $value ) {
 			if ( property_exists( $self, $key ) ) {

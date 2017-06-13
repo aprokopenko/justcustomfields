@@ -128,11 +128,11 @@ class TaxonomyController extends core\Controller {
 				}
 
 				if ( $term_id ) {
-					$field_obj->setPostId( $term_id );
+					$field_obj->set_post_id( $term_id );
 				}
 
-				$field_obj->doAddJs();
-				$field_obj->doAddCss();
+				$field_obj->do_add_js();
+				$field_obj->do_add_css();
 
 				$field_obj->field_options['after_title'] = ': </label>';
 				ob_start();
@@ -198,7 +198,7 @@ class TaxonomyController extends core\Controller {
 				$field_model->field_id = $field_id;
 
 				$field_obj = core\JustFieldFactory::create( $field_model );
-				$field_obj->setPostId( $term_id );
+				$field_obj->set_post_id( $term_id );
 				$field_obj->do_save();
 			}
 		}

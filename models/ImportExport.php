@@ -27,7 +27,7 @@ class ImportExport extends core\Model
 
 		if ( empty($data['post_types']) ) {
 			$error = __('IMPORT FAILED! File do not contain fields settings data..', \JustCustomFields::TEXTDOMAIN);
-			$this->addError($error);
+			$this->add_error($error);
 			return;
 		}
 
@@ -44,13 +44,13 @@ class ImportExport extends core\Model
 	{
 		if ( empty($_FILES['import_data']['name']) ) {
 			$error = __('IMPORT FAILED! Import file is missing.', \JustCustomFields::TEXTDOMAIN);
-			$this->addError($error);
+			$this->add_error($error);
 			return false;
 		}
 
 		if ( !is_readable($_FILES['import_data']['tmp_name']) ) {
 			$error = __('IMPORT FAILED! Can\'t read uploaded file.', \JustCustomFields::TEXTDOMAIN);
-			$this->addError($error);
+			$this->add_error($error);
 			return false;
 		}
 
@@ -58,7 +58,7 @@ class ImportExport extends core\Model
 
 		if ( $path_info['extension'] !== 'json' ) {
 			$error = __('IMPORT FAILED! Please upload correct file format.', \JustCustomFields::TEXTDOMAIN);
-			$this->addError($error);
+			$this->add_error($error);
 			return false;
 		}
 
@@ -129,10 +129,10 @@ class ImportExport extends core\Model
 		$import_status = $this->_dl->save_fields_data() && $this->_dl->save_fieldsets_data();
 
 		if ( $import_status ) {
-			$this->addMessage(__('<strong>Import</strong> has been completed successfully!', \JustCustomFields::TEXTDOMAIN));
+			$this->add_message(__('<strong>Import</strong> has been completed successfully!', \JustCustomFields::TEXTDOMAIN));
 		}
 		else {
-			$this->addError(__('<strong>Import failed!</strong> Please check that your import file has right format.', \JustCustomFields::TEXTDOMAIN));
+			$this->add_error(__('<strong>Import failed!</strong> Please check that your import file has right format.', \JustCustomFields::TEXTDOMAIN));
 		}
 
 		return $import_status;
@@ -146,7 +146,7 @@ class ImportExport extends core\Model
 	public function export()
 	{
 		if ( empty($this->selected_data) || !is_array($this->selected_data) ) {
-			$this->addError(__('<strong>Export failed!</strong> Please select fields to export.', \JustCustomFields::TEXTDOMAIN));
+			$this->add_error(__('<strong>Export failed!</strong> Please select fields to export.', \JustCustomFields::TEXTDOMAIN));
 			return array();
 		}
 

@@ -25,19 +25,19 @@ class m3x000 extends \jcf\core\Migration
 	/**
 	 * Read data from storage
 	 */
-	protected function readData()
+	protected function read_data()
 	{
 		$fields = array();
 		$fieldsets = array();
 
 		// read from DB
-		if ( $this->isDataSource( Settings::CONF_SOURCE_DB ) ) {
+		if ( $this->is_data_source( Settings::CONF_SOURCE_DB ) ) {
 			$post_types = jcf_get_post_types();
 			foreach ( $post_types as $post_type => $object ) {
-				$p_fieldsets = $this->readDB("jcf_fieldsets-{$post_type}");
+				$p_fieldsets = $this->read_db("jcf_fieldsets-{$post_type}");
 				if ( empty($p_fieldsets) ) continue;
 
-				$p_fields = $this->readDB("jcf_fields-{$post_type}");
+				$p_fields = $this->read_db("jcf_fields-{$post_type}");
 				if ( empty($p_fields) ) $p_fields = array();
 
 				$fields[$post_type] = $p_fields;
@@ -46,7 +46,7 @@ class m3x000 extends \jcf\core\Migration
 		}
 		// read from FS
 		else {
-			$json = $this->readFS('jcf-settings/jcf_settings.json');
+			$json = $this->read_fs('jcf-settings/jcf_settings.json');
 			$data = json_decode($json, true);
 
 			if ( !empty($data['fieldsets']) ) {
@@ -335,8 +335,8 @@ class m3x000 extends \jcf\core\Migration
 		}
 
 		// migrate DB data to new slug
-		if ( ! $this->isTestMode() ) {
-			$this->importPostmeta($post_type, $field['slug'], $new_slug, array($this, 'formatFieldsgroupMeta'));
+		if ( ! $this->is_test_mode() ) {
+			$this->import_postmeta($post_type, $field['slug'], $new_slug, array($this, 'formatFieldsgroupMeta'));
 		}
 
 		return $new_collection;
@@ -408,8 +408,8 @@ class m3x000 extends \jcf\core\Migration
 		}
 
 		// migrate DB data to new slug
-		if ( ! $this->isTestMode() ) {
-			$this->importPostmeta($post_type, $field['slug'], $new_slug, array($this, 'formatUploadmediaMeta'));
+		if ( ! $this->is_test_mode() ) {
+			$this->import_postmeta($post_type, $field['slug'], $new_slug, array($this, 'formatUploadmediaMeta'));
 		}
 
 		return $new_collection;

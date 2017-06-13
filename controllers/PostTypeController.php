@@ -84,8 +84,8 @@ class PostTypeController extends core\Controller {
 						continue;
 					}
 
-					$field_obj->doAddJs();
-					$field_obj->doAddCss();
+					$field_obj->do_add_js();
+					$field_obj->do_add_css();
 				}
 
 				$pos  = isset( $fieldset['position'] ) ? $fieldset['position'] : models\Fieldset::POSITION_ADVANCED;
@@ -130,7 +130,7 @@ class PostTypeController extends core\Controller {
 				continue;
 			}
 
-			$field_obj->setPostId( $post->ID );
+			$field_obj->set_post_id( $post->ID );
 			$field_obj->field();
 		}
 		unset( $field_obj );
@@ -190,7 +190,7 @@ class PostTypeController extends core\Controller {
 			foreach ( $fieldset['fields'] as $field_id => $tmp ) {
 				$field_model->field_id = $field_id;
 				$field_obj             = core\JustFieldFactory::create( $field_model );
-				$field_obj->setPostId( $post->ID );
+				$field_obj->set_post_id( $post->ID );
 				$field_obj->do_save();
 			}
 		}
