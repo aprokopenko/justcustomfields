@@ -5,6 +5,9 @@ namespace jcf\controllers;
 use jcf\models;
 use jcf\core;
 
+/**
+ * 	Import/Export controller
+ */
 class ImportExportController extends core\Controller {
 
 	/**
@@ -24,7 +27,10 @@ class ImportExportController extends core\Controller {
 	 */
 	public function init_routes() {
 		$page_title = __( 'Import/Export', \JustCustomFields::TEXTDOMAIN );
-		add_submenu_page( null, $page_title, $page_title, 'manage_options', 'jcf_import_export', array( $this, 'actionIndex' ) );
+		add_submenu_page( null, $page_title, $page_title, 'manage_options', 'jcf_import_export', array(
+			$this,
+			'actionIndex',
+		) );
 	}
 
 	/**
@@ -37,6 +43,7 @@ class ImportExportController extends core\Controller {
 		$model->load( $_POST ) && $model->import();
 
 		/* load template */
+
 		return $this->_render( 'import_export/index', array( 'tab' => 'import_export' ) );
 	}
 
@@ -47,11 +54,14 @@ class ImportExportController extends core\Controller {
 	public function ajax_import_form() {
 		$model = new models\ImportExport();
 
-		if ( $model->load($_POST) && $import_data = $model->get_import_fields() ) {
+		if ( $model->load( $_POST ) && $import_data = $model->get_import_fields() ) {
 			return $this->_render_ajax( 'import_export/import', 'html', array( 'import_data' => $import_data ) );
 		}
 
-		return $this->_render_ajax( null, 'json', array( 'status' => ! empty( $import_data ), 'error' => $model->get_errors() ) );
+		return $this->_render_ajax( null, 'json', array(
+			'status' => ! empty( $import_data ),
+			'error'  => $model->get_errors(),
+		) );
 	}
 
 	/**
@@ -59,16 +69,17 @@ class ImportExportController extends core\Controller {
 	 */
 	public function ajax_export_form() {
 		$fieldsets_model = new models\Fieldset();
-		$fieldsets = $fieldsets_model->findAll();
+		$fieldsets       = $fieldsets_model->findAll();
 
 		$fields_model = new models\Field();
-		$fields = $fields_model->findAll();
+		$fields       = $fields_model->findAll();
 
 		/* load template */
+
 		return $this->_render_ajax( 'import_export/export', 'html', array(
 			'field_settings' => $fields,
-			'fieldsets' => $fieldsets,
-			'post_types' => jcf_get_post_types(),
+			'fieldsets'      => $fieldsets,
+			'post_types'     => jcf_get_post_types(),
 		) );
 	}
 
@@ -78,10 +89,11 @@ class ImportExportController extends core\Controller {
 	public function ajax_export() {
 		$model = new models\ImportExport();
 
-		if ( $model->load($_POST) && $data = $model->export() ) {
+		if ( $model->load( $_POST ) && $data = $model->export() ) {
 			$filename = 'jcf_export' . date( 'Ymd-his' ) . '.json';
 			header( 'Content-Disposition: attachment;filename=' . $filename );
 			header( 'Content-Transfer-Encoding: binary' );
+
 			return $this->_render_ajax( null, 'json', $data );
 		}
 

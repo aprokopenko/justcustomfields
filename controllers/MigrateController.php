@@ -47,7 +47,7 @@ class MigrateController extends core\Controller {
 		$migrations = $model->find_migrations();
 
 		/* check form submit and migrate */
-		if ( $model->load($_POST) ) {
+		if ( $model->load( $_POST ) ) {
 			if ( $model->migrate( $migrations ) ) {
 				return $this->action_upgraded();
 			}
@@ -59,11 +59,11 @@ class MigrateController extends core\Controller {
 		$model->is_storage_writable();
 		$errors = $model->get_errors();
 
-		return $this->_render('migrate/index', array(
+		return $this->_render( 'migrate/index', array(
 			'migrations' => $migrations,
-			'warnings' => $warnings,
-			'errors' => $errors,
-		));
+			'warnings'   => $warnings,
+			'errors'     => $errors,
+		) );
 	}
 
 	/**

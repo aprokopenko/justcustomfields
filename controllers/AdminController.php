@@ -5,8 +5,10 @@ namespace jcf\controllers;
 use jcf\models;
 use jcf\core;
 
-class AdminController extends core\Controller
-{
+/**
+ * 	Admin controller
+ */
+class AdminController extends core\Controller {
 
 	/**
 	 * Init all wp-actions
@@ -32,7 +34,7 @@ class AdminController extends core\Controller
 	 */
 	public function admin_menu() {
 		$page_title = \JustCustomFields::$plugin_name;
-		$page_slug = \JustCustomFields::$plugin_slug;
+		$page_slug  = \JustCustomFields::$plugin_slug;
 
 		add_options_page( $page_title, $page_title, 'manage_options', 'jcf_admin', array( $this, 'action_index' ) );
 	}
@@ -41,18 +43,19 @@ class AdminController extends core\Controller
 	 * Render index page
 	 */
 	public function action_index() {
-		$model = new models\Fieldset();
+		$model        = new models\Fieldset();
 		$count_fields = $model->get_fields_counter();
-		$post_types = jcf_get_post_types( 'object' );
-		$taxonomies = jcf_get_taxonomies( 'objects' );
+		$post_types   = jcf_get_post_types( 'object' );
+		$taxonomies   = jcf_get_taxonomies( 'objects' );
 
 		/*load template*/
-		return $this->_render('admin/index', array(
-					'tab' => 'fields',
-					'post_types' => $post_types,
-					'taxonomies' => $taxonomies,
-					'count_fields' => $count_fields,
-		));
+
+		return $this->_render( 'admin/index', array(
+			'tab'          => 'fields',
+			'post_types'   => $post_types,
+			'taxonomies'   => $taxonomies,
+			'count_fields' => $count_fields,
+		) );
 	}
 
 	/**
@@ -95,8 +98,8 @@ class AdminController extends core\Controller
 	public function register_edit_assets() {
 		wp_register_script(
 			'jcf_edit_post',
-				jcf_plugin_url( 'assets/edit_post.js' ),
-				array( 'jquery', 'tags-box' )
+			jcf_plugin_url( 'assets/edit_post.js' ),
+			array( 'jquery', 'tags-box' )
 		);
 
 		wp_register_style( 'jcf_edit_post', jcf_plugin_url( 'assets/edit_post.css' ) );

@@ -1,15 +1,16 @@
 <?php
 
 
-
 namespace jcf\controllers;
 
 use jcf\models;
 use jcf\core;
 use jcf\core\JustField;
 
-class FieldController extends core\Controller
-{
+/**
+ * 	Field controller
+ */
+class FieldController extends core\Controller {
 
 	/**
 	 * Init all wp-actions
@@ -35,7 +36,10 @@ class FieldController extends core\Controller
 			return $this->_render_ajax( 'fields/form', 'html', array( 'field' => $field ) );
 		}
 
-		return $this->_render_ajax( null, 'json', array( 'status' => !empty( $field ), 'error' => $model->get_errors() ) );
+		return $this->_render_ajax( null, 'json', array(
+			'status' => ! empty( $field ),
+			'error'  => $model->get_errors(),
+		) );
 	}
 
 	/**
@@ -46,7 +50,7 @@ class FieldController extends core\Controller
 
 		if ( $model->load( $_POST ) && $success = $model->save() ) {
 			if ( isset( $success['id_base'] ) && 'collection' === $success['id_base'] ) {
-				$jcf = \JustCustomFields::get_instance();
+				$jcf               = \JustCustomFields::get_instance();
 				$registered_fields = $jcf->get_fields( 'collection' );
 
 				$post_type_kind = models\Field::get_post_type_kind( $model->post_type );
@@ -55,13 +59,13 @@ class FieldController extends core\Controller
 				}
 
 				ob_start();
-				$this->_render('fields/collection', array(
-					'collection' => $success['instance'],
-					'collection_id' => $success['id'],
-					'fieldset_id' => $success['fieldset_id'],
+				$this->_render( 'fields/collection', array(
+					'collection'        => $success['instance'],
+					'collection_id'     => $success['id'],
+					'fieldset_id'       => $success['fieldset_id'],
 					'registered_fields' => $registered_fields,
-					'post_type_kind' => $post_type_kind,
-				));
+					'post_type_kind'    => $post_type_kind,
+				) );
 				$success['collection_fields'] = ob_get_clean();
 			}
 
@@ -78,7 +82,10 @@ class FieldController extends core\Controller
 		$model = new models\Field();
 		$model->load( $_POST ) && $success = $model->delete();
 
-		return $this->_render_ajax( null, 'json', array( 'status' => !empty( $success ), 'error' => $model->get_errors() ) );
+		return $this->_render_ajax( null, 'json', array(
+			'status' => ! empty( $success ),
+			'error'  => $model->get_errors(),
+		) );
 	}
 
 	/**
@@ -88,7 +95,10 @@ class FieldController extends core\Controller
 		$model = new models\Field();
 		$model->load( $_POST ) && $success = $model->sort();
 
-		return $this->_render_ajax( null, 'json', array( 'status' => !empty( $success ), 'error' => $model->get_errors() ) );
+		return $this->_render_ajax( null, 'json', array(
+			'status' => ! empty( $success ),
+			'error'  => $model->get_errors(),
+		) );
 	}
 
 	/**
@@ -98,7 +108,10 @@ class FieldController extends core\Controller
 		$model = new models\Field();
 		$model->load( $_POST ) && $success = $model->sortCollection();
 
-		return $this->_render_ajax( null, 'json', array( 'status' => !empty( $success ), 'error' => $model->get_errors() ) );
+		return $this->_render_ajax( null, 'json', array(
+			'status' => ! empty( $success ),
+			'error'  => $model->get_errors(),
+		) );
 	}
 
 }

@@ -15,14 +15,14 @@ function initCollectionFields() {
 
     jQuery(this).find('input,select').each(function( i, input ) {
       data[ jQuery(input).attr('name') ] = jQuery(input).val();
-    })
+    });
     data['fieldset_id'] = jQuery(this).find('input[name=fieldset_id]').val();
 
     var loader = jQuery(this).find('img.ajax-feedback');
 
     jcf_ajax(data, 'html', loader, function( response ) {
       jcf_show_ajax_container(response);
-    })
+    });
 
     return false;
   });
@@ -69,7 +69,7 @@ function initCollectionFields() {
 
       // close add box at the end
       jcf_hide_ajax_container();
-    })
+    });
 
     return false;
   });
@@ -91,7 +91,7 @@ function initCollectionFields() {
     });
 
     return false;
-  })
+  });
   // delete button
   jQuery('#jcf_fieldsets tbody span.delete_collection a').live('click', function() {
     if ( confirm(jcf_textdomain.confirm_field_delete) ) {
@@ -112,7 +112,7 @@ function initCollectionFields() {
       });
     }
     return false;
-  })
+  });
 
   // delete button in edit form
   jQuery('#jcform_edit_collection_field a.field-control-remove').live('click', function( e ) {

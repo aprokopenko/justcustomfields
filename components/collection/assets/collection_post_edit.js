@@ -63,7 +63,7 @@ function jcf_collection_fields_control() {
     });
 
     return false;
-  })
+  });
 
   jQuery('div.collection_field_group h3 span.dashicons-trash').live('click', function( e ) {
     e.preventDefault();

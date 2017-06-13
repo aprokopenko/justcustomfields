@@ -68,7 +68,7 @@ function jcf_relatedcontent_init() {
     jcf_relatedcontent_init_sortable(container);
 
     return false;
-  })
+  });
 
   function jcf_attach_autocomplete_event( input ) {
     var post_types = jQuery(input).attr('alt');

@@ -5,6 +5,9 @@ namespace jcf\controllers;
 use jcf\models;
 use jcf\core;
 
+/**
+ * 	Settings controller
+ */
 class SettingsController extends core\Controller {
 
 	/**
@@ -20,7 +23,10 @@ class SettingsController extends core\Controller {
 	 */
 	public function init_routes() {
 		$page_title = __( 'Settings', \JustCustomFields::TEXTDOMAIN );
-		add_submenu_page( null, $page_title, $page_title, 'manage_options', 'jcf_settings', array( $this, 'action_index' ) );
+		add_submenu_page( null, $page_title, $page_title, 'manage_options', 'jcf_settings', array(
+			$this,
+			'action_index',
+		) );
 	}
 
 	/**
@@ -30,17 +36,18 @@ class SettingsController extends core\Controller {
 		$model = new models\Settings();
 		$model->load( $_POST ) && $model->save();
 
-		$source = $model::get_data_source_type();
-		$network = $model::getNetworkMode();
+		$source             = $model::get_data_source_type();
+		$network            = $model::getNetworkMode();
 		$googlemaps_api_key = $model::getGoogleMapsApiKey();
 
 		/* load template */
-		return $this->_render('settings/index', array(
-					'tab' => 'settings',
-					'source' => $source,
-					'network' => $network,
-					'googlemaps_api_key' => $googlemaps_api_key,
-		));
+
+		return $this->_render( 'settings/index', array(
+			'tab'                => 'settings',
+			'source'             => $source,
+			'network'            => $network,
+			'googlemaps_api_key' => $googlemaps_api_key,
+		) );
 	}
 
 }

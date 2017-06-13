@@ -5,6 +5,9 @@ namespace jcf\controllers;
 use jcf\models;
 use jcf\core;
 
+/**
+ * 	Fieldset controller
+ */
 class FieldsetController extends core\Controller {
 
 	/**
@@ -36,25 +39,28 @@ class FieldsetController extends core\Controller {
 	 */
 	public function init_routes() {
 		$page_title = __( 'Fields', \JustCustomFields::TEXTDOMAIN );
-		add_submenu_page( null, $page_title, $page_title, 'manage_options', 'jcf_fieldset_index', array( $this, 'actionIndex' ) );
+		add_submenu_page( null, $page_title, $page_title, 'manage_options', 'jcf_fieldset_index', array(
+			$this,
+			'actionIndex',
+		) );
 	}
 
 	/**
 	 * Render settings page with fieldsets and fields
 	 */
 	public function actionIndex() {
-		$post_type_id = $_GET['pt'];
+		$post_type_id   = $_GET['pt'];
 		$post_type_kind = models\Fieldset::get_post_type_kind( $post_type_id );
 
-		$jcf = \JustCustomFields::get_instance();
+		$jcf            = \JustCustomFields::get_instance();
 		$fieldset_model = new models\Fieldset();
-		$field_model = new models\Field();
+		$field_model    = new models\Field();
 
-		$fieldsets = $fieldset_model->find_by_post_type( $post_type_id );
-		$fields = $field_model->find_by_post_type( $post_type_id );
-		$collections = $field_model->find_collections_by_post_type( $post_type_id );
+		$fieldsets                        = $fieldset_model->find_by_post_type( $post_type_id );
+		$fields                           = $field_model->find_by_post_type( $post_type_id );
+		$collections                      = $field_model->find_collections_by_post_type( $post_type_id );
 		$collections['registered_fields'] = $jcf->get_fields( 'collection' );
-		$registered_fields = $jcf->get_fields();
+		$registered_fields                = $jcf->get_fields();
 
 		if ( core\JustField::POSTTYPE_KIND_TAXONOMY === $post_type_kind ) {
 			$post_types = jcf_get_taxonomies( 'objects' );
@@ -68,15 +74,16 @@ class FieldsetController extends core\Controller {
 
 		/* load template */
 		$template_params = array(
-			'tab' => 'fields',
-			'post_type' => $post_types[ $post_type_id ],
-			'post_type_id' => $post_type_id,
-			'post_type_kind' => $post_type_kind,
-			'fieldsets' => $fieldsets,
-			'field_settings' => $fields,
-			'collections' => $collections,
+			'tab'               => 'fields',
+			'post_type'         => $post_types[ $post_type_id ],
+			'post_type_id'      => $post_type_id,
+			'post_type_kind'    => $post_type_kind,
+			'fieldsets'         => $fieldsets,
+			'field_settings'    => $fields,
+			'collections'       => $collections,
 			'registered_fields' => $registered_fields,
 		);
+
 		return $this->_render( 'fieldsets/index', $template_params );
 	}
 
@@ -85,9 +92,12 @@ class FieldsetController extends core\Controller {
 	 */
 	public function ajax_create() {
 		$model = new models\Fieldset();
-		$model->load($_POST) && $success = $model->create();
+		$model->load( $_POST ) && $success = $model->create();
 
-		return $this->_render_ajax( null, 'json', array( 'status' => ! empty( $success ), 'error' => $model->get_errors() ) );
+		return $this->_render_ajax( null, 'json', array(
+			'status' => ! empty( $success ),
+			'error'  => $model->get_errors(),
+		) );
 	}
 
 	/**
@@ -95,34 +105,39 @@ class FieldsetController extends core\Controller {
 	 */
 	public function ajax_delete() {
 		$model = new models\Fieldset();
-		$model->load($_POST) && $success = $model->delete();
+		$model->load( $_POST ) && $success = $model->delete();
 
-		return $this->_render_ajax( null, 'json', array( 'status' => ! empty( $success ), 'error' => $model->get_errors() ) );
+		return $this->_render_ajax( null, 'json', array(
+			'status' => ! empty( $success ),
+			'error'  => $model->get_errors(),
+		) );
 	}
 
 	/**
 	 * Form html on fieldset Update request
 	 */
 	public function ajax_get_form() {
-		//ini_set('display_errors',1);
 		$model = new models\Fieldset();
 
 		if ( $model->load( $_POST ) && $fieldset = $model->find_by_id( $model->fieldset_id ) ) {
 			$taxonomies = get_object_taxonomies( $model->post_type, 'objects' );
-			$templates = jcf_get_page_templates( $model->post_type );
+			$templates  = jcf_get_page_templates( $model->post_type );
 
 			$post_type_kind = $model->get_post_type_kind( $model->post_type );
 
 			return $this->_render_ajax( 'fieldsets/form', 'html', array(
-				'fieldset' => $fieldset,
-				'post_type' => $model->post_type,
-				'taxonomies' => $taxonomies,
-				'templates' => $templates,
+				'fieldset'       => $fieldset,
+				'post_type'      => $model->post_type,
+				'taxonomies'     => $taxonomies,
+				'templates'      => $templates,
 				'post_type_kind' => $post_type_kind,
 			) );
 		}
 
-		return $this->_render_ajax( null, 'json', array( 'status' => ! empty( $fieldset ), 'error' => $model->get_errors() ) );
+		return $this->_render_ajax( null, 'json', array(
+			'status' => ! empty( $fieldset ),
+			'error'  => $model->get_errors(),
+		) );
 	}
 
 	/**
@@ -134,8 +149,8 @@ class FieldsetController extends core\Controller {
 
 		return $this->_render_ajax( null, 'json', array(
 			'status' => ! empty( $success ),
-			'title' => $model->title,
-			'error' => $model->get_errors(),
+			'title'  => $model->title,
+			'error'  => $model->get_errors(),
 		) );
 	}
 
@@ -146,7 +161,10 @@ class FieldsetController extends core\Controller {
 		$model = new models\Fieldset();
 		$model->load( $_POST ) && $success = $model->sort();
 
-		return $this->_render_ajax( null, 'json', array( 'status' => ! empty( $success ), 'error' => $model->get_errors() ) );
+		return $this->_render_ajax( null, 'json', array(
+			'status' => ! empty( $success ),
+			'error'  => $model->get_errors(),
+		) );
 	}
 
 	/**
@@ -163,7 +181,10 @@ class FieldsetController extends core\Controller {
 			return $this->_render( 'fieldsets/visibility/form', $form_data );
 		}
 
-		return $this->_render_ajax( null, 'json', array( 'status' => ! empty( $form_data ), 'error' => $model->get_errors() ) );
+		return $this->_render_ajax( null, 'json', array(
+			'status' => ! empty( $form_data ),
+			'error'  => $model->get_errors(),
+		) );
 	}
 
 	/**
@@ -174,17 +195,20 @@ class FieldsetController extends core\Controller {
 
 		if ( $model->load( $_POST ) && $result = $model->get_based_on_options() ) {
 			$template = 'taxonomies_list';
-			$options = array( 'taxonomies' => $result );
+			$options  = array( 'taxonomies' => $result );
 
 			if ( models\FieldsetVisibility::BASEDON_PAGE_TPL === $model->based_on ) {
 				$template = 'templates_list';
-				$options = array( 'templates' => $result );
+				$options  = array( 'templates' => $result );
 			}
 
 			return $this->_render_ajax( 'fieldsets/visibility/' . $template, 'html', $options );
 		}
 
-		return $this->_render_ajax( null, 'json', array( 'status' => ! empty( $result ), 'error' => $model->get_errors() ) );
+		return $this->_render_ajax( null, 'json', array(
+			'status' => ! empty( $result ),
+			'error'  => $model->get_errors(),
+		) );
 	}
 
 	/**
@@ -192,11 +216,11 @@ class FieldsetController extends core\Controller {
 	 */
 	public function ajax_get_taxonomy_terms() {
 		$taxonomy = $_POST['taxonomy'];
-		$terms = get_terms( $taxonomy, array( 'hide_empty' => false ) );
+		$terms    = get_terms( $taxonomy, array( 'hide_empty' => false ) );
 
 		return $this->_render_ajax( 'fieldsets/visibility/terms_list', 'html', array(
-			'terms' => $terms,
-			'taxonomy' => $taxonomy,
+			'terms'        => $terms,
+			'taxonomy'     => $taxonomy,
 			'current_term' => array(),
 		) );
 	}
@@ -210,11 +234,14 @@ class FieldsetController extends core\Controller {
 		if ( $model->load( $_POST ) && $rules = $model->update() ) {
 			return $this->_render_ajax( 'fieldsets/visibility/rules', 'html', array(
 				'visibility_rules' => $rules,
-				'post_type' => $model->post_type,
+				'post_type'        => $model->post_type,
 			) );
 		}
 
-		return $this->_render_ajax(null, 'json', array( 'status' => ! empty( $rules ), 'error' => $model->get_errors() ) );
+		return $this->_render_ajax( null, 'json', array(
+			'status' => ! empty( $rules ),
+			'error'  => $model->get_errors(),
+		) );
 	}
 
 	/**
@@ -226,7 +253,7 @@ class FieldsetController extends core\Controller {
 		if ( $model->load( $_POST ) && $rules = $model->delete() ) {
 			return $this->_render_ajax( 'fieldsets/visibility/rules', 'html', array(
 				'visibility_rules' => $rules,
-				'post_type' => $model->post_type
+				'post_type'        => $model->post_type,
 			) );
 		}
 
@@ -238,8 +265,8 @@ class FieldsetController extends core\Controller {
 	 */
 	public function ajax_visibility_autocomplete() {
 		$taxonomy = strip_tags( trim( $_POST['taxonomy'] ) );
-		$term = strip_tags( trim( $_POST['term'] ) );
-		$result = models\FieldsetVisibility::find_taxonomy_terms( $taxonomy, $term );
+		$term     = strip_tags( trim( $_POST['term'] ) );
+		$result   = models\FieldsetVisibility::find_taxonomy_terms( $taxonomy, $term );
 
 		return $this->_render_ajax( null, 'json', $result );
 	}
