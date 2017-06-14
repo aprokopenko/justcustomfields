@@ -106,7 +106,7 @@ class FieldController extends core\Controller {
 	 */
 	public function ajax_collection_sort() {
 		$model = new models\Field();
-		$model->load( $_POST ) && $success = $model->sortCollection();
+		$model->load( $_POST ) && $success = $model->sort_collection();
 
 		return $this->_render_ajax( null, 'json', array(
 			'status' => ! empty( $success ),

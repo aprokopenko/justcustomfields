@@ -37,8 +37,8 @@ class SettingsController extends core\Controller {
 		$model->load( $_POST ) && $model->save();
 
 		$source             = $model::get_data_source_type();
-		$network            = $model::getNetworkMode();
-		$googlemaps_api_key = $model::getGoogleMapsApiKey();
+		$network            = $model::get_network_mode();
+		$googlemaps_api_key = $model::get_google_maps_api_key();
 
 		/* load template */
 

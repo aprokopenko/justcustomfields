@@ -21,7 +21,7 @@ class JustField_GoogleMaps extends core\JustField
 	 */
 	public function field()
 	{
-		$api_key = Settings::getGoogleMapsApiKey();
+		$api_key = Settings::get_google_maps_api_key();
 
 		$this->entry = wp_parse_args($this->entry, array('lat' => '', 'lng' => '', 'address' => '',));
 		?>
@@ -125,7 +125,7 @@ class JustField_GoogleMaps extends core\JustField
 		$instance = wp_parse_args((array) $this->instance, array( 'title' => '', 'description' => '', ));
 		$description = esc_html($instance['description']);
 		$title = esc_attr($instance['title']);
-		$api_key = Settings::getGoogleMapsApiKey();
+		$api_key = Settings::get_google_maps_api_key();
 		?>
 		<?php if ( empty($api_key) ) : ?>
 			<div class="error"><?php _e('Please set Google Maps API Key on Settings page.', JCF_TEXTDOMAIN); ?></div>
@@ -141,7 +141,7 @@ class JustField_GoogleMaps extends core\JustField
 	 */
 	public function add_js()
 	{
-		if ( $api_key = Settings::getGoogleMapsApiKey() ) {
+		if ( $api_key = Settings::get_google_maps_api_key() ) {
 			wp_register_script('jcf_googlemaps_api', esc_url('//maps.googleapis.com/maps/api/js?key=' . $api_key), array('jquery'), '3', false);
 			wp_enqueue_script('jcf_googlemaps_api');
 
@@ -177,7 +177,7 @@ class JustField_GoogleMaps extends core\JustField
 	 */
 	public function shortcode_value( $args )
 	{
-		$api_key = Settings::getGoogleMapsApiKey();
+		$api_key = Settings::get_google_maps_api_key();
 
 		if ( empty($api_key) ) {
 			return 'Google Maps API Key does not configured correctly.';

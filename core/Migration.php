@@ -60,7 +60,7 @@ abstract class Migration {
 	 */
 	public function __construct() {
 		$this->_data_source  = Settings::get_data_source_type();
-		$this->_network_mode = Settings::getNetworkMode();
+		$this->_network_mode = Settings::get_network_mode();
 	}
 
 	/**
@@ -227,7 +227,7 @@ abstract class Migration {
 
 		$blog_ids = array( get_current_blog_id() );
 		if ( is_multisite() && (
-				( $this->is_data_source( Settings::CONF_SOURCE_DB ) && Settings::CONF_MS_NETWORK == Settings::getNetworkMode() )
+				( $this->is_data_source( Settings::CONF_SOURCE_DB ) && Settings::CONF_MS_NETWORK == Settings::get_network_mode() )
 				|| $this->is_data_source( Settings::CONF_SOURCE_FS_GLOBAL )
 			)
 		) {

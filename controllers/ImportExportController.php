@@ -69,10 +69,10 @@ class ImportExportController extends core\Controller {
 	 */
 	public function ajax_export_form() {
 		$fieldsets_model = new models\Fieldset();
-		$fieldsets       = $fieldsets_model->findAll();
+		$fieldsets       = $fieldsets_model->find_all();
 
 		$fields_model = new models\Field();
-		$fields       = $fields_model->findAll();
+		$fields       = $fields_model->find_all();
 
 		/* load template */
 
