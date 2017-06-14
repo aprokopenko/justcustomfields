@@ -73,9 +73,10 @@ class JustField_Checkbox extends core\JustField {
 	 */
 	public function form() {
 		/* Defaults */
-		$instance = wp_parse_args( (array) $this->instance, array( 'title'       => '',
-		                                                           'settings'    => '',
-		                                                           'description' => '',
+		$instance = wp_parse_args( (array) $this->instance, array(
+			'title'       => '',
+			'settings'    => '',
+			'description' => '',
 		) );
 		?>
 		<p>
@@ -101,7 +102,11 @@ class JustField_Checkbox extends core\JustField {
 	}
 
 	/**
-	 *    Save field on post edit form
+	 * Save field on post edit form
+	 *
+	 * @param array $values Values.
+	 *
+	 * @return array
 	 */
 	public function save( $values ) {
 		$values = isset( $values['val'] ) ? $values['val'] : '';
@@ -110,7 +115,12 @@ class JustField_Checkbox extends core\JustField {
 	}
 
 	/**
-	 *    Update instance (settings) for current field
+	 * Update instance (settings) for current field
+	 *
+	 * @param array $new_instance New instance.
+	 * @param array $old_instance Old instance.
+	 *
+	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance                = $old_instance;
@@ -124,7 +134,7 @@ class JustField_Checkbox extends core\JustField {
 	/**
 	 * Prepare list of options
 	 *
-	 * @param array $instance current instance
+	 * @param array $instance current instance.
 	 *
 	 * @return array
 	 */
@@ -147,7 +157,11 @@ class JustField_Checkbox extends core\JustField {
 	}
 
 	/**
-	 *    Print fields values from shortcode
+	 * Print fields values from shortcode
+	 *
+	 * @param array $args Arguments.
+	 *
+	 * @return mixed
 	 */
 	public function shortcode_value( $args ) {
 		$options = $this->parsed_select_options( $this->instance );
