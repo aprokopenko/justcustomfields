@@ -45,8 +45,8 @@ class JustField_Table extends core\JustField
 			foreach ($columns as $col_name => $col_title) {
 				$table_headers .= '<th>' . $col_title . '</th>';
 				$clone_row .= '<td><input type="text" value=""
-									id="' . $this->getFieldIdL2($col_name, '00') . '"
-									name="' . $this->getFieldNameL2($col_name, '00') . '"></td>';
+									id="' . $this->get_field_id_l2($col_name, '00') . '"
+									name="' . $this->get_field_name_l2($col_name, '00') . '"></td>';
 			}
 
 			// generate rows html
@@ -63,8 +63,8 @@ class JustField_Table extends core\JustField
 
 				foreach ($columns as $col_name => $col_title) {
 					$rows .= '<td><input type="text" value="' . (!empty($entry[$col_name]) ? esc_attr($entry[$col_name]) : '') . '"
-						id="' . $this->getFieldIdL2($col_name, $key) . '"
-						name="' . $this->getFieldNameL2($col_name, $key) . '">
+						id="' . $this->get_field_id_l2($col_name, $key) . '"
+						name="' . $this->get_field_name_l2($col_name, $key) . '">
 					</td>';
 				}
 
@@ -166,12 +166,12 @@ class JustField_Table extends core\JustField
 	/**
 	 * 	custom get_field functions to add one more deep level
 	 */
-	protected function getFieldIdL2( $field, $number )
+	protected function get_field_id_l2( $field, $number )
 	{
 		return $this->get_field_id( $number . '-' . $field);
 	}
 
-	protected function getFieldNameL2( $field, $number )
+	protected function get_field_name_l2( $field, $number )
 	{
 		return $this->get_field_name( $number . '][' . $field);
 	}
