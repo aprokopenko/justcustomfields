@@ -127,8 +127,7 @@ class JustField_RelatedContent extends core\JustField {
 
 				<?php if ( '' !== $this->instance['description'] ) : ?>
 					<p class="howto<?php if ( count( $entries ) === 1 ) {
-						echo ' jcf-hide';
-					} ?>"><?php echo esc_html( $this->instance['description'] ); ?></p>
+						echo ' jcf-hide'; } ?>"><?php echo esc_html( $this->instance['description'] ); ?></p>
 				<?php endif; ?>
 
 				<a href="#"

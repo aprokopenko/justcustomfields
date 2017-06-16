@@ -27,13 +27,13 @@ class JustField_Select extends core\JustField {
 	public function field() {
 		$values = $this->parsedSelectOptions( $this->instance );
 		?>
-		<div id="jcf_field-<?php echo $this->id; ?>"
-			 class="jcf_edit_field <?php echo $this->field_options['classname']; ?>">
+		<div id="jcf_field-<?php echo esc_attr( $this->id ); ?>"
+			 class="jcf_edit_field <?php echo esc_attr( $this->field_options['classname'] ); ?>">
 			<?php echo $this->field_options['before_widget']; ?>
 			<?php echo $this->field_options['before_title'] . esc_html( $this->instance['title'] ) . $this->field_options['after_title']; ?>
 			<div class="select-field">
 				<select name="<?php echo $this->get_field_name( 'val' ); ?>"
-						id="<?php echo $this->get_field_id( 'val' ); ?>">
+						id="<?php echo esc_attr( $this->get_field_id( 'val' ) ); ?>">
 					<?php if ( ! empty( $this->instance['empty_option'] ) ) : ?>
 						<option value="" <?php echo selected( $this->instance['empty_option'], $this->entry, false ); ?>><?php echo esc_attr( $this->instance['empty_option'] ); ?></option>
 					<?php endif; ?>
@@ -51,10 +51,10 @@ class JustField_Select extends core\JustField {
 	}
 
 	/**
-	 * draw form for edit field
+	 * Draw form for edit field
 	 */
 	public function form() {
-		//Defaults
+		// Defaults.
 		$instance     = wp_parse_args( (array) $this->instance, array(
 			'title'        => '',
 			'description'  => '',
@@ -67,22 +67,22 @@ class JustField_Select extends core\JustField {
 		$empty_option = esc_attr( $instance['empty_option'] );
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>"
-				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>"/>
+			<label for="<?php echo esc_attr($this->get_field_id( 'title' )); ?>"><?php esc_html_e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr($this->get_field_id( 'title' )); ?>"
+				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr($title); ?>"/>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'options' ); ?>"><?php _e( 'Options:', \JustCustomFields::TEXTDOMAIN ); ?></label>
-			<textarea class="widefat" id="<?php echo $this->get_field_id( 'options' ); ?>"
-					  name="<?php echo $this->get_field_name( 'options' ); ?>"><?php echo $options; ?></textarea>
+			<label for="<?php echo esc_attr($this->get_field_id( 'options' )); ?>"><?php esc_html_e( 'Options:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<textarea class="widefat" id="<?php echo esc_attr($this->get_field_id( 'options' )); ?>"
+					  name="<?php echo $this->get_field_name( 'options' ); ?>"><?php echo esc_html($options); ?></textarea>
 			<br/>
-			<small><?php _e( 'Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', \JustCustomFields::TEXTDOMAIN ); ?></small>
+			<small><?php esc_html_e( 'Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', \JustCustomFields::TEXTDOMAIN ); ?></small>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'empty_option' ); ?>"><?php _e( 'Empty option:', \JustCustomFields::TEXTDOMAIN ); ?></label><input
-					class="widefat" id="<?php echo $this->get_field_id( 'empty_option' ); ?>"
+			<label for="<?php echo esc_attr($this->get_field_id( 'empty_option' )); ?>"><?php _e( 'Empty option:', \JustCustomFields::TEXTDOMAIN ); ?></label><input
+					class="widefat" id="<?php echo esc_attr($this->get_field_id( 'empty_option' )); ?>"
 					name="<?php echo $this->get_field_name( 'empty_option' ); ?>"
-					placeholder="ex. Choose item from the list"" type="text" value="<?php echo $empty_option; ?>" />
+					placeholder="ex. Choose item from the list"" type="text" value="<?php echo esc_attr( $empty_option ); ?>" />
 			<br/>
 			<small><?php _e( 'Leave blank to disable empty option', \JustCustomFields::TEXTDOMAIN ); ?></small>
 		</p>
@@ -95,7 +95,11 @@ class JustField_Select extends core\JustField {
 	}
 
 	/**
-	 *    save field on post edit form
+	 * Save field on post edit form
+	 *
+	 * @param array $values Values.
+	 *
+	 * @return array
 	 */
 	public function save( $values ) {
 		$values = $values['val'];
@@ -104,7 +108,12 @@ class JustField_Select extends core\JustField {
 	}
 
 	/**
-	 *    update instance (settings) for current field
+	 * Update instance (settings) for current field
+	 *
+	 * @param array $new_instance New instance.
+	 * @param array $old_instance Old instance.
+	 *
+	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance                 = $old_instance;
@@ -117,9 +126,9 @@ class JustField_Select extends core\JustField {
 	}
 
 	/**
-	 * prepare list of options
+	 * Prepare list of options
 	 *
-	 * @param array $instance current instance
+	 * @param array $instance current instance.
 	 *
 	 * @return array
 	 */
@@ -145,9 +154,11 @@ class JustField_Select extends core\JustField {
 	}
 
 	/**
-	 * print field values inside the shortcode
+	 * Print field values inside the shortcode
 	 *
-	 * @params array $args    shortcode args
+	 * @param array $args    shortcode args.
+	 *
+	 * @return mixed
 	 */
 	public function shortcode_value( $args ) {
 		$options = $this->parsedSelectOptions( $this->instance );
