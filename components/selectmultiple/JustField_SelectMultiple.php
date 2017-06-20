@@ -79,7 +79,7 @@ class JustField_SelectMultiple extends core\JustField {
 			<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'options' ) ); ?>"
 					  name="<?php echo $this->get_field_name( 'options' ); ?>"><?php echo esc_html( $options ); ?></textarea>
 			<br/>
-			<small><?php esc_html_e( 'Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', \JustCustomFields::TEXTDOMAIN ); ?></small>
+			<small><?php _e( 'Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', \JustCustomFields::TEXTDOMAIN ); ?></small>
 		</p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', \JustCustomFields::TEXTDOMAIN ); ?></label>
