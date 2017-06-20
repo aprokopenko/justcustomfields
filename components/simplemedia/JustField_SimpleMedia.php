@@ -21,7 +21,7 @@ class JustField_SimpleMedia extends core\JustField {
 	 **/
 	public function __construct() {
 		$field_ops = array( 'classname' => 'field_simplemedia' );
-		parent::__construct( 'simplemedia', __( 'Simple Media', \JustCustomFields::TEXTDOMAIN ), $field_ops );
+		parent::__construct( 'simplemedia', __( 'Simple Media', 'jcf' ), $field_ops );
 	}
 
 	/**
@@ -32,7 +32,7 @@ class JustField_SimpleMedia extends core\JustField {
 		$noimage      = $image = jcf_plugin_url( 'components/simplemedia/assets/jcf-noimage100x77.jpg' );
 		$delete_class = ' jcf-hide';
 		$upload_type  = $this->instance['type'];
-		$upload_text  = ( 'image' === $upload_type ) ? __( 'Select image', \JustCustomFields::TEXTDOMAIN ) : __( 'Select file', \JustCustomFields::TEXTDOMAIN );
+		$upload_text  = ( 'image' === $upload_type ) ? __( 'Select image', 'jcf' ) : __( 'Select file', 'jcf' );
 		$value        = $link = '#';
 
 		if ( empty( $this->entry ) ) {
@@ -48,7 +48,7 @@ class JustField_SimpleMedia extends core\JustField {
 				if ( ! empty( $this->entry ) ) {
 					$value        = esc_attr( $this->entry );
 					$link         = wp_get_attachment_url( $this->entry );
-					$upload_text  = ( 'image' === $upload_type ) ? __( 'Update image', \JustCustomFields::TEXTDOMAIN ) : __( 'Update file', \JustCustomFields::TEXTDOMAIN );
+					$upload_text  = ( 'image' === $upload_type ) ? __( 'Update image', 'jcf' ) : __( 'Update file', 'jcf' );
 					$delete_class = '';
 				}
 				?>
@@ -95,7 +95,7 @@ class JustField_SimpleMedia extends core\JustField {
 							</script>
 							<a href="#"
 							   class="button button-large jcf_simple_delete<?php echo esc_attr( $delete_class ); ?>"
-							   data-field_id="<?php echo esc_attr( $this->get_field_id( 'uploaded_file' ) ); ?>"><?php esc_html_e( 'Delete', \JustCustomFields::TEXTDOMAIN ); ?></a>
+							   data-field_id="<?php echo esc_attr( $this->get_field_id( 'uploaded_file' ) ); ?>"><?php esc_html_e( 'Delete', 'jcf' ); ?></a>
 						</div>
 					</div>
 				</div>
@@ -126,21 +126,21 @@ class JustField_SimpleMedia extends core\JustField {
 		$description      = esc_html( $instance['description'] );
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'jcf' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
 				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
 				   value="<?php echo esc_attr( $title ); ?>"/>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>"><?php esc_html_e( 'Type of files:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>"><?php esc_html_e( 'Type of files:', 'jcf' ); ?></label>
 			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>"
 					name="<?php echo $this->get_field_name( 'type' ); ?>">
-				<option value="file" <?php selected( 'file', $type ); ?>><?php esc_html_e( 'All', \JustCustomFields::TEXTDOMAIN ); ?></option>
-				<option value="image" <?php selected( 'image', $type ); ?>><?php esc_html_e( 'Only Images', \JustCustomFields::TEXTDOMAIN ); ?></option>
+				<option value="file" <?php selected( 'file', $type ); ?>><?php esc_html_e( 'All', 'jcf' ); ?></option>
+				<option value="image" <?php selected( 'image', $type ); ?>><?php esc_html_e( 'Only Images', 'jcf' ); ?></option>
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', 'jcf' ); ?></label>
 			<textarea name="<?php echo $this->get_field_name( 'description' ); ?>"
 					  id="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>" cols="20" rows="4"
 					  class="widefat"><?php echo esc_html( $description ); ?></textarea></p>

@@ -17,7 +17,7 @@ class JustField_Textarea extends core\JustField {
 	 **/
 	public function __construct() {
 		$field_ops = array( 'classname' => 'field_textarea' );
-		parent::__construct( 'textarea', __( 'Textarea', \JustCustomFields::TEXTDOMAIN ), $field_ops );
+		parent::__construct( 'textarea', __( 'Textarea', 'jcf' ), $field_ops );
 	}
 
 	/**
@@ -47,7 +47,7 @@ class JustField_Textarea extends core\JustField {
 				) );
 				echo ob_get_clean();
 
-			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) :
+				if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) :
 				?>
 				<script type="text/javascript">
 					jQuery(document).ready(function () {
@@ -93,7 +93,7 @@ class JustField_Textarea extends core\JustField {
 		$checked     = ! empty( $instance['editor'] ) ? ' checked="checked" ' : '';
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'jcf' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
 				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
 				   value="<?php echo esc_attr( $title ); ?>"/>
@@ -103,10 +103,10 @@ class JustField_Textarea extends core\JustField {
 					   id="<?php echo esc_attr( $this->get_field_id( 'editor' ) ); ?>"
 					   name="<?php echo $this->get_field_name( 'editor' ); ?>"
 					   type="checkbox"
-					   value="1" <?php echo esc_attr( $checked ); ?> /> <?php esc_html_e( 'Use Editor for this textarea:', \JustCustomFields::TEXTDOMAIN ); ?>
+					   value="1" <?php echo esc_attr( $checked ); ?> /> <?php esc_html_e( 'Use Editor for this textarea:', 'jcf' ); ?>
 			</label></p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', 'jcf' ); ?></label>
 			<textarea name="<?php echo $this->get_field_name( 'description' ); ?>"
 					  id="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>" cols="20" rows="4"
 					  class="widefat"><?php echo esc_attr( $description ); ?></textarea></p>

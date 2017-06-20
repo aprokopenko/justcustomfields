@@ -17,7 +17,7 @@ class JustField_SelectMultiple extends core\JustField {
 	 **/
 	public function __construct() {
 		$field_ops = array( 'classname' => 'field_selectmultiple' );
-		parent::__construct( 'selectmultiple', __( 'Select Multiple', \JustCustomFields::TEXTDOMAIN ), $field_ops );
+		parent::__construct( 'selectmultiple', __( 'Select Multiple', 'jcf' ), $field_ops );
 	}
 
 	/**
@@ -39,7 +39,7 @@ class JustField_SelectMultiple extends core\JustField {
 				<select name="<?php echo esc_attr( $this->get_field_name( 'val' ) ); ?>[]"
 						id="<?php echo esc_attr( $this->get_field_id( 'val' ) ); ?>" class="jcf-multiple"
 						multiple="multiple">
-					<?php foreach ( $values as $key => $val ): ?>
+					<?php foreach ( $values as $key => $val ) : ?>
 						<option value="<?php echo esc_attr( $val ); ?>" <?php echo selected( true, in_array( $val, $this->entry ), false ); ?>><?php echo esc_html( ucfirst( $key ) ); ?></option>
 					<?php endforeach; ?>
 				</select>
@@ -68,21 +68,21 @@ class JustField_SelectMultiple extends core\JustField {
 		$description = esc_html( $instance['description'] );
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'jcf' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
 				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
 				   value="<?php echo esc_attr( $title ); ?>"/>
 		</p>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'options' ) ); ?>"><?php esc_html_e( 'Settings:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'options' ) ); ?>"><?php esc_html_e( 'Settings:', 'jcf' ); ?></label>
 			<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'options' ) ); ?>"
 					  name="<?php echo $this->get_field_name( 'options' ); ?>"><?php echo esc_html( $options ); ?></textarea>
 			<br/>
-			<small><?php _e( 'Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', \JustCustomFields::TEXTDOMAIN ); ?></small>
+			<small><?php _e( 'Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', 'jcf' ); ?></small>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', 'jcf' ); ?></label>
 			<textarea name="<?php echo $this->get_field_name( 'description' ); ?>"
 					  id="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>" cols="20" rows="4"
 					  class="widefat"><?php echo esc_html( $description ); ?></textarea></p>

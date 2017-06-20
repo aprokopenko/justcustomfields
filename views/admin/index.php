@@ -11,7 +11,7 @@ include( JCF_ROOT . '/views/_header.php' ); ?>
 <div class="jcf_tab-content">
 	<div class="jcf_inner-tab-content">
 		<div class="icon32 icon32-posts-page" id="icon-edit"><br></div>
-		<p><?php esc_html_e( 'You can choose Post Type or Taxonomy to configure custom fields for it:', \JustCustomFields::TEXTDOMAIN ); ?></p>
+		<p><?php esc_html_e( 'You can choose Post Type or Taxonomy to configure custom fields for it:', 'jcf' ); ?></p>
 
 		<h3>Post Types</h3>
 		<div>
@@ -24,8 +24,8 @@ include( JCF_ROOT . '/views/_header.php' ); ?>
 										class="dashicons <?php echo jcf_get_post_type_icon( $obj ); ?>"></span></span>
 							<span class="jcf_tile_title"><?php echo esc_attr( $obj->label ); ?>
 								<span class="jcf_tile_info">
-									<?php esc_html_e( 'Added Fieldsets: ', \JustCustomFields::TEXTDOMAIN ); ?><?php echo esc_html( $count_fields[ $key ]['fieldsets'] ); ?>
-									<?php esc_html_e( 'Total Fields:  ', \JustCustomFields::TEXTDOMAIN ); ?><?php echo esc_html( $count_fields[ $key ]['fields'] ); ?>
+									<?php esc_html_e( 'Added Fieldsets: ', 'jcf' ); ?><?php echo esc_html( $count_fields[ $key ]['fieldsets'] ); ?>
+									<?php esc_html_e( 'Total Fields:  ', 'jcf' ); ?><?php echo esc_html( $count_fields[ $key ]['fields'] ); ?>
 								</span>
 							</span>
 						</a>
@@ -46,8 +46,8 @@ include( JCF_ROOT . '/views/_header.php' ); ?>
 										class="dashicons <?php echo jcf_get_post_type_icon( $tax_obj ); ?>"></span></span>
 							<span class="jcf_tile_title"><?php echo esc_attr( $tax_obj->label ); ?>
 								<span class="jcf_tile_info">
-									<?php esc_html_e( 'Added Fieldsets: ', \JustCustomFields::TEXTDOMAIN ); ?><?php echo esc_html( $count_fields[ $tax_key ]['fieldsets'] ); ?>
-									<?php esc_html_e( 'Total Fields:  ', \JustCustomFields::TEXTDOMAIN ); ?><?php echo esc_html( $count_fields[ $tax_key ]['fields'] ); ?>
+									<?php esc_html_e( 'Added Fieldsets: ', 'jcf' ); ?><?php echo esc_html( $count_fields[ $tax_key ]['fieldsets'] ); ?>
+									<?php esc_html_e( 'Total Fields:  ', 'jcf' ); ?><?php echo esc_html( $count_fields[ $tax_key ]['fields'] ); ?>
 								</span>
 							</span>
 						</a>

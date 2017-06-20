@@ -15,7 +15,7 @@ class JustField_RelatedContent extends core\JustField {
 	 **/
 	public function __construct() {
 		$field_ops = array( 'classname' => 'field_relatedcontent' );
-		parent::__construct( 'relatedcontent', __( 'Related Content', \JustCustomFields::TEXTDOMAIN ), $field_ops );
+		parent::__construct( 'relatedcontent', __( 'Related Content', 'jcf' ), $field_ops );
 		add_action( 'wp_ajax_jcf_related_content_autocomplete', array( $this, 'ajax_autocomplete' ) );
 	}
 
@@ -76,8 +76,8 @@ class JustField_RelatedContent extends core\JustField {
 			}
 		}
 		?>
-		<div id="jcf_field-<?php echo $this->id; ?>"
-			 class="jcf_edit_field <?php echo $this->field_options['classname']; ?>">
+		<div id="jcf_field-<?php echo esc_attr( $this->id ); ?>"
+			 class="jcf_edit_field <?php echo esc_attr( $this->field_options['classname'] ); ?>">
 			<?php echo $this->field_options['before_widget']; ?>
 			<?php echo $this->field_options['before_title'] . esc_html( $this->instance['title'] ) . $this->field_options['after_title']; ?>
 
@@ -102,7 +102,7 @@ class JustField_RelatedContent extends core\JustField {
 									</select>
 
 								<?php else : // input field for autocomplete.  ?>
-									<input type="text" value="<?php echo @$options[ $entry ]; ?>"
+									<input type="text" value="<?php echo esc_attr( @$options[ $entry ] ); ?>"
 										   id="<?php echo esc_attr( $this->get_field_id_l2( 'related_title', $key ) ); ?>"
 										   name="<?php echo $this->get_field_name_l2( 'related_title', $key ); ?>"
 										   alt="<?php echo esc_attr( $post_type ); ?>"/>
@@ -118,20 +118,22 @@ class JustField_RelatedContent extends core\JustField {
 							<input type="hidden"
 								   id="<?php echo esc_attr( $this->get_field_id_l2( '__delete__', $key ) ); ?>"
 								   name="<?php echo $this->get_field_name_l2( '__delete__', $key ); ?>" value=""/>
-							<span class="jcf_tobe_removed"><?php esc_html_e( 'To be deleted', \JustCustomFields::TEXTDOMAIN ); ?></span>
+							<span class="jcf_tobe_removed"><?php esc_html_e( 'To be deleted', 'jcf' ); ?></span>
 							<a href="#"
-							   class="jcf_cancel"><?php esc_html_e( 'UNDO', \JustCustomFields::TEXTDOMAIN ); ?></a><br/>
+							   class="jcf_cancel"><?php esc_html_e( 'UNDO', 'jcf' ); ?></a><br/>
 						</div>
 					</div>
 				<?php endforeach; ?>
 
 				<?php if ( '' !== $this->instance['description'] ) : ?>
 					<p class="howto<?php if ( count( $entries ) === 1 ) {
-						echo ' jcf-hide'; } ?>"><?php echo esc_html( $this->instance['description'] ); ?></p>
+						echo ' jcf-hide';
+					} ?>">
+						<?php echo esc_html( $this->instance['description'] ); ?></p>
 				<?php endif; ?>
 
 				<a href="#"
-				   class="button button-small jcf_add_more"><?php esc_html_e( 'Add', \JustCustomFields::TEXTDOMAIN ); ?></a>
+				   class="button button-small jcf_add_more"><?php esc_html_e( 'Add', 'jcf' ); ?></a>
 			</div>
 
 			<?php echo $this->field_options['after_widget']; ?>
@@ -148,7 +150,7 @@ class JustField_RelatedContent extends core\JustField {
 			'title'       => '',
 			'post_type'   => 'page',
 			'input_type'  => 'autocomplete',
-			'description' => __( 'Start typing entry Title to see the list.', \JustCustomFields::TEXTDOMAIN ),
+			'description' => __( 'Start typing entry Title to see the list.', 'jcf' ),
 		) );
 
 		$title       = esc_attr( $instance['title'] );
@@ -157,34 +159,34 @@ class JustField_RelatedContent extends core\JustField {
 		$post_types = jcf_get_post_types( 'object' );
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'jcf' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
 				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
 				   value="<?php echo esc_attr( $title ); ?>"/>
 		</p>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'post_type' ) ); ?>"><?php esc_html_e( 'Post type:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'post_type' ) ); ?>"><?php esc_html_e( 'Post type:', 'jcf' ); ?></label>
 			<select name="<?php echo $this->get_field_name( 'post_type' ); ?>"
 					id="<?php echo esc_attr( $this->get_field_id( 'post_type' ) ); ?>">
-				<option value="any" <?php selected( 'any', $instance['post_type'] ); ?>><?php esc_html_e( 'All', \JustCustomFields::TEXTDOMAIN ); ?></option>
+				<option value="any" <?php selected( 'any', $instance['post_type'] ); ?>><?php esc_html_e( 'All', 'jcf' ); ?></option>
 				<?php foreach ( $post_types as $pt_id => $pt ) : ?>
-					<option value="<?php echo $pt_id; ?>" <?php selected( $pt_id, $instance['post_type'] ); ?>><?php echo esc_html( $pt->label ); ?></option>
+					<option value="<?php echo esc_attr( $pt_id ); ?>" <?php selected( $pt_id, $instance['post_type'] ); ?>><?php echo esc_html( $pt->label ); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</p>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'input_type' ) ); ?>"><?php _e( 'Input type:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'input_type' ) ); ?>"><?php esc_html_e( 'Input type:', 'jcf' ); ?></label>
 			<select name="<?php echo $this->get_field_name( 'input_type' ); ?>"
 					id="<?php echo esc_attr( $this->get_field_id( 'input_type' ) ); ?>">
-				<option value="autocomplete" <?php selected( 'autocomplete', $instance['input_type'] ); ?>><?php esc_html_e( 'Autocomplete', \JustCustomFields::TEXTDOMAIN ); ?></option>
-				<option value="select" <?php selected( 'select', $instance['input_type'] ); ?>><?php esc_html_e( 'Dropdown list', \JustCustomFields::TEXTDOMAIN ); ?></option>
+				<option value="autocomplete" <?php selected( 'autocomplete', $instance['input_type'] ); ?>><?php esc_html_e( 'Autocomplete', 'jcf' ); ?></option>
+				<option value="select" <?php selected( 'select', $instance['input_type'] ); ?>><?php esc_html_e( 'Dropdown list', 'jcf' ); ?></option>
 			</select>
 		</p>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', 'jcf' ); ?></label>
 			<textarea name="<?php echo $this->get_field_name( 'description' ); ?>"
 					  id="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>" cols="20" rows="2"
 					  class="widefat"><?php echo esc_html_e( $description ); ?></textarea></p>
@@ -329,7 +331,7 @@ class JustField_RelatedContent extends core\JustField {
 		$post_type  = $_POST['post_types'];
 		$post_types = jcf_get_post_types( 'object' );
 
-		if (  'any' !== $post_type ) {
+		if ( 'any' !== $post_type ) {
 			$post_type_where = " post_type = '" . $_POST['post_types'] . "' ";
 		} else {
 			// get all post types.

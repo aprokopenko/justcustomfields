@@ -22,10 +22,10 @@ class Migrate extends Model {
 	 * HTML error message with link to admin upgrade page
 	 */
 	public static function adminUpgradeNotice() {
-		$link_text = __( 'Update settings', \JustCustomFields::TEXTDOMAIN );
+		$link_text = __( 'Update settings', 'jcf' );
 		$link      = '<a href="' . admin_url( 'options-general.php?page=jcf_upgrade' ) . '" class="jcf-btn-save button-primary">' . $link_text . '</a>';
 
-		$warning = __( 'Thank you for upgrading Just Custom Field plugin. You need to update your settings to continue using the plugin. {link}', \JustCustomFields::TEXTDOMAIN );
+		$warning = __( 'Thank you for upgrading Just Custom Field plugin. You need to update your settings to continue using the plugin. {link}', 'jcf' );
 		$warning = str_replace( '{link}', $link, $warning );
 
 		printf( '<div class="%1$s"><p>%2$s</p></div>', 'notice notice-error', $warning );

@@ -8,11 +8,11 @@
 if ( ! empty( $taxonomies ) ) : ?>
 	<div class="taxonomy-options">
 		<p>
-			<label for="rule-taxonomy"><?php esc_html_e( 'Choose taxonomy:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="rule-taxonomy"><?php esc_html_e( 'Choose taxonomy:', 'jcf' ); ?></label>
 			<br class="clear"/>
 			<select name="rule_taxonomy" id="rule-taxonomy">
 				<option value=""
-						disabled="disabled" <?php selected( empty( $current_tax ) ); ?> ><?php esc_html_e( 'Choose taxonomy', \JustCustomFields::TEXTDOMAIN ); ?></option>
+						disabled="disabled" <?php selected( empty( $current_tax ) ); ?> ><?php esc_html_e( 'Choose taxonomy', 'jcf' ); ?></option>
 				<?php foreach ( $taxonomies as $slug => $taxonomy ) : ?>
 					<?php if ( 'post_format' !== $slug ) : ?>
 						<option value="<?php echo esc_attr( $slug ); ?>" <?php selected( $current_tax, $slug ); ?> ><?php echo esc_html( $taxonomy->labels->singular_name ); ?></option>
@@ -32,5 +32,5 @@ if ( ! empty( $taxonomies ) ) : ?>
 		</div>
 	</div>
 <?php else : ?>
-	<p><?php esc_html_e( 'No available taxonomies', \JustCustomFields::TEXTDOMAIN ); ?></p>
+	<p><?php esc_html_e( 'No available taxonomies', 'jcf' ); ?></p>
 <?php endif; ?>

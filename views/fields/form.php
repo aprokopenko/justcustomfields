@@ -6,7 +6,7 @@
  * @author Alexander Prokopenko
  */
 
-$op = ( $field->id_base === $field->id ) ? __( 'Add', \JustCustomFields::TEXTDOMAIN ) : __( 'Edit', \JustCustomFields::TEXTDOMAIN ); ?>
+$op = ( $field->id_base === $field->id ) ? __( 'Add', 'jcf' ) : __( 'Edit', 'jcf' ); ?>
 <div class="jcf_edit_modal_shadow">
 	<div class="jcf_edit_field">
 		<h3 class="header"><?php echo esc_html( $op . ' ' . $field->title ); ?></h3>
@@ -30,12 +30,12 @@ $op = ( $field->id_base === $field->id ) ? __( 'Add', \JustCustomFields::TEXTDOM
 					$slug = esc_attr( $field->slug );
 					?>
 					<p>
-						<label for="<?php echo esc_attr( $field->get_field_id( 'slug' ) ); ?>"><?php esc_html_e( 'Slug:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+						<label for="<?php echo esc_attr( $field->get_field_id( 'slug' ) ); ?>"><?php esc_html_e( 'Slug:', 'jcf' ); ?></label>
 						<input class="widefat" id="<?php echo esc_attr( $field->get_field_id( 'slug' ) ); ?>"
 							   name="<?php echo $field->get_field_name( 'slug' ); ?>" type="text"
 							   value="<?php echo esc_attr( $slug ); ?>"/>
 						<br/>
-						<small><?php esc_html_e( 'Machine name, will be used for postmeta field name. (should start from underscore)', \JustCustomFields::TEXTDOMAIN ); ?></small>
+						<small><?php esc_html_e( 'Machine name, will be used for postmeta field name. (should start from underscore)', 'jcf' ); ?></small>
 					</p>
 					<?php
 					// enabled field.
@@ -49,7 +49,7 @@ $op = ( $field->id_base === $field->id ) ? __( 'Add', \JustCustomFields::TEXTDOM
 								   id="<?php echo esc_attr( $field->get_field_id( 'enabled' ) ); ?>"
 								   name="<?php echo $field->get_field_name( 'enabled' ); ?>"
 								   value="1" <?php checked( true, @$field->instance['enabled'] ); ?> />
-							<?php esc_html_e( 'Enabled', \JustCustomFields::TEXTDOMAIN ); ?></label>
+							<?php esc_html_e( 'Enabled', 'jcf' ); ?></label>
 					</p>
 					<?php if ( $field->is_collection_field() ) : ?>
 						<?php if ( 'inputtext' === $field->id_base ) : ?>
@@ -59,14 +59,14 @@ $op = ( $field->id_base === $field->id ) ? __( 'Add', \JustCustomFields::TEXTDOM
 										   id="<?php echo esc_attr( $field->get_field_id( 'group_title' ) ); ?>"
 										   name="<?php echo $field->get_field_name( 'group_title' ); ?>"
 										   value="1" <?php checked( true, @$field->instance['group_title'] ); ?> />
-									<?php esc_html_e( 'Use this field as collection item title?', \JustCustomFields::TEXTDOMAIN ); ?>
+									<?php esc_html_e( 'Use this field as collection item title?', 'jcf' ); ?>
 								</label>
 							</p>
 
 						<?php endif; ?>
 						<p>
 							<label for="<?php echo esc_attr( $field->get_field_id( 'field_width' ) ); ?>">
-								<?php esc_html_e( 'Select Field Width', \JustCustomFields::TEXTDOMAIN ); ?></label>
+								<?php esc_html_e( 'Select Field Width', 'jcf' ); ?></label>
 							<select class="widefat"
 									id="<?php echo esc_attr( $field->get_field_id( 'field_width' ) ); ?>"
 									name="<?php echo $field->get_field_name( 'field_width' ); ?>">
@@ -80,15 +80,15 @@ $op = ( $field->id_base === $field->id ) ? __( 'Add', \JustCustomFields::TEXTDOM
 				</fieldset>
 				<div class="field-control-actions">
 					<div class="alignleft">
-						<?php if ( __( 'Add', \JustCustomFields::TEXTDOMAIN ) !== $op ) : ?>
+						<?php if ( __( 'Add', 'jcf' ) !== $op ) : ?>
 							<a href="#remove"
-							   class="field-control-remove submitdelete"><?php esc_html_e( 'Delete', \JustCustomFields::TEXTDOMAIN ); ?></a> |
+							   class="field-control-remove submitdelete"><?php esc_html_e( 'Delete', 'jcf' ); ?></a> |
 						<?php endif; ?>
 						<a href="#close"
-						   class="field-control-close"><?php esc_html_e( 'Close', \JustCustomFields::TEXTDOMAIN ); ?></a>
+						   class="field-control-close"><?php esc_html_e( 'Close', 'jcf' ); ?></a>
 					</div>
 					<div class="alignright">
-						<input type="submit" value="<?php esc_html_e( 'Save', \JustCustomFields::TEXTDOMAIN ); ?>"
+						<input type="submit" value="<?php esc_html_e( 'Save', 'jcf' ); ?>"
 							   class="jcf-btn-save button-primary" name="savefield">
 					</div>
 					<br class="clear"/>

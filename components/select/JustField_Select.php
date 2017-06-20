@@ -17,7 +17,7 @@ class JustField_Select extends core\JustField {
 	 **/
 	public function __construct() {
 		$field_ops = array( 'classname' => 'field_select' );
-		parent::__construct( 'select', __( 'Select', \JustCustomFields::TEXTDOMAIN ), $field_ops );
+		parent::__construct( 'select', __( 'Select', 'jcf' ), $field_ops );
 	}
 
 	/**
@@ -67,30 +67,32 @@ class JustField_Select extends core\JustField {
 		$empty_option = esc_attr( $instance['empty_option'] );
 		?>
 		<p>
-			<label for="<?php echo esc_attr($this->get_field_id( 'title' )); ?>"><?php esc_html_e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
-			<input class="widefat" id="<?php echo esc_attr($this->get_field_id( 'title' )); ?>"
-				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr($title); ?>"/>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'jcf' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
+				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
+				   value="<?php echo esc_attr( $title ); ?>"/>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr($this->get_field_id( 'options' )); ?>"><?php esc_html_e( 'Options:', \JustCustomFields::TEXTDOMAIN ); ?></label>
-			<textarea class="widefat" id="<?php echo esc_attr($this->get_field_id( 'options' )); ?>"
-					  name="<?php echo $this->get_field_name( 'options' ); ?>"><?php echo esc_html($options); ?></textarea>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'options' ) ); ?>"><?php esc_html_e( 'Options:', 'jcf' ); ?></label>
+			<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'options' ) ); ?>"
+					  name="<?php echo $this->get_field_name( 'options' ); ?>"><?php echo esc_html( $options ); ?></textarea>
 			<br/>
-			<small><?php _e( 'Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', \JustCustomFields::TEXTDOMAIN ); ?></small>
+			<small><?php _e( 'Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', 'jcf' ); ?></small>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr($this->get_field_id( 'empty_option' )); ?>"><?php _e( 'Empty option:', \JustCustomFields::TEXTDOMAIN ); ?></label><input
-					class="widefat" id="<?php echo esc_attr($this->get_field_id( 'empty_option' )); ?>"
+			<label for="<?php echo esc_attr( $this->get_field_id( 'empty_option' ) ); ?>"><?php esc_html_e( 'Empty option:', 'jcf' ); ?></label><input
+					class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'empty_option' ) ); ?>"
 					name="<?php echo $this->get_field_name( 'empty_option' ); ?>"
-					placeholder="ex. Choose item from the list"" type="text" value="<?php echo esc_attr( $empty_option ); ?>" />
+					placeholder="ex. Choose item from the list"" type="text"
+			value="<?php echo esc_attr( $empty_option ); ?>" />
 			<br/>
-			<small><?php _e( 'Leave blank to disable empty option', \JustCustomFields::TEXTDOMAIN ); ?></small>
+			<small><?php esc_html_e( 'Leave blank to disable empty option', 'jcf' ); ?></small>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'description' ); ?>"><?php _e( 'Description:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', 'jcf' ); ?></label>
 			<textarea name="<?php echo $this->get_field_name( 'description' ); ?>"
-					  id="<?php echo $this->get_field_id( 'description' ); ?>" cols="20" rows="4"
-					  class="widefat"><?php echo $description; ?></textarea></p>
+					  id="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>" cols="20" rows="4"
+					  class="widefat"><?php echo esc_html( $description ); ?></textarea></p>
 		<?php
 	}
 
@@ -156,7 +158,7 @@ class JustField_Select extends core\JustField {
 	/**
 	 * Print field values inside the shortcode
 	 *
-	 * @param array $args    shortcode args.
+	 * @param array $args shortcode args.
 	 *
 	 * @return mixed
 	 */

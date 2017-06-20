@@ -53,7 +53,7 @@ class ImportExport extends core\Model {
 		unlink( $import_file );
 
 		if ( empty( $data['post_types'] ) ) {
-			$error = __( 'IMPORT FAILED! File do not contain fields settings data..', \JustCustomFields::TEXTDOMAIN );
+			$error = __( 'IMPORT FAILED! File do not contain fields settings data..', 'jcf' );
 			$this->add_error( $error );
 
 			return;
@@ -70,14 +70,14 @@ class ImportExport extends core\Model {
 	 */
 	public function validate_import_file() {
 		if ( empty( $_FILES['import_data']['name'] ) ) {
-			$error = __( 'IMPORT FAILED! Import file is missing.', \JustCustomFields::TEXTDOMAIN );
+			$error = __( 'IMPORT FAILED! Import file is missing.', 'jcf' );
 			$this->add_error( $error );
 
 			return false;
 		}
 
 		if ( ! is_readable( $_FILES['import_data']['tmp_name'] ) ) {
-			$error = __( 'IMPORT FAILED! Can\'t read uploaded file.', \JustCustomFields::TEXTDOMAIN );
+			$error = __( 'IMPORT FAILED! Can\'t read uploaded file.', 'jcf' );
 			$this->add_error( $error );
 
 			return false;
@@ -86,7 +86,7 @@ class ImportExport extends core\Model {
 		$path_info = pathinfo( $_FILES['import_data']['name'] );
 
 		if ( 'json' !== $path_info['extension'] ) {
-			$error = __( 'IMPORT FAILED! Please upload correct file format.', \JustCustomFields::TEXTDOMAIN );
+			$error = __( 'IMPORT FAILED! Please upload correct file format.', 'jcf' );
 			$this->add_error( $error );
 
 			return false;
@@ -160,9 +160,9 @@ class ImportExport extends core\Model {
 		$import_status = $this->_dl->save_fields_data() && $this->_dl->save_fieldsets_data();
 
 		if ( $import_status ) {
-			$this->add_message( __( '<strong>Import</strong> has been completed successfully!', \JustCustomFields::TEXTDOMAIN ) );
+			$this->add_message( __( '<strong>Import</strong> has been completed successfully!', 'jcf' ) );
 		} else {
-			$this->add_error( __( '<strong>Import failed!</strong> Please check that your import file has right format.', \JustCustomFields::TEXTDOMAIN ) );
+			$this->add_error( __( '<strong>Import failed!</strong> Please check that your import file has right format.', 'jcf' ) );
 		}
 
 		return $import_status;
@@ -175,7 +175,7 @@ class ImportExport extends core\Model {
 	 */
 	public function export() {
 		if ( empty( $this->selected_data ) || ! is_array( $this->selected_data ) ) {
-			$this->add_error( __( '<strong>Export failed!</strong> Please select fields to export.', \JustCustomFields::TEXTDOMAIN ) );
+			$this->add_error( __( '<strong>Export failed!</strong> Please select fields to export.', 'jcf' ) );
 
 			return array();
 		}

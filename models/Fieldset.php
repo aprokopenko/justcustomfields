@@ -156,7 +156,7 @@ class Fieldset extends core\Model {
 	public function find_by_id( $fieldset_id ) {
 		$fieldsets = $this->_dl->get_fieldsets();
 		if ( empty( $fieldsets[ $this->post_type ][ $fieldset_id ] ) ) {
-			$this->add_error( __( 'Fieldset not found', \JustCustomFields::TEXTDOMAIN ) );
+			$this->add_error( __( 'Fieldset not found', 'jcf' ) );
 
 			return false;
 		}
@@ -171,7 +171,7 @@ class Fieldset extends core\Model {
 	 */
 	public function create() {
 		if ( empty( $this->title ) && empty( $this->import_data ) ) {
-			$this->add_error( __( 'Title field is required.', \JustCustomFields::TEXTDOMAIN ) );
+			$this->add_error( __( 'Title field is required.', 'jcf' ) );
 
 			return false;
 		}
@@ -182,7 +182,7 @@ class Fieldset extends core\Model {
 
 		// check exists.
 		if ( isset( $fieldsets[ $this->post_type ][ $slug ] ) ) {
-			$this->add_error( __( 'Such fieldset already exists.', \JustCustomFields::TEXTDOMAIN ) );
+			$this->add_error( __( 'Such fieldset already exists.', 'jcf' ) );
 
 			return false;
 		}
@@ -205,7 +205,7 @@ class Fieldset extends core\Model {
 	 */
 	public function delete() {
 		if ( empty( $this->fieldset_id ) ) {
-			$this->add_error( __( 'Wrong params passed.', \JustCustomFields::TEXTDOMAIN ) );
+			$this->add_error( __( 'Wrong params passed.', 'jcf' ) );
 
 			return false;
 		}
@@ -227,13 +227,13 @@ class Fieldset extends core\Model {
 		$fieldsets = $this->_dl->get_fieldsets();
 
 		if ( empty( $fieldsets[ $this->post_type ][ $this->fieldset_id ] ) ) {
-			$this->add_error( __( 'Wrong data passed.', \JustCustomFields::TEXTDOMAIN ) );
+			$this->add_error( __( 'Wrong data passed.', 'jcf' ) );
 
 			return false;
 		}
 
 		if ( empty( $this->title ) ) {
-			$this->add_error( __( 'Title field is required.', \JustCustomFields::TEXTDOMAIN ) );
+			$this->add_error( __( 'Title field is required.', 'jcf' ) );
 
 			return false;
 		}
@@ -262,7 +262,7 @@ class Fieldset extends core\Model {
 		$fieldsets[ $this->post_type ] = $ordered_fieldsets;
 
 		if ( ! $this->_save( $fieldsets ) ) {
-			$this->add_error( __( 'Sorting isn\'t changed.', \JustCustomFields::TEXTDOMAIN ) );
+			$this->add_error( __( 'Sorting isn\'t changed.', 'jcf' ) );
 
 			return false;
 		}

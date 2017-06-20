@@ -8,7 +8,7 @@
 
 if ( ! empty( $templates ) ) : ?>
 	<div class="templates-options">
-		<p><?php esc_html_e( 'Choose templates:', \JustCustomFields::TEXTDOMAIN ); ?></p>
+		<p><?php esc_html_e( 'Choose templates:', 'jcf' ); ?></p>
 		<ul class="visibility-list-items visibility-list-items-tpl">
 			<?php $i = 1;
 			foreach ( $templates as $path => $name ) : ?>
@@ -23,5 +23,5 @@ if ( ! empty( $templates ) ) : ?>
 		<br class="clear">
 	</div>
 <?php else : ?>
-	<p><?php esc_html_e( 'No available templates', \JustCustomFields::TEXTDOMAIN ); ?></p>
+	<p><?php esc_html_e( 'No available templates', 'jcf' ); ?></p>
 <?php endif; ?>

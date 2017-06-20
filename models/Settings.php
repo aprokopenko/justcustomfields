@@ -170,14 +170,14 @@ class Settings extends core\Model {
 	 */
 	public function message_templates() {
 		return array(
-			'empty_source'           => __( '<strong>Settings storage update FAILED!</strong>. Choose an option for the data storage', \JustCustomFields::TEXTDOMAIN ),
-			'fs_theme_not_writable'  => __( '<strong>Settings storage update FAILED!</strong>. Check writable permissions of directory ' . get_stylesheet_directory() . '/jcf-settings/', \JustCustomFields::TEXTDOMAIN ),
-			'fs_global_not_writable' => __( '<strong>Settings storage update FAILED!</strong>. Check writable permissions of directory ' . get_home_path() . 'wp-content/jcf-settings/', \JustCustomFields::TEXTDOMAIN ),
+			'empty_source'           => __( '<strong>Settings storage update FAILED!</strong>. Choose an option for the data storage', 'jcf' ),
+			'fs_theme_not_writable'  => __( '<strong>Settings storage update FAILED!</strong>. Check writable permissions of directory ' . get_stylesheet_directory() . '/jcf-settings/', 'jcf' ),
+			'fs_global_not_writable' => __( '<strong>Settings storage update FAILED!</strong>. Check writable permissions of directory ' . get_home_path() . 'wp-content/jcf-settings/', 'jcf' ),
 
-			'empty_ms' => __( '<strong>MultiSite settings update FAILED!</strong> Choose an option for the multisite.', \JustCustomFields::TEXTDOMAIN ),
+			'empty_ms' => __( '<strong>MultiSite settings update FAILED!</strong> Choose an option for the multisite.', 'jcf' ),
 
-			'source_updated' => __( '<strong>Settings storage</strong> configurations has been updated.', \JustCustomFields::TEXTDOMAIN ),
-			'ms_updated'     => __( '<strong>MultiSite settings</strong> has been updated.', \JustCustomFields::TEXTDOMAIN ),
+			'source_updated' => __( '<strong>Settings storage</strong> configurations has been updated.', 'jcf' ),
+			'ms_updated'     => __( '<strong>MultiSite settings</strong> has been updated.', 'jcf' ),
 		);
 	}
 

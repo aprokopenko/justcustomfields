@@ -17,7 +17,7 @@ use jcf\core\JustField;
 ?>
 <div class="jcf_edit_modal_shadow">
 	<div class="jcf_edit_fieldset">
-		<h3 class="header"><?php echo esc_html__( 'Edit Fieldset:', \JustCustomFields::TEXTDOMAIN ) . ' ' . esc_html( $fieldset['title'] ); ?></h3>
+		<h3 class="header"><?php echo esc_html__( 'Edit Fieldset:', 'jcf' ) . ' ' . esc_html( $fieldset['title'] ); ?></h3>
 		<a href="#close" class="button-link jcf_close field-control-close" type="button"><span
 					class="media-modal-icon"></span></a>
 		<div class="jcf_inner_content">
@@ -26,13 +26,13 @@ use jcf\core\JustField;
 					<input type="hidden" name="fieldset_id" value="<?php echo esc_attr( $fieldset['id'] ); ?>"/>
 
 					<p>
-						<label for="jcf_edit_fieldset_title"><?php esc_html_e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+						<label for="jcf_edit_fieldset_title"><?php esc_html_e( 'Title:', 'jcf' ); ?></label>
 						<input class="widefat" id="jcf_edit_fieldset_title" type="text" name="title"
 							   value="<?php echo esc_attr( $fieldset['title'] ); ?>"/>
 					</p>
 					<?php if ( JustField::POSTTYPE_KIND_POST === $post_type_kind ) : ?>
 						<p>
-							<label for="jcf_edit_fieldset_position"><?php esc_html_e( 'Position:', \JustCustomFields::TEXTDOMAIN ); ?></label><br>
+							<label for="jcf_edit_fieldset_position"><?php esc_html_e( 'Position:', 'jcf' ); ?></label><br>
 							<select id="jcf_edit_fieldset_position" name="position" style="width:100%;">
 								<option value="<?php echo esc_attr( Fieldset::POSITION_ADVANCED ); ?>" <?php echo selected( Fieldset::POSITION_ADVANCED, @$fieldset['position'] ); ?>>
 									Advanced
@@ -46,7 +46,7 @@ use jcf\core\JustField;
 							</select>
 						</p>
 						<p>
-							<label for="jcf_edit_fieldset_priority"><?php esc_html_e( 'Priority:', \JustCustomFields::TEXTDOMAIN ); ?></label><br>
+							<label for="jcf_edit_fieldset_priority"><?php esc_html_e( 'Priority:', 'jcf' ); ?></label><br>
 							<select id="jcf_edit_fieldset_priority" name="priority" style="width:100%;">
 								<option value="<?php echo esc_attr( Fieldset::PRIO_DEFAULT ); ?>" <?php echo selected( Fieldset::PRIO_DEFAULT, @$fieldset['priority'] ); ?>>
 									Default
@@ -65,7 +65,7 @@ use jcf\core\JustField;
 						<div class="field-control-actions">
 							<h4>
 								<a href="#" class="visibility_toggle">
-									<?php esc_html_e( 'Visibility rules', \JustCustomFields::TEXTDOMAIN ); ?>
+									<?php esc_html_e( 'Visibility rules', 'jcf' ); ?>
 									<span class="<?php echo ! empty( $fieldset['visibility_rules'] ) ? 'dashicons-arrow-up-alt2' : 'dashicons-arrow-down-alt2' ?> dashicons-before"></span>
 								</a>
 							</h4>
@@ -87,13 +87,13 @@ use jcf\core\JustField;
 				<div class="field-control-actions">
 					<div class="alignleft">
 						<a href="#remove"
-						   class="field-control-remove submitdelete"><?php esc_html_e( 'Delete', \JustCustomFields::TEXTDOMAIN ); ?></a>
+						   class="field-control-remove submitdelete"><?php esc_html_e( 'Delete', 'jcf' ); ?></a>
 						|
 						<a href="#close"
-						   class="field-control-close"><?php esc_html_e( 'Close', \JustCustomFields::TEXTDOMAIN ); ?></a>
+						   class="field-control-close"><?php esc_html_e( 'Close', 'jcf' ); ?></a>
 					</div>
 					<div class="alignright">
-						<input type="submit" value="<?php esc_html_e( 'Save', \JustCustomFields::TEXTDOMAIN ); ?>"
+						<input type="submit" value="<?php esc_html_e( 'Save', 'jcf' ); ?>"
 							   class="button-primary jcf-btn-save" name="savefield">
 					</div>
 					<br class="clear"/>

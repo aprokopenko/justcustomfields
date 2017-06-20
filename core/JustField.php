@@ -451,7 +451,7 @@ class JustField {
 		}
 		// validate: title should be always there.
 		if ( empty( $input['title'] ) ) {
-			return array( 'status' => '0', 'error' => __( 'Title field is required.', \JustCustomFields::TEXTDOMAIN ) );
+			return array( 'status' => '0', 'error' => __( 'Title field is required.', 'jcf' ) );
 		}
 
 		// get values from real class.
@@ -519,7 +519,7 @@ class JustField {
 		if ( ! $this->_dl->save_fields_data() ) {
 			return array(
 				'status' => 0,
-				'error'  => __( 'Unable to write changes to storage.', \JustCustomFields::TEXTDOMAIN ),
+				'error'  => __( 'Unable to write changes to storage.', 'jcf' ),
 			);
 		}
 
@@ -678,7 +678,7 @@ class JustField {
 	 * @return string
 	 */
 	public function form() {
-		echo '<p class="no-options-field">' . __( 'There are no options for this field.', \JustCustomFields::TEXTDOMAIN ) . '</p>';
+		echo '<p class="no-options-field">' . esc_html__( 'There are no options for this field.', 'jcf' ) . '</p>';
 
 		return 'noform';
 	}

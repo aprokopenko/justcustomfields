@@ -149,7 +149,7 @@ class Field extends core\Model {
 		$this->_dl->set_fieldsets( $fieldsets );
 
 		if ( ! $this->_dl->save_fieldsets_data() ) {
-			$this->add_error( __( 'Sorting isn\'t changed.', \JustCustomFields::TEXTDOMAIN ) );
+			$this->add_error( __( 'Sorting isn\'t changed.', 'jcf' ) );
 
 			return false;
 		}
@@ -180,7 +180,7 @@ class Field extends core\Model {
 		$this->_dl->set_fields( $fields );
 
 		if ( ! $this->_dl->save_fields_data() ) {
-			$this->add_error( __( 'Sorting isn\'t changed.', \JustCustomFields::TEXTDOMAIN ) );
+			$this->add_error( __( 'Sorting isn\'t changed.', 'jcf' ) );
 
 			return false;
 		}

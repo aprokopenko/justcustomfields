@@ -45,7 +45,7 @@ class JustField_Collection extends core\JustField {
 	 **/
 	public function __construct() {
 		$field_ops = array( 'classname' => 'field_collection' );
-		parent::__construct( 'collection', __( 'Collection', \JustCustomFields::TEXTDOMAIN ), $field_ops );
+		parent::__construct( 'collection', __( 'Collection', 'jcf' ), $field_ops );
 		add_action( 'wp_ajax_jcf_collection_add_new_field_group', array(
 			$this,
 			'ajax_return_collection_field_group',
@@ -77,7 +77,7 @@ class JustField_Collection extends core\JustField {
 
 		$entries = (array) $this->entry;
 		?>
-		<div id="jcf_field-<?php echo $this->id; ?>"
+		<div id="jcf_field-<?php echo esc_attr( $this->id ); ?>"
 			 class="jcf_edit_field <?php echo esc_attr( $this->field_options['classname'] ); ?>">
 			<?php echo $this->field_options['before_widget']; ?>
 			<?php echo $this->field_options['before_title'] . esc_html( $this->instance['title'] ) . $this->field_options['after_title']; ?>
@@ -109,7 +109,7 @@ class JustField_Collection extends core\JustField {
 										?>
 									</span>
 								<a href="#"
-								   class="collection_undo_remove_group"><?php _e( 'UNDO', \JustCustomFields::TEXTDOMAIN ); ?></a>
+								   class="collection_undo_remove_group"><?php esc_html_e( 'UNDO', 'jcf' ); ?></a>
 								<span class="dashicons dashicons-trash"></span>
 							</h3>
 							<div class="collection_field_group_entry">
@@ -144,7 +144,7 @@ class JustField_Collection extends core\JustField {
 					endforeach; ?>
 					<div class="clr"></div>
 					<input type="button"
-						   value="<?php echo sprintf( __( 'Add %s Item', \JustCustomFields::TEXTDOMAIN ), $this->instance['title'] ); ?>"
+						   value="<?php echo sprintf( __( 'Add %s Item', 'jcf' ), $this->instance['title'] ); ?>"
 						   class="button button-large jcf_add_more_collection"
 						   data-collection_id="<?php echo esc_attr( $this->id ); ?>"
 						   data-fieldset_id="<?php echo esc_attr( $this->fieldset_id ); ?>"
@@ -168,7 +168,7 @@ class JustField_Collection extends core\JustField {
 		$title       = esc_attr( $instance['title'] );
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'jcf' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
 				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
 				   value="<?php echo esc_attr( $title ); ?>"/>
@@ -389,7 +389,7 @@ class JustField_Collection extends core\JustField {
 					<?php echo esc_html( $collection->instance['title'] . ' Item' ); ?>
 				</span>
 				<a href="#"
-				   class="collection_undo_remove_group"><?php _e( 'UNDO', \JustCustomFields::TEXTDOMAIN ); ?></a>
+				   class="collection_undo_remove_group"><?php esc_html_e( 'UNDO', 'jcf' ); ?></a>
 				<span class="dashicons dashicons-trash"></span>
 			</h3>
 			<div class="collection_field_group_entry">

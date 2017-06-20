@@ -8,7 +8,7 @@ $taxonomy = get_taxonomy( $terms[0]->taxonomy );
 
 ?>
 <?php if ( ! empty( $terms ) ) : ?>
-	<p><?php esc_html_e( 'Choose ' . $taxonomy->labels->name . ':', \JustCustomFields::TEXTDOMAIN ); ?></p>
+	<p><?php esc_html_e( 'Choose ' . $taxonomy->labels->name . ':', 'jcf' ); ?></p>
 	<?php if ( count( $terms ) <= 20 ) : ?>
 		<ul class="visibility-list-items">
 			<?php $i = 1;
@@ -48,5 +48,5 @@ $taxonomy = get_taxonomy( $terms[0]->taxonomy );
 	<?php endif; ?>
 	<br class="clear">
 <?php else : ?>
-	<p><?php esc_html_e( 'No available terms', \JustCustomFields::TEXTDOMAIN ); ?></p>
+	<p><?php esc_html_e( 'No available terms', 'jcf' ); ?></p>
 <?php endif; ?>

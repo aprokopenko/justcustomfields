@@ -1,5 +1,5 @@
 <div class="wrap">
-	<h1><?php esc_html_e( 'Just Custom Fields', \JustCustomFields::TEXTDOMAIN ); ?></h1>
+	<h1><?php esc_html_e( 'Just Custom Fields', 'jcf' ); ?></h1>
 
 	<?php do_action( 'jcf_print_admin_notice' ); ?>
 

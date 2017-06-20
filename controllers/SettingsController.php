@@ -22,7 +22,7 @@ class SettingsController extends core\Controller {
 	 * Init routes for settings page
 	 */
 	public function init_routes() {
-		$page_title = __( 'Settings', \JustCustomFields::TEXTDOMAIN );
+		$page_title = __( 'Settings', 'jcf' );
 		add_submenu_page( null, $page_title, $page_title, 'manage_options', 'jcf_settings', array(
 			$this,
 			'action_index',

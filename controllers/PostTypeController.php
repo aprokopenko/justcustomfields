@@ -231,20 +231,20 @@ class PostTypeController extends core\Controller {
 	public function add_media_uploader_js() {
 		global $pagenow;
 
-		if ( $pagenow !== 'media-upload.php' || empty( $_GET['jcf_media'] ) ) {
+		if ( 'media-upload.php' !== $pagenow || empty( $_GET['jcf_media'] ) ) {
 			return;
 		}
 
 		/* Gets the right label depending on the caller widget */
 		switch ( $_GET['type'] ) {
 			case 'image':
-				$button_label = __( 'Select Picture', \JustCustomFields::TEXTDOMAIN );
+				$button_label = __( 'Select Picture', 'jcf' );
 				break;
 			case 'file':
-				$button_label = __( 'Select File', \JustCustomFields::TEXTDOMAIN );
+				$button_label = __( 'Select File', 'jcf' );
 				break;
 			default:
-				$button_label = __( 'Insert into Post', \JustCustomFields::TEXTDOMAIN );
+				$button_label = __( 'Insert into Post', 'jcf' );
 				break;
 		}
 

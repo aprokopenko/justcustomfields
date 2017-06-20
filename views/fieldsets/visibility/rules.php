@@ -17,8 +17,8 @@ $row_index         = 1;
 			<thead>
 			<tr>
 				<th style="width: 10%;">#</th>
-				<th><?php esc_html_e( 'Rule', \JustCustomFields::TEXTDOMAIN ); ?></th>
-				<th style="width: 20%;"><?php esc_html_e( 'Options', \JustCustomFields::TEXTDOMAIN ); ?></th>
+				<th><?php esc_html_e( 'Rule', 'jcf' ); ?></th>
+				<th style="width: 20%;"><?php esc_html_e( 'Options', 'jcf' ); ?></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -77,6 +77,6 @@ $row_index         = 1;
 		</table>
 	<?php endif; ?>
 	<p><input type="button" class="add_rule_btn button" name="add_rule"
-			  value="<?php esc_html_e( 'Add rule', \JustCustomFields::TEXTDOMAIN ); ?>"/></p>
+			  value="<?php esc_html_e( 'Add rule', 'jcf' ); ?>"/></p>
 </div>
 

@@ -70,7 +70,7 @@ class Shortcodes extends core\Model {
 		if ( ! empty( $args['field'] ) ) {
 			return $this->_initShortcode( $args );
 		} else {
-			return _e( 'Error! "field" parameter is missing', \JustCustomFields::TEXTDOMAIN );
+			return esc_html_e( 'Error! "field" parameter is missing', 'jcf' );
 		}
 	}
 

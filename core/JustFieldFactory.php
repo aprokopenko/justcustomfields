@@ -17,7 +17,7 @@ class JustFieldFactory {
 	 * @return \jcf\core\JustField
 	 */
 	public static function create( \jcf\models\Field $field ) {
-		// $field_mixed can be real field id or only id_base
+		// $field_mixed can be real field id or only id_base.
 		$field_mixed = ! empty( $field->field_id ) ? $field->field_id : $field->field_type;
 		$id_base     = preg_replace( '/\-([0-9]+)/', '', $field_mixed );
 

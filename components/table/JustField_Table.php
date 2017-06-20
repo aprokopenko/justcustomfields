@@ -12,9 +12,12 @@ use jcf\core;
  */
 class JustField_Table extends core\JustField {
 
+	/**
+	 * JustField_Table constructor.
+	 */
 	public function __construct() {
 		$field_ops = array( 'classname' => 'field_table' );
-		parent::__construct( 'table', __( 'Table', \JustCustomFields::TEXTDOMAIN ), $field_ops );
+		parent::__construct( 'table', __( 'Table', 'jcf' ), $field_ops );
 	}
 
 	/**
@@ -50,7 +53,7 @@ class JustField_Table extends core\JustField {
 			// generate rows html.
 			$rows = '';
 			$rows .= '<tr class="no-rows' . ( ! empty( $entries ) ? ' hide' : '' ) . '"><td colspan="' . ( $count_cols + 1 ) . '" align="center"><i>'
-			         . __( 'No data yet.', \JustCustomFields::TEXTDOMAIN )
+			         . __( 'No data yet.', 'jcf' )
 			         . '</i></td></tr>';
 
 			foreach ( $entries as $key => $entry ) {
@@ -80,20 +83,20 @@ class JustField_Table extends core\JustField {
 					<table class="sortable wp-list-table widefat fixed">
 						<thead>
 						<tr class="table-header">
-							<?php echo esc_attr( $table_headers ); ?>
+							<?php echo $table_headers; ?>
 						</tr>
 						</thead>
 
-						<?php echo esc_attr( $rows ); ?>
+						<?php echo $rows; ?>
 
-						<tr class="clone hide"><?php echo esc_attr( $clone_row ); ?></tr>
+						<tr class="clone hide"><?php echo $clone_row; ?></tr>
 					</table>
 					<p><a href="#"
-						  class="button button-small jcf_add_row jcf_add_table_row"><?php esc_html_e( 'Add row', \JustCustomFields::TEXTDOMAIN ); ?></a>
+						  class="button button-small jcf_add_row jcf_add_table_row"><?php esc_html_e( 'Add row', 'jcf' ); ?></a>
 					</p>
 				</div>
 			<?php else : ?>
-				<p><?php esc_html_e( 'Wrong columns configuration. Please check widget settings.', \JustCustomFields::TEXTDOMAIN ); ?></p>
+				<p><?php esc_html_e( 'Wrong columns configuration. Please check widget settings.', 'jcf' ); ?></p>
 			<?php endif; ?>
 
 			<?php if ( '' !== $this->instance['description'] ) : ?>
@@ -116,25 +119,25 @@ class JustField_Table extends core\JustField {
 		) );
 
 		$title       = esc_attr( $instance['title'] );
-		$columns     = esc_html( $instance['columns'] );
+		$columns     = $instance['columns'];
 		$description = esc_html( $instance['description'] );
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'jcf' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
 				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
 				   value="<?php echo esc_attr( $title ); ?>"/>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'fields' ) ); ?>"><?php esc_html_e( 'Columns:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'fields' ) ); ?>"><?php esc_html_e( 'Columns:', 'jcf' ); ?></label>
 			<textarea name="<?php echo $this->get_field_name( 'columns' ); ?>"
 					  id="<?php echo esc_attr( $this->get_field_id( 'columns' ) ); ?>" cols="20" rows="4"
 					  class="widefat"><?php echo esc_html( $columns ); ?></textarea>
 			<br/>
-			<small><?php _e( 'Format: %colname|%coltitle<br/><i>Example: username|User name', \JustCustomFields::TEXTDOMAIN ); ?></i></small>
+			<small><?php _e( 'Format: %colname|%coltitle<br/><i>Example: username|User name', 'jcf' ); ?></i></small>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php _e( 'Description:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', 'jcf' ); ?></label>
 			<textarea name="<?php echo $this->get_field_name( 'description' ); ?>"
 					  id="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>" cols="20" rows="2"
 					  class="widefat"><?php echo esc_attr( $description ); ?></textarea></p>
@@ -282,7 +285,7 @@ class JustField_Table extends core\JustField {
 			$rows .= '<tr class="jcf-table-row jcf-table-row-i' . $key . '">';
 
 			foreach ( $columns as $col_name => $col_title ) {
-				if ( $key == 0 ) {
+				if ( 0 === $key ) {
 					$thead_columns .= '<th class="jcf-table-cell jcf-table-cell-' . esc_attr( $col_name ) . '">' . esc_html( $col_title ) . '</th>';
 				}
 				$rows .= '<td class="jcf-table-cell jcf-table-cell-' . esc_attr( $col_name ) . '">' . esc_html( $entry[ $col_name ] ) . '</td>';

@@ -24,7 +24,7 @@ class JustField_DatePicker extends core\JustField {
 	 **/
 	public function __construct() {
 		$field_ops = array( 'classname' => 'field_datepicker' );
-		parent::__construct( 'datepicker', __( 'Date Picker', \JustCustomFields::TEXTDOMAIN ), $field_ops );
+		parent::__construct( 'datepicker', __( 'Date Picker', 'jcf' ), $field_ops );
 	}
 
 	/**
@@ -50,8 +50,7 @@ class JustField_DatePicker extends core\JustField {
 					jQuery("#<?php echo esc_attr( $this->get_field_id( 'val' ) ); ?>").datepicker({
 						dateFormat: "<?php echo ! empty( $this->instance['date_format'] ) ? esc_attr( $this->instance['date_format'] ) : 'yy-mm-dd'; ?>"
 						<?php if ( ! empty( $this->instance['show_monthes'] ) ) {
-						echo ', changeMonth: true, changeYear: true';
-					} ?>
+							echo ', changeMonth: true, changeYear: true'; } ?>
 					});
 				});
 				--></script>
@@ -77,7 +76,7 @@ class JustField_DatePicker extends core\JustField {
 		$date_format  = ! empty( $instance['date_format'] ) ? esc_attr( $instance['date_format'] ) : 'yy-mm-dd';
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'jcf' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
 				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
 				   value="<?php echo esc_attr( $title ); ?>"/>
@@ -87,16 +86,16 @@ class JustField_DatePicker extends core\JustField {
 					   id="<?php echo esc_attr( $this->get_field_id( 'show_monthes' ) ); ?>"
 					   name="<?php echo $this->get_field_name( 'show_monthes' ); ?>"
 					   type="checkbox"
-					   value="1" <?php echo esc_attr( $show_monthes ); ?> /> <?php _e( 'Show month/year select boxes', \JustCustomFields::TEXTDOMAIN ); ?>
+					   value="1" <?php echo esc_attr( $show_monthes ); ?> /> <?php esc_html_e( 'Show month/year select boxes', 'jcf' ); ?>
 			</label></p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'date_format' ) ); ?>"><?php _e( 'Date format:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'date_format' ) ); ?>"><?php esc_html_e( 'Date format:', 'jcf' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'date_format' ) ); ?>"
 				   name="<?php echo $this->get_field_name( 'date_format' ); ?>" type="text"
 				   value="<?php echo esc_attr( $date_format ); ?>"/><br/>
-			<small><?php _e( 'Example:', \JustCustomFields::TEXTDOMAIN ); ?> yy-mm-dd <a
+			<small><?php esc_html_e( 'Example:', 'jcf' ); ?> yy-mm-dd <a
 						href="http://api.jqueryui.com/datepicker/#option-dateFormat"
-						target="_blank"><?php _e( 'look more about date formats', \JustCustomFields::TEXTDOMAIN ); ?></a>
+						target="_blank"><?php esc_html_e( 'look more about date formats', 'jcf' ); ?></a>
 			</small>
 		</p>
 		<?php

@@ -14,7 +14,7 @@
 					'data-fields_container' => "#jcf_fieldset_fields_{$pt_key}_{$fieldset_id}",
 				) ); ?>
 			</span>
-			<?php esc_html_e( 'Fieldset:', \JustCustomFields::TEXTDOMAIN ); ?>
+			<?php esc_html_e( 'Fieldset:', 'jcf' ); ?>
 			<span><?php echo esc_html( $fieldset['title'] ); ?></span>
 		</h3>
 		<div class="jcf_inner_content" id="<?php echo esc_attr( "jcf_fieldset_fields_{$pt_key}_{$fieldset_id}" ); ?>">
@@ -22,21 +22,21 @@
 				<thead>
 				<tr>
 					<th class="check-column">&nbsp;</th>
-					<th><?php esc_html_e( 'Field', \JustCustomFields::TEXTDOMAIN ); ?></th>
-					<th><?php esc_html_e( 'Type', \JustCustomFields::TEXTDOMAIN ); ?></th>
-					<th><?php esc_html_e( 'Slug', \JustCustomFields::TEXTDOMAIN ); ?></th>
-					<th><?php esc_html_e( 'Enabled', \JustCustomFields::TEXTDOMAIN ); ?></th>
+					<th><?php esc_html_e( 'Field', 'jcf' ); ?></th>
+					<th><?php esc_html_e( 'Type', 'jcf' ); ?></th>
+					<th><?php esc_html_e( 'Slug', 'jcf' ); ?></th>
+					<th><?php esc_html_e( 'Enabled', 'jcf' ); ?></th>
 				</tr>
 				</thead>
 				<tbody>
 				<?php if ( ! empty( $fieldset['fields'] ) ) : ?>
 					<?php foreach ( $fieldset['fields'] as $field_id => $field ) : ?>
-						<tr id="<?php echo "jcf_field_{$pt_key}_{$fieldset_id}_{$field_id}" ?>">
+						<tr id="<?php echo esc_attr( "jcf_field_{$pt_key}_{$fieldset_id}_{$field_id}" ) ?>">
 							<td class="check-column">
 								<?php
-								// checkbox
+								// checkbox.
 								echo jcf_html_checkbox( array(
-									'class'                     => "jcf_field_select",
+									'class'                     => 'jcf_field_select',
 									'name'                      => "selected_data[{$pt_key}][{$fieldset_id}][fields][{$field_id}][id]",
 									'value'                     => $field_id,
 									'data-is_collection'        => (int) preg_match( '/^collection\-/', $field_id ),
@@ -45,41 +45,42 @@
 								?>
 							</td>
 
-							<?php if ( ! preg_match( '/^collection\-/', $field_id ) ): ?>
+							<?php if ( ! preg_match( '/^collection\-/', $field_id ) ) : ?>
 								<td><?php echo esc_html( $field_settings[ $pt_key ][ $field_id ]['title'] ); ?></td>
 								<td><?php echo preg_replace( '/\-[0-9]+$/', '', $field_id ); ?></td>
 								<td><?php echo esc_html( $field_settings[ $pt_key ][ $field_id ]['slug'] ); ?></td>
 								<td><?php if ( $field_settings[ $pt_key ][ $field_id ]['enabled'] ) {
-										_e( 'Yes', \JustCustomFields::TEXTDOMAIN );
+										esc_html_e( 'Yes', 'jcf' );
 									} else {
-										_e( 'No', \JustCustomFields::TEXTDOMAIN );
+										esc_html_e( 'No', 'jcf' );
 									} ?></td>
 
-							<?php else: ?>
+							<?php else : ?>
 								<td>
 									<ul>
-										<li><?php echo $field_settings[ $pt_key ][ $field_id ]['title']; ?></li>
-										<li><strong><?php _e( 'Type', \JustCustomFields::TEXTDOMAIN ); ?></strong>:
+										<li><?php echo esc_html( $field_settings[ $pt_key ][ $field_id ]['title'] ); ?></li>
+										<li><strong><?php esc_html_e( 'Type', 'jcf' ); ?></strong>:
 											<em><?php echo preg_replace( '/\-[0-9]+$/', '', $field_id ); ?></em></li>
-										<li><strong><?php _e( 'Slug', \JustCustomFields::TEXTDOMAIN ); ?></strong>:
-											<em><?php echo $field_settings[ $pt_key ][ $field_id ]['slug']; ?></em></li>
-										<li><strong><?php _e( 'Enabled', \JustCustomFields::TEXTDOMAIN ); ?></strong>:
+										<li><strong><?php esc_html_e( 'Slug', 'jcf' ); ?></strong>:
+											<em><?php echo esc_attr( $field_settings[ $pt_key ][ $field_id ]['slug'] ); ?></em>
+										</li>
+										<li><strong><?php esc_html_e( 'Enabled', 'jcf' ); ?></strong>:
 											<em><?php if ( $field_settings[ $pt_key ][ $field_id ]['enabled'] ) {
-													_e( 'Yes', \JustCustomFields::TEXTDOMAIN );
+													esc_html_e( 'Yes', 'jcf' );
 												} else {
-													_e( 'No', \JustCustomFields::TEXTDOMAIN );
+													esc_html_e( 'No', 'jcf' );
 												} ?></em></li>
 									</ul>
 								</td>
 								<td colspan="3"
-									id="<?php echo "jcf_collection_fields_{$pt_key}_{$fieldset_id}_{$field_id}"; ?>">
+									id="<?php echo esc_attr( "jcf_collection_fields_{$pt_key}_{$fieldset_id}_{$field_id}" ); ?>">
 									<table class="wp-list-table widefat fixed fieldset-fields-table" cellspacing="0">
 										<tr>
 											<th class="check-column">&nbsp;</th>
-											<th><?php _e( 'Field', \JustCustomFields::TEXTDOMAIN ); ?></th>
-											<th><?php _e( 'Type', \JustCustomFields::TEXTDOMAIN ); ?></th>
-											<th><?php _e( 'Slug', \JustCustomFields::TEXTDOMAIN ); ?></th>
-											<th><?php _e( 'Enabled', \JustCustomFields::TEXTDOMAIN ); ?></th>
+											<th><?php esc_html_e( 'Field', 'jcf' ); ?></th>
+											<th><?php esc_html_e( 'Type', 'jcf' ); ?></th>
+											<th><?php esc_html_e( 'Slug', 'jcf' ); ?></th>
+											<th><?php esc_html_e( 'Enabled', 'jcf' ); ?></th>
 										</tr>
 										<?php if ( ! empty( $field_settings[ $pt_key ][ $field_id ]['fields'] )
 										           && is_array( $field_settings[ $pt_key ][ $field_id ]['fields'] )
@@ -87,22 +88,22 @@
 
 											$collection_fields = $field_settings[ $pt_key ][ $field_id ]['fields'];
 											?>
-											<?php foreach ( $collection_fields as $collection_field_id => $collection_field ): ?>
+											<?php foreach ( $collection_fields as $collection_field_id => $collection_field ) : ?>
 											<tr>
 												<td>
 													<?php echo jcf_html_checkbox( array(
 														'name'  => "selected_data[{$pt_key}][{$fieldset_id}][fields][{$field_id}][collection_fields][{$collection_field_id}]",
 														'value' => 1,
-														'class' => "jcf-collection_field_select",
+														'class' => 'jcf-collection_field_select',
 													) ); ?>
 												</td>
 												<td><?php echo esc_html( $collection_field['title'] ); ?></td>
 												<td><?php echo preg_replace( '/\-[0-9]+$/', '', $collection_field_id ); ?></td>
 												<td><?php echo esc_html( $collection_field['slug'] ); ?></td>
 												<td><?php if ( $collection_field['enabled'] ) {
-														_e( 'Yes', \JustCustomFields::TEXTDOMAIN );
+														esc_html_e( 'Yes', 'jcf' );
 													} else {
-														_e( 'No', \JustCustomFields::TEXTDOMAIN );
+														esc_html_e( 'No', 'jcf' );
 													} ?>
 												</td>
 											</tr>
@@ -110,7 +111,7 @@
 										<?php endif; ?>
 									</table>
 								</td>
-							<?php endif; // if !collection ?>
+							<?php endif; // if !collection. ?>
 						</tr>
 					<?php endforeach; ?>
 				<?php endif; ?>
@@ -118,4 +119,4 @@
 			</table>
 		</div>
 	</div>
-<?php endforeach; // foreach post type fielfsets ?>
+<?php endforeach; // foreach post type fielfsets. ?>

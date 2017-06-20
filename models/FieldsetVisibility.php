@@ -108,7 +108,7 @@ class FieldsetVisibility extends core\Model {
 			$visibility_rules[ $f_id ] = array_values( $fieldset['visibility_rules'] );
 
 			foreach ( $visibility_rules[ $f_id ] as $key => $rule ) {
-				if ( $rule['based_on'] !== self::BASEDON_TAXONOMY ) {
+				if ( self::BASEDON_TAXONOMY !== $rule['based_on'] ) {
 					continue;
 				}
 
@@ -157,12 +157,12 @@ class FieldsetVisibility extends core\Model {
 		$output['scenario']   = $this->scenario;
 		$output['templates']  = $templates;
 
-		if ( ! empty( $this->scenario ) && $this->scenario == self::SCENARIO_UPDATE ) {
+		if ( ! empty( $this->scenario ) && self::SCENARIO_UPDATE === $this->scenario ) {
 
 			$visibility_rule = $this->_get_fieldset_visibility( $this->fieldset_id, $this->rule_id );
 
 			if ( empty( $visibility_rule ) ) {
-				$this->add_error( __( 'Visibility rule not found.', \JustCustomFields::TEXTDOMAIN ) );
+				$this->add_error( __( 'Visibility rule not found.', 'jcf' ) );
 
 				return false;
 			}
@@ -212,7 +212,7 @@ class FieldsetVisibility extends core\Model {
 
 		$saved = $this->_save_fieldset_visibility( $this->fieldset_id, $visibility_rules );
 		if ( ! $saved ) {
-			$this->add_error( __( 'Visibility rule not updated.', \JustCustomFields::TEXTDOMAIN ) );
+			$this->add_error( __( 'Visibility rule not updated.', 'jcf' ) );
 
 			return false;
 		}
@@ -233,7 +233,7 @@ class FieldsetVisibility extends core\Model {
 
 		$saved = $this->_save_fieldset_visibility( $this->fieldset_id, $visibility_rules );
 		if ( ! $saved ) {
-			$this->add_error( __( 'Visibility rule not deleted.', \JustCustomFields::TEXTDOMAIN ) );
+			$this->add_error( __( 'Visibility rule not deleted.', 'jcf' ) );
 
 			return false;
 		}

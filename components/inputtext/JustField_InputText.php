@@ -17,7 +17,7 @@ class JustField_InputText extends core\JustField {
 	 **/
 	public function __construct() {
 		$field_ops = array( 'classname' => 'field_inputtext' );
-		parent::__construct( 'inputtext', __( 'Input Text', \JustCustomFields::TEXTDOMAIN ), $field_ops );
+		parent::__construct( 'inputtext', __( 'Input Text', 'jcf' ), $field_ops );
 	}
 
 	/**
@@ -54,12 +54,12 @@ class JustField_InputText extends core\JustField {
 		$title       = esc_attr( $instance['title'] );
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'jcf' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
 				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>"/>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php _e( 'Description:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', 'jcf' ); ?></label>
 			<textarea name="<?php echo$this->get_field_name( 'description' ); ?>"
 					  id="<?php echo  esc_attr( $this->get_field_id( 'description' ) ); ?>" cols="20" rows="4"
 					  class="widefat"><?php echo esc_attr( $description ); ?></textarea></p>

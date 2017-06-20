@@ -25,7 +25,7 @@ class JustField_GoogleMaps extends core\JustField {
 	 **/
 	public function __construct() {
 		$field_ops = array( 'classname' => 'field_googlemaps' );
-		parent::__construct( 'googlemaps', __( 'Google Maps', \JustCustomFields::TEXTDOMAIN ), $field_ops );
+		parent::__construct( 'googlemaps', __( 'Google Maps', 'jcf' ), $field_ops );
 	}
 
 	/**
@@ -153,19 +153,20 @@ class JustField_GoogleMaps extends core\JustField {
 		$api_key     = Settings::get_google_maps_api_key();
 		?>
 		<?php if ( empty( $api_key ) ) : ?>
-			<div class="error"><?php _e( 'Please set Google Maps API Key on Settings page.', JCF_TEXTDOMAIN ); ?></div>
+			<div class="error"><?php esc_html_e( 'Please set Google Maps API Key on Settings page.', 'jcf' ); ?></div>
 		<?php endif; ?>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'jcf' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
-				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>"/>
+				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
+				   value="<?php echo esc_attr( $title ); ?>"/>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php _e( 'Description:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', 'jcf' ); ?></label>
 			<textarea name="<?php echo $this->get_field_name( 'description' ); ?>"
 					  id="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>" cols="20" rows="4"
-					  class="widefat"><?php echo esc_html( $description ); ?></textarea></p>
+					  class="widefat"><?php echo $description; ?></textarea></p>
 		<?php
 	}
 
@@ -259,7 +260,8 @@ class JustField_GoogleMaps extends core\JustField {
 		endif;
 		?>
 
-		<div id="jcf-map-<?php echo esc_attr( $this->id ); ?>" class="jcf-map-container" style="min-height: 200px;"></div>
+		<div id="jcf-map-<?php echo esc_attr( $this->id ); ?>" class="jcf-map-container"
+			 style="min-height: 200px;"></div>
 		<script>
 			window.jcf_googlemaps.push({
 				container_id: 'jcf-map-<?php echo esc_attr( $this->id ); ?>',

@@ -17,7 +17,7 @@ class JustField_Checkbox extends core\JustField {
 	 **/
 	public function __construct() {
 		$field_ops = array( 'classname' => 'field_checkbox' );
-		parent::__construct( 'checkbox', __( 'Checkbox', \JustCustomFields::TEXTDOMAIN ), $field_ops );
+		parent::__construct( 'checkbox', __( 'Checkbox', 'jcf' ), $field_ops );
 	}
 
 	/**
@@ -29,7 +29,7 @@ class JustField_Checkbox extends core\JustField {
 		$values = $this->parsed_select_options( $this->instance );
 
 		if ( empty( $values ) ) {
-			echo '<p>' . __( 'Please check settings. Values are empty', \JustCustomFields::TEXTDOMAIN ) . '</p>';
+			echo '<p>' . esc_html__( 'Please check settings. Values are empty', 'jcf' ) . '</p>';
 
 			return false;
 		}
@@ -46,7 +46,7 @@ class JustField_Checkbox extends core\JustField {
 					<?php foreach ( (array) $values as $key => $val ) : ?>
 						<?php
 						if ( $single_checkbox ) {
-							$checked = ( $val == $this->entry ) ? true : false;
+							$checked = ( $val === $this->entry ) ? true : false;
 						} else {
 							$checked = in_array( $val, (array) $this->entry );
 						}
@@ -80,20 +80,20 @@ class JustField_Checkbox extends core\JustField {
 		) );
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'jcf' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
 				   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
 				   value="<?php echo esc_attr( $instance['title'] ); ?>"/>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'settings' ) ); ?>"><?php esc_html_e( 'Settings:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'settings' ) ); ?>"><?php esc_html_e( 'Settings:', 'jcf' ); ?></label>
 			<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'settings' ) ); ?>"
 					  name="<?php echo esc_attr( $this->get_field_name( 'settings' ) ); ?>"><?php echo esc_attr( $instance['settings'] ); ?></textarea>
 			<br/>
-			<small><?php _e( 'Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', \JustCustomFields::TEXTDOMAIN ); ?></small>
+			<small><?php _e( 'Parameters like (you can use just "label" if "id" is the same):<br>label1|id1<br>label2|id2<br>label3', 'jcf' ); ?></small>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', \JustCustomFields::TEXTDOMAIN ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', 'jcf' ); ?></label>
 			<textarea name="<?php echo $this->get_field_name( 'description' ); ?>"
 					  id="<?php echo esc_html( $this->get_field_id( 'description' ) ); ?>" cols="20" rows="4"
 					  class="widefat"><?php echo esc_html( $instance['description'] ); ?></textarea>

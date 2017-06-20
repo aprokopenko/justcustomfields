@@ -2,10 +2,10 @@
 	<thead>
 	<tr>
 		<th class="check-column">&nbsp;</th>
-		<th><?php esc_html_e( 'Title', \JustCustomFields::TEXTDOMAIN ); ?></th>
-		<th width="150"><?php esc_html_e( 'Type', \JustCustomFields::TEXTDOMAIN ); ?></th>
-		<th width="50"><?php esc_html_e( 'Width', \JustCustomFields::TEXTDOMAIN ); ?></th>
-		<th width="100"><?php esc_html_e( 'Enabled', \JustCustomFields::TEXTDOMAIN ); ?></th>
+		<th><?php esc_html_e( 'Title', 'jcf' ); ?></th>
+		<th width="150"><?php esc_html_e( 'Type', 'jcf' ); ?></th>
+		<th width="50"><?php esc_html_e( 'Width', 'jcf' ); ?></th>
+		<th width="100"><?php esc_html_e( 'Enabled', 'jcf' ); ?></th>
 	</tr>
 	</thead>
 	<tfoot>
@@ -16,14 +16,14 @@
 					<fieldset>
 						<input type="hidden" name="collection_id" value="<?php echo esc_attr( $collection_id ); ?>"/>
 						<input type="hidden" name="fieldset_id" value="<?php echo esc_attr( $fieldset_id ); ?>"/>
-						<label class="nowrap"><?php esc_html_e( 'Add new Field:', \JustCustomFields::TEXTDOMAIN ); ?> </label>
+						<label class="nowrap"><?php esc_html_e( 'Add new Field:', 'jcf' ); ?> </label>
 						<select name="field_type" class="jcf_add_collection_field">
 							<?php foreach ( $registered_fields as $field ) : ?>
 								<option value="<?php echo esc_attr( $field['id_base'] ); ?>"><?php echo esc_html( $field['title'] ); ?></option>
 							<?php endforeach; ?>
 						</select>
 						<input type="submit" class="button show_modal" name="add_field"
-							   value="<?php esc_html_e( 'Add', \JustCustomFields::TEXTDOMAIN ); ?>"/>
+							   value="<?php esc_html_e( 'Add', 'jcf' ); ?>"/>
 						<?php echo jcf_print_loader_img(); ?>
 					</fieldset>
 				</form>
@@ -44,28 +44,28 @@
 					<div class="row-actions">
 							<span class="edit_collection">
 								<a href="#" rel="<?php echo esc_attr( $field_id ); ?>"
-								   data-collection_id="<?php echo esc_attr( $collection_id ); ?>"><?php esc_html_e( 'Edit', \JustCustomFields::TEXTDOMAIN ); ?></a>
+								   data-collection_id="<?php echo esc_attr( $collection_id ); ?>"><?php esc_html_e( 'Edit', 'jcf' ); ?></a>
 							</span> |
 						<span class="delete_collection"
 							  data-collection_id="<?php echo esc_attr( $collection_id ); ?>"><a href="#"
 																								rel="<?php echo esc_attr( $field_id ); ?>"
-																								data-collection_id="<?php echo esc_attr( $collection_id ); ?>"><?php esc_html_e( 'Delete', \JustCustomFields::TEXTDOMAIN ); ?></a></span>
+																								data-collection_id="<?php echo esc_attr( $collection_id ); ?>"><?php esc_html_e( 'Delete', 'jcf' ); ?></a></span>
 					</div>
 				</td>
 				<td><?php echo preg_replace( '/\-[0-9]+$/', '', $field_id ); ?></td>
 				<td><?php echo \jcf\components\collection\JustField_Collection::get_width_alias( esc_html( $field['field_width'] ) ); ?>
 				</td>
 				<td><?php if ( $field['enabled'] ) {
-						esc_html_e( 'Yes', \JustCustomFields::TEXTDOMAIN );
+						esc_html_e( 'Yes', 'jcf' );
 					} else {
-						esc_html_e( 'No', \JustCustomFields::TEXTDOMAIN );
+						esc_html_e( 'No', 'jcf' );
 					} ?></td>
 			</tr>
 		<?php endforeach; ?>
 	<?php else : ?>
 		<tr>
 			<td colspan="5"
-				align="center"><?php esc_html_e( 'Please create fields for this collection', \JustCustomFields::TEXTDOMAIN ); ?></td>
+				align="center"><?php esc_html_e( 'Please create fields for this collection', 'jcf' ); ?></td>
 		</tr>
 	<?php endif; ?>
 	</tbody>

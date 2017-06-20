@@ -15,12 +15,14 @@ require_once( JCF_ROOT . '/functions/helpers.php' );
 use jcf\core;
 use jcf\controllers;
 
+/**
+ * Class JustCustomFields
+ */
 class JustCustomFields extends core\Singleton {
 
 	/**
 	 * Plugin text domain for translations
 	 */
-	const TEXTDOMAIN = 'jcf';
 	const VERSION = '3.200';
 
 	/**
@@ -58,7 +60,7 @@ class JustCustomFields extends core\Singleton {
 	 */
 	protected function __construct() {
 		/* init plugin name and version */
-		self::$plugin_name = __( 'Just Custom Fields', JustCustomFields::TEXTDOMAIN );
+		self::$plugin_name = __( 'Just Custom Fields', 'jcf' );
 		self::$version     = self::VERSION;
 
 		/* init features, which this plugin is created for */
@@ -126,9 +128,8 @@ class JustCustomFields extends core\Singleton {
 	/**
 	 * Register field component
 	 *
-	 * @param $class_name
-	 * @param bool $collection_field
-	 * @return bool
+	 * @param mixed $class_name Class name.
+	 * @param bool  $collection_field Collection field.
 	 */
 	public function register_field( $class_name, $collection_field = false ) {
 		if ( strpos( $class_name, '\\' ) === false ) {
@@ -149,7 +150,8 @@ class JustCustomFields extends core\Singleton {
 	/**
 	 *	Return array of registered fields
 	 *
-	 * @param bool $collection_only
+	 * @param bool $collection_only Collection only.
+	 *
 	 * @return array $collection_fields
 	 */
 	public function get_fields( $collection_only = false ) {
@@ -171,7 +173,8 @@ class JustCustomFields extends core\Singleton {
 	/**
 	 * Field info (title, id_base, class)
 	 *
-	 * @param string $id_base
+	 * @param string $id_base ID base.
+	 *
 	 * @return array
 	 */
 	public function get_field_info( $id_base ) {

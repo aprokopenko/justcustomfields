@@ -15,10 +15,10 @@
 <?php include( JCF_ROOT . '/views/_header.php' ); ?>
 
 	<h2><a href="?page=jcf_admin"
-		   class="jcf_change_pt"><?php esc_html_e( 'Fields', \JustCustomFields::TEXTDOMAIN ); ?></a>
+		   class="jcf_change_pt"><?php esc_html_e( 'Fields', 'jcf' ); ?></a>
 		&raquo;
 		<?php echo esc_html( $post_type->label ); ?> &raquo;
-		<small><?php esc_html_e( 'Configure', \JustCustomFields::TEXTDOMAIN ); ?></small>
+		<small><?php esc_html_e( 'Configure', 'jcf' ); ?></small>
 	</h2>
 
 	<input type="hidden" id="jcf_post_type_hidden" value="<?php echo esc_attr( $post_type_id ); ?>"/>
@@ -35,13 +35,13 @@
 							<h3 class="header">
 					<span>
 						<span class="dashicons dashicons-menu drag-handle"></span>
-						<?php esc_html_e( 'Fieldset:', \JustCustomFields::TEXTDOMAIN ); ?>
+						<?php esc_html_e( 'Fieldset:', 'jcf' ); ?>
 						<strong><?php echo esc_html( $fieldset['title'] ); ?></strong>
 						<small>
 							<a href="#" class="jcf_fieldset_change jcf_change_pt show_modal"
-							   rel="<?php echo esc_attr( $fieldset['id'] ); ?>"><?php esc_html_e( 'Edit', \JustCustomFields::TEXTDOMAIN ); ?></a>
+							   rel="<?php echo esc_attr( $fieldset['id'] ); ?>"><?php esc_html_e( 'Edit', 'jcf' ); ?></a>
 							<a href="#" class="jcf_fieldset_delete jcf_change_pt submitdelete"
-							   rel="<?php echo esc_attr( $fieldset['id'] ); ?>"><?php esc_html_e( 'Delete', \JustCustomFields::TEXTDOMAIN ); ?></a>
+							   rel="<?php echo esc_attr( $fieldset['id'] ); ?>"><?php esc_html_e( 'Delete', 'jcf' ); ?></a>
 						</small>
 					</span>
 							</h3>
@@ -51,19 +51,19 @@
 									<thead>
 									<tr>
 										<th class="jcf-check-column">&nbsp;</th>
-										<th><?php esc_html_e( 'Field', \JustCustomFields::TEXTDOMAIN ); ?></th>
-										<th><?php esc_html_e( 'Slug', \JustCustomFields::TEXTDOMAIN ); ?></th>
-										<th><?php esc_html_e( 'Type', \JustCustomFields::TEXTDOMAIN ); ?></th>
-										<th><?php esc_html_e( 'Enabled', \JustCustomFields::TEXTDOMAIN ); ?></th>
+										<th><?php esc_html_e( 'Field', 'jcf' ); ?></th>
+										<th><?php esc_html_e( 'Slug', 'jcf' ); ?></th>
+										<th><?php esc_html_e( 'Type', 'jcf' ); ?></th>
+										<th><?php esc_html_e( 'Enabled', 'jcf' ); ?></th>
 									</tr>
 									</thead>
 									<tfoot>
 									<tr>
 										<th class="jcf-check-column">&nbsp;</th>
-										<th><?php esc_html_e( 'Field', \JustCustomFields::TEXTDOMAIN ); ?></th>
-										<th><?php esc_html_e( 'Slug', \JustCustomFields::TEXTDOMAIN ); ?></th>
-										<th><?php esc_html_e( 'Type', \JustCustomFields::TEXTDOMAIN ); ?></th>
-										<th><?php esc_html_e( 'Enabled', \JustCustomFields::TEXTDOMAIN ); ?></th>
+										<th><?php esc_html_e( 'Field', 'jcf' ); ?></th>
+										<th><?php esc_html_e( 'Slug', 'jcf' ); ?></th>
+										<th><?php esc_html_e( 'Type', 'jcf' ); ?></th>
+										<th><?php esc_html_e( 'Enabled', 'jcf' ); ?></th>
 									</tr>
 									</tfoot>
 									<tbody id="the-list-<?php echo esc_attr( $fieldset['id'] ); ?>">
@@ -83,24 +83,24 @@
 															   rel="<?php echo esc_attr( $field_id ); ?>"><?php echo esc_html( $field_settings[ $field_id ]['title'] ); ?></a></strong>
 													<div class="row-actions">
 														<span class="edit"><a href="#"
-																			  rel="<?php echo esc_attr( $field_id ); ?>"><?php esc_html_e( 'Edit', \JustCustomFields::TEXTDOMAIN ); ?></a></span>
+																			  rel="<?php echo esc_attr( $field_id ); ?>"><?php esc_html_e( 'Edit', 'jcf' ); ?></a></span>
 														|
 														<span class="delete"><a href="#"
-																				rel="<?php echo esc_attr( $field_id ); ?>"><?php esc_html_e( 'Delete', \JustCustomFields::TEXTDOMAIN ); ?></a></span>
+																				rel="<?php echo esc_attr( $field_id ); ?>"><?php esc_html_e( 'Delete', 'jcf' ); ?></a></span>
 													</div>
 													<?php if ( 'collection' === @$field_settings[ $field_id ]['_type'] ) : ?>
 														<ul>
 															<li>
-																<strong><?php esc_html_e( 'Type', \JustCustomFields::TEXTDOMAIN ); ?></strong>: <?php echo preg_replace( '/\-[0-9]+$/', '', $field_id ); ?>
+																<strong><?php esc_html_e( 'Type', 'jcf' ); ?></strong>: <?php echo preg_replace( '/\-[0-9]+$/', '', $field_id ); ?>
 															</li>
 															<li>
-																<strong><?php esc_html_e( 'Slug', \JustCustomFields::TEXTDOMAIN ); ?></strong>: <?php echo esc_html( $field_settings[ $field_id ]['slug'] ); ?>
+																<strong><?php esc_html_e( 'Slug', 'jcf' ); ?></strong>: <?php echo esc_html( $field_settings[ $field_id ]['slug'] ); ?>
 															</li>
 															<li>
-																<strong><?php esc_html_e( 'Enabled', \JustCustomFields::TEXTDOMAIN ); ?></strong>: <?php if ( $enabled ) {
-																	esc_html_e( 'Yes', \JustCustomFields::TEXTDOMAIN );
+																<strong><?php esc_html_e( 'Enabled', 'jcf' ); ?></strong>: <?php if ( $enabled ) {
+																	esc_html_e( 'Yes', 'jcf' );
 																} else {
-																	esc_html_e( 'No', \JustCustomFields::TEXTDOMAIN );
+																	esc_html_e( 'No', 'jcf' );
 																} ?></li>
 														</ul>
 													<?php endif; ?>
@@ -109,9 +109,9 @@
 													<td><?php echo esc_html( $field_settings[ $field_id ]['slug'] ); ?></td>
 													<td><?php echo esc_html( preg_replace( '/\-[0-9]+$/', '', $field_id ) ); ?></td>
 													<td><?php if ( $enabled ) {
-															esc_html_e( 'Yes', \JustCustomFields::TEXTDOMAIN );
+															esc_html_e( 'Yes', 'jcf' );
 														} else {
-															esc_html_e( 'No', \JustCustomFields::TEXTDOMAIN );
+															esc_html_e( 'No', 'jcf' );
 														} ?></td>
 												<?php else : ?>
 													<td colspan="3" class="collection_list"
@@ -129,7 +129,7 @@
 									<?php else : ?>
 										<tr>
 											<td colspan="5"
-												align="center"><?php esc_html_e( 'Please create fields for this fieldset', \JustCustomFields::TEXTDOMAIN ); ?></td>
+												align="center"><?php esc_html_e( 'Please create fields for this fieldset', 'jcf' ); ?></td>
 										</tr>
 									<?php endif; ?>
 									</tbody>
@@ -141,14 +141,14 @@
 										<fieldset>
 											<input type="hidden" name="fieldset_id"
 												   value="<?php echo esc_attr( $fieldset['id'] ); ?>"/>
-											<label class="nowrap"><?php esc_html_e( 'Add new Field:', \JustCustomFields::TEXTDOMAIN ); ?> </label>
+											<label class="nowrap"><?php esc_html_e( 'Add new Field:', 'jcf' ); ?> </label>
 											<select name="field_type" class="jcf_add_field">
 												<?php foreach ( $registered_fields as $field ) : ?>
 													<option value="<?php echo esc_attr( $field['id_base'] ); ?>"><?php echo esc_html( $field['title'] ); ?></option>
 												<?php endforeach; ?>
 											</select>
 											<input type="submit" class="button show_modal" name="add_field"
-												   value="<?php esc_html_e( 'Add', \JustCustomFields::TEXTDOMAIN ); ?>"/>
+												   value="<?php esc_html_e( 'Add', 'jcf' ); ?>"/>
 											<?php echo jcf_print_loader_img(); ?>
 										</fieldset>
 									</form>
@@ -164,14 +164,14 @@
 		<?php // Add fieldset Form. ?>
 		<div class="jcf_columns jcf_width50p">
 			<div class="jcf_inner_box">
-				<h3 class="header"><?php esc_html_e( 'Add Fieldset', \JustCustomFields::TEXTDOMAIN ); ?></h3>
+				<h3 class="header"><?php esc_html_e( 'Add Fieldset', 'jcf' ); ?></h3>
 				<div class="jcf_inner_content">
 					<form action="#" id="jcform_add_fieldset" method="post" class="jcf_form_horiz">
 						<fieldset>
-							<label for="jcf_fieldset_title"><?php esc_html_e( 'Title:', \JustCustomFields::TEXTDOMAIN ); ?> </label>
+							<label for="jcf_fieldset_title"><?php esc_html_e( 'Title:', 'jcf' ); ?> </label>
 							<input type="text" class="text" name="jcf_fieldset_title" id="jcf_fieldset_title" value=""/>
 							<input type="submit" class="button" name="jcf_add_fieldset"
-								   value="<?php esc_html_e( 'Add', \JustCustomFields::TEXTDOMAIN ); ?>"/>
+								   value="<?php esc_html_e( 'Add', 'jcf' ); ?>"/>
 							<?php echo jcf_print_loader_img(); ?>
 						</fieldset>
 					</form>

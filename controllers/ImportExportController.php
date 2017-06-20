@@ -26,7 +26,7 @@ class ImportExportController extends core\Controller {
 	 * Init routes for import/export page
 	 */
 	public function init_routes() {
-		$page_title = __( 'Import/Export', \JustCustomFields::TEXTDOMAIN );
+		$page_title = __( 'Import/Export', 'jcf' );
 		add_submenu_page( null, $page_title, $page_title, 'manage_options', 'jcf_import_export', array(
 			$this,
 			'actionIndex',

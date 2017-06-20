@@ -1,19 +1,28 @@
+<?php
+/**
+ * Import/export view. Export section
+ */
+?>
+
 <div class="edit-attachment-frame">
 	<div class="media-frame-title">
-		<h1><?php _e('Just Custom Fields Export', \JustCustomFields::TEXTDOMAIN); ?></h1>
+		<h1><?php esc_html_e( 'Just Custom Fields Export', 'jcf' ); ?></h1>
 	</div>
 	<div class="media-frame-content">
 		<div class="jcf-export-fields" id="jcf-export-fields">
-			<?php if ( $post_types ): ?>
-				<form method="post" id="jcf_export_fields" action="<?php echo get_site_url(); ?>/wp-admin/admin-ajax.php" >
-					<input type="hidden" name ="action" value="jcf_export_fields" />
+			<?php if ( $post_types ) : ?>
+				<form method="post" id="jcf_export_fields"
+					  action="<?php echo get_site_url(); ?>/wp-admin/admin-ajax.php">
+					<input type="hidden" name="action" value="jcf_export_fields"/>
 
 					<div id="jcf_save_export_fields_content">
-						<p><?php _e('You should choose Fields to export:', \JustCustomFields::TEXTDOMAIN); ?></p>
+						<p><?php esc_html_e( 'You should choose Fields to export:', 'jcf' ); ?></p>
 
 						<ul class="dotted-list jcf-bold jcf_width66p">
-							<?php foreach ( $post_types as $key => $post_type ):
-								if ( empty($fieldsets[$key]) ) continue;
+							<?php foreach ( $post_types as $key => $post_type ) :
+								if ( empty( $fieldsets[ $key ] ) ) {
+									continue;
+								}
 								?>
 								<li class="jcf_export-content-type">
 									<h3>
@@ -22,28 +31,29 @@
 												   name="select_content_type"
 												   value=""
 												   class="jcf_content_type_select_all"
-												   data-cpt_container="#<?php echo "jcf_posttype_{$key}"; ?>"
+												   data-cpt_container="#<?php echo esc_attr( "jcf_posttype_{$key}" ); ?>"
 											/>
 										</span>
-										<?php _e('Content type: ', \JustCustomFields::TEXTDOMAIN); ?><?php echo $key; ?>
+										<?php esc_html_e( 'Content type: ', 'jcf' ); ?><?php echo esc_html( $key ); ?>
 									</h3>
 
 									<?php
-										$pt_key = $key;
-										$post_type_fieldsets = $fieldsets[$key];
+									$pt_key              = $key;
+									$post_type_fieldsets = $fieldsets[ $key ];
 									?>
-									<div id="<?php echo "jcf_posttype_{$pt_key}"; ?>">
-										<?php include(JCF_ROOT . '/views/import_export/_fields.php'); ?>
+									<div id="<?php echo esc_attr( "jcf_posttype_{$pt_key}" ); ?>">
+										<?php include( JCF_ROOT . '/views/import_export/_fields.php' ); ?>
 									</div>
 								</li>
-							<?php endforeach; // foreach post types  ?>
+							<?php endforeach; // foreach post types.  ?>
 						</ul>
 					</div>
 					<div class="jcf-modal-button">
-						<input type="submit" class="button-primary" name="export_fields" value="<?php _e('Export', \JustCustomFields::TEXTDOMAIN); ?>" />
+						<input type="submit" class="button-primary" name="export_fields"
+							   value="<?php esc_html_e( 'Export', 'jcf' ); ?>"/>
 					</div>
 				</form>
-			<?php endif; // if (post types) ?>
+			<?php endif; // if (post types). ?>
 		</div>
 	</div>
 </div>
