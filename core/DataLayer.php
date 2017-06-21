@@ -6,17 +6,16 @@ namespace jcf\core;
  * Abstract class for all data layers
  * Define methods to be defined in every child DataLayer
  */
-abstract class DataLayer
-{
+abstract class DataLayer {
 	/**
-	 * fields settings
+	 * Fields settings
 	 *
 	 * @var array
 	 */
 	protected $_fields = array();
 
 	/**
-	 * fieldset settings
+	 * Fieldset settings
 	 *
 	 * @var array
 	 */
@@ -27,10 +26,9 @@ abstract class DataLayer
 	 *
 	 * On create find fields and fieldsets
 	 */
-	public function __construct()
-	{
-		$this->setFields();
-		$this->setFieldsets();
+	public function __construct() {
+		$this->set_fields();
+		$this->set_fieldsets();
 	}
 
 	/**
@@ -38,8 +36,7 @@ abstract class DataLayer
 	 *
 	 * @return array
 	 */
-	public function getFields()
-	{
+	public function get_fields() {
 		return $this->_fields;
 	}
 
@@ -48,53 +45,55 @@ abstract class DataLayer
 	 *
 	 * @return array
 	 */
-	public function getFieldsets()
-	{
+	public function get_fieldsets() {
 		return $this->_fieldsets;
 	}
 
 	/**
 	 * Method to get version of storage
-	 * 
+	 *
 	 * @return array
 	 */
-	abstract public function getStorageVersion();
+	abstract public function get_storage_version();
 
 	/**
 	 * Method to update version of storage till last
 	 *
-	 * @param float|null $version
+	 * @param float|null $version Version.
+	 *
 	 * @return boolean
 	 */
-	abstract public function saveStorageVersion( $version = null );
+	abstract public function save_storage_version( $version = null );
 
 	/**
 	 * Fields settings setter
 	 *
-	 * @param array|null $fields
+	 * @param array|null $fields Fields.
+	 *
 	 * @return mixed
 	 */
-	abstract public function setFields( $fields = null );
+	abstract public function set_fields( $fields = null );
 
 	/**
 	 * Method to save fields settings into the storage collector
 	 *
 	 * @return mixed
 	 */
-	abstract public function saveFieldsData();
+	abstract public function save_fields_data();
 
 	/**
 	 * Fieldsets settings setter
 	 *
-	 * @param array|null $fields
+	 * @param array|null $fieldsets Fieldsets.
+	 *
 	 * @return mixed
 	 */
-	abstract public function setFieldsets( $fieldsets = null );
+	abstract public function set_fieldsets( $fieldsets = null );
 
 	/**
 	 * Method to save fieldsets settings into the storage collector
 	 *
 	 * @return mixed
 	 */
-	abstract public function saveFieldsetsData();
+	abstract public function save_fieldsets_data();
 }

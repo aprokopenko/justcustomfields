@@ -5,8 +5,10 @@ namespace jcf\models;
 use jcf\core;
 use jcf\models;
 
-class Fieldset extends core\Model
-{
+/**
+ * Class Fieldset
+ */
+class Fieldset extends core\Model {
 	const POSITION_ADVANCED = 'advanced';
 	const POSITION_SIDE = 'side';
 	const POSITION_NORMAL = 'normal';
@@ -15,64 +17,103 @@ class Fieldset extends core\Model
 	const PRIO_HIGH = 'high';
 	const PRIO_LOW = 'low';
 
+	/**
+	 * Title
+	 *
+	 * @var $title
+	 */
 	public $title;
+
+	/**
+	 * Post type
+	 *
+	 * @var $post_type
+	 */
 	public $post_type;
+
+	/**
+	 * Fieldset ID
+	 *
+	 * @var $fieldset_id
+	 */
 	public $fieldset_id;
+
+	/**
+	 * Fieldset order
+	 *
+	 * @var $fieldsets_order
+	 */
 	public $fieldsets_order;
+
+	/**
+	 * Position
+	 *
+	 * @var $position
+	 */
 	public $position;
+
+	/**
+	 * Priority
+	 *
+	 * @var $priority
+	 */
 	public $priority;
 
 	/**
 	 * Return number of registered fields and fieldsets for specific post type
+	 *
 	 * @return array
 	 */
-	public function getFieldsCounter()
-	{
-		$fields = $this->_dL->getFields();
-		$fieldsets = $this->_dL->getFieldsets();
+	public function get_fields_counter() {
+		$fields     = $this->_dl->get_fields();
+		$fieldsets  = $this->_dl->get_fieldsets();
 		$post_types = jcf_get_post_types();
 		$taxonomies = jcf_get_taxonomies();
 
 		foreach ( $post_types as $key => $post_type ) {
 			$pt = $post_type->name;
 
-			$count[$pt] = array(
+			$count[ $pt ] = array(
 				'fieldsets' => 0,
-				'fields' => 0,
+				'fields'    => 0,
 			);
 
-			if ( empty($fields[$pt]) ) continue;
+			if ( empty( $fields[ $pt ] ) ) {
+				continue;
+			}
 
-			$field_keys = array_keys($fields[$pt]);
+			$field_keys = array_keys( $fields[ $pt ] );
 
-			if ( !empty($fieldsets[$pt]) ) {
-				$count[$pt]['fieldsets'] = count($fieldsets[$pt]);
+			if ( ! empty( $fieldsets[ $pt ] ) ) {
+				$count[ $pt ]['fieldsets'] = count( $fieldsets[ $pt ] );
 
-				foreach ($fieldsets[$pt] as $fieldset) {
-					$fieldset_fields = array_keys($fieldset['fields']);
-					$live_fields = array_intersect($fieldset_fields, $field_keys);
-					$count[$pt]['fields'] += count($live_fields);
+				foreach ( $fieldsets[ $pt ] as $fieldset ) {
+					$fieldset_fields        = array_keys( $fieldset['fields'] );
+					$live_fields            = array_intersect( $fieldset_fields, $field_keys );
+					$count[ $pt ]['fields'] += count( $live_fields );
 				}
 			}
 		}
-		
+
 		foreach ( $taxonomies as $tax_key => $taxonomy ) {
-			$count[$tax_key] = array(
+			$count[ $tax_key ] = array(
 				'fieldsets' => 0,
-				'fields' => 0,
+				'fields'    => 0,
 			);
 
-			if ( empty($fields[$tax_key]) ) continue;
+			if ( empty( $fields[ $tax_key ] ) ) {
+				continue;
+			}
 
-			$field_keys = array_keys($fields[$tax_key]);
+			$field_keys = array_keys( $fields[ $tax_key ] );
 
-			if ( !empty($fieldsets[$tax_key]) ) {
-				$count[$tax_key]['fieldsets'] = count($fieldsets[$tax_key]);
+			if ( ! empty( $fieldsets[ $tax_key ] ) ) {
+				$count[ $tax_key ]['fieldsets'] = count( $fieldsets[ $tax_key ] );
 
-				foreach ($fieldsets[$tax_key] as $fieldset) {
-					$fieldset_fields = array_keys($fieldset['fields']);
-					$live_fields = array_intersect($fieldset_fields, $field_keys);
-					$count[$tax_key]['fields'] += count($live_fields);
+				foreach ( $fieldsets[ $tax_key ] as $fieldset ) {
+					$fieldset_fields             = array_keys( $fieldset['fields'] );
+					$live_fields                 = array_intersect( $fieldset_fields, $field_keys );
+					$count[ $tax_key ]['fields'] += count( $live_fields );
 				}
 			}
 		}
@@ -82,135 +123,147 @@ class Fieldset extends core\Model
 
 	/**
 	 * Get fields and fieldsets by post_type
-	 * @param string $post_type Name post type
+	 *
+	 * @param string $post_type Name post type.
+	 *
 	 * @return array
 	 */
-	public function findByPostType( $post_type )
-	{
-		$fieldsets = $this->_dL->getFieldsets();
-		if ( !empty($fieldsets[$post_type]) )
-			return $fieldsets[$post_type];
+	public function find_by_post_type( $post_type ) {
+		$fieldsets = $this->_dl->get_fieldsets();
+		if ( ! empty( $fieldsets[ $post_type ] ) ) {
+			return $fieldsets[ $post_type ];
+		}
 
 		return array();
 	}
 
 	/**
 	 * Get all fieldsets
+	 *
 	 * @return array
 	 */
-	public function findAll()
-	{
-		return $this->_dL->getFieldsets();
+	public function find_all() {
+		return $this->_dl->get_fieldsets();
 	}
 
 	/**
 	 * Get fieldset by ID
-	 * @param string $fieldset_id
+	 *
+	 * @param string $fieldset_id Fieldset ID.
+	 *
 	 * @return array
 	 */
-	public function findById( $fieldset_id )
-	{
-		$fieldsets = $this->_dL->getFieldsets();
-		if ( empty($fieldsets[$this->post_type][$fieldset_id]) ) {
-			$this->addError(__('Fieldset not found', \JustCustomFields::TEXTDOMAIN));
+	public function find_by_id( $fieldset_id ) {
+		$fieldsets = $this->_dl->get_fieldsets();
+		if ( empty( $fieldsets[ $this->post_type ][ $fieldset_id ] ) ) {
+			$this->add_error( __( 'Fieldset not found', 'jcf' ) );
+
 			return false;
 		}
-		return $fieldsets[$this->post_type][$fieldset_id];
+
+		return $fieldsets[ $this->post_type ][ $fieldset_id ];
 	}
 
 	/**
 	 * Create new fieldset with $this->_request params
+	 *
 	 * @return boolean
 	 */
-	public function create()
-	{
-		if ( empty($this->title) && empty($this->import_data) ) {
-			$this->addError(__('Title field is required.', \JustCustomFields::TEXTDOMAIN));
+	public function create() {
+		if ( empty( $this->title ) && empty( $this->import_data ) ) {
+			$this->add_error( __( 'Title field is required.', 'jcf' ) );
+
 			return false;
 		}
 
-		$slug = $this->createSlug();
+		$slug = $this->create_slug();
 
-		$fieldsets = $this->_dL->getFieldsets();
+		$fieldsets = $this->_dl->get_fieldsets();
 
-		// check exists
-		if ( isset($fieldsets[$this->post_type][$slug]) ) {
-			$this->addError(__('Such fieldset already exists.', \JustCustomFields::TEXTDOMAIN));
+		// check exists.
+		if ( isset( $fieldsets[ $this->post_type ][ $slug ] ) ) {
+			$this->add_error( __( 'Such fieldset already exists.', 'jcf' ) );
+
 			return false;
 		}
 
-		$fieldsets[$this->post_type][$slug] = array(
-			'id' => $slug,
-			'title' => $this->title,
+		$fieldsets[ $this->post_type ][ $slug ] = array(
+			'id'       => $slug,
+			'title'    => $this->title,
 			'position' => $this->position,
 			'priority' => $this->priority,
-			'fields' => array()
+			'fields'   => array(),
 		);
 
-		return $this->_save($fieldsets);
+		return $this->_save( $fieldsets );
 	}
 
 	/**
 	 * Delete fieldset with $this->_request params
+	 *
 	 * @return boolean
 	 */
-	public function delete()
-	{
-		if ( empty($this->fieldset_id) ) {
-			$this->addError(__('Wrong params passed.', \JustCustomFields::TEXTDOMAIN));
+	public function delete() {
+		if ( empty( $this->fieldset_id ) ) {
+			$this->add_error( __( 'Wrong params passed.', 'jcf' ) );
+
 			return false;
 		}
 
-		$fieldsets = $this->_dL->getFieldsets();
-		if ( isset($fieldsets[$this->post_type][$this->fieldset_id]) )
-			unset($fieldsets[$this->post_type][$this->fieldset_id]);
+		$fieldsets = $this->_dl->get_fieldsets();
+		if ( isset( $fieldsets[ $this->post_type ][ $this->fieldset_id ] ) ) {
+			unset( $fieldsets[ $this->post_type ][ $this->fieldset_id ] );
+		}
 
-		return $this->_save($fieldsets);
+		return $this->_save( $fieldsets );
 	}
 
 	/**
 	 * Update fieldset with $this->_request params
+	 *
 	 * @return boolean
 	 */
-	public function update()
-	{
-		$fieldsets = $this->_dL->getFieldsets();
+	public function update() {
+		$fieldsets = $this->_dl->get_fieldsets();
 
-		if ( empty($fieldsets[$this->post_type][$this->fieldset_id]) ) {
-			$this->addError(__('Wrong data passed.', \JustCustomFields::TEXTDOMAIN));
+		if ( empty( $fieldsets[ $this->post_type ][ $this->fieldset_id ] ) ) {
+			$this->add_error( __( 'Wrong data passed.', 'jcf' ) );
+
 			return false;
 		}
 
-		if ( empty($this->title) ) {
-			$this->addError(__('Title field is required.', \JustCustomFields::TEXTDOMAIN));
+		if ( empty( $this->title ) ) {
+			$this->add_error( __( 'Title field is required.', 'jcf' ) );
+
 			return false;
 		}
 
-		$fieldsets[$this->post_type][$this->fieldset_id]['title'] = $this->title;
-		$fieldsets[$this->post_type][$this->fieldset_id]['position'] = $this->position;
-		$fieldsets[$this->post_type][$this->fieldset_id]['priority'] = $this->priority;
+		$fieldsets[ $this->post_type ][ $this->fieldset_id ]['title']    = $this->title;
+		$fieldsets[ $this->post_type ][ $this->fieldset_id ]['position'] = $this->position;
+		$fieldsets[ $this->post_type ][ $this->fieldset_id ]['priority'] = $this->priority;
 
-		return $this->_save($fieldsets);
+		return $this->_save( $fieldsets );
 	}
 
 	/**
 	 * Sort fieldsets with $this->_request params
+	 *
 	 * @return boolean
 	 */
-	public function sort()
-	{
-		$sort = explode(',', trim($this->fieldsets_order, ','));
-		$fieldsets = $this->_dL->getFieldsets();
+	public function sort() {
+		$sort      = explode( ',', trim( $this->fieldsets_order, ',' ) );
+		$fieldsets = $this->_dl->get_fieldsets();
 
 		$ordered_fieldsets = array();
 		foreach ( $sort as $key ) {
-			$ordered_fieldsets[$key] = $fieldsets[$this->post_type][$key];
+			$ordered_fieldsets[ $key ] = $fieldsets[ $this->post_type ][ $key ];
 		}
 
-		$fieldsets[$this->post_type] = $ordered_fieldsets;
+		$fieldsets[ $this->post_type ] = $ordered_fieldsets;
 
-		if ( !$this->_save($fieldsets) ) {
-			$this->addError(__('Sorting isn\'t changed.', \JustCustomFields::TEXTDOMAIN));
+		if ( ! $this->_save( $fieldsets ) ) {
+			$this->add_error( __( 'Sorting isn\'t changed.', 'jcf' ) );
+
 			return false;
 		}
 
@@ -219,42 +272,44 @@ class Fieldset extends core\Model
 
 	/**
 	 * Create slug for new fieldset
+	 *
 	 * @return string
 	 */
-	public function createSlug()
-	{
-		$slug = preg_replace('/[^a-z0-9\-\_\s]/i', '', $this->title);
-		$trimed_slug = trim($slug);
+	public function create_slug() {
+		$slug        = preg_replace( '/[^a-z0-9\-\_\s]/i', '', $this->title );
+		$trimed_slug = trim( $slug );
 
 		if ( $trimed_slug == '' ) {
-			$slug = 'jcf-fieldset-' . rand(0, 10000);
+			$slug = 'jcf-fieldset-' . rand( 0, 10000 );
+		} else {
+			$slug = sanitize_title( $this->title );
 		}
-		else {
-			$slug = sanitize_title($this->title);
-		}
+
 		return $slug;
 	}
 
 	/**
 	 * Save fieldsets
-	 * @param array $fieldsets
+	 *
+	 * @param array $fieldsets Fieldsets.
+	 *
 	 * @return boolean
 	 */
-	protected function _save( $fieldsets )
-	{
-		$this->_dL->setFieldsets($fieldsets);
-		$save = $this->_dL->saveFieldsetsData();
-		return !empty($save);
+	protected function _save( $fieldsets ) {
+		$this->_dl->set_fieldsets( $fieldsets );
+		$save = $this->_dl->save_fieldsets_data();
+
+		return ! empty( $save );
 	}
 
 	/**
 	 * Check what post type kind of given post type ID
 	 *
-	 * @param string $post_type Post type ID or Prefixed taxonomy ID
+	 * @param string $post_type Post type ID or Prefixed taxonomy ID.
+	 *
 	 * @return string
 	 */
-	public static function getPostTypeKind( $post_type )
-	{
-		return Field::getPostTypeKind( $post_type );
+	public static function get_post_type_kind( $post_type ) {
+		return Field::get_post_type_kind( $post_type );
 	}
 }

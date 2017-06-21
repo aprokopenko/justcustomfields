@@ -63,7 +63,7 @@ function jcf_googlemaps_init_field(i) {
     jQuery( '#' + jcf_googlemap.address_id ).val('');
 
     return false;
-  })
+  });
 
   // set button
   document.getElementById( jcf_googlemap.set_btn_id ).addEventListener('click', function (e) {
@@ -179,4 +179,4 @@ jQuery(document).ready(function(){
     jQuery(this).closest('.form-field').find('.jcf_googlemaps_coordinates').toggle();
   })
 
-})
+});

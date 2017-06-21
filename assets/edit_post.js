@@ -228,7 +228,7 @@ function jcf_do_action(action, _this) {
     }
 
     //console.log({tags: selected_tags, categories: selected_cats, page_tpl: selected_page_template});
-  }
+  };
 
   /**
    * Check if rule settings match the real situation on screen
@@ -294,7 +294,7 @@ function jcf_do_action(action, _this) {
       var taxonomy = $(this).attr('id').replace('tax-input-', '');
       var tags = tags.split(',');
       selected[taxonomy] = tags;
-    })
+    });
     return selected;
   }
 
@@ -319,7 +319,7 @@ function jcf_do_action(action, _this) {
           selected[taxonomy] = [];
 
       selected[taxonomy].push(term);
-    })
+    });
     return selected;
   }
 

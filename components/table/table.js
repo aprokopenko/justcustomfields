@@ -18,7 +18,7 @@ jQuery(document).ready(function() {
       table.find('tr.no-rows').show();
     }
     jQuery(this).parent().parent().remove();
-  })
+  });
 
   jQuery('table.sortable').each(function() {
     jQuery(this).find('tbody').sortable({containment: jQuery(this), scroll: false, items: 'tr[class!=table-header]'});
