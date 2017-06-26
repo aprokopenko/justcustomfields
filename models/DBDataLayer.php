@@ -10,8 +10,7 @@ use jcf\models;
  *
  * Define DataLayer for Database storage. Can save in single or Multisite modes
  */
-class DBDataLayer extends core\DataLayer
-{
+class DBDataLayer extends core\DataLayer {
 	const FIELDS_OPTION = 'jcf_fields';
 	const FIELDSETS_OPTION = 'jcf_fieldsets';
 	const STORAGEVER_OPTION = 'jcf_storage_version';
@@ -21,117 +20,123 @@ class DBDataLayer extends core\DataLayer
 	 *
 	 * @var string
 	 */
-	protected $_networkMode;
+	protected $_network_mode;
 
 	/**
 	 * DBDataLayer constructor.
 	 *
 	 * Init network mode settings to be used in get/update methods
 	 */
-	public function __construct()
-	{
-		$this->_networkMode = models\Settings::getNetworkMode();
+	public function __construct() {
+		$this->_network_mode = models\Settings::get_network_mode();
 
 		parent::__construct();
 	}
 
 	/**
 	 * Setter/Init for $this->_fields property
-	 * @param array $fields
+	 *
+	 * @param array $fields Field.
+	 *
+	 * @return bool
 	 */
-	public function setFields( $fields = null )
-	{
-		if ( !is_null($fields) ) {
+	public function set_fields( $fields = null ) {
+		if ( ! is_null( $fields ) ) {
 			$this->_fields = $fields;
+
 			return;
 		}
 
-		$this->_fields = $this->_getOptions( self::FIELDS_OPTION );
+		$this->_fields = $this->_get_options( self::FIELDS_OPTION );
 	}
 
 	/**
 	 * Update fields in wp-options or wp-site-options table
 	 */
-	public function saveFieldsData()
-	{
-		return $this->_updateOptions(self::FIELDS_OPTION, $this->_fields);
+	public function save_fields_data() {
+		return $this->_update_options( self::FIELDS_OPTION, $this->_fields );
 	}
 
 	/**
 	 * Setter/Init for Fieldsets
-	 * @param array $fieldsets
+	 *
+	 * @param array $fieldsets Fieldset.
+	 *
+	 * @return bool
 	 */
-	public function setFieldsets( $fieldsets = null )
-	{
-		if ( !is_null($fieldsets) ) {
+	public function set_fieldsets( $fieldsets = null ) {
+		if ( ! is_null( $fieldsets ) ) {
 			$this->_fieldsets = $fieldsets;
+
 			return;
 		}
 
-		$this->_fieldsets = $this->_getOptions( self::FIELDSETS_OPTION );
+		$this->_fieldsets = $this->_get_options( self::FIELDSETS_OPTION );
 	}
 
 	/**
 	 * Save fieldsets
 	 */
-	public function saveFieldsetsData()
-	{
-		return $this->_updateOptions(self::FIELDSETS_OPTION, $this->_fieldsets);
+	public function save_fieldsets_data() {
+		return $this->_update_options( self::FIELDSETS_OPTION, $this->_fieldsets );
 	}
 
 	/**
 	 * Get storage version
+	 *
 	 * @return array
 	 */
-	public function getStorageVersion()
-	{
-		return $this->_getOptions( self::STORAGEVER_OPTION, '' );
+	public function get_storage_version() {
+		return $this->_get_options( self::STORAGEVER_OPTION, '' );
 	}
-	
+
 	/**
 	 * Update storage version
-	 * @param float|null $version
+	 *
+	 * @param float|null $version Version.
+	 *
 	 * @return boolean
 	 */
-	public function saveStorageVersion($version = null)
-	{
-		if ( empty($version) ) {
+	public function save_storage_version( $version = null ) {
+		if ( empty( $version ) ) {
 			$version = \JustCustomFields::VERSION;
 		}
 
-		return $this->_updateOptions(self::STORAGEVER_OPTION, $version);
+		return $this->_update_options( self::STORAGEVER_OPTION, $version );
 	}
-	
+
 	/**
 	 * Check NetworkMode to be set to global (multisite)
 	 *
 	 * @return bool
 	 */
-	protected function isSettingsGlobal()
-	{
-		return $this->_networkMode == models\Settings::CONF_MS_NETWORK;
+	protected function is_settings_global() {
+		return models\Settings::CONF_MS_NETWORK === $this->_network_mode;
 	}
 
 	/**
 	 * Get options with wp-options
-	 * @param string $key
-	 * @param mixed  $default
+	 *
+	 * @param string $key Key.
+	 * @param mixed  $default Default.
+	 *
 	 * @return array
 	 */
-	protected function _getOptions( $key, $default = array() )
-	{
-		return $this->isSettingsGlobal() ? get_site_option($key, $default) : get_option($key, $default);
+	protected function _get_options( $key, $default = array() ) {
+		return $this->is_settings_global() ? get_site_option( $key, $default ) : get_option( $key, $default );
 	}
 
 	/**
-	 * 	Update options with wp-options
-	 * 	@param string $key Option name
-	 * 	@param array $value Values with option name
-	 * 	@return boolean
+	 * Update options with wp-options
+	 *
+	 * @param string $key Option name.
+	 * @param array  $value Values with option name.
+	 *
+	 * @return boolean
 	 */
-	protected function _updateOptions( $key, $value )
-	{
-		$this->isSettingsGlobal() ? update_site_option($key, $value) : update_option($key, $value);
+	protected function _update_options( $key, $value ) {
+		$this->is_settings_global() ? update_site_option( $key, $value ) : update_option( $key, $value );
+
 		return true;
 	}
 

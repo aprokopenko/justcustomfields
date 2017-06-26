@@ -1,0 +1,899 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: JCF\n"
+"POT-Creation-Date: 2017-06-26 17:39+0300\n"
+"PO-Revision-Date: 2017-06-26 17:39+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;esc_html_e;esc_html__;esc_attr_e;esc_attr__;_\n"
+"X-Poedit-SearchPath-0: languages\n"
+"X-Poedit-SearchPath-1: .\n"
+
+#: components/checkbox/JustField_Checkbox.php:20
+msgid "Checkbox"
+msgstr "Флажок"
+
+#: components/checkbox/JustField_Checkbox.php:32
+msgid "Please check settings. Values are empty"
+msgstr "Проверьте настройки, пожалуйста. Найдены пустые значения"
+
+#: components/checkbox/JustField_Checkbox.php:83
+#: components/collection/JustField_Collection.php:171
+#: components/datepicker/JustField_DatePicker.php:79
+#: components/googlemaps/JustField_GoogleMaps.php:160
+#: components/inputtext/JustField_InputText.php:57
+#: components/relatedcontent/JustField_RelatedContent.php:162
+#: components/select/JustField_Select.php:70
+#: components/selectmultiple/JustField_SelectMultiple.php:71
+#: components/selectmultiple/views/form.tpl.php:9
+#: components/simplemedia/JustField_SimpleMedia.php:129
+#: components/table/JustField_Table.php:126
+#: components/textarea/JustField_Textarea.php:96 views/fieldsets/form.php:29
+#: views/fieldsets/index.php:171
+msgid "Title:"
+msgstr "Название:"
+
+#: components/checkbox/JustField_Checkbox.php:89
+#: components/selectmultiple/JustField_SelectMultiple.php:78
+#: components/selectmultiple/views/form.tpl.php:11
+msgid "Settings:"
+msgstr "Настройки:"
+
+#: components/checkbox/JustField_Checkbox.php:93
+#: components/select/JustField_Select.php:80
+#: components/selectmultiple/JustField_SelectMultiple.php:82
+#: components/selectmultiple/views/form.tpl.php:13
+msgid ""
+"Parameters like (you can use just \"label\" if \"id\" is the same):"
+"<br>label1|id1<br>label2|id2<br>label3"
+msgstr ""
+"Пример параметров (Вы можете указать только \"label\", если \"id\" "
+"называется аналогично):<br>label1|id1<br>label2|id2<br>label3"
+
+#: components/checkbox/JustField_Checkbox.php:96
+#: components/googlemaps/JustField_GoogleMaps.php:166
+#: components/inputtext/JustField_InputText.php:62
+#: components/relatedcontent/JustField_RelatedContent.php:189
+#: components/select/JustField_Select.php:92
+#: components/selectmultiple/JustField_SelectMultiple.php:85
+#: components/selectmultiple/views/form.tpl.php:14
+#: components/simplemedia/JustField_SimpleMedia.php:143
+#: components/table/JustField_Table.php:140
+#: components/textarea/JustField_Textarea.php:109
+msgid "Description:"
+msgstr "Описание:"
+
+#: components/collection/JustField_Collection.php:48
+msgid "Collection"
+msgstr "Коллекция"
+
+#: components/collection/JustField_Collection.php:112
+#: components/collection/JustField_Collection.php:392
+#: components/relatedcontent/JustField_RelatedContent.php:123
+msgid "UNDO"
+msgstr "ОТМЕНА"
+
+#: components/collection/JustField_Collection.php:147
+#, php-format
+msgid "Add %s Item"
+msgstr "Добавить %s элемент"
+
+#: components/datepicker/JustField_DatePicker.php:27
+msgid "Date Picker"
+msgstr "Выбор даты"
+
+#: components/datepicker/JustField_DatePicker.php:89
+msgid "Show month/year select boxes"
+msgstr "Показывать выбор месяца/года"
+
+#: components/datepicker/JustField_DatePicker.php:92
+msgid "Date format:"
+msgstr "Формат даты:"
+
+#: components/datepicker/JustField_DatePicker.php:96
+msgid "Example:"
+msgstr "Пример:"
+
+#: components/datepicker/JustField_DatePicker.php:98
+msgid "look more about date formats"
+msgstr "посмотреть больше про формат даты"
+
+#: components/googlemaps/JustField_GoogleMaps.php:28
+msgid "Google Maps"
+msgstr "Карты Google"
+
+#: components/googlemaps/JustField_GoogleMaps.php:156
+msgid "Please set Google Maps API Key on Settings page."
+msgstr "Пожалуйста, вставьте Google Maps API Key на странице настроек"
+
+#: components/inputtext/JustField_InputText.php:20
+msgid "Input Text"
+msgstr "Текстовое поле"
+
+#: components/relatedcontent/JustField_RelatedContent.php:18
+msgid "Related Content"
+msgstr "Существующий контент"
+
+#: components/relatedcontent/JustField_RelatedContent.php:121
+msgid "To be deleted"
+msgstr "Будет удалено"
+
+#: components/relatedcontent/JustField_RelatedContent.php:136
+#: views/fields/collection.php:26 views/fields/form.php:9
+#: views/fields/form.php:83 views/fieldsets/index.php:151
+#: views/fieldsets/index.php:174
+msgid "Add"
+msgstr "Добавить"
+
+#: components/relatedcontent/JustField_RelatedContent.php:153
+msgid "Start typing entry Title to see the list."
+msgstr ""
+"Начните вводить Название записи, которую хотите добавить, чтобы увидеть "
+"доступные варианты"
+
+#: components/relatedcontent/JustField_RelatedContent.php:169
+msgid "Post type:"
+msgstr "Тип контента:"
+
+#: components/relatedcontent/JustField_RelatedContent.php:172
+#: components/simplemedia/JustField_SimpleMedia.php:138
+msgid "All"
+msgstr "Все"
+
+#: components/relatedcontent/JustField_RelatedContent.php:180
+msgid "Input type:"
+msgstr "Метод ввода:"
+
+#: components/relatedcontent/JustField_RelatedContent.php:183
+msgid "Autocomplete"
+msgstr "Автоподсказки (Автозаполнение)"
+
+#: components/relatedcontent/JustField_RelatedContent.php:184
+msgid "Dropdown list"
+msgstr "В виде списка"
+
+#: components/select/JustField_Select.php:20 functions/helpers.php:190
+msgid "Select"
+msgstr "Список"
+
+#: components/select/JustField_Select.php:76
+msgid "Options:"
+msgstr "Значения:"
+
+#: components/select/JustField_Select.php:83
+msgid "Empty option:"
+msgstr "Пустое значение:"
+
+#: components/select/JustField_Select.php:86
+msgid "ex. Choose item from the list"
+msgstr "напр. Выберите значение из списка"
+
+#: components/select/JustField_Select.php:89
+msgid "Leave blank to disable empty option"
+msgstr "Оставьте пустым чтобы отключить пустое значение"
+
+#: components/selectmultiple/JustField_SelectMultiple.php:20
+msgid "Select Multiple"
+msgstr "Список (мульти)"
+
+#: components/simplemedia/JustField_SimpleMedia.php:24
+msgid "Simple Media"
+msgstr "Медиафайл"
+
+#: components/simplemedia/JustField_SimpleMedia.php:35
+msgid "Select image"
+msgstr "Выбрать картинку"
+
+#: components/simplemedia/JustField_SimpleMedia.php:35
+msgid "Select file"
+msgstr "Выбрать файл"
+
+#: components/simplemedia/JustField_SimpleMedia.php:51
+msgid "Update image"
+msgstr "Обновить картинку"
+
+#: components/simplemedia/JustField_SimpleMedia.php:51
+msgid "Update file"
+msgstr "Обновить файл"
+
+#: components/simplemedia/JustField_SimpleMedia.php:98
+#: functions/helpers.php:185 views/fields/collection.php:52
+#: views/fields/form.php:85 views/fieldsets/form.php:90
+#: views/fieldsets/index.php:44 views/fieldsets/index.php:89
+msgid "Delete"
+msgstr "Удалить"
+
+#: components/simplemedia/JustField_SimpleMedia.php:135
+msgid "Type of files:"
+msgstr "Тип файлов:"
+
+#: components/simplemedia/JustField_SimpleMedia.php:139
+msgid "Only Images"
+msgstr "Только картинки"
+
+#: components/table/JustField_Table.php:20
+msgid "Table"
+msgstr "Таблица"
+
+#: components/table/JustField_Table.php:56
+msgid "No data yet."
+msgstr "Нет данных"
+
+#: components/table/JustField_Table.php:95
+msgid "Add row"
+msgstr "Добавить строку"
+
+#: components/table/JustField_Table.php:99
+msgid "Wrong columns configuration. Please check widget settings."
+msgstr "Неправильная конфигурация столбцов. Проверьте, пожалуйста, настройки"
+
+#: components/table/JustField_Table.php:132
+msgid "Columns:"
+msgstr "Столбцы:"
+
+#: components/table/JustField_Table.php:137
+#, php-format
+msgid "Format: %colname|%coltitle<br/><i>Example: username|User name"
+msgstr "Формат: %colname|%coltitle<br/><i>Пример: username|User name"
+
+#: components/textarea/JustField_Textarea.php:20
+msgid "Textarea"
+msgstr "Текстовое поле (мульти)"
+
+#: components/textarea/JustField_Textarea.php:106
+msgid "Use Editor for this textarea:"
+msgstr "Использовать Визуальный редактор:"
+
+#: controllers/FieldsetController.php:41 views/_tabs.php:9
+#: views/fieldsets/index.php:18
+msgid "Fields"
+msgstr "Поля"
+
+#: controllers/ImportExportController.php:29 views/_tabs.php:13
+msgid "Import/Export"
+msgstr "Импорт/Экспорт"
+
+#: controllers/PostTypeController.php:241
+#: controllers/TaxonomyController.php:244
+msgid "Select Picture"
+msgstr "Выбрать картинку"
+
+#: controllers/PostTypeController.php:244
+#: controllers/TaxonomyController.php:247
+msgid "Select File"
+msgstr "Выбрать файл"
+
+#: controllers/PostTypeController.php:247
+#: controllers/TaxonomyController.php:250
+msgid "Insert into Post"
+msgstr "Вставить в пост"
+
+#: controllers/SettingsController.php:25 views/_tabs.php:11
+msgid "Settings"
+msgstr "Настройки"
+
+#: core/JustField.php:454 models/Fieldset.php:174 models/Fieldset.php:236
+msgid "Title field is required."
+msgstr "Поле \"Название\" обязательно"
+
+#: core/JustField.php:522
+msgid "Unable to write changes to storage."
+msgstr "Недоступна запись изменений в хранилище"
+
+#: core/JustField.php:681
+msgid "There are no options for this field."
+msgstr "Нет значений для этого поля"
+
+#: functions/helpers.php:183
+msgid "Hello there"
+msgstr "Эй там!"
+
+#: functions/helpers.php:184 views/fields/collection.php:47
+#: views/fields/form.php:9 views/fieldsets/index.php:42
+#: views/fieldsets/index.php:86
+msgid "Edit"
+msgstr "Редактировать"
+
+#: functions/helpers.php:186
+msgid "Are you sure you want to delete selected field?"
+msgstr "Вы уверены, что хотите удалить это поле?"
+
+#: functions/helpers.php:187
+msgid ""
+"Are you sure you want to delete the fieldset?\n"
+"All fields will be also deleted!"
+msgstr ""
+"Вы уверены, что хотите удалить Набор полей?\n"
+"Все поля в нем будут удалены!"
+
+#: functions/helpers.php:188
+msgid "You should select Taxonomy term to continue."
+msgstr "Выберите термин таксономии для продолжения"
+
+#: functions/helpers.php:189
+msgid "You should select Taxonomy term or Page template to continue."
+msgstr "Выберите термин таксономии или шаблон страницы для продолжения"
+
+#: functions/helpers.php:191
+msgid "Update Image"
+msgstr "Обновить картинку"
+
+#: functions/helpers.php:192
+msgid "Update File"
+msgstr "Обновить файл"
+
+#: functions/helpers.php:193 views/fields/collection.php:59
+#: views/fieldsets/index.php:101 views/fieldsets/index.php:112
+#: views/import_export/_fields.php:53 views/import_export/_fields.php:69
+#: views/import_export/_fields.php:104
+msgid "Yes"
+msgstr "Да"
+
+#: functions/helpers.php:194 views/fields/collection.php:61
+#: views/fieldsets/index.php:103 views/fieldsets/index.php:114
+#: views/import_export/_fields.php:55 views/import_export/_fields.php:71
+#: views/import_export/_fields.php:106
+msgid "No"
+msgstr "Нет"
+
+#: functions/helpers.php:195
+msgid "The term doesn't exist"
+msgstr "Термин не существует"
+
+#: functions/helpers.php:196
+msgid "The template doesn't exist"
+msgstr "Шаблон не существует"
+
+#: functions/helpers.php:197 views/fieldsets/index.php:55
+#: views/fieldsets/index.php:64 views/fieldsets/index.php:97
+#: views/import_export/_fields.php:27 views/import_export/_fields.php:64
+#: views/import_export/_fields.php:82
+msgid "Slug"
+msgstr "Машинное имя"
+
+#: functions/helpers.php:198 views/fields/collection.php:6
+#: views/fieldsets/index.php:56 views/fieldsets/index.php:65
+#: views/fieldsets/index.php:94 views/import_export/_fields.php:26
+#: views/import_export/_fields.php:62 views/import_export/_fields.php:81
+msgid "Type"
+msgstr "Тип"
+
+#: functions/helpers.php:199 views/fields/collection.php:8
+#: views/fields/form.php:52 views/fieldsets/index.php:57
+#: views/fieldsets/index.php:66 views/fieldsets/index.php:100
+#: views/import_export/_fields.php:28 views/import_export/_fields.php:67
+#: views/import_export/_fields.php:83
+msgid "Enabled"
+msgstr "Включено"
+
+#: just-custom-fields.php:63 views/_header.php:2 views/migrate/index.php:7
+#: views/migrate/upgraded.php:7
+msgid "Just Custom Fields"
+msgstr "Just Custom Fields"
+
+#: models/Field.php:152 models/Field.php:183 models/Fieldset.php:265
+msgid "Sorting isn't changed."
+msgstr "Сортировка не изменилась"
+
+#: models/Fieldset.php:159
+msgid "Fieldset not found"
+msgstr "Набор полей не найден"
+
+#: models/Fieldset.php:185
+msgid "Such fieldset already exists."
+msgstr "Такой Набор полей уже есть"
+
+#: models/Fieldset.php:208
+msgid "Wrong params passed."
+msgstr "Прошли неверные параметры"
+
+#: models/Fieldset.php:230
+msgid "Wrong data passed."
+msgstr "Прошли неверные данные"
+
+#: models/FieldsetVisibility.php:165
+msgid "Visibility rule not found."
+msgstr "Правила видимости не найдены"
+
+#: models/FieldsetVisibility.php:215
+msgid "Visibility rule not updated."
+msgstr "Правила видимости не обновлены"
+
+#: models/FieldsetVisibility.php:236
+msgid "Visibility rule not deleted."
+msgstr "Правила видимости не удалены"
+
+#: models/ImportExport.php:56
+msgid "IMPORT FAILED! File do not contain fields settings data.."
+msgstr "ОШИБКА ИМПОРТА! Файл не содержитданные настройки полей"
+
+#: models/ImportExport.php:73
+msgid "IMPORT FAILED! Import file is missing."
+msgstr "ОШИБКА ИМПОРТА! Отсутствует файл импорта"
+
+#: models/ImportExport.php:80
+msgid "IMPORT FAILED! Can't read uploaded file."
+msgstr "ОШИБКА ИМПОРТА! Не удалось прочитать загруженный файл"
+
+#: models/ImportExport.php:89
+msgid "IMPORT FAILED! Please upload correct file format."
+msgstr "ОШИБКА ИМПОРТА! Загрузите, пожалуйста, файл в корректном формате"
+
+#: models/ImportExport.php:163
+msgid "<strong>Import</strong> has been completed successfully!"
+msgstr "<strong>Импорт</strong> успешно завершен!"
+
+#: models/ImportExport.php:165
+msgid ""
+"<strong>Import failed!</strong> Please check that your import file has right "
+"format."
+msgstr ""
+"<strong>Ошибка импорта</strong> Проверьте, пожалуйста, формат файла импорта."
+
+#: models/ImportExport.php:178
+msgid "<strong>Export failed!</strong> Please select fields to export."
+msgstr ""
+"<strong>Ошибка экспорта!</strong> Пожалуйста, выберите поля для экспорта."
+
+#: models/Migrate.php:25
+msgid "Update settings"
+msgstr "Обновить настройки"
+
+#: models/Migrate.php:28
+msgid ""
+"Thank you for upgrading Just Custom Field plugin. You need to update your "
+"settings to continue using the plugin. {link}"
+msgstr "Спасибо за обновление плагина Just Custom Fields. "
+
+#: models/Settings.php:173
+msgid ""
+"<strong>Settings storage update FAILED!</strong>. Choose an option for the "
+"data storage"
+msgstr ""
+"<strong>Ошибка обновления настроек хранилища!</strong>. Выберите вариант "
+"хранения данных"
+
+#: models/Settings.php:174 models/Settings.php:175
+msgid ""
+"<strong>Settings storage update FAILED!</strong>. Check writable permissions "
+"of directory "
+msgstr ""
+"<strong>Settings storage update FAILED!</strong>. Check writable permissions "
+"of directory"
+
+#: models/Settings.php:177
+msgid ""
+"<strong>MultiSite settings update FAILED!</strong> Choose an option for the "
+"multisite."
+msgstr ""
+"<strong>ОШИБКА обновления настроек мультисайта</strong> Выберите значение "
+"для мультисайта"
+
+#: models/Settings.php:179
+msgid "<strong>Settings storage</strong> configurations has been updated."
+msgstr "Конфигурация <strong>настроек хранилища</strong> была обновлена."
+
+#: models/Settings.php:180
+msgid "<strong>MultiSite settings</strong> has been updated."
+msgstr "<strong>Настройки мульсайта</strong> были обновлены."
+
+#: models/Shortcodes.php:73
+msgid "Error! \"field\" parameter is missing"
+msgstr "Ошибка! Пропущен параметр \"Поле\""
+
+#: views/_notices.php:12 views/_notices.php:21
+msgid "Dismiss this notice."
+msgstr "Отклонить это уведомление."
+
+#: views/admin/index.php:14
+msgid "You can choose Post Type or Taxonomy to configure custom fields for it:"
+msgstr "Вы можете выбрать Тип Поста или Таксономию"
+
+#: views/admin/index.php:16
+msgid "Post Types"
+msgstr "Типы постов"
+
+#: views/admin/index.php:27 views/admin/index.php:49
+msgid "Added Fieldsets: "
+msgstr "Добавленые наборы полей: "
+
+#: views/admin/index.php:28 views/admin/index.php:50
+msgid "Total Fields:  "
+msgstr "Всего полей: "
+
+#: views/admin/index.php:38
+msgid "Taxonomies"
+msgstr "Таксономия"
+
+#: views/fields/collection.php:5
+msgid "Title"
+msgstr "Название:"
+
+#: views/fields/collection.php:7
+msgid "Width"
+msgstr "Ширина"
+
+#: views/fields/collection.php:19 views/fieldsets/index.php:144
+msgid "Add new Field:"
+msgstr "Добавить новое поле:"
+
+#: views/fields/collection.php:68
+msgid "Please create fields for this collection"
+msgstr "Пожалуйста, создайте поля для этой коллекции"
+
+#: views/fields/form.php:33
+msgid "Slug:"
+msgstr "Машинное имя:"
+
+#: views/fields/form.php:38
+msgid ""
+"Machine name, will be used for postmeta field name. (should start from "
+"underscore)"
+msgstr ""
+"Машинное имя, которое будет использоваться как ключ в postmeta. (должно "
+"начинаться с подчеркивания)"
+
+#: views/fields/form.php:62
+msgid "Use this field as collection item title?"
+msgstr "Использовать имя этого поля в качестве названия колекции?"
+
+#: views/fields/form.php:69
+msgid "Select Field Width"
+msgstr "Выберите ширину поля"
+
+#: views/fields/form.php:88 views/fieldsets/form.php:93
+msgid "Close"
+msgstr "Закрыть"
+
+#: views/fields/form.php:91 views/fieldsets/form.php:96
+msgid "Save"
+msgstr "Сохранить"
+
+#: views/fieldsets/form.php:20
+msgid "Edit Fieldset:"
+msgstr "Редактировать набор полей:"
+
+#: views/fieldsets/form.php:35
+msgid "Position:"
+msgstr "Расположение:"
+
+#: views/fieldsets/form.php:49
+msgid "Priority:"
+msgstr "Приоритет:"
+
+#: views/fieldsets/form.php:68
+msgid "Visibility rules"
+msgstr "Правила видимости"
+
+#: views/fieldsets/index.php:21
+msgid "Configure"
+msgstr "Настройка"
+
+#: views/fieldsets/index.php:38 views/import_export/_fields.php:17
+msgid "Fieldset:"
+msgstr "Набор полей:"
+
+#: views/fieldsets/index.php:54 views/fieldsets/index.php:63
+#: views/import_export/_fields.php:25 views/import_export/_fields.php:80
+msgid "Field"
+msgstr "Поле"
+
+#: views/fieldsets/index.php:132
+msgid "Please create fields for this fieldset"
+msgstr "Пожалуйста, создайте поля для этого набора полей"
+
+#: views/fieldsets/index.php:167
+msgid "Add Fieldset"
+msgstr "Добавить набор полей"
+
+#: views/fieldsets/visibility/form.php:25
+msgid "Edit rule"
+msgstr "Редактировать правило"
+
+#: views/fieldsets/visibility/form.php:27
+#: views/fieldsets/visibility/rules.php:93
+msgid "Add rule"
+msgstr "Добавить правило"
+
+#: views/fieldsets/visibility/form.php:34
+msgid "You are about to set the visibility option for this fieldset"
+msgstr "Вы собираетесь установить возможность видимости для этого набора полей"
+
+#: views/fieldsets/visibility/form.php:38
+msgid "Hide fieldset"
+msgstr "Спрятать набор полей"
+
+#: views/fieldsets/visibility/form.php:43
+msgid "Show fieldset"
+msgstr "Показать набор полей"
+
+#: views/fieldsets/visibility/form.php:49
+msgid "Join condition with previous rules with operator:"
+msgstr "Условие соединения с предыдущими правилами оператором:"
+
+#: views/fieldsets/visibility/form.php:52
+msgid "AND"
+msgstr "И"
+
+#: views/fieldsets/visibility/form.php:53
+msgid "OR"
+msgstr "ИЛИ"
+
+#: views/fieldsets/visibility/form.php:59
+msgid "Based on:"
+msgstr "Основан на:"
+
+#: views/fieldsets/visibility/form.php:63
+msgid "Choose option"
+msgstr "Выберите опцию"
+
+#: views/fieldsets/visibility/form.php:68
+msgid "Page template"
+msgstr "Шаблон страницы"
+
+#: views/fieldsets/visibility/form.php:74
+msgid "Taxonomy"
+msgstr "Таксономия"
+
+#: views/fieldsets/visibility/form.php:107
+msgid "Update rule"
+msgstr "Обновить правило"
+
+#: views/fieldsets/visibility/form.php:110
+msgid "Save rule"
+msgstr "Сохранить правило"
+
+#: views/fieldsets/visibility/form.php:115
+msgid "Cancel"
+msgstr "Отмена"
+
+#: views/fieldsets/visibility/rules.php:9
+msgid "when"
+msgstr "когда в"
+
+#: views/fieldsets/visibility/rules.php:9
+msgid "in"
+msgstr "выбрано"
+
+#: views/fieldsets/visibility/rules.php:20
+msgid "Rule"
+msgstr "Правило"
+
+#: views/fieldsets/visibility/rules.php:21
+msgid "Options"
+msgstr "Опции"
+
+#: views/fieldsets/visibility/rules.php:40
+msgid "Page Template"
+msgstr "Шаблон Страницы"
+
+#: views/fieldsets/visibility/rules.php:55
+msgid "Hide"
+msgstr "Спрятать"
+
+#: views/fieldsets/visibility/rules.php:57
+msgid "Show"
+msgstr "Показать"
+
+#: views/fieldsets/visibility/rules.php:72
+msgid "and"
+msgstr "и"
+
+#: views/fieldsets/visibility/rules.php:74
+msgid "or"
+msgstr "или"
+
+#: views/fieldsets/visibility/taxonomies_list.php:11
+msgid "Choose taxonomy:"
+msgstr "Выбрать таксономию:"
+
+#: views/fieldsets/visibility/taxonomies_list.php:15
+msgid "Choose taxonomy"
+msgstr "Выбрать таксономию"
+
+#: views/fieldsets/visibility/taxonomies_list.php:35
+msgid "No available taxonomies"
+msgstr "Нет подходящих таксономий"
+
+#: views/fieldsets/visibility/templates_list.php:11
+msgid "Choose templates:"
+msgstr "Выбрать шаблоны:"
+
+#: views/fieldsets/visibility/templates_list.php:26
+msgid "No available templates"
+msgstr "Нет подходящих шаблонов"
+
+#: views/fieldsets/visibility/terms_list.php:11
+msgid "Choose "
+msgstr "Выбрать"
+
+#: views/fieldsets/visibility/terms_list.php:51
+msgid "No available terms"
+msgstr "Нет подходящих терминов"
+
+#: views/import_export/export.php:9
+msgid "Just Custom Fields Export"
+msgstr "Экспорт Just Custom Fields"
+
+#: views/import_export/export.php:19
+msgid "You should choose Fields to export:"
+msgstr "Вам необходимо выбрать поля для экспорта:"
+
+#: views/import_export/export.php:37 views/import_export/import.php:35
+msgid "Content type: "
+msgstr "Тип контента:"
+
+#: views/import_export/export.php:53 views/import_export/index.php:42
+msgid "Export"
+msgstr "Экспорт"
+
+#: views/import_export/import.php:10
+msgid "Just Custom Fields Import"
+msgstr "Импорт Just Custom Fields"
+
+#: views/import_export/import.php:18
+msgid "You should choose Fields to import:"
+msgstr "Вам необходимо выбрать поля для :"
+
+#: views/import_export/import.php:53
+msgid "Save Fields "
+msgstr "Сохранить поля"
+
+#: views/import_export/index.php:12 views/import_export/index.php:31
+msgid "Import"
+msgstr "Импорт"
+
+#: views/import_export/index.php:15
+msgid ""
+"If you have Just Custom Fields configuration file you can import some "
+"specific settings from it to your current WordPress installation.<br/><br/"
+">Please choose your configuration file and press \"Import\" button"
+msgstr ""
+"Если у Вас есть конфигурационный файл Just Custom Fields, Вы можете "
+"импортировать некоторые определенные параметры из него в текущую установку "
+"WordPress.<br/><br/>Выберите, пожалуйста, Ваш конфигурационный файл и "
+"нажмите кнопку \"Импорт\""
+
+#: views/import_export/index.php:22
+msgid "Add file to import:"
+msgstr "Добавить файл для импорта"
+
+#: views/import_export/index.php:27
+msgid "file extention: .json"
+msgstr "расширение файла: .json"
+
+#: views/import_export/index.php:45
+msgid ""
+"You can export specific field settings and move them to another site if "
+"needed. Just click \"Export Wizard\" button to start."
+msgstr ""
+"Вы можете экспортировать  определенные настройки полей и переместить их на "
+"другой сайт если необходимо. Просто нажмите кнопку \"Мастер экспорта\""
+
+#: views/import_export/index.php:47
+msgid "Export Wizard"
+msgstr "Мастер экспорта"
+
+#: views/settings/index.php:17
+msgid "Settings storage configuration:"
+msgstr "Конфигурация настроек хранилища"
+
+#: views/settings/index.php:22
+msgid "<b>Database</b>. Useful when you have only 1 site installation"
+msgstr ""
+"<b>База данных</b>. Используется, если у Вас установка только одного сайта"
+
+#: views/settings/index.php:28
+msgid ""
+"<b>File system: Current theme folder</b>. Fields configuration is saved to "
+"the current theme folder in json format and can be copied to another site "
+"easily."
+msgstr ""
+"<b>Файловая система: Папка текущей темы</b>. Конфигурация полей  сохраняется "
+"в папке текущей темы в .json формате и может быть легко скопирована на "
+"другой сайт"
+
+#: views/settings/index.php:35
+msgid ""
+"<b>File system: Global</b> (/wp-content/jcf/*). Fields configuration is "
+"saved to the wp-content folder in json format and can be copied to another "
+"site easily."
+msgstr ""
+"<b>Файловая система: Глобально</b> (/wp-content/jcf/*). Конфигурация полей  "
+"сохраняется в папке  wp-content в .json формате и может быть легко "
+"скопирована на другой сайт"
+
+#: views/settings/index.php:41
+msgid "Database MultiSite Options:"
+msgstr "Настройка базы данных для мультисайта"
+
+#: views/settings/index.php:45
+msgid "Make fields settings global for all network"
+msgstr "Сделать настройки полей глобальными для всего мультисайта"
+
+#: views/settings/index.php:49
+msgid "Fields settings are unique for each site"
+msgstr "Настройки полей уникальны для каждого блога в мультисайте"
+
+#: views/settings/index.php:55
+msgid "Google Maps Settings:"
+msgstr "Настройки Google Карт:"
+
+#: views/settings/index.php:57
+msgid "Google Maps API Key"
+msgstr "API ключ для Google Карт"
+
+#: views/settings/index.php:63
+msgid "Click here"
+msgstr "Нажмите сюда"
+
+#: views/settings/index.php:63
+msgid "to generate your API Key."
+msgstr "для генерации Вашего API ключа"
+
+#: views/settings/index.php:66
+msgid ""
+"Usually API key is domain related, so if you moved your site to a new domain "
+"- please update\n"
+"\t\t\t\t\t\tthe API key."
+msgstr ""
+"Обычно API ключ зависит от домена, поэтому если Вы переносите Ваш сайт на "
+"другой домен - не забудьте обновить API ключ"
+
+#: views/settings/index.php:76
+msgid "Save all settings"
+msgstr "Сохранить все настройки"
+
+#: views/shortcodes/modal.php:9
+msgid "Usage guidelines for field "
+msgstr "Рекомендации по использованию для поля"
+
+#: views/shortcodes/modal.php:15
+msgid "Inside the Editor"
+msgstr "В Редакторе"
+
+#: views/shortcodes/modal.php:16
+msgid ""
+"To insert the value into your post editor, please copy and paste the code "
+"examples below to your editor."
+msgstr ""
+"Чтобы вставить значение в редактор Вашего поста, скопируйте и вставьте, "
+"пожалуйста, пример кода ниже Вашего редактора"
+
+#: views/shortcodes/modal.php:22 views/shortcodes/modal.php:33
+msgid ""
+"optional parameters: class=\"myclass\" id=\"myid\" post_id=\"123\" label="
+"\"yes\""
+msgstr ""
+"необязательные параметры:  class=\"myclass\" id=\"myid\" post_id=\"123\" "
+"label=\"yes\""
+
+#: views/shortcodes/modal.php:26
+msgid "Inside your Templates "
+msgstr "Внутри Ваших шаблонов"
+
+#: views/shortcodes/modal.php:27
+msgid ""
+"To print the value or label inside your template (for example in single.php) "
+"please use the examples below:"
+msgstr ""
+"Для вывода значения внутри Вашего шаблона (к примеру single.php) пожалуйста, "
+"используйте примеры ниже:"
+
+#~ msgid "hide"
+#~ msgstr "скрыть"
+
+#~ msgid "show"
+#~ msgstr "отобразить"
+
+#~ msgid "Select 1"
+#~ msgstr "1111111"

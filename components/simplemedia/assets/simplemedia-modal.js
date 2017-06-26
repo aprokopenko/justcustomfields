@@ -85,7 +85,7 @@ window.JcfSimpleMedia = {
     row.find('p:first').html(html).removeClass('jcf-hide').show();
     row.find('a.jcf_simple_delete').removeClass('jcf-hide').show();
   }
-}
+};
 
 jQuery(document).ready(function() {
   if ( jQuery('body').hasClass('edit-tags-php') ) {
@@ -108,7 +108,7 @@ jQuery(document).ready(function() {
     // rename upload control
     row.find('#simplemedia-' + value_id).text( jcf_textdomain.select_image );
     // reset image
-    row.find('.jcf-simple-image a').attr('href', '#')
+    row.find('.jcf-simple-image a').attr('href', '#');
     var img = row.find('.jcf-simple-image img');
     img.attr('src', img.data('noimage'));
 
@@ -124,4 +124,4 @@ jQuery(document).ready(function() {
     row.find('#simplemedia-' + value_id).show();
     return false;
   });
-})
+});
