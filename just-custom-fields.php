@@ -67,7 +67,9 @@ class JustCustomFields extends core\Singleton {
 		$this->init_controllers();
 
 		$this->init_fields();
+		add_action( 'plugins_loaded', array( $this, 'load_translations' ) );
 		add_action( 'plugins_loaded', array( $this, 'register_custom_components' ) );
+
 	}
 
 	/**
@@ -182,6 +184,13 @@ class JustCustomFields extends core\Singleton {
 			return $this->_fields[ $id_base ];
 		}
 		return null;
+	}
+
+	/**
+	 *	Load translations
+	 */
+	public function load_translations() {
+		load_plugin_textdomain( 'jcf', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 }

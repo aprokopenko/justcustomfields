@@ -60,10 +60,11 @@ use jcf\models\Settings;
 					   value="<?php echo esc_attr( $googlemaps_api_key ) ?>"/><br/>
 
 				<p><a href="https://developers.google.com/maps/documentation/javascript/get-api-key#get-an-api-key"
-					  target="_blank">Click here</a> to generate your API Key.</p>
+					  target="_blank"><?php esc_html_e( 'Click here', 'jcf' ); ?></a> <?php esc_html_e( 'to generate your API Key.', 'jcf' ); ?>
+				</p>
 				<p>
-					<small>Usually API key is domain related, so if you moved your site to a new domain - please update
-						the API key.
+					<small><?php esc_html_e( 'Usually API key is domain related, so if you moved your site to a new domain - please update
+						the API key.', 'jcf' ); ?>
 					</small>
 				</p>
 				<br/>

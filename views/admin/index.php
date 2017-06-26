@@ -13,7 +13,7 @@ include( JCF_ROOT . '/views/_header.php' ); ?>
 		<div class="icon32 icon32-posts-page" id="icon-edit"><br></div>
 		<p><?php esc_html_e( 'You can choose Post Type or Taxonomy to configure custom fields for it:', 'jcf' ); ?></p>
 
-		<h3>Post Types</h3>
+		<h3><?php esc_html_e( 'Post Types', 'jcf' ); ?></h3>
 		<div>
 			<ul class="dotted-list jcf-bold">
 				<?php foreach ( $post_types as $key => $obj ) : ?>
@@ -35,7 +35,7 @@ include( JCF_ROOT . '/views/_header.php' ); ?>
 		</div>
 
 		<br/>
-		<h3>Taxonomies</h3>
+		<h3><?php esc_html_e( 'Taxonomies', 'jcf' ); ?></h3>
 		<div>
 			<ul class="dotted-list jcf-bold">
 				<?php foreach ( $taxonomies as $tax_key => $tax_obj ) : ?>

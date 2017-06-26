@@ -83,7 +83,7 @@ class JustField_Select extends core\JustField {
 			<label for="<?php echo esc_attr( $this->get_field_id( 'empty_option' ) ); ?>"><?php esc_html_e( 'Empty option:', 'jcf' ); ?></label><input
 					class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'empty_option' ) ); ?>"
 					name="<?php echo $this->get_field_name( 'empty_option' ); ?>"
-					placeholder="ex. Choose item from the list"" type="text"
+					placeholder="<?php esc_html_e('ex. Choose item from the list', 'jcf'); ?>"" type="text"
 			value="<?php echo esc_attr( $empty_option ); ?>" />
 			<br/>
 			<small><?php esc_html_e( 'Leave blank to disable empty option', 'jcf' ); ?></small>

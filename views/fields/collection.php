@@ -19,7 +19,7 @@
 						<label class="nowrap"><?php esc_html_e( 'Add new Field:', 'jcf' ); ?> </label>
 						<select name="field_type" class="jcf_add_collection_field">
 							<?php foreach ( $registered_fields as $field ) : ?>
-								<option value="<?php echo esc_attr( $field['id_base'] ); ?>"><?php echo esc_html( $field['title'] ); ?></option>
+								<option value="<?php echo esc_attr( $field['id_base'] ); ?>"><?php echo esc_html__( $field['title'], 'jcf' ); ?></option>
 							<?php endforeach; ?>
 						</select>
 						<input type="submit" class="button show_modal" name="add_field"
