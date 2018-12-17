@@ -6,7 +6,7 @@ Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custo
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
 Requires at least: 4.7
-Tested up to: 4.7.4
+Tested up to: 5.0.1
 Stable tag: trunk
 License: GNU General Public License v2
 
