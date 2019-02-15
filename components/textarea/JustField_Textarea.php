@@ -12,7 +12,6 @@ use jcf\core;
  */
 class JustField_Textarea extends core\JustField
 {
-
 	public function __construct()
 	{
 		$field_ops = array( 'classname' => 'field_textarea' );
@@ -25,13 +24,17 @@ class JustField_Textarea extends core\JustField
 	 */
 	public function field()
 	{
+		$adv_buttons = 'bold,italic,strikethrough,|,bullist,numlist,blockquote,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,spellchecker,fullscreen,wp_adv';
 		?>
 		<div id="jcf_field-<?php echo $this->id; ?>" class="jcf_edit_field <?php echo $this->fieldOptions['classname']; ?>">
 			<?php echo $this->fieldOptions['before_widget']; ?>
 				<?php echo $this->fieldOptions['before_title'] . esc_html($this->instance['title']) . $this->fieldOptions['after_title']; ?>
 				<?php
-				if ( !empty($this->instance['editor']) ) : // check editor
-
+				// In v5 with gutenberg editor is not working inside the collection.
+				global $wp_version;
+				if ( !empty($this->instance['editor'])
+					&& !($this->collectionId && 5 <= (int)$GLOBALS['wp_version'])
+					) : // check editor
 					ob_start();
 					/**
 					 * @todo have bug with switching editor/text after ajax field loading, now disabled this functionality
@@ -44,7 +47,7 @@ class JustField_Textarea extends core\JustField
 						'wpautop' => true,
 						'quicktags' => false,
 						'tinymce' => array(
-							'theme_advanced_buttons1' => 'bold,italic,strikethrough,|,bullist,numlist,blockquote,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,spellchecker,fullscreen,wp_adv',
+							'theme_advanced_buttons1' => $adv_buttons,
 						),
 					));
 					echo ob_get_clean();
