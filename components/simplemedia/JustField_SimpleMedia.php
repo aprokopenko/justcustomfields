@@ -176,12 +176,19 @@ class JustField_SimpleMedia extends core\JustField
 	public function shortcodeValue( $args )
 	{
 		if ( empty($this->entry) ) return '';
-
-		$size = isset($args['size'])? $args['size'] : 'thumbnail';
-		$value = wp_get_attachment_image($this->entry, $size);
+		
+		$imagesizes = wp_get_attachment_image_sizes($this->entry);
+		if ( !empty($imagesizes) ) {
+			// assume this is an image.
+			$size = isset($args['size'])? $args['size'] : 'thumbnail';
+			$value = wp_get_attachment_image($this->entry, $size);
+		} else {
+			// generate a file link.
+			$link = wp_get_attachment_url($this->entry);
+			$value = "<a href=\"{$link}\" target=\"_blank\">" . basename($link) . "</a>";
+		}
 
 		return $args['before_value'] . $value . $args['after_value'];
 	}
 
 }
-?>
