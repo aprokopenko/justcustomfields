@@ -52,6 +52,7 @@ use jcf\core\JustField;
 								</a>
 							</h4>
 							<div id="visibility" class="<?php echo !empty($fieldset['visibility_rules']) ? '' : 'hidden' ?>">
+								<em>* Visibility rules don't work with a new Gutenberg editor.</em>
 								<?php if( !empty($fieldset['visibility_rules']) ): ?>
 									<?php $this->_render('fieldsets/visibility/rules', array(
 												'visibility_rules' => $fieldset['visibility_rules'],

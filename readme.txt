@@ -6,7 +6,7 @@ Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custo
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
 Requires at least: 4.7
-Tested up to: 5.0.1
+Tested up to: 5.0.3
 Stable tag: trunk
 License: GNU General Public License v2
 
@@ -84,6 +84,10 @@ To upgrade remove the old plugin folder. After than follow the installation step
 2. The edit post page meta box with fields created on the settings page
 
 == Changelog ==
+* Version 3.3.1 - 15 February 2019
+    * Bug: Simplemedia shortcode do not display a link if it's not an image.
+    * Hotfix: Disabled Textarea editors inside collections for WordPress 5+, because tinyMCE is not working there.
+    * Note: Added a note that visibility rules are not working with a Gutenberg plugin.
 * Version 3.3 - 26 April 2017
 	* New feature: Taxonomy term custom fields!
 	* Bug: Editor "Add media" button row overlap the Posts sidebar
