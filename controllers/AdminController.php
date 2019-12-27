@@ -69,7 +69,13 @@ class AdminController extends core\Controller
 			jcf_plugin_url('assets/just_custom_fields.js'),
 			array( 'jquery', 'json2', 'jquery-form', 'jquery-ui-sortable' )
 		);
+		wp_register_script(
+			'jcforms-multifield',
+			jcf_plugin_url('assets/jcforms-multifield.js'),
+			array( 'jquery', 'json2', 'jquery-form', 'jquery-ui-sortable' )
+		);
 		wp_enqueue_script($slug);
+		wp_enqueue_script('jcforms-multifield');
 		wp_enqueue_script('jquery-ui-autocomplete');
 	}
 
@@ -92,7 +98,9 @@ class AdminController extends core\Controller
 	{
 		$slug = \JustCustomFields::$pluginName;
 		wp_register_style($slug, jcf_plugin_url('assets/styles.css'), array( 'media-views' ));
+		wp_register_style('jcforms-multifield', jcf_plugin_url('assets/jcforms-multifield.css'), array( 'media-views' ));
 		wp_enqueue_style($slug);
+		wp_enqueue_style('jcforms-multifield');
 	}
 
 	/**
