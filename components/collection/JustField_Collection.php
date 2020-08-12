@@ -229,7 +229,7 @@ class JustField_Collection extends core\JustField
 		wp_register_script(
 			'jcf_collections',
 			jcf_plugin_url('components/collection/assets/collection.js'),
-			array( 'jquery' )
+			array( 'jquery', 'jquery-migrate' )
 		);
 		wp_enqueue_script('jcf_collections');
 	}

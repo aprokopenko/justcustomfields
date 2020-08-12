@@ -323,7 +323,7 @@ class JustField
 	{
 		$slug = trim($slug);
 
-		if ( !empty($slug) && $slug{0} != '_' && !$this->isCollectionField() ) {
+		if ( !empty($slug) && '_' != $slug[0] && !$this->isCollectionField() ) {
 			$slug = '_' . $slug;
 		}
 		return $slug;
