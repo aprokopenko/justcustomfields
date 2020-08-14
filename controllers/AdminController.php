@@ -67,7 +67,7 @@ class AdminController extends core\Controller
 		wp_register_script(
 			$slug,
 			jcf_plugin_url('assets/just_custom_fields.js'),
-			array( 'jquery', 'json2', 'jquery-form', 'jquery-ui-sortable' )
+			array( 'jquery', 'json2', 'jquery-form', 'jquery-ui-sortable', 'jquery-migrate' )
 		);
 		wp_enqueue_script($slug);
 		wp_enqueue_script('jquery-ui-autocomplete');
@@ -103,7 +103,7 @@ class AdminController extends core\Controller
 		wp_register_script(
 			'jcf_edit_post',
 				jcf_plugin_url('assets/edit_post.js'),
-				array( 'jquery', 'tags-box' )
+				array( 'jquery', 'tags-box', 'jquery-migrate' )
 		);
 
 		wp_register_style('jcf_edit_post', jcf_plugin_url('assets/edit_post.css'));
