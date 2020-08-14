@@ -6,7 +6,7 @@ Tags: custom, fields, custom fields, meta, post meta, object meta, editor, custo
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
 Requires at least: 4.7
-Tested up to: 5.0.3
+Tested up to: 5.5
 Stable tag: trunk
 License: GNU General Public License v2
 
@@ -84,6 +84,9 @@ To upgrade remove the old plugin folder. After than follow the installation step
 2. The edit post page meta box with fields created on the settings page
 
 == Changelog ==
+* Version 3.3.2 - 12 August 2020
+    * Issue fix: Added jQuery migrate for dependents scripts
+    * Tests: New tests with WordPress 5.5
 * Version 3.3.1 - 15 February 2019
     * Bug: Simplemedia shortcode do not display a link if it's not an image.
     * Hotfix: Disabled Textarea editors inside collections for WordPress 5+, because tinyMCE is not working there.
