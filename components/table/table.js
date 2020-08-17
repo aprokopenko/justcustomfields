@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-  jQuery('.jcf-table .jcf_add_row').live('click', function() {
+  jQuery('.jcf-table .jcf_add_row').on('click', function() {
     var container = jQuery(this).parent().parent().find('table');
     var jcf_table_row_max_index = container.find('tr').size();
     jcf_table_row_max_index--;
@@ -12,7 +12,7 @@ jQuery(document).ready(function() {
     return false;
   });
 
-  jQuery('.jcf-table .jcf_delete_row').live('click', function() {
+  jQuery('.jcf-table .jcf_delete_row').on('click', function() {
     var table = jQuery(this).parents('table');
     if (table.find('tr').size() == 4) {
       table.find('tr.no-rows').show();
