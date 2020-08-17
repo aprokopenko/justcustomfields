@@ -96,7 +96,7 @@ jQuery(document).ready(function() {
     var node = jQuery('#post-body');
   }
 
-  node.find('div.jcf-simple-row a.jcf_simple_delete').live('click', function( e ) {
+  node.find('div.jcf-simple-row a.jcf_simple_delete').on('click', function( e ) {
     var value_id = jQuery(this).data('field_id');
     var row = jQuery(this).parents('div.jcf-simple-row');
     // reset value
@@ -115,7 +115,7 @@ jQuery(document).ready(function() {
     return false;
   });
 
-  node.find('div.jcf-simple-row a.jcf_simple_cancel').live('click', function() {
+  node.find('div.jcf-simple-row a.jcf_simple_cancel').on('click', function() {
     var value_id = jQuery(this).data('field_id');
     var row = jQuery(this).parents('div.jcf-simple-row');
     jQuery('#' + value_id).prop('disabled', false);

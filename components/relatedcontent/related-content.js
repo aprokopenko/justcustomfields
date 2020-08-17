@@ -27,7 +27,7 @@ function jcf_relatedcontent_init() {
 
   jcf_relatedcontent_max_index = jQuery(jcf_post_body_content_container).find('div.jcf-relatedcontent-row').size();
 
-  node.find('div.jcf-relatedcontent-field a.jcf_delete').live('click', function() {
+  node.find('div.jcf-relatedcontent-field a.jcf_delete').on('click', function() {
     var row = jQuery(this).parents('div.jcf-relatedcontent-row:first');
     row.find('div.jcf-relatedcontent-container').css({'opacity': 0.3});
     row.find('div.jcf-relatedcontent-container .jcf_delete').hide();
@@ -37,7 +37,7 @@ function jcf_relatedcontent_init() {
     return false;
   });
 
-  node.find('div.jcf-relatedcontent-field a.jcf_cancel').live('click', function() {
+  node.find('div.jcf-relatedcontent-field a.jcf_cancel').on('click', function() {
     var row = jQuery(this).parents('div.jcf-relatedcontent-row:first');
     row.find('div.jcf-relatedcontent-container').css({'opacity': 1});
     row.find('div.jcf-relatedcontent-container .jcf_delete').show();
@@ -48,7 +48,7 @@ function jcf_relatedcontent_init() {
   });
 
   // add more button
-  node.find('div.jcf-relatedcontent-field a.jcf_add_more').live('click', function() {
+  node.find('div.jcf-relatedcontent-field a.jcf_add_more').on('click', function() {
     var container = jQuery(this).parent();
 
     jcf_relatedcontent_max_index++;

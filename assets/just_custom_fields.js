@@ -92,14 +92,14 @@ function initFieldsetsEdit() {
   })
 
   // init delete button on change popup
-  jQuery('#jcf_ajax_content .jcf_edit_fieldset a.field-control-remove').live('click', function() {
+  jQuery('#jcf_ajax_content .jcf_edit_fieldset a.field-control-remove').on('click', function() {
     var f_id = jQuery(this).parents('form:first').find('input[name=fieldset_id]').val();
     jQuery('#jcf_fieldset_' + f_id + ' a.jcf_fieldset_delete').click();
     return false;
   });
 
   // save on edit form
-  jQuery('#jcform_edit_fieldset').live('submit', function( e ) {
+  jQuery('#jcform_edit_fieldset').on('submit', function( e ) {
     e.preventDefault();
     var f_id = jQuery(this).find('input[name=fieldset_id]').val();
     var data = {
@@ -139,7 +139,7 @@ function initFieldsetsEdit() {
   });
 
   // choose base for visibility rule (page template/taxonomy)
-  jQuery('#rule-based-on').live('change', function() {
+  jQuery('#rule-based-on').on('change', function() {
     var data = {
       'based_on': jQuery(this).val(),
       'action': 'jcf_get_rule_options',
@@ -151,7 +151,7 @@ function initFieldsetsEdit() {
   });
 
   // choose taxonomy terms for visibility rule
-  jQuery('#rule-taxonomy').live('change', function() {
+  jQuery('#rule-taxonomy').on('change', function() {
     var data = {
       'taxonomy': jQuery(this).val(),
       'action': 'jcf_get_taxonomy_terms',
@@ -165,7 +165,7 @@ function initFieldsetsEdit() {
   });
 
   //parse rule block for saving
-  jQuery('.save_rule_btn, .update_rule_btn').live('click', function(e) {
+  jQuery('.save_rule_btn, .update_rule_btn').on('click', function(e) {
     e.preventDefault();
 
     var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
@@ -202,7 +202,7 @@ function initFieldsetsEdit() {
   });
 
   // add form for new visibility rule
-  jQuery('.add_rule_btn').live('click', function(e) {
+  jQuery('.add_rule_btn').on('click', function(e) {
     e.preventDefault();
 
     var data = {
@@ -216,7 +216,7 @@ function initFieldsetsEdit() {
   });
 
   // delete visibility rule
-  jQuery('a.remove-rule').live('click', function(e) {
+  jQuery('a.remove-rule').on('click', function(e) {
     e.preventDefault();
     var rule_id = jQuery(this).data('rule_id');
     var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
@@ -233,7 +233,7 @@ function initFieldsetsEdit() {
   });
 
   // edit visibility rule
-  jQuery('a.edit-rule').live('click', function(e) {
+  jQuery('a.edit-rule').on('click', function(e) {
     e.preventDefault();
     var rule_id = jQuery(this).data('rule_id');
     var f_id = jQuery(this).parents('form').find('input[name=fieldset_id]').val();
@@ -253,7 +253,7 @@ function initFieldsetsEdit() {
   });
 
   // show/hide visibility options for fieldset
-  jQuery('a.visibility_toggle').live('click', function(e) {
+  jQuery('a.visibility_toggle').on('click', function(e) {
     e.preventDefault();
     jQuery('#visibility').toggle();
     jQuery(this).find('span').toggleClass('dashicons-arrow-down-alt2');
@@ -261,14 +261,14 @@ function initFieldsetsEdit() {
   });
 
   // cancel form for add or edit visibility rule
-  jQuery('.cancel_rule_btn').live('click', function(e) {
+  jQuery('.cancel_rule_btn').on('click', function(e) {
     e.preventDefault();
     jQuery(this).parents('fieldset#fieldset_visibility_rules').remove();
     jQuery('.add_rule_btn').show();
   });
 
   // adding new term for visility
-  jQuery('.termadd').live('click', function(e) {
+  jQuery('.termadd').on('click', function(e) {
     e.preventDefault();
     if ( !jQuery('#new-term').attr('data-term_id') && !jQuery('#new-term').attr('data-term_label') ) {
       var taxonomy = jQuery('.taxonomy-options #rule-taxonomy').val();
@@ -349,7 +349,7 @@ function initFieldsetFields() {
   });
 
   // init save button on edit form
-  jQuery('#jcform_edit_field').live('submit', function( e ) {
+  jQuery('#jcform_edit_field').on('submit', function( e ) {
     e.preventDefault();
 
     // get query string from the form
@@ -431,7 +431,7 @@ function initFieldsetFields() {
   });
 
   // delete button
-  jQuery('#jcf_fieldsets tbody span.delete a').live('click', function() {
+  jQuery('#jcf_fieldsets tbody span.delete a').on('click', function() {
     if ( confirm(jcf_textdomain.confirm_field_delete) ) {
       var row = jQuery(this).parents('tr:first');
       var f_id = jQuery(this).parents('tbody:first').attr('id').replace('the-list-', '');
@@ -452,7 +452,7 @@ function initFieldsetFields() {
   })
 
   // edit button
-  jQuery('#jcf_fieldsets tbody span.edit a, #jcf_fieldsets tbody strong > a').live('click', function() {
+  jQuery('#jcf_fieldsets tbody span.edit a, #jcf_fieldsets tbody strong > a').on('click', function() {
     var f_id = jQuery(this).parents('tbody:first').attr('id').replace('the-list-', '');
     var data = {
       action: 'jcf_edit_field',
@@ -470,7 +470,7 @@ function initFieldsetFields() {
   })
 
   // delete button in edit form
-  jQuery('#jcform_edit_field a.field-control-remove').live('click', function( e ) {
+  jQuery('#jcform_edit_field a.field-control-remove').on('click', function( e ) {
     var field_id = jQuery(this).parents('form:first').find('input[name=field_id]').val();
     var row = jQuery('#field_row_' + field_id);
     row.find('span.delete a').click();
@@ -556,7 +556,7 @@ function initExport() {
  */
 function initImportExportCheckboxes() {
   // checked fields
-  jQuery('#jcf_save_import_fields input[type="checkbox"], #jcf_export_fields input[type="checkbox"]').live('change', function() {
+  jQuery('#jcf_save_import_fields input[type="checkbox"], #jcf_export_fields input[type="checkbox"]').on('change', function() {
     var $this = jQuery(this);
     var data_checked = $this.is(':checked');
 
@@ -584,7 +584,7 @@ function initImportExportCheckboxes() {
  *	ajax functions below
  */
 function initAjaxBoxClose() {
-  jQuery('#jcf_ajax_content a.field-control-close').live('click', function() {
+  jQuery('#jcf_ajax_content a.field-control-close').on('click', function() {
     jcf_hide_ajax_container();
   });
 }
