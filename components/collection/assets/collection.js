@@ -8,7 +8,7 @@ jQuery(document).ready(function() {
  */
 function initCollectionFields() {
   // init add form
-  jQuery('form.jcform_add_collection_field').live('submit', function( e ) {
+  jQuery('form.jcform_add_collection_field').on('submit', function( e ) {
     e.preventDefault();
 
     var data = {action: 'jcf_add_field'};
@@ -28,7 +28,7 @@ function initCollectionFields() {
   });
 
   // init save button on edit form
-  jQuery('#jcform_edit_collection_field').live('submit', function( e ) {
+  jQuery('#jcform_edit_collection_field').on('submit', function( e ) {
     e.preventDefault();
 
     // get query string from the form
@@ -75,7 +75,7 @@ function initCollectionFields() {
   });
 
   // edit button
-  jQuery('#jcf_fieldsets tbody span.edit_collection a').live('click', function() {
+  jQuery('#jcf_fieldsets tbody span.edit_collection a').on('click', function() {
     var f_id = jQuery(this).parents('tbody:first').parents('tbody:first').attr('id').replace('the-list-', '');
     var c_id = jQuery(this).data('collection_id');
     var data = {
@@ -93,7 +93,7 @@ function initCollectionFields() {
     return false;
   })
   // delete button
-  jQuery('#jcf_fieldsets tbody span.delete_collection a').live('click', function() {
+  jQuery('#jcf_fieldsets tbody span.delete_collection a').on('click', function() {
     if ( confirm(jcf_textdomain.confirm_field_delete) ) {
       var row = jQuery(this).parents('tr:first');
       var f_id = jQuery(this).parents('tbody:first').parents('tbody:first').attr('id').replace('the-list-', '');
@@ -115,7 +115,7 @@ function initCollectionFields() {
   })
 
   // delete button in edit form
-  jQuery('#jcform_edit_collection_field a.field-control-remove').live('click', function( e ) {
+  jQuery('#jcform_edit_collection_field a.field-control-remove').on('click', function( e ) {
     var field_id = jQuery(this).parents('form:first').find('input[name=field_id]').val();
     var row = jQuery('#collection_field_row_' + field_id);
     row.find('span.delete_collection a').click();
