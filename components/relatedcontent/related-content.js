@@ -1,6 +1,6 @@
 var jcf_relatedcontent_max_index = 0;
 var jcf_relatedcontent_inited = false;
-var jcf_post_body_content_container = '#post-body';
+var jcf_post_body_content_container = '#post-body, #editor';
 if ( jQuery('body').hasClass('edit-tags-php') ) {
   jcf_post_body_content_container = '#addtag';
 } else if ( jQuery('body').hasClass('term-php') ) {
