@@ -8,12 +8,18 @@ if ( jQuery('body').hasClass('edit-tags-php') ) {
 }
 
 jQuery(document).ready(function() {
+  var timeout;
 
-  jcf_relatedcontent_init();
+  // Gutenberg loads metaboxes later
+  timeout = setTimeout(function(){
+    jcf_relatedcontent_init();
 
-  // add collection hook integration
-  jcf_add_action('collection_row_added', 'init_relatedcontent', jcf_relatedcontent_collection_init);
+    // add collection hook integration
+    jcf_add_action('collection_row_added', 'init_relatedcontent', jcf_relatedcontent_collection_init);
 
+    // reset timer
+    clearTimeout(timeout);
+  }, 50);
 });
 
 function jcf_relatedcontent_collection_init() {
