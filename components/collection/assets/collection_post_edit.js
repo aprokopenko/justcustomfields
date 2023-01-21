@@ -65,7 +65,7 @@ function jcf_collection_fields_control() {
     return false;
   })
 
-  jQuery('div.collection_field_group h3 span.dashicons-trash').live('click', function( e ) {
+  jQuery('div.collection_field_group h3 span.dashicons-trash').on('click', function( e ) {
     e.preventDefault();
     jQuery(this).parent().find('.collection_group_title').after('<span class="jcf_collection_removed">To be deleted</span>');
     jQuery(this).parent().addClass('jcf_field_removed');
@@ -76,7 +76,7 @@ function jcf_collection_fields_control() {
     return false;
   });
 
-  jQuery('div.collection_field_group a.collection_undo_remove_group').live('click', function( e ) {
+  jQuery('div.collection_field_group a.collection_undo_remove_group').on('click', function( e ) {
     e.preventDefault();
     jQuery(this).parent().find('.jcf_collection_removed').remove();
     jQuery(this).parent().removeClass('jcf_field_removed');

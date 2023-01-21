@@ -59,7 +59,7 @@ class JustField_RelatedContent extends core\JustField
 				$options["" . $p->ID . ""] = esc_attr($p->post_title . $draft . $type_label);
 			}
 		}
-		elseif ( $type == 'autocomplete' && !empty($this->entry[0]) ) {
+		else {
 			global $wpdb;
 
 			$query = "SELECT ID, post_title, post_status, post_type
@@ -99,7 +99,7 @@ class JustField_RelatedContent extends core\JustField
 									</select>
 
 								<?php else : // input field for autocomplete  ?>
-									<input type="text" value="<?php echo @$options[$entry]; ?>" 
+									<input type="text" value="<?php echo !empty($options[$entry]) ? $options[$entry] : ''; ?>" 
 										id="<?php echo $this->getFieldIdL2('related_title', $key); ?>" 
 										name="<?php echo $this->getFieldNameL2('related_title', $key); ?>" 
 										alt="<?php echo $post_type; ?>" />

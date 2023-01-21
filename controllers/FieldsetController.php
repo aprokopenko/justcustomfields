@@ -38,7 +38,8 @@ class FieldsetController extends core\Controller
 	public function initRoutes()
 	{
 		$page_title = __('Fields', \JustCustomFields::TEXTDOMAIN);
-		add_submenu_page(null, $page_title, $page_title, 'manage_options', 'jcf_fieldset_index', array( $this, 'actionIndex' ));
+		$parent_slug = 'options-general.php';
+		add_submenu_page($parent_slug, $page_title, $page_title, 'manage_options', 'jcf_fieldset_index', array( $this, 'actionIndex' ));
 	}
 
 	/**

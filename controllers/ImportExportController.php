@@ -23,7 +23,8 @@ class ImportExportController extends core\Controller
 	public function initRoutes()
 	{
 		$page_title = __('Import/Export', \JustCustomFields::TEXTDOMAIN);
-		add_submenu_page(null, $page_title, $page_title, 'manage_options', 'jcf_import_export', array( $this, 'actionIndex' ));
+		$parent_slug = 'options-general.php';
+		add_submenu_page($parent_slug, $page_title, $page_title, 'manage_options', 'jcf_import_export', array( $this, 'actionIndex' ));
 	}
 
 	/**

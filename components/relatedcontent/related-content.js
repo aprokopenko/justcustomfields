@@ -1,20 +1,42 @@
 var jcf_relatedcontent_max_index = 0;
 var jcf_relatedcontent_inited = false;
 var jcf_post_body_content_container = '#post-body';
-if ( jQuery('body').hasClass('edit-tags-php') ) {
-  jcf_post_body_content_container = '#addtag';
-} else if ( jQuery('body').hasClass('term-php') ) {
-  jcf_post_body_content_container = '#edittag';
-}
+var jcf_block_editor_timeout;
 
 jQuery(document).ready(function() {
-
-  jcf_relatedcontent_init();
+  if ( jQuery('body').hasClass('edit-tags-php') ) {
+    jcf_post_body_content_container = '#addtag';
+  } else if ( jQuery('body').hasClass('term-php') ) {
+    jcf_post_body_content_container = '#edittag';
+  } else if ( jQuery('body').hasClass('block-editor-page') ) {
+    jcf_post_body_content_container = '#editor';
+  }
+  
+  if ( jQuery('body').hasClass('block-editor-page') ) {
+    jcf_block_editor_ready(jcf_relatedcontent_init);
+  } else {
+    jcf_relatedcontent_init();
+  }
 
   // add collection hook integration
   jcf_add_action('collection_row_added', 'init_relatedcontent', jcf_relatedcontent_collection_init);
 
 });
+
+function jcf_block_editor_ready(callback) {
+  jcf_block_editor_timeout = clearTimeout(jcf_block_editor_timeout);
+  if ( wp.data.select('core/editor').__unstableIsEditorReady() ) {
+    console.log('jcf: WP Block Editor Ready');
+    if ( callback && typeof callback === 'function' ) {
+      callback();
+    }
+  } else {
+    console.log('jcf: wait for WP Block Editor');
+    timeout = setTimeout(function(){
+      jcf_block_editor_ready(callback);
+    }, 15);
+  }
+}
 
 function jcf_relatedcontent_collection_init() {
   jcf_relatedcontent_init();
@@ -22,12 +44,13 @@ function jcf_relatedcontent_collection_init() {
 
 function jcf_relatedcontent_init() {
   var node = jQuery(jcf_post_body_content_container);
+  
   if ( node.find('div.jcf-relatedcontent-field').size() == 0 || jcf_relatedcontent_inited )
     return;
 
   jcf_relatedcontent_max_index = jQuery(jcf_post_body_content_container).find('div.jcf-relatedcontent-row').size();
 
-  node.find('div.jcf-relatedcontent-field a.jcf_delete').live('click', function() {
+  node.find('div.jcf-relatedcontent-field a.jcf_delete').on('click', function() {
     var row = jQuery(this).parents('div.jcf-relatedcontent-row:first');
     row.find('div.jcf-relatedcontent-container').css({'opacity': 0.3});
     row.find('div.jcf-relatedcontent-container .jcf_delete').hide();
@@ -37,7 +60,7 @@ function jcf_relatedcontent_init() {
     return false;
   });
 
-  node.find('div.jcf-relatedcontent-field a.jcf_cancel').live('click', function() {
+  node.find('div.jcf-relatedcontent-field a.jcf_cancel').on('click', function() {
     var row = jQuery(this).parents('div.jcf-relatedcontent-row:first');
     row.find('div.jcf-relatedcontent-container').css({'opacity': 1});
     row.find('div.jcf-relatedcontent-container .jcf_delete').show();
@@ -48,9 +71,9 @@ function jcf_relatedcontent_init() {
   });
 
   // add more button
-  node.find('div.jcf-relatedcontent-field a.jcf_add_more').live('click', function() {
+  node.find('div.jcf-relatedcontent-field a.jcf_add_more').on('click', function() {
     var container = jQuery(this).parent();
-
+    
     jcf_relatedcontent_max_index++;
     var new_html = container.find('div.jcf-relatedcontent-row:first').html();
     new_html = new_html
