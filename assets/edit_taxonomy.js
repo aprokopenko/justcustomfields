@@ -10,7 +10,7 @@
         'taxonomy': taxonomy
       },
       success: function(response) {
-        jcf_do_action('taxonomy_term_added', this, response);
+        jcf_do_action('taxonomy_term_added', this, trim(response));
 
         $('#jcf_taxonomy_fields').html(response);
 

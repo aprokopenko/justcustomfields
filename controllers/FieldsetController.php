@@ -14,7 +14,8 @@ class FieldsetController extends core\Controller
 	public function __construct()
 	{
 		parent::__construct();
-		add_action('admin_menu', array( $this, 'initRoutes' ));
+		// not needed extra menu item, its the default jcf_admin options page
+		// add_action('admin_menu', array( $this, 'initRoutes' ));
 
 		//Fieldset actions
 		add_action('wp_ajax_jcf_add_fieldset', array( $this, 'ajaxCreate' ));
@@ -34,11 +35,15 @@ class FieldsetController extends core\Controller
 
 	/**
 	 * Init routes for settings page with fieldsets and fields
+	 * 
+	 * @deprecated 2023-01-22 Thomas Fellinger
+	 * 
+	 * not needed extra menu item, its the default jcf_admin options page
 	 */
 	public function initRoutes()
 	{
 		$page_title = __('Fields', \JustCustomFields::TEXTDOMAIN);
-		$parent_slug = 'options-general.php';
+		$parent_slug = 'jcf_admin';
 		add_submenu_page($parent_slug, $page_title, $page_title, 'manage_options', 'jcf_fieldset_index', array( $this, 'actionIndex' ));
 	}
 

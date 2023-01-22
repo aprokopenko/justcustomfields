@@ -23,7 +23,7 @@ class SettingsController extends core\Controller
 	public function initRoutes()
 	{
 		$page_title = __('Settings', \JustCustomFields::TEXTDOMAIN);
-		$parent_slug = 'options-general.php';
+		$parent_slug = 'jcf_admin';
 		add_submenu_page($parent_slug, $page_title, $page_title, 'manage_options', 'jcf_settings', array( $this, 'actionIndex' ));
 	}
 

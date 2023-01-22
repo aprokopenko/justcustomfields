@@ -30,13 +30,18 @@ class AdminController extends core\Controller
 
 	/**
 	 * Init menu item and index page for plugin
+	 * 
+	 * @changed 2023-01-22 Thomas Fellinger
+	 * 
+	 * Moved add_options_page() to add_menu_page() because other tabs are initialised
+	 * with add_submenu_page() which implicates a menu page or Errors
 	 */
 	public function adminMenu()
 	{
 		$page_title = \JustCustomFields::$pluginName;
 		$page_slug = \JustCustomFields::$pluginSlug;
 
-		add_options_page($page_title, $page_title, 'manage_options', 'jcf_admin', array( $this, 'actionIndex' ));
+		add_menu_page($page_title, $page_title, 'manage_options', 'jcf_admin', array( $this, 'actionIndex' ));
 	}
 
 	/**
