@@ -368,7 +368,7 @@ class JustField
 		$instance['slug'] = strip_tags($input['slug']);
 		$instance['enabled'] = (int) @$input['enabled'];
 
-		if ( $this->idBase == 'inputtext' )
+		if ( $this->idBase == 'inputtext' && !empty($input['group_title']) )
 			$instance['group_title'] = (int) @$input['group_title'];
 
 		// starting from vers. 1.4 all new fields should be marked with version of the plugin

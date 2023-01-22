@@ -122,8 +122,8 @@ class JustField_Textarea extends core\JustField
 	{
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['editor'] = (int) @$new_instance['editor'];
-		$instance['description'] = strip_tags($new_instance['description']);
+		$instance['editor'] = !empty($new_instance['editor']) ? (int) @$new_instance['editor'] : 0;
+		$instance['description'] = !empty($new_instance['editor']) ? strip_tags($new_instance['description']) : '';
 		return $instance;
 	}
 

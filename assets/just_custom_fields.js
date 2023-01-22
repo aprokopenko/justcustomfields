@@ -18,12 +18,10 @@ jQuery(document).scroll(function () {
 
 function initMobileCompatibility() {
   jQuery('.show_modal, .edit').on('click', function () {
-    jQuery('body').addClass('jcf_show_modal');
+    jcf_show_ajax_container();
   });
-  jQuery(document).on('click', '#jcf_ajax_container .jcf_close, .field-control-close, .field-control-remove, .jcf-btn-save', function () {
-    if ( jQuery('body').hasClass('jcf_show_modal') ) {
-      jQuery('body').removeClass('jcf_show_modal');
-    }
+  jQuery(document).on('click', '#jcf_ajax_container .jcf_close, .field-control-close', function () {
+    jcf_hide_ajax_container();
   });
 }
 
@@ -71,7 +69,7 @@ function initFieldsetsEdit() {
       jcf_ajax(data, 'json', null, function( response ) {
         jQuery('#jcf_fieldset_' + f_id).remove();
         // clean ajax container
-        jcf_hide_ajax_container();
+        jcf_remove_ajax_content();
       });
     }
   })
@@ -88,37 +86,9 @@ function initFieldsetsEdit() {
 
     jcf_ajax(data, 'html', null, function( response ) {
       jcf_show_ajax_container(response);
+      jcf_init_edit_fieldset();
     });
   })
-
-  // init delete button on change popup
-  jQuery('#jcf_ajax_content .jcf_edit_fieldset a.field-control-remove').on('click', function() {
-    var f_id = jQuery(this).parents('form:first').find('input[name=fieldset_id]').val();
-    jQuery('#jcf_fieldset_' + f_id + ' a.jcf_fieldset_delete').click();
-    return false;
-  });
-
-  // save on edit form
-  jQuery('#jcform_edit_fieldset').on('submit', function( e ) {
-    e.preventDefault();
-    var f_id = jQuery(this).find('input[name=fieldset_id]').val();
-    var data = {
-      'action': 'jcf_update_fieldset',
-      'fieldset_id': f_id,
-      'title': jQuery('#jcf_edit_fieldset_title').val(),
-      'position': jQuery('#jcf_edit_fieldset_position').val(),
-      'priority': jQuery('#jcf_edit_fieldset_priority').val()
-    };
-
-    jcf_ajax(data, 'json', null, function( response ) {
-      // update title
-      jQuery('#jcf_fieldset_' + f_id + ' h3 strong').text(response.title);
-
-      jcf_hide_ajax_container();
-    });
-
-    return false;
-  });
 
   // init sortable
   jQuery('#jcf_fieldsets').sortable({
@@ -328,9 +298,10 @@ function initFieldsetsEdit() {
  *	init fieldset fields grid and add form
  */
 function initFieldsetFields() {
+  var $fieldsets = jQuery('#jcf_fieldsets');
 
   // init add form
-  jQuery('#jcf_fieldsets form.jcform_add_field').submit(function( e ) {
+  $fieldsets.find('form.jcform_add_field').off('submit').submit(function( e ) {
     e.preventDefault();
 
     var data = {action: 'jcf_add_field'};
@@ -343,17 +314,121 @@ function initFieldsetFields() {
 
     jcf_ajax(data, 'html', loader, function( response ) {
       jcf_show_ajax_container(response);
+      jcf_init_edit_field();
     })
 
     return false;
   });
+  
 
+  // delete button
+  $fieldsets.find('tbody span.delete a').off('click').on('click', function() {
+    if ( confirm(jcf_textdomain.confirm_field_delete) ) {
+      var row = jQuery(this).parents('tr:first');
+      var f_id = jQuery(this).parents('tbody:first').attr('id').replace('the-list-', '');
+      var data = {
+        action: 'jcf_delete_field',
+        fieldset_id: f_id,
+        field_id: jQuery(this).attr('rel')
+      };
+
+      jcf_ajax(data, 'json', null, function( response ) {
+        row.next('td.collection_list:first').remove();
+        row.remove();
+        // close edit box if exists
+        jcf_remove_ajax_content();
+      });
+    }
+    return false;
+  });
+
+  // edit button
+  $fieldsets.find('tbody span.edit a, #jcf_fieldsets tbody strong > a').off('click').on('click', function(event) {
+    var f_id = jQuery(this).parents('tbody:first').attr('id').replace('the-list-', '');
+    var data = {
+      action: 'jcf_edit_field',
+      fieldset_id: f_id,
+      field_id: jQuery(this).attr('rel')
+    };
+
+    jcf_ajax(data, 'html', null, function( response ) {
+      jcf_show_ajax_container(response);
+      jcf_init_edit_field();
+    });
+
+    event.preventDefault();
+  });
+
+  // init sortable
+  jQuery('#jcf_fieldsets table.fieldset-fields-table > tbody').sortable({
+    handle: 'span.drag-handle',
+    opacity: 0.7,
+    placeholder: 'sortable_placeholder',
+    scroll: true,
+    start: function( event, ui ) {
+      ui.placeholder.html('<td colspan="5"><br>&nbsp;</td>');
+    },
+    stop: function( event, ui ) {
+      // ui.item - item in the list
+      var order = '';
+      var fieldset = jQuery(ui.item).parent();
+      var f_id = fieldset.attr('id').replace('the-list-', '');
+      fieldset.find('tr.field_row').each(function( i, tr ) {
+        if ( jQuery(tr).attr('id') )
+          order += jQuery(tr).attr('id').replace('field_row_', '') + ',';
+      });
+
+      var data = {
+        'action': 'jcf_fields_order',
+        'fieldset_id': f_id,
+        'fields_order': order
+      };
+      //pa(data);
+      jcf_ajax(data, 'json');
+    }
+  });
+
+}
+
+function jcf_init_edit_fieldset(){
+  var $jcform_edit_fieldset = jQuery('#jcform_edit_fieldset'),
+      fieldset_id = $jcform_edit_fieldset.find('input[name=fieldset_id]').val();
+
+  // save on edit form
+  $jcform_edit_fieldset.on('submit', function(event) {
+    var data = {
+      'action': 'jcf_update_fieldset',
+      'fieldset_id': fieldset_id,
+      'title': jQuery('#jcf_edit_fieldset_title').val(),
+      'position': jQuery('#jcf_edit_fieldset_position').val(),
+      'priority': jQuery('#jcf_edit_fieldset_priority').val()
+    };
+
+    jcf_ajax(data, 'json', null, function( response ) {
+      // update title
+      jQuery('#jcf_fieldset_' + f_id + ' h3 strong').text(response.title);
+      jcf_remove_ajax_content();
+    });
+    
+    event.preventDefault();
+  });
+
+  // init delete button on change popup
+  $jcform_edit_fieldset.find('a.field-control-remove').on('click', function(event) {
+    jQuery('#jcf_fieldset_' + fieldset_id + ' a.jcf_fieldset_delete').trigger('click');
+    event.preventDefault();
+  });
+}
+function jcf_init_edit_field(){
+  var $jcform_edit_field = jQuery('#jcform_edit_field');
+      
+  
   // init save button on edit form
-  jQuery('#jcform_edit_field').on('submit', function( e ) {
+  $jcform_edit_field.on('submit', function( e ) {
     e.preventDefault();
 
     // get query string from the form
-    var query = jQuery('#jcform_edit_field').formSerialize();
+    var query = jQuery('#jcform_edit_field').serialize();
     var data = 'action=jcf_save_field' + '&' + query;
 
     var loader = jQuery(this).find('img.ajax-feedback');
@@ -424,88 +499,20 @@ function initFieldsetFields() {
         row.find('td:eq(1) ul').html(html);
       }
       // close add box at the end
-      jcf_hide_ajax_container();
-    })
-
-    return false;
-  });
-
-  // delete button
-  jQuery('#jcf_fieldsets tbody span.delete a').on('click', function() {
-    if ( confirm(jcf_textdomain.confirm_field_delete) ) {
-      var row = jQuery(this).parents('tr:first');
-      var f_id = jQuery(this).parents('tbody:first').attr('id').replace('the-list-', '');
-      var data = {
-        action: 'jcf_delete_field',
-        fieldset_id: f_id,
-        field_id: jQuery(this).attr('rel')
-      };
-
-      jcf_ajax(data, 'json', null, function( response ) {
-        row.next('td.collection_list:first').remove();
-        row.remove();
-        // close edit box if exists
-        jcf_hide_ajax_container();
-      });
-    }
-    return false;
-  })
-
-  // edit button
-  jQuery('#jcf_fieldsets tbody span.edit a, #jcf_fieldsets tbody strong > a').on('click', function() {
-    var f_id = jQuery(this).parents('tbody:first').attr('id').replace('the-list-', '');
-    var data = {
-      action: 'jcf_edit_field',
-      fieldset_id: f_id,
-      field_id: jQuery(this).attr('rel')
-    };
-
-    jcf_ajax(data, 'html', null, function( response ) {
-
-      jcf_show_ajax_container(response);
-
+      jcf_remove_ajax_content();
     });
 
     return false;
-  })
-
-  // delete button in edit form
-  jQuery('#jcform_edit_field a.field-control-remove').on('click', function( e ) {
-    var field_id = jQuery(this).parents('form:first').find('input[name=field_id]').val();
-    var row = jQuery('#field_row_' + field_id);
-    row.find('span.delete a').click();
-    return false;
   });
+ 
+  $jcform_edit_field.find('.field-control-remove').on('click', function(event) {
+    var field_number = $jcform_edit_field.find('input[name=field_number]').val(),
+        field_id_base = $jcform_edit_field.find('input[name=field_id_base]').val();
 
-  // init sortable
-  jQuery('#jcf_fieldsets table.fieldset-fields-table > tbody').sortable({
-    handle: 'span.drag-handle',
-    opacity: 0.7,
-    placeholder: 'sortable_placeholder',
-    scroll: true,
-    start: function( event, ui ) {
-      ui.placeholder.html('<td colspan="5"><br>&nbsp;</td>');
-    },
-    stop: function( event, ui ) {
-      // ui.item - item in the list
-      var order = '';
-      var fieldset = jQuery(ui.item).parent();
-      var f_id = fieldset.attr('id').replace('the-list-', '');
-      fieldset.find('tr.field_row').each(function( i, tr ) {
-        if ( jQuery(tr).attr('id') )
-          order += jQuery(tr).attr('id').replace('field_row_', '') + ',';
-      });
-
-      var data = {
-        'action': 'jcf_fields_order',
-        'fieldset_id': f_id,
-        'fields_order': order
-      };
-      //pa(data);
-      jcf_ajax(data, 'json');
-    }
+    jQuery('#field_row_' + field_id_base + '-' + field_number + ' span.delete a').trigger('click');
+    jcf_remove_ajax_content();
+    event.preventDefault();
   });
-
 }
 
 /**
@@ -585,18 +592,29 @@ function initImportExportCheckboxes() {
  */
 function initAjaxBoxClose() {
   jQuery('#jcf_ajax_content a.field-control-close').on('click', function() {
-    jcf_hide_ajax_container();
+    jcf_remove_ajax_content();
   });
 }
 
 function jcf_hide_ajax_container() {
+  if ( document.body.classList.contains('jcf_show_modal') ) {
+    document.body.classList.remove('jcf_show_modal');
+  }
+}
+
+function jcf_remove_ajax_content() {
   jQuery('#jcf_ajax_content').html('');
-  jQuery('#jcf_ajax_container').hide();
+  jcf_hide_ajax_container();
+  initFieldsetFields();
 }
 
 function jcf_show_ajax_container( response ) {
-  jQuery('#jcf_ajax_container').show();
-  jQuery('#jcf_ajax_content').html(response);
+  if ( !document.body.classList.contains('jcf_show_modal') ) {
+    document.body.classList.add('jcf_show_modal');
+  }
+  if ( typeof response === 'string' ) {
+    jQuery('#jcf_ajax_content').html(response);
+  }
 }
 
 function jcf_ajax( data, respType, loader, callback ) {

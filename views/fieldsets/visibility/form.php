@@ -39,7 +39,7 @@ if ( empty($visibility_rule) ) {
 	</div>
 
 	<?php // Condition fields for rule ?>
-	<div class="join-condition <?php echo ( ((!empty($scenario) && $scenario == FieldsetVisibility::SCENARIO_CREATE) || $rule_id != 0) ? '' : 'hidden' ); ?>" >
+	<div class="join-condition <?php echo ( ((!empty($scenario) && $scenario == FieldsetVisibility::SCENARIO_CREATE) || $visibility_rule['rule_id'] != 0) ? '' : 'hidden' ); ?>" >
 		<p>
 			<label for="rule-join-condition"><?php _e('Join condition with previous rules with operator:', \JustCustomFields::TEXTDOMAIN); ?></label>
 			<br />

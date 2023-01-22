@@ -142,14 +142,14 @@ function jcf_get_page_templates( $post_type = 'page' ) {
 			}
 		}
 
-		wp_cache_add( 'jcf_post_templates_depth2', $deep_templates, 'themes', 1800 );
+		wp_cache_add( 'jcf_post_templates_depth2', $post_templates, 'themes', 1800 );
 	}
 
 	if ( !empty($post_templates[$post_type]) ) {
-		$page_templates = array_merge(array('default' => 'Default'), $post_templates[$post_type]);
+		$post_templates[$post_type] = array_merge(array('default' => 'Default'), $post_templates[$post_type]);
 	}
 
-	return $page_templates;
+	return $post_templates;
 }
 
 /**

@@ -140,6 +140,9 @@ select.jcf_add_field {
 #jcf_ajax_container {
 	display: none;
 }
+body.jcf_show_modal #jcf_ajax_container {
+	display: block;
+}
 
 body.jcf-loading,
 body.jcf-loading a,
