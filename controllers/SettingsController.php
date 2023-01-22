@@ -19,6 +19,11 @@ class SettingsController extends core\Controller
 
 	/**
 	 * Init routes for settings page
+	 * 
+	 * @added $parent_slug 2023-01-22  Thomas Fellinger
+	 * 
+	 * $parent_slug will render the right page
+	 * using null or '' for parent page creates PHP 8 errors.
 	 */
 	public function initRoutes()
 	{

@@ -35,13 +35,18 @@ class AdminController extends core\Controller
 	 * 
 	 * Moved add_options_page() to add_menu_page() because other tabs are initialised
 	 * with add_submenu_page() which implicates a menu page or Errors
+	 *  
+	 * @added $menu_title 2023-01-22  Thomas Fellinger
+	 * 
+	 * $menu_title will be in one line in the menu
 	 */
 	public function adminMenu()
 	{
 		$page_title = \JustCustomFields::$pluginName;
+		$menu_title = __('Custom Fields', \JustCustomFields::TEXTDOMAIN);
 		$page_slug = \JustCustomFields::$pluginSlug;
 
-		add_menu_page($page_title, $page_title, 'manage_options', 'jcf_admin', array( $this, 'actionIndex' ), 'dashicons-welcome-widgets-menus');
+		add_menu_page($page_title, $menu_title, 'manage_options', 'jcf_admin', array( $this, 'actionIndex' ), 'dashicons-welcome-widgets-menus');
 	}
 
 	/**
