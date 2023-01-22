@@ -41,7 +41,7 @@ class AdminController extends core\Controller
 		$page_title = \JustCustomFields::$pluginName;
 		$page_slug = \JustCustomFields::$pluginSlug;
 
-		add_menu_page($page_title, $page_title, 'manage_options', 'jcf_admin', array( $this, 'actionIndex' ));
+		add_menu_page($page_title, $page_title, 'manage_options', 'jcf_admin', array( $this, 'actionIndex' ), 'dashicons-welcome-widgets-menus');
 	}
 
 	/**
