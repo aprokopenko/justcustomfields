@@ -57,7 +57,7 @@ class JustField_SelectMultiple extends core\JustField
 		$instance = wp_parse_args((array) $this->instance, array( 'title' => '', 'description' => '', 'settings' => '' ));
 
 		$title = esc_attr($instance['title']);
-		$options = esc_attr($instance['options']);
+		$options = isset($instance['options']) ? esc_attr($instance['options']) : '';
 		$description = esc_html($instance['description']);
 		?>
 		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>

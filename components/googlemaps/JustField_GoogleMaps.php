@@ -128,7 +128,7 @@ class JustField_GoogleMaps extends core\JustField
 		$api_key = Settings::getGoogleMapsApiKey();
 		?>
 		<?php if ( empty($api_key) ) : ?>
-			<div class="error"><?php _e('Please set Google Maps API Key on Settings page.', JCF_TEXTDOMAIN); ?></div>
+			<div class="error"><?php _e('Please set Google Maps API Key on Settings page.', \JustCustomFields::TEXTDOMAIN); ?></div>
 		<?php endif; ?>
 
 		<p><label for="<?php echo $this->getFieldId('title'); ?>"><?php _e('Title:', \JustCustomFields::TEXTDOMAIN); ?></label> <input class="widefat" id="<?php echo $this->getFieldId('title'); ?>" name="<?php echo $this->getFieldName('title'); ?>" type="text" value="<?php echo $title; ?>" /></p>

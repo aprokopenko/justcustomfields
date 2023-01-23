@@ -44,7 +44,7 @@
 									<input class="checkbox" type="checkbox"
 										id="<?php echo $field->getFieldId('group_title'); ?>"
 										name="<?php echo $field->getFieldName('group_title'); ?>"
-										value="1" <?php checked(true, @$field->instance['group_title']); ?> />
+										value="1" <?php checked(true, ( isset($field->instance['group_title']) ? @$field->instance['group_title'] : false ) ); ?> />
 									<?php _e('Use this field as collection item title?', \JustCustomFields::TEXTDOMAIN); ?>
 								</label>
 							</p>
@@ -56,7 +56,7 @@
 									id="<?php echo $field->getFieldId('field_width'); ?>"
 									name="<?php echo $field->getFieldName('field_width'); ?>">
 								<?php foreach( \jcf\components\collection\JustField_Collection::$fieldWidth as $key => $width) : ?>
-									<option value="<?php echo $key; ?>"<?php echo (@$field->instance['field_width']==$key?' selected':''); ?>>
+									<option value="<?php echo $key; ?>"<?php echo ( isset($field->instance['field_width']) && @$field->instance['field_width'] == $key ? ' selected' : '' ); ?>>
 										<?php echo $width; ?></option>
 								<?php endforeach; ?>
 							</select>

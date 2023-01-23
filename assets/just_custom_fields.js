@@ -360,7 +360,7 @@ function initFieldsetFields() {
   });
 
   // init sortable
-  jQuery('#jcf_fieldsets table.fieldset-fields-table > tbody').sortable({
+  $fieldsets.find('table.fieldset-fields-table > tbody').sortable({
     handle: 'span.drag-handle',
     opacity: 0.7,
     placeholder: 'sortable_placeholder',
