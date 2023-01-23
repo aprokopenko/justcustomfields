@@ -319,8 +319,6 @@ function initFieldsetFields() {
 
     return false;
   });
-  
-
   // delete button
   $fieldsets.find('tbody span.delete a').off('click').on('click', function() {
     if ( confirm(jcf_textdomain.confirm_field_delete) ) {
@@ -419,6 +417,7 @@ function jcf_init_edit_fieldset(){
     event.preventDefault();
   });
 }
+
 function jcf_init_edit_field(){
   var $jcform_edit_field = jQuery('#jcform_edit_field');
       
@@ -606,6 +605,10 @@ function jcf_remove_ajax_content() {
   jQuery('#jcf_ajax_content').html('');
   jcf_hide_ajax_container();
   initFieldsetFields();
+  
+  if ( typeof initCollectionFields === 'function' ) {
+    initCollectionFields();
+  }
 }
 
 function jcf_show_ajax_container( response ) {

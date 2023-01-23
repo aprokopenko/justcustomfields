@@ -8,7 +8,7 @@ jQuery(document).ready(function() {
  */
 function initCollectionFields() {
   // init add form
-  jQuery('form.jcform_add_collection_field').on('submit', function( e ) {
+  jQuery('form.jcform_add_collection_field').off('submit').on('submit', function( e ) {
     e.preventDefault();
 
     var data = {action: 'jcf_add_field'};
@@ -22,13 +22,74 @@ function initCollectionFields() {
 
     jcf_ajax(data, 'html', loader, function( response ) {
       jcf_show_ajax_container(response);
+      jcf_init_edit_collection_field();
     })
 
     return false;
   });
 
+  // edit button
+  jQuery('#jcf_fieldsets tbody span.edit_collection a').off('click').on('click', function() {
+    var f_id = jQuery(this).parents('tbody:first').parents('tbody:first').attr('id').replace('the-list-', '');
+    var c_id = jQuery(this).data('collection_id');
+    var data = {
+      action: 'jcf_edit_field',
+      fieldset_id: f_id,
+      collection_id: c_id,
+      field_id: jQuery(this).attr('rel')
+    };
+    jcf_ajax(data, 'html', null, function( response ) {
+
+      jcf_show_ajax_container(response);
+    });
+
+    return false;
+  });
+  
+  // delete button
+  jQuery('#jcf_fieldsets tbody span.delete_collection a').off('click').on('click', function() {
+    if ( confirm(jcf_textdomain.confirm_field_delete) ) {
+      var row = jQuery(this).parents('tr:first');
+      var f_id = jQuery(this).parents('tbody:first').parents('tbody:first').attr('id').replace('the-list-', '');
+      var c_id = jQuery(this).data('collection_id');
+      var data = {
+        action: 'jcf_delete_field',
+        fieldset_id: f_id,
+        collection_id: c_id,
+        field_id: jQuery(this).attr('rel')
+      };
+
+      jcf_ajax(data, 'json', null, function( response ) {
+        row.remove();
+        // close edit box if exists
+        jcf_remove_ajax_content();
+      });
+    }
+    return false;
+  })
+
+
+  // init sortable
+  jQuery('tbody[id^=the-collection-list-collection-]').sortable({
+    handle: 'span.drag-handle',
+    opacity: 0.7,
+    placeholder: 'collection_sortable_placeholder',
+    scroll: true,
+    start: function( event, ui ) {
+      ui.placeholder.html('<td colspan="4"><br>&nbsp;</td>');
+    },
+    stop: function( event, ui ) {
+      collectionFieldSortableStop(event, ui, this);
+    },
+  });
+}
+
+function jcf_init_edit_collection_field(){
+  var $edit_collection_field = jQuery('#jcform_edit_collection_field');
+
+
   // init save button on edit form
-  jQuery('#jcform_edit_collection_field').on('submit', function( e ) {
+  $edit_collection_field.on('submit', function( e ) {
     e.preventDefault();
 
     // get query string from the form
@@ -68,73 +129,18 @@ function initCollectionFields() {
       row.find('td:eq(4)').text((response.instance.enabled) ? jcf_textdomain.yes : jcf_textdomain.no);
 
       // close add box at the end
-      jcf_hide_ajax_container();
+      jcf_remove_ajax_content();
     })
 
     return false;
   });
-
-  // edit button
-  jQuery('#jcf_fieldsets tbody span.edit_collection a').on('click', function() {
-    var f_id = jQuery(this).parents('tbody:first').parents('tbody:first').attr('id').replace('the-list-', '');
-    var c_id = jQuery(this).data('collection_id');
-    var data = {
-      action: 'jcf_edit_field',
-      fieldset_id: f_id,
-      collection_id: c_id,
-      field_id: jQuery(this).attr('rel')
-    };
-    jcf_ajax(data, 'html', null, function( response ) {
-
-      jcf_show_ajax_container(response);
-
-    });
-
-    return false;
-  })
-  // delete button
-  jQuery('#jcf_fieldsets tbody span.delete_collection a').on('click', function() {
-    if ( confirm(jcf_textdomain.confirm_field_delete) ) {
-      var row = jQuery(this).parents('tr:first');
-      var f_id = jQuery(this).parents('tbody:first').parents('tbody:first').attr('id').replace('the-list-', '');
-      var c_id = jQuery(this).data('collection_id');
-      var data = {
-        action: 'jcf_delete_field',
-        fieldset_id: f_id,
-        collection_id: c_id,
-        field_id: jQuery(this).attr('rel')
-      };
-
-      jcf_ajax(data, 'json', null, function( response ) {
-        row.remove();
-        // close edit box if exists
-        jcf_hide_ajax_container();
-      });
-    }
-    return false;
-  })
-
+  
   // delete button in edit form
-  jQuery('#jcform_edit_collection_field a.field-control-remove').on('click', function( e ) {
-    var field_id = jQuery(this).parents('form:first').find('input[name=field_id]').val();
+  $edit_collection_field.find('a.field-control-remove').on('click', function( e ) {
+    var field_id = $edit_collection_field.find('input[name=field_id]').val();
     var row = jQuery('#collection_field_row_' + field_id);
     row.find('span.delete_collection a').click();
     return false;
-  });
-
-
-  // init sortable
-  jQuery('tbody[id^=the-collection-list-collection-]').sortable({
-    handle: 'span.drag-handle',
-    opacity: 0.7,
-    placeholder: 'collection_sortable_placeholder',
-    scroll: true,
-    start: function( event, ui ) {
-      ui.placeholder.html('<td colspan="4"><br>&nbsp;</td>');
-    },
-    stop: function( event, ui ) {
-      collectionFieldSortableStop(event, ui, this);
-    },
   });
 }
 
