@@ -169,7 +169,7 @@ class TaxonomyController extends core\Controller
 	 *
 	 * @return bool|void
 	 */
-	public function saveCustomFields( $term_id, $tt_id, $taxonomy = null  )
+	public static function saveCustomFields( $term_id, $tt_id, $taxonomy = null  )
 	{
 		$post_type = empty($taxonomy) ? $tt_id :  $taxonomy;
 		$post_type = JustField::POSTTYPE_KIND_PREFIX_TAXONOMY . $post_type;
