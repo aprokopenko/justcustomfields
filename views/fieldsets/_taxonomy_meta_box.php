@@ -4,9 +4,9 @@
 <?php endif; ?>
 					
 			<div class="postbox jcf-taxonomy-box">
-				<h2 class="hndle"><span><?= $name; ?></span></h2>
+				<h2 class="hndle"><span><?php echo $name; ?></span></h2>
 				<div class="inside">
-					<?= $content; ?>
+					<?php echo $content; ?>
 				</div>
 			</div>
 					
